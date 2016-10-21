@@ -1,0 +1,32 @@
+mLab
+	ibsysKa4
+	yppjyppj2
+DB
+	admin
+	yppj
+
+##########################
+In Root Ordner navigieren
+npm install
+npm install -g nodemon
+	Server starten mit nodemon
+	
+	
+##########################
+In Client Ordner navigieren
+
+npm install
+
+npm start 
+
+############################
+In Root Ordner
+npm install -g bower
+.bowerrc anlegen mit folgendem inhalt:
+
+	{
+	  "directory":"client/bower_components"
+	}
+	
+###########################
+bower install bootstrap --save
