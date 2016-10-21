@@ -1,52 +1,25 @@
 {
   "name": "ibsys2",
   "version": "1.0.0",
-  "description": "Ibsys2 PPS Tool",
-  "main": "index.js",
-  "engines": {
-    "node": "4.2.1"
-  },
-  "author": "YPPJ",
-  "license": "ISC",
-  "dependencies": {
-    "@angular/common": "~2.1.0",
-    "@angular/compiler": "~2.1.0",
-    "@angular/core": "~2.1.0",
-    "@angular/forms": "~2.1.0",
-    "@angular/http": "~2.1.0",
-    "@angular/platform-browser": "~2.1.0",
-    "@angular/platform-browser-dynamic": "~2.1.0",
-    "@angular/router": "~3.1.0",
-    "@angular/upgrade": "~2.1.0",
-    "angular-in-memory-web-api": "~0.1.5",
-    "bootstrap": "^3.3.7",
-    "core-js": "^2.4.1",
-    "reflect-metadata": "^0.1.8",
-    "rxjs": "5.0.0-beta.12",
-    "systemjs": "0.19.39",
-    "zone.js": "^0.6.25",
-    "express": "4.14.0"
-  },
-  "devDependencies": {
-    "concurrently": "^3.0.0",
-    "lite-server": "^2.2.2",
-    "typescript": "^2.0.3",
-    "typings": "^1.4.0"
-  },
+  "description": "IBSYS2 PPS Tool ",
+  "main": "server.js",
   "scripts": {
-    "start": "tsc && concurrently \"tsc -w\" \"lite-server\" ",
-    "lite": "lite-server",
-    "postinstall": "typings install",
-    "tsc": "tsc",
-    "tsc:w": "tsc -w",
-    "typings": "typings"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/StPatrick90/IBSYS2.git"
   },
+  "author": "",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/StPatrick90/IBSYS2/issues"
   },
-  "homepage": "https://github.com/StPatrick90/IBSYS2#readme"
+  "homepage": "https://github.com/StPatrick90/IBSYS2#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "ejs": "^2.5.2",
+    "express": "^4.14.0",
+    "mongojs": "^2.4.0"
+  }
 }
