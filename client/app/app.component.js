@@ -13,17 +13,45 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var core_1 = require('@angular/core');
 var task_service_1 = require('./services/task.service');
+var app_service_1 = require('./services/app.service');
 var AppComponent = (function () {
-    function AppComponent() {
+    function AppComponent(appService) {
+        this.appService = appService;
+        this.mobileView = 992;
+        this.toggle = false;
+        this.attachEvents();
     }
+    AppComponent.prototype.toggleSidebar = function () {
+        this.toggle = !this.toggle;
+        this.appService.toggleSidebar(this.toggle);
+    };
+    AppComponent.prototype.attachEvents = function () {
+        var _this = this;
+        window.onresize = function () {
+            if (_this.getWidth() >= _this.mobileView) {
+                if (localStorage.getItem('toggle')) {
+                    _this.toggle = !localStorage.getItem('toggle') ? false : true;
+                }
+                else {
+                    _this.toggle = true;
+                }
+            }
+            else {
+                _this.toggle = false;
+            }
+        };
+    };
+    AppComponent.prototype.getWidth = function () {
+        return window.innerWidth;
+    };
     AppComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'my-app',
             templateUrl: 'app.component.html',
-            providers: [task_service_1.TaskService]
+            providers: [task_service_1.TaskService, app_service_1.AppService]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [app_service_1.AppService])
     ], AppComponent);
     return AppComponent;
 }());

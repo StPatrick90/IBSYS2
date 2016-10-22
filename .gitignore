@@ -3,4 +3,3 @@
 /client/bower_components/**/*
 .idea/*
 /client/typings/**/*
-.bowerrc
