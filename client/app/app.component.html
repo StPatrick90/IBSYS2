@@ -3,16 +3,29 @@
         <ul class="sidebar">
             <li class="sidebar-main">
                 <a (click)="toggleSidebar()">
-                    Dashboard
+                    IBSYS2 - PPS
                     <span class="menu-icon glyphicon glyphicon-transfer"></span>
                 </a>
             </li>
             <li class="sidebar-title"><span>NAVIGATION</span></li>
             <li class="sidebar-list">
-                <a>Dashboard<span class="menu-icon fa fa-tachometer"></span></a>
+                <a routerLink="/" routerLinkActive="active">Home<span class="menu-icon fa fa-home"></span></a>
             </li>
             <li class="sidebar-list">
-                <a>Table<span class="menu-icon fa fa-table"></span></a>
+                <a routerLink="/tasks" routerLinkActive="active">Tasks<span class="menu-icon fa fa-tachometer"></span></a>
+            </li>
+            <li class="sidebar-list">
+                <a>Überischt<span class="menu-icon fa fa-table"></span></a>
+            </li>
+            <li class="sidebar-title"><span>Planung</span></li>
+            <li class="sidebar-list">
+                <a>Aufträge<span class="menu-icon fa fa-cubes"></span></a>
+            </li>
+            <li class="sidebar-list">
+                <a>Fertigung<span class="menu-icon fa fa-cogs"></span></a>
+            </li>
+            <li class="sidebar-list">
+                <a>Kapazität<span class="menu-icon fa fa-battery-half"></span></a>
             </li>
         </ul>
         <div class="sidebar-footer">
@@ -33,18 +46,16 @@
             </div>
         </div>
     </div>
-
-
-
     <div id="content-wrapper">
         <div class="page-content">
 
             <!-- Header Bar -->
 
-            <h1>MyTaskList</h1>
-            <hr>
-            <tasks></tasks>
+            <router-outlet></router-outlet>
+
         </div>
+
+
     </div>
 </div>
 
