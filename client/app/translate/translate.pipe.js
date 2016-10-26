@@ -9,24 +9,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 /**
- * Created by Paddy on 21.10.2016.
+ * Created by Paddy on 26.10.2016.
  */
 var core_1 = require('@angular/core');
-var http_1 = require('@angular/http');
-require('rxjs/add/operator/map');
-var AppService = (function () {
-    function AppService(http) {
-        this.http = http;
-        console.log('App Service Initialized...');
+var translate_service_1 = require('../translate/translate.service');
+var TranslatePipe = (function () {
+    function TranslatePipe(_translate) {
+        this._translate = _translate;
     }
-    AppService.prototype.toggleSidebar = function (toggle) {
-        localStorage.setItem('toggle', toggle.toString());
+    TranslatePipe.prototype.transform = function (value, args) {
+        if (!value)
+            return;
+        return this._translate.instant(value);
     };
-    AppService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
-    ], AppService);
-    return AppService;
+    TranslatePipe = __decorate([
+        core_1.Pipe({
+            name: 'translate',
+            pure: false // impure pipe, update value when we change language
+        }), 
+        __metadata('design:paramtypes', [translate_service_1.TranslateService])
+    ], TranslatePipe);
+    return TranslatePipe;
 }());
-exports.AppService = AppService;
-//# sourceMappingURL=app.service.js.map
+exports.TranslatePipe = TranslatePipe;
+//# sourceMappingURL=translate.pipe.js.map

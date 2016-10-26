@@ -29,4 +29,5 @@ npm install -g bower
 	}
 	
 ###########################
-bower install bootstrap --save
+bower install bootstrap
+bower install angular-translate

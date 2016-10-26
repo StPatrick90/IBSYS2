@@ -1,23 +1,22 @@
-/**
- * Created by Paddy on 21.10.2016.
- */
 import { Component } from '@angular/core';
 import { TaskService } from './services/task.service';
 import { AppService} from './services/app.service';
+import { TranslateService } from './translate/translate.service';
 
 
 @Component({
     moduleId: module.id,
     selector: 'my-app',
     templateUrl: 'app.component.html',
-    providers: [TaskService, AppService]
+    providers: [TaskService, AppService, TranslateService]
 })
 export class AppComponent {
     mobileView:number = 992;
     toggle: boolean = false;
 
-    constructor(private appService:AppService){
+    constructor(private appService:AppService, private _translate: TranslateService){
         this.attachEvents();
+        this._translate.use('de');
     }
 
     toggleSidebar(){

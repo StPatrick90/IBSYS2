@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AppService{
     constructor(private http:Http){
-        console.log('Sidebar Service Initialized...');
+        console.log('App Service Initialized...');
     }
 
     toggleSidebar(toggle) {

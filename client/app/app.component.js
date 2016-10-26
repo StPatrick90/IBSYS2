@@ -8,18 +8,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-/**
- * Created by Paddy on 21.10.2016.
- */
 var core_1 = require('@angular/core');
 var task_service_1 = require('./services/task.service');
 var app_service_1 = require('./services/app.service');
+var translate_service_1 = require('./translate/translate.service');
 var AppComponent = (function () {
-    function AppComponent(appService) {
+    function AppComponent(appService, _translate) {
         this.appService = appService;
+        this._translate = _translate;
         this.mobileView = 992;
         this.toggle = false;
         this.attachEvents();
+        this._translate.use('de');
     }
     AppComponent.prototype.toggleSidebar = function () {
         this.toggle = !this.toggle;
@@ -49,9 +49,9 @@ var AppComponent = (function () {
             moduleId: module.id,
             selector: 'my-app',
             templateUrl: 'app.component.html',
-            providers: [task_service_1.TaskService, app_service_1.AppService]
+            providers: [task_service_1.TaskService, app_service_1.AppService, translate_service_1.TranslateService]
         }), 
-        __metadata('design:paramtypes', [app_service_1.AppService])
+        __metadata('design:paramtypes', [app_service_1.AppService, translate_service_1.TranslateService])
     ], AppComponent);
     return AppComponent;
 }());

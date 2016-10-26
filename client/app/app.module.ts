@@ -9,11 +9,15 @@ import { AppComponent } from './app.component';
 import { TasksComponent} from './components/tasks/tasks.component';
 import { HomeComponent} from './components/home/home.component';
 import { AppRoutingModule} from './app-routing.module';
+import { TranslatePipe }   from './translate/translate.pipe';
+import { TranslateService }   from './translate/translate.service';
+import { TRANSLATION_PROVIDERS} from './translate/index';
 
 @NgModule({
     imports:      [ BrowserModule, HttpModule, FormsModule, AppRoutingModule],
-    declarations: [AppComponent, TasksComponent, HomeComponent],
-    bootstrap: [AppComponent]
+    declarations: [AppComponent, TasksComponent, HomeComponent, TranslatePipe],
+    bootstrap: [AppComponent],
+    providers:    [ TRANSLATION_PROVIDERS, TranslateService ]
 
 })
 export class AppModule { }
