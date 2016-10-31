@@ -19,7 +19,7 @@ var AppComponent = (function () {
         this.mobileView = 992;
         this.toggle = false;
         this.attachEvents();
-        this._translate.use('de');
+        this._translate.use('en');
     }
     AppComponent.prototype.toggleSidebar = function () {
         this.toggle = !this.toggle;

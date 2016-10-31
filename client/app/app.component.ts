@@ -16,7 +16,7 @@ export class AppComponent {
 
     constructor(private appService:AppService, private _translate: TranslateService){
         this.attachEvents();
-        this._translate.use('de');
+        this._translate.use('en');
     }
 
     toggleSidebar(){
