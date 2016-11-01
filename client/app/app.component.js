@@ -18,8 +18,10 @@ var AppComponent = (function () {
         this._translate = _translate;
         this.mobileView = 992;
         this.toggle = false;
+        this.language = "de";
         this.attachEvents();
-        this._translate.use('en');
+        this.language = (navigator.language || navigator.userLanguage).substring(0, 2);
+        this._translate.use(this.language);
     }
     AppComponent.prototype.toggleSidebar = function () {
         this.toggle = !this.toggle;
@@ -43,6 +45,9 @@ var AppComponent = (function () {
     };
     AppComponent.prototype.getWidth = function () {
         return window.innerWidth;
+    };
+    AppComponent.prototype.setLang = function (lang) {
+        this._translate.use(lang || this.language);
     };
     AppComponent = __decorate([
         core_1.Component({

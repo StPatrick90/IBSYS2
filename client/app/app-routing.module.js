@@ -15,6 +15,7 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var tasks_component_1 = require('./components/tasks/tasks.component');
 var home_component_1 = require('./components/home/home.component');
+//import {XMLUploadComponent} from './components/xmlUpload/xmlUpload.component';
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
     }
@@ -23,7 +24,8 @@ var AppRoutingModule = (function () {
             imports: [
                 router_1.RouterModule.forRoot([
                     { path: 'tasks', component: tasks_component_1.TasksComponent },
-                    { path: '', component: home_component_1.HomeComponent }])
+                    { path: '', component: home_component_1.HomeComponent }
+                ])
             ],
             exports: [
                 router_1.RouterModule

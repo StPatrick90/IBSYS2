@@ -4,7 +4,7 @@
 export const LANG_DE_NAME = 'de';
 
 export const LANG_DE_TRANS = {
-    'XMLlesen': 'XML einlsen',
+    'XMLlesen': 'XML einlesen',
     'auftragsPlanung': 'Auftragsplanung',
     'prognose': 'Prognose',
     'produktAnsicht': 'Produktansicht',
@@ -19,5 +19,8 @@ export const LANG_DE_TRANS = {
     'einstellungen': 'Einstellungen',
     'arbeitsplaetze': 'Arbeitsplätze',
     'stuecklisten': 'Stücklisten',
-    'teile': 'Teile'
+    'teile': 'Teile',
+    'sprachen': 'Sprachen',
+    'deutsch': 'Deutsch',
+    'englisch': 'Englisch'
 };

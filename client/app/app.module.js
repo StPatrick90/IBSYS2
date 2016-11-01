@@ -17,6 +17,7 @@ var http_1 = require('@angular/http');
 var forms_1 = require('@angular/forms');
 var app_component_1 = require('./app.component');
 var tasks_component_1 = require('./components/tasks/tasks.component');
+//import { XMLUploadComponent} from './components/xmlUpload/xmlUpload.component';
 var home_component_1 = require('./components/home/home.component');
 var app_routing_module_1 = require('./app-routing.module');
 var translate_pipe_1 = require('./translate/translate.pipe');

@@ -19,6 +19,9 @@ exports.LANG_EN_TRANS = {
     'einstellungen': 'Settings',
     'arbeitsplaetze': 'Workstations',
     'stuecklisten': 'Parts lists',
-    'teile': 'Parts'
+    'teile': 'Parts',
+    'sprachen': 'Languages',
+    'deutsch': 'German',
+    'englisch': 'English'
 };
 //# sourceMappingURL=lang-en.js.map

@@ -13,10 +13,12 @@ import { TranslateService } from './translate/translate.service';
 export class AppComponent {
     mobileView:number = 992;
     toggle: boolean = false;
+    language: string = "de";
 
     constructor(private appService:AppService, private _translate: TranslateService){
         this.attachEvents();
-        this._translate.use('en');
+        this.language = (navigator.language || navigator.userLanguage).substring(0,2);
+        this._translate.use(this.language);
     }
 
     toggleSidebar(){
@@ -40,6 +42,9 @@ export class AppComponent {
 
     getWidth() {
         return window.innerWidth;
+    }
+    setLang(lang){
+        this._translate.use(lang || this.language);
     }
 }
 

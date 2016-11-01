@@ -4,7 +4,7 @@
  */
 exports.LANG_DE_NAME = 'de';
 exports.LANG_DE_TRANS = {
-    'XMLlesen': 'XML einlsen',
+    'XMLlesen': 'XML einlesen',
     'auftragsPlanung': 'Auftragsplanung',
     'prognose': 'Prognose',
     'produktAnsicht': 'Produktansicht',
@@ -19,6 +19,9 @@ exports.LANG_DE_TRANS = {
     'einstellungen': 'Einstellungen',
     'arbeitsplaetze': 'Arbeitsplätze',
     'stuecklisten': 'Stücklisten',
-    'teile': 'Teile'
+    'teile': 'Teile',
+    'sprachen': 'Sprachen',
+    'deutsch': 'Deutsch',
+    'englisch': 'Englisch'
 };
 //# sourceMappingURL=lang-de.js.map
