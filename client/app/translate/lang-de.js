@@ -4,24 +4,26 @@
  */
 exports.LANG_DE_NAME = 'de';
 exports.LANG_DE_TRANS = {
-    'XMLlesen': 'XML einlesen',
-    'auftragsPlanung': 'Auftragsplanung',
-    'prognose': 'Prognose',
-    'produktAnsicht': 'Produktansicht',
-    'kaufteilDispo': 'Kaufteildisposition',
-    'kapaPlanung': 'Kapazitätsplanung',
-    'prodPrio': 'Priorisierung',
-    'uebersicht': 'Übersicht',
-    'historie': 'Historie',
-    'auftrBearb': 'Aufträge in Bearb.',
-    'auftrWart': 'Aufträge in Wart.',
-    'lagerbestand': 'Lagerbestand',
-    'einstellungen': 'Einstellungen',
-    'arbeitsplaetze': 'Arbeitsplätze',
-    'stuecklisten': 'Stücklisten',
-    'teile': 'Teile',
-    'sprachen': 'Sprachen',
-    'deutsch': 'Deutsch',
-    'englisch': 'Englisch'
+    //Sidebar
+    'sidebar_readXML': 'XML einlesen',
+    'sidebar_taskPlanning': 'Auftragsplanung',
+    'sidebar_forecast': 'Prognose',
+    'sidebar_productView': 'Produktansicht',
+    'sidebar_materialPlanning': 'Kaufteildisposition',
+    'sidebar_capacityPlanning': 'Kapazitätsplanung',
+    'sidebar_prio': 'Priorisierung',
+    'sidebar_overview': 'Übersicht',
+    'sidebar_history': 'Historie',
+    'sidebar_ordersWork': 'Aufträge in Bearb.',
+    'sidebar_waitingWorkst': 'Aufträge in Wart.',
+    'sidebar_warehouseStock': 'Lagerbestand',
+    'sidebar_settings': 'Einstellungen',
+    'sidebar_workstations': 'Arbeitsplätze',
+    'sidebar_partsLists': 'Stücklisten',
+    'sidebar_parts': 'Teile',
+    //Headbar
+    'headbar_languages': 'Sprachen',
+    'headbar_german': 'Deutsch',
+    'headbar_english': 'Englisch'
 };
 //# sourceMappingURL=lang-de.js.map

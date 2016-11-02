@@ -4,23 +4,25 @@
 export const LANG_EN_NAME = 'en';
 
 export const LANG_EN_TRANS = {
-    'XMLlesen': 'Read XML',
-    'auftragsPlanung': 'Task planning',
-    'prognose': 'Forecast',
-    'produktAnsicht': 'Product view',
-    'kaufteilDispo': 'Material planning',
-    'kapaPlanung': 'Capacity planning',
-    'prodPrio': 'Prioritization',
-    'uebersicht': 'Overview',
-    'historie': 'History',
-    'auftrBearb': 'Orders in work.',
-    'auftrWart': 'Waiting list workst.',
-    'lagerbestand': 'Warehouse stock',
-    'einstellungen': 'Settings',
-    'arbeitsplaetze': 'Workstations',
-    'stuecklisten': 'Parts lists',
-    'teile': 'Parts',
-    'sprachen': 'Languages',
-    'deutsch': 'German',
-    'englisch': 'English'
+    //Sidebar
+    'sidebar_readXML': 'Read XML',
+    'sidebar_taskPlanning': 'Task planning',
+    'sidebar_forecast': 'Forecast',
+    'sidebar_productView': 'Product view',
+    'sidebar_materialPlanning': 'Material planning',
+    'sidebar_capacityPlanning': 'Capacity planning',
+    'sidebar_prio': 'Prioritization',
+    'sidebar_overview': 'Overview',
+    'sidebar_history': 'History',
+    'sidebar_ordersWork': 'Orders in work.',
+    'sidebar_waitingWorkst': 'Waiting list workst.',
+    'sidebar_warehouseStock': 'Warehouse stock',
+    'sidebar_settings': 'Settings',
+    'sidebar_workstations': 'Workstations',
+    'sidebar_partsLists': 'Parts lists',
+    'sidebar_parts': 'Parts',
+    //Headbar
+    'headbar_languages': 'Languages',
+    'headbar_german': 'German',
+    'headbar_english': 'English'
 };

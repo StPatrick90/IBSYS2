@@ -7,47 +7,49 @@
                     <span class="menu-icon glyphicon glyphicon-transfer"></span>
                 </a>
             </li>
-            <li class="sidebar-title"><span>{{'auftragsplanung' | translate}}</span></li>
+            <li class="sidebar-title"><span>{{'sidebar_taskPlanning' | translate}}</span></li>
             <li class="sidebar-list">
-                <a routerLink="/xmlImport" routerLinkActive="active">{{'XMLlesen' | translate}}<span class="menu-icon fa fa-file-code-o"></span></a>
+
+                <a routerLink="/xmlImport" routerLinkActive="active">{{'sidebar_readXML' | translate}}<span class="menu-icon fa fa-file-code-o"></span></a>
+
             </li>
             <li class="sidebar-list">
-                <a routerLink="/tasks" routerLinkActive="active">{{'prognose' | translate}}<span class="menu-icon fa fa-line-chart"></span></a>
+                <a routerLink="/tasks" routerLinkActive="active">{{'sidebar_forecast' | translate}}<span class="menu-icon fa fa-line-chart"></span></a>
             </li>
             <li class="sidebar-list">
-                <a>{{'produktAnsicht' | translate}}<span class="menu-icon fa fa-eye"></span></a>
+                <a>{{'sidebar_productView' | translate}}<span class="menu-icon fa fa-eye"></span></a>
             </li>
             <li class="sidebar-list">
-                <a>{{'kaufteilDispo' | translate}}<span class="menu-icon fa fa-shopping-cart"></span></a>
+                <a>{{'sidebar_materialPlanning' | translate}}<span class="menu-icon fa fa-shopping-cart"></span></a>
             </li>
             <li class="sidebar-list">
-                <a>{{'kapaPlanung' | translate}}<span class="menu-icon fa fa-battery-half"></span></a>
+                <a>{{'sidebar_capacityPlanning' | translate}}<span class="menu-icon fa fa-battery-half"></span></a>
             </li>
             <li class="sidebar-list">
-                <a>{{'prodPrio' | translate}}<span class="menu-icon fa fa-sort "></span></a>
+                <a>{{'sidebar_prio' | translate}}<span class="menu-icon fa fa-sort "></span></a>
             </li>
-            <li class="sidebar-title"><span>{{'uebersicht' | translate}}</span></li>
+            <li class="sidebar-title"><span>{{'sidebar_overview' | translate}}</span></li>
             <li class="sidebar-list">
-                <a>{{'auftrBearb' | translate}}<span class="menu-icon fa fa-cogs"></span></a>
-            </li>
-            <li class="sidebar-list">
-                <a>{{'auftrWart' | translate}}<span class="menu-icon fa fa-stop-circle"></span></a>
+                <a>{{'sidebar_ordersWork' | translate}}<span class="menu-icon fa fa-cogs"></span></a>
             </li>
             <li class="sidebar-list">
-                <a>{{'lagerbestand' | translate}}<span class="menu-icon fa fa-bar-chart"></span></a>
+                <a>{{'sidebar_waitingWorkst' | translate}}<span class="menu-icon fa fa-stop-circle"></span></a>
             </li>
             <li class="sidebar-list">
-                <a>{{'historie' | translate}}<span class="menu-icon fa fa-history"></span></a>
-            </li>
-            <li class="sidebar-title"><span>{{'einstellungen' | translate}}</span></li>
-            <li class="sidebar-list">
-                <a>{{'arbeitsplaetze' | translate}}<span class="menu-icon fa fa-television"></span></a>
+                <a>{{'sidebar_warehouseStock' | translate}}<span class="menu-icon fa fa-bar-chart"></span></a>
             </li>
             <li class="sidebar-list">
-                <a>{{'stuecklisten' | translate}}<span class="menu-icon fa fa-sitemap"></span></a>
+                <a>{{'sidebar_history' | translate}}<span class="menu-icon fa fa-history"></span></a>
+            </li>
+            <li class="sidebar-title"><span>{{'sidebar_settings' | translate}}</span></li>
+            <li class="sidebar-list">
+                <a>{{'sidebar_workstations' | translate}}<span class="menu-icon fa fa-television"></span></a>
             </li>
             <li class="sidebar-list">
-                <a>{{'teile' | translate}}<span class="menu-icon fa fa-cube"></span></a>
+                <a>{{'sidebar_partsLists' | translate}}<span class="menu-icon fa fa-sitemap"></span></a>
+            </li>
+            <li class="sidebar-list">
+                <a>{{'sidebar_parts' | translate}}<span class="menu-icon fa fa-cube"></span></a>
             </li>
         </ul>
         <div class="sidebar-footer">
@@ -81,14 +83,14 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li class="dropdown-header">
-                                    {{'sprachen' | translate}}
+                                    {{'headbar_languages' | translate}}
                                 </li>
                                 <li class="divider"></li>
                                 <li (click)="setLang('de')">
-                                    <a>{{'deutsch' | translate}}</a>
+                                    <a>{{'headbar_german' | translate}}</a>
                                 </li>
                                 <li (click)="setLang('en')">
-                                    <a>{{'englisch' | translate}}</a>
+                                    <a>{{'headbar_english' | translate}}</a>
                                 </li>
                             </ul>
                         </div>
