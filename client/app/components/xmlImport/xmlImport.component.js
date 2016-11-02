@@ -12,16 +12,41 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by philipp.koepfer on 02.11.16.
  */
 var core_1 = require('@angular/core');
+var xmlImport_service_1 = require('../../services/xmlImport.service');
 var XmlImportComponent = (function () {
-    function XmlImportComponent() {
+    function XmlImportComponent(xmlImportService) {
+        this.xmlImportService = xmlImportService;
+        this.xmltest = "hallo";
+        /* this.xmlImportService.getResult()
+            .subscribe(results => {
+                console.log(results);
+            })*/
     }
+    XmlImportComponent.prototype.changeListener = function ($event) {
+        this.readThis($event.target);
+    };
+    XmlImportComponent.prototype.click = function () {
+        console.log(this.xmltest);
+    };
+    XmlImportComponent.prototype.readThis = function (inputValue) {
+        var file = inputValue.files[0];
+        var myReader = new FileReader();
+        myReader.onloadend = function (e) {
+            // you can perform an action with readed data
+            //console.log(myReader.result.toString());
+            //return myReader.result.toString();
+            this.xmltest = myReader.result;
+            console.log(this.xmltest);
+        };
+        myReader.readAsText(file);
+    };
     XmlImportComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'xmlImport',
             templateUrl: 'xmlImport.component.html'
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [xmlImport_service_1.XmlImportService])
     ], XmlImportComponent);
     return XmlImportComponent;
 }());

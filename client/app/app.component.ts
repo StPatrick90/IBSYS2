@@ -2,13 +2,15 @@ import { Component } from '@angular/core';
 import { TaskService } from './services/task.service';
 import { AppService} from './services/app.service';
 import { TranslateService } from './translate/translate.service';
+import { XmlImportService } from './services/xmlImport.service';
+
 
 
 @Component({
     moduleId: module.id,
     selector: 'my-app',
     templateUrl: 'app.component.html',
-    providers: [TaskService, AppService, TranslateService]
+    providers: [TaskService, AppService, TranslateService, XmlImportService]
 })
 export class AppComponent {
     mobileView:number = 992;
