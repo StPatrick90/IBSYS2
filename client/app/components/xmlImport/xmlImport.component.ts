@@ -1,7 +1,7 @@
 /**
  * Created by philipp.koepfer on 02.11.16.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, ElementRef } from '@angular/core';
 import { XmlImportService } from '../../services/xmlImport.service';
 
 @Component({
@@ -11,25 +11,22 @@ import { XmlImportService } from '../../services/xmlImport.service';
 })
 export class XmlImportComponent {
 
-
+    xml = "";
 
     constructor(private xmlImportService: XmlImportService){
         /* this.xmlImportService.getResult()
             .subscribe(results => {
                 console.log(results);
             })*/
+
     }
 
     changeListener($event) : void {
         this.readThis($event.target);
     }
 
-    click(){
-        console.log(this.xmltest);
-    }
-    xmltest = "hallo";
-
     readThis(inputValue: any) {
+        var self = this;
         var file: File = inputValue.files[0];
         var myReader: FileReader = new FileReader();
 
@@ -37,7 +34,7 @@ export class XmlImportComponent {
             // you can perform an action with readed data
             //console.log(myReader.result.toString());
             //return myReader.result.toString();
-            this.xmltest = myReader.result;
+            self.xml = myReader.result;
             console.log(this.xmltest);
         }
 

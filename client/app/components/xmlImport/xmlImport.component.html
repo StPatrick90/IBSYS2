@@ -4,6 +4,5 @@
 <div class="col-lg-2">
     <input type="file" (change)="changeListener($event)">
     <p></p>
-    <textarea [(ngModel)]="xmltest"></textarea>
-    <button (click)="click()">dsssdffs</button>
+    <textarea [hidden]="!xml" [(ngModel)]="xml"></textarea>
 </div>
