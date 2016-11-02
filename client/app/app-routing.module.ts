@@ -5,11 +5,13 @@ import { NgModule }     from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {TasksComponent} from './components/tasks/tasks.component';
 import {HomeComponent} from './components/home/home.component';
+import {XmlImportComponent} from './components/xmlImport/xmlImport.component';
 //import {XMLUploadComponent} from './components/xmlUpload/xmlUpload.component';
 
 @NgModule({
     imports: [
         RouterModule.forRoot([
+            { path: 'xmlImport', component: XmlImportComponent},
             { path: 'tasks', component: TasksComponent },
             { path: '', component: HomeComponent }
 
