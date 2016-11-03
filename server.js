@@ -4,12 +4,14 @@
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
-var multer = require('multer');
-var fs = require('fs');
 
 var index = require('./routes/index');
 var tasks = require('./routes/tasks');
+
 var xml = require('./routes/xmlConverter')
+
+var workstations = require('./routes/workstations');
+
 
 var port = 3000;
 
@@ -30,6 +32,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use('/',index);
 app.use('/api', tasks);
 app.use('/api', xml);
+app.use('/api', workstations);
 
 var DIR = './uploads/';
 
@@ -69,6 +72,9 @@ app.post('/api', function (req, res) {
         res.end('File is uploaded');
     });
 });
+
+
+
 
 
 

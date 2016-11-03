@@ -7,7 +7,11 @@ import { HttpModule} from '@angular/http';
 import { FormsModule} from '@angular/forms';
 import { AppComponent } from './app.component';
 import { TasksComponent} from './components/tasks/tasks.component';
+
 import { XmlImportComponent} from './components/xmlImport/xmlImport.component';
+
+
+import {CapacityPlanningComponent} from './components/capacityPlanning/capacityPlanning.component';
 
 //import { XMLUploadComponent} from './components/xmlUpload/xmlUpload.component';
 import { HomeComponent} from './components/home/home.component';
@@ -18,7 +22,9 @@ import { TRANSLATION_PROVIDERS} from './translate/index';
 
 @NgModule({
     imports:      [ BrowserModule, HttpModule, FormsModule, AppRoutingModule],
-    declarations: [AppComponent, TasksComponent, HomeComponent, TranslatePipe, XmlImportComponent],
+
+    declarations: [AppComponent, TasksComponent, CapacityPlanningComponent, HomeComponent, TranslatePipe,XmlImportComponent],
+
     bootstrap: [AppComponent],
     providers:    [ TRANSLATION_PROVIDERS, TranslateService ]
 

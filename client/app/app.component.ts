@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { TaskService } from './services/task.service';
+import { CapacityPlanningService } from './services/capacityPlanning.service';
 import { AppService} from './services/app.service';
 import { TranslateService } from './translate/translate.service';
 import { XmlImportService } from './services/xmlImport.service';
@@ -9,14 +10,16 @@ import { WindowRef } from './services/window.service';
     moduleId: module.id,
     selector: 'my-app',
     templateUrl: 'app.component.html',
-    providers: [TaskService, AppService, TranslateService, XmlImportService, WindowRef]
+
+    providers: [TaskService,CapacityPlanningService, AppService, TranslateService,XmlImportService, WindowRef]
+
 })
 export class AppComponent {
     mobileView:number = 992;
     toggle: boolean = false;
     language: string = "de";
 
-    constructor(private appService:AppService, private _translate: TranslateService){
+    constructor(private appService:AppService,private capacityPlanningService:CapacityPlanningService, private _translate: TranslateService){
         this.attachEvents();
         this.language = (navigator.language || navigator.userLanguage).substring(0,2);
         this._translate.use(this.language);
