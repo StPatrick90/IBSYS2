@@ -3,12 +3,6 @@
  */
 export class Workstation{
     _id: string;
-    Bezeichnung: string;
-    Folgender: boolean;
-    Ruestzeit: number;
-    Wartezeit: number;
-    Periode: number;
-    Kapazitaet: number;
-    Schichten: number;
-    Ueberstunden: number;
+    nummer: string;
+    name: string;
 }

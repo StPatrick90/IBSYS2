@@ -21,6 +21,10 @@ var CapacityPlanningComponent = (function () {
             .subscribe(function (workstations) {
             _this.workstations = workstations;
         });
+        this.capacityPlanningService.getProcessingTimes()
+            .subscribe(function (processingTimes) {
+            _this.processingTimes = processingTimes;
+        });
     }
     CapacityPlanningComponent = __decorate([
         core_1.Component({

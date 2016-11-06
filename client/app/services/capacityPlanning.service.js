@@ -23,6 +23,10 @@ var CapacityPlanningService = (function () {
         return this.http.get('api/workstations')
             .map(function (res) { return res.json(); });
     };
+    CapacityPlanningService.prototype.getProcessingTimes = function () {
+        return this.http.get('api/processingTimes')
+            .map(function (res) { return res.json(); });
+    };
     CapacityPlanningService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

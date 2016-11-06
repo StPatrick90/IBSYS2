@@ -15,4 +15,8 @@ export class CapacityPlanningService{
         return this.http.get('api/workstations')
             .map(res => res.json());
     }
+    getProcessingTimes(){
+        return this.http.get('api/processingTimes')
+            .map(res => res.json());
+    }
 }

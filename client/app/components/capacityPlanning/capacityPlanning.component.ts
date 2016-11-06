@@ -4,6 +4,8 @@
 import { Component } from '@angular/core';
 import { CapacityPlanningService } from '../../services/capacityPlanning.service';
 import { Workstation } from '../../model/workstastion';
+import { ProcessingTime } from '../../model/processingTime';
+
 
 @Component({
     moduleId: module.id,
@@ -13,11 +15,17 @@ import { Workstation } from '../../model/workstastion';
 
 export class CapacityPlanningComponent {
     workstations: Workstation[];
+    processingTimes: ProcessingTime[];
 
     constructor(private capacityPlanningService:CapacityPlanningService){
         this.capacityPlanningService.getWorkstations()
             .subscribe(workstations => {
                 this.workstations = workstations;
-            })
+            });
+        this.capacityPlanningService.getProcessingTimes()
+            .subscribe(processingTimes => {
+                this.processingTimes = processingTimes;
+            });
     }
+
 }

@@ -24,5 +24,7 @@ export const LANG_EN_TRANS = {
     //Headbar
     'headbar_languages': 'Languages',
     'headbar_german': 'German',
-    'headbar_english': 'English'
+    'headbar_english': 'English',
+    //CapacityPlanning
+    'capacity_workstations': 'Arbeitsplätze'
 };
