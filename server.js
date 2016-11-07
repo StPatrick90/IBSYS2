@@ -9,6 +9,7 @@ var fs = require('fs');
 
 var index = require('./routes/index');
 var tasks = require('./routes/tasks');
+var xml = require('./routes/xmlConverter')
 
 var port = 3000;
 
@@ -28,6 +29,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use('/',index);
 app.use('/api', tasks);
+app.use('/api', xml);
 
 var DIR = './uploads/';
 

@@ -3,14 +3,13 @@ import { TaskService } from './services/task.service';
 import { AppService} from './services/app.service';
 import { TranslateService } from './translate/translate.service';
 import { XmlImportService } from './services/xmlImport.service';
-
-
+import { WindowRef } from './services/window.service';
 
 @Component({
     moduleId: module.id,
     selector: 'my-app',
     templateUrl: 'app.component.html',
-    providers: [TaskService, AppService, TranslateService, XmlImportService]
+    providers: [TaskService, AppService, TranslateService, XmlImportService, WindowRef]
 })
 export class AppComponent {
     mobileView:number = 992;

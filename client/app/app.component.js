@@ -13,6 +13,7 @@ var task_service_1 = require('./services/task.service');
 var app_service_1 = require('./services/app.service');
 var translate_service_1 = require('./translate/translate.service');
 var xmlImport_service_1 = require('./services/xmlImport.service');
+var window_service_1 = require('./services/window.service');
 var AppComponent = (function () {
     function AppComponent(appService, _translate) {
         this.appService = appService;
@@ -55,7 +56,7 @@ var AppComponent = (function () {
             moduleId: module.id,
             selector: 'my-app',
             templateUrl: 'app.component.html',
-            providers: [task_service_1.TaskService, app_service_1.AppService, translate_service_1.TranslateService, xmlImport_service_1.XmlImportService]
+            providers: [task_service_1.TaskService, app_service_1.AppService, translate_service_1.TranslateService, xmlImport_service_1.XmlImportService, window_service_1.WindowRef]
         }), 
         __metadata('design:paramtypes', [app_service_1.AppService, translate_service_1.TranslateService])
     ], AppComponent);

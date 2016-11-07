@@ -15,12 +15,10 @@ var core_1 = require('@angular/core');
 var xmlImport_service_1 = require('../../services/xmlImport.service');
 var XmlImportComponent = (function () {
     function XmlImportComponent(xmlImportService) {
-        /* this.xmlImportService.getResult()
-            .subscribe(results => {
-                console.log(results);
-            })*/
         this.xmlImportService = xmlImportService;
         this.xml = "";
+        this.resultObj = {};
+        this.xmlService = xmlImportService;
     }
     XmlImportComponent.prototype.changeListener = function ($event) {
         this.readThis($event.target);
@@ -30,11 +28,12 @@ var XmlImportComponent = (function () {
         var file = inputValue.files[0];
         var myReader = new FileReader();
         myReader.onloadend = function (e) {
-            // you can perform an action with readed data
-            //console.log(myReader.result.toString());
-            //return myReader.result.toString();
             self.xml = myReader.result;
-            console.log(this.xmltest);
+            //console.log(this.xmltest);
+            self.xmlService.convertToJson(self.xml)
+                .subscribe(function (jsonObj) {
+                self.resultObj = JSON.parse(jsonObj);
+            });
         };
         myReader.readAsText(file);
     };
