@@ -3,6 +3,6 @@
  */
 export class Workstation{
     _id: string;
-    nummer: string;
+    nummer: number;
     name: string;
 }

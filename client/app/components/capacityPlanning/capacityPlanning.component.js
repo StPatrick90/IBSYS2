@@ -15,17 +15,46 @@ var core_1 = require('@angular/core');
 var capacityPlanning_service_1 = require('../../services/capacityPlanning.service');
 var CapacityPlanningComponent = (function () {
     function CapacityPlanningComponent(capacityPlanningService) {
-        var _this = this;
         this.capacityPlanningService = capacityPlanningService;
+        this.artikelListe = new Array();
+    }
+    CapacityPlanningComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.capacityPlanningService.getWorkstations()
             .subscribe(function (workstations) {
             _this.workstations = workstations;
+            _this.getTimesAndEPParts();
         });
-        this.capacityPlanningService.getProcessingTimes()
-            .subscribe(function (processingTimes) {
-            _this.processingTimes = processingTimes;
-        });
-    }
+    };
+    CapacityPlanningComponent.prototype.getTimesAndEPParts = function () {
+        var _this = this;
+        this.capacityPlanningService.getTimesAndEPParts().subscribe(function (data) {
+            _this.processingTimes = data[0];
+            _this.parts = data[1];
+        }, function (err) { return console.error(err); }, function () { return _this.generateRows(); });
+    };
+    ;
+    CapacityPlanningComponent.prototype.generateRows = function () {
+        for (var _i = 0, _a = this.parts; _i < _a.length; _i++) {
+            var part = _a[_i];
+            var zuweisung = new Array();
+            for (var _b = 0, _c = this.processingTimes; _b < _c.length; _b++) {
+                var pt = _c[_b];
+                var apZeit = [];
+                if (pt.teil.nummer === part.nummer) {
+                    apZeit.push(pt.arbeitsplatz.nummer);
+                    apZeit.push(pt.fertigungsZeit);
+                    apZeit.push(pt.ruestZeit);
+                    zuweisung.push(apZeit);
+                }
+            }
+            var prodTime = {
+                part: part.nummer,
+                zuweisung: zuweisung
+            };
+            this.artikelListe.push(prodTime);
+        }
+    };
     CapacityPlanningComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

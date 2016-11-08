@@ -26,5 +26,7 @@ export const LANG_DE_TRANS = {
     'headbar_german': 'Deutsch',
     'headbar_english': 'Englisch',
     //CapacityPlanning
-    'capacity_workstations': 'Arbeitsplätze'
+    'capacity_workstations': 'Arbeitsplätze',
+    'capacity_parts': 'Teile',
+    'capacity_amount': 'Menge'
 };

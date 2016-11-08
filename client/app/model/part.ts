@@ -3,7 +3,7 @@
  */
 export class Part{
     _id: string;
-    nummer: string;
+    nummer: number;
     bezeichnung: string;
     verwendung: string[];
     typ: string;
