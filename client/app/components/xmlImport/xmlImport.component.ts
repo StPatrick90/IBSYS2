@@ -30,10 +30,10 @@ export class XmlImportComponent {
 
         myReader.onloadend = function(e){
             self.xml = myReader.result;
-            //console.log(this.xmltest);
             self.xmlService.convertToJson(self.xml)
                 .subscribe(jsonObj => {
                     self.resultObj = JSON.parse(jsonObj);
+                    self.xml = JSON.stringify(self.resultObj);
                 })
         }
         myReader.readAsText(file);

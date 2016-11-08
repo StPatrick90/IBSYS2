@@ -29,10 +29,10 @@ var XmlImportComponent = (function () {
         var myReader = new FileReader();
         myReader.onloadend = function (e) {
             self.xml = myReader.result;
-            //console.log(this.xmltest);
             self.xmlService.convertToJson(self.xml)
                 .subscribe(function (jsonObj) {
                 self.resultObj = JSON.parse(jsonObj);
+                self.xml = JSON.stringify(self.resultObj);
             });
         };
         myReader.readAsText(file);

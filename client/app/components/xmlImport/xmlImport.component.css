@@ -68,3 +68,13 @@
 }
 .breadcrumb li a:hover { background: #ffc107  ; }
 .breadcrumb li a:hover:after { border-left-color: #ffc107   !important; }
+
+.fullScreenTextArea{
+    height: 50%;
+    width: 90%;
+    resize: none;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-right: 20px;
+    margin-left: 20px;
+}
