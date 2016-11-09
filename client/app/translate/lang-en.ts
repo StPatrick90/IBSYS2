@@ -7,6 +7,7 @@ export const LANG_EN_TRANS = {
     //Sidebar
     'sidebar_readXML': 'Read XML',
     'sidebar_taskPlanning': 'Task planning',
+    'sidebar_task': 'Tasks',
     'sidebar_forecast': 'Forecast',
     'sidebar_productView': 'Product view',
     'sidebar_materialPlanning': 'Material planning',

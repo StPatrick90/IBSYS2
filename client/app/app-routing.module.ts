@@ -8,17 +8,19 @@ import {CapacityPlanningComponent} from './components/capacityPlanning/capacityP
 import {HomeComponent} from './components/home/home.component';
 import {XmlImportComponent} from './components/xmlImport/xmlImport.component';
 import {MaterialPlanningComponent} from './components/materialPlanning/materialPlanning.component';
+import {PredictionComponent} from './components/prediction/prediction.component';
+
 //import {XMLUploadComponent} from './components/xmlUpload/xmlUpload.component';
 
 @NgModule({
     imports: [
         RouterModule.forRoot([
+            { path: 'prediction', component: PredictionComponent },
             { path: 'xmlImport', component: XmlImportComponent},
             { path: 'tasks', component: TasksComponent },
             { path: 'capacityPlanning', component: CapacityPlanningComponent },
             { path: '', component: HomeComponent },
             { path: 'materialPlanning', component: MaterialPlanningComponent}
-
         ])
     ],
     exports: [

@@ -18,6 +18,7 @@ var capacityPlanning_component_1 = require('./components/capacityPlanning/capaci
 var home_component_1 = require('./components/home/home.component');
 var xmlImport_component_1 = require('./components/xmlImport/xmlImport.component');
 var materialPlanning_component_1 = require('./components/materialPlanning/materialPlanning.component');
+var prediction_component_1 = require('./components/prediction/prediction.component');
 //import {XMLUploadComponent} from './components/xmlUpload/xmlUpload.component';
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
@@ -26,6 +27,7 @@ var AppRoutingModule = (function () {
         core_1.NgModule({
             imports: [
                 router_1.RouterModule.forRoot([
+                    { path: 'prediction', component: prediction_component_1.PredictionComponent },
                     { path: 'xmlImport', component: xmlImport_component_1.XmlImportComponent },
                     { path: 'tasks', component: tasks_component_1.TasksComponent },
                     { path: 'capacityPlanning', component: capacityPlanning_component_1.CapacityPlanningComponent },

@@ -7,6 +7,7 @@ export const LANG_DE_TRANS = {
     //Sidebar
     'sidebar_readXML': 'XML einlesen',
     'sidebar_taskPlanning': 'Auftragsplanung',
+    'sidebar_task': 'Aufgaben',
     'sidebar_forecast': 'Prognose',
     'sidebar_productView': 'Produktansicht',
     'sidebar_materialPlanning': 'Kaufteildisposition',

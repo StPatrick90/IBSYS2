@@ -26,13 +26,14 @@ var app_routing_module_1 = require('./app-routing.module');
 var translate_pipe_1 = require('./translate/translate.pipe');
 var translate_service_1 = require('./translate/translate.service');
 var index_1 = require('./translate/index');
+var prediction_component_1 = require('./components/prediction/prediction.component');
 var AppModule = (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         core_1.NgModule({
             imports: [platform_browser_1.BrowserModule, http_1.HttpModule, forms_1.FormsModule, app_routing_module_1.AppRoutingModule],
-            declarations: [app_component_1.AppComponent, tasks_component_1.TasksComponent, capacityPlanning_component_1.CapacityPlanningComponent, home_component_1.HomeComponent, translate_pipe_1.TranslatePipe, xmlImport_component_1.XmlImportComponent, materialPlanning_component_1.MaterialPlanningComponent],
+            declarations: [app_component_1.AppComponent, tasks_component_1.TasksComponent, capacityPlanning_component_1.CapacityPlanningComponent, home_component_1.HomeComponent, translate_pipe_1.TranslatePipe, xmlImport_component_1.XmlImportComponent, materialPlanning_component_1.MaterialPlanningComponent, prediction_component_1.PredictionComponent],
             bootstrap: [app_component_1.AppComponent],
             providers: [index_1.TRANSLATION_PROVIDERS, translate_service_1.TranslateService]
         }), 
