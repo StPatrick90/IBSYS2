@@ -1,0 +1,15 @@
+/*table tbody, table thead
+{
+    display: block;
+}
+
+table tbody
+{
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 500px;
+}
+
+table {
+    width: 100%;
+}*/

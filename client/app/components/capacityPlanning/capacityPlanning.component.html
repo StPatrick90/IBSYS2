@@ -7,27 +7,51 @@
        <p-column field="color" header="Color"></p-column>
    </p-dataTable>
 -->
-    <table class="table">
+    <table class="table-responsive table-bordered table-striped">
         <thead>
         <tr>
-            <th></th>
-            <th class="text-center" colspan="100%">{{'capacity_workstations' | translate}}</th>
+            <td class="text-center" colspan="100%">{{'capacity_workstations' | translate}}</td>
+        </tr>
+        <tr>
+            <th width="5%" class="text-center">{{'capacity_parts' | translate}}</th>
+            <th width="5%" class="text-center">{{'capacity_amount' | translate}}</th>
+            <th *ngFor="let workstation of workstations" class="text-center">{{workstation.nummer}}</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td width="5%">{{'capacity_parts' | translate}}</td>
-            <td width="5%">{{'capacity_amount' | translate}}</td>
-            <td *ngFor="let workstation of workstations">{{workstation.nummer}}</td>
-        </tr>
+
         <tr *ngFor="let al of artikelListe">
             <td width="5%">{{al.part}}</td>
             <td width="5%"></td>
-            <td *ngFor="let ws of workstations">
+            <td *ngFor="let ws of workstations" align="center">
                 <span *ngFor="let zw of al.zuweisung">
                     <span *ngIf="zw[0] === ws.nummer">{{zw[1]}}</span>
                 </span>
             </td>
+        </tr>
+        <tr>
+            <td width="5%" colspan="2">Kapazitätsbedarf (neu)</td>
+            <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+            <td width="5%" colspan="2">Rüstzeit (neu)</td>
+            <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+            <td width="5%" colspan="2">Kap. Bed. (Rückstand Vorperiode)</td>
+            <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+            <td width="5%" colspan="2">Rüstzeit (Rückstand Vorperiode)</td>
+            <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+            <td width="5%" colspan="2">Gesamt-Kapazitätsbedarf</td>
+            <td *ngFor="let ws of workstations" align="center">0</td>
+        </tr>
+        <tr>
+            <td width="5%" colspan="2">Schichten und Überstunden</td>
+            <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
         </tr>
         </tbody>
     </table>
