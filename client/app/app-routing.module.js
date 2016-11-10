@@ -17,6 +17,7 @@ var tasks_component_1 = require('./components/tasks/tasks.component');
 var capacityPlanning_component_1 = require('./components/capacityPlanning/capacityPlanning.component');
 var home_component_1 = require('./components/home/home.component');
 var xmlImport_component_1 = require('./components/xmlImport/xmlImport.component');
+var materialPlanning_component_1 = require('./components/materialPlanning/materialPlanning.component');
 //import {XMLUploadComponent} from './components/xmlUpload/xmlUpload.component';
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
@@ -28,7 +29,8 @@ var AppRoutingModule = (function () {
                     { path: 'xmlImport', component: xmlImport_component_1.XmlImportComponent },
                     { path: 'tasks', component: tasks_component_1.TasksComponent },
                     { path: 'capacityPlanning', component: capacityPlanning_component_1.CapacityPlanningComponent },
-                    { path: '', component: home_component_1.HomeComponent }
+                    { path: '', component: home_component_1.HomeComponent },
+                    { path: 'materialPlanning', component: materialPlanning_component_1.MaterialPlanningComponent }
                 ])
             ],
             exports: [

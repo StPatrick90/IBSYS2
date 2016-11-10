@@ -30,4 +30,5 @@ export const LANG_EN_TRANS = {
     'capacity_parts': 'Parts',
     'capacity_amount': 'Amount',
     //MaterialPlanning
+    'material_Planning': 'Material Planning'
 };

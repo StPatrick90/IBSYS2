@@ -30,4 +30,5 @@ export const LANG_DE_TRANS = {
     'capacity_parts': 'Teile',
     'capacity_amount': 'Menge',
     //MaterialPlanning
+    'material_Planning': 'Kaufteildisposition'
 };

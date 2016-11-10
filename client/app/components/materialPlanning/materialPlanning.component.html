@@ -1,3 +1,24 @@
-<hr>
-hallo
-</hr>
+<table class="table">
+    <thead>
+    <tr>
+        <th></th>
+        <th class="text-center" colspan="100%">{{'material_Planning' | translate}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td width="5%">{{'capacity_parts' | translate}}</td>
+        <td width="5%">{{'capacity_amount' | translate}}</td>
+        <td *ngFor="let workstation of workstations">{{workstation.nummer}}</td>
+    </tr>
+    <tr *ngFor="let al of artikelListe">
+        <td width="5%">{{al.part}}</td>
+        <td width="5%"></td>
+        <td *ngFor="let ws of workstations">
+                <span *ngFor="let zw of al.zuweisung">
+                    <span *ngIf="zw[0] === ws.nummer">{{zw[1]}}</span>
+                </span>
+        </td>
+    </tr>
+    </tbody>
+</table>

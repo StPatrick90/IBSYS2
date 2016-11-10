@@ -29,5 +29,7 @@ exports.LANG_DE_TRANS = {
     'capacity_workstations': 'Arbeitsplätze',
     'capacity_parts': 'Teile',
     'capacity_amount': 'Menge',
+    //MaterialPlanning
+    'material_Planning': 'Kaufteildisposition'
 };
 //# sourceMappingURL=lang-de.js.map
