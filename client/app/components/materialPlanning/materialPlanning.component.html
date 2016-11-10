@@ -1,38 +1,46 @@
-<div class="well">
-    <div class="">
-        <div class="row">
-            <h2>Prognose</h2>
-            <ul class="breadcrumb">
-                <!--completed-->
-                <li class="completed"><a routerLink="/xmlImport" routerLinkActive="active">{{'xmlImport' | translate}}</a></li>
-                <li class="completed"><a routerLink="/prediction" routerLinkActive="active">{{'prediction_planning' | translate}}</a></li>
-                <li class="active"><a routerLink="/materialPlanning" routerLinkActive="active">{{'material_Planning' | translate}}</a></li>
-                <li class=""><a routerLink="/capacityPlanning" routerLinkActive="active">{{'capacity_planning' | translate}}</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
 <table class="table">
     <thead>
     <tr>
-        <th></th>
-        <th class="text-center" colspan="100%">{{'material_Planning' | translate}}</th>
+        <th>Nr.Kaufteil</th>
+        <th>Lieferfrist</th>
+        <th>Abweichung</th>
+        <th>Summe</th>
+        <th>Verwendung
+            <tr>
+                <td>p1</td>
+                <td>p2</td>
+                <td>p3</td>
+            </tr>
+
+        </th>
+        <th>Diskontmenge</th>
+        <th>Anfangsbestand Per n</th>
+        <th>Bruttobedarf nach Produktionsprogramm</th>
+        <th>Menge ohne Bestellung</th>
+        <th>Bestellmenge</th>
+        <th>Bestelltyp</th>
+        <th>Bestand nach gepl. Wareneingang</th>
     </tr>
     </thead>
+
     <tbody>
     <tr>
-        <td width="5%">{{'capacity_parts' | translate}}</td>
-        <td width="5%">{{'capacity_amount' | translate}}</td>
-        <td *ngFor="let workstation of workstations">{{workstation.nummer}}</td>
+        <td>21</td>
+        <td>1,8</td>
+        <td>0,4</td>
+        <td>50</td>
+        <td>wp1</td>
+        <td>wp2</td>
+        <td>wp3</td>
     </tr>
-    <tr *ngFor="let al of artikelListe">
-        <td width="5%">{{al.part}}</td>
-        <td width="5%"></td>
-        <td *ngFor="let ws of workstations">
-                <span *ngFor="let zw of al.zuweisung">
-                    <span *ngIf="zw[0] === ws.nummer">{{zw[1]}}</span>
-                </span>
-        </td>
+    <tr>
+        <td>22</td>
+        <td>1,7</td>
+        <td>0,4</td>
+        <td>150</td>
+        <td>wp1</td>
+        <td>wp2</td>
+        <td>wp3</td>
     </tr>
     </tbody>
 </table>
