@@ -28,5 +28,6 @@ export const LANG_EN_TRANS = {
     //CapacityPlanning
     'capacity_workstations': 'Workstations',
     'capacity_parts': 'Parts',
-    'capacity_amount': 'Amount'
+    'capacity_amount': 'Amount',
+    //MaterialPlanning
 };

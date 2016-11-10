@@ -7,6 +7,7 @@ import {TasksComponent} from './components/tasks/tasks.component';
 import {CapacityPlanningComponent} from './components/capacityPlanning/capacityPlanning.component';
 import {HomeComponent} from './components/home/home.component';
 import {XmlImportComponent} from './components/xmlImport/xmlImport.component';
+import {MaterialPlanningComponent} from './components/materialPlanning/materialPlanning.component';
 //import {XMLUploadComponent} from './components/xmlUpload/xmlUpload.component';
 
 @NgModule({
@@ -15,7 +16,8 @@ import {XmlImportComponent} from './components/xmlImport/xmlImport.component';
             { path: 'xmlImport', component: XmlImportComponent},
             { path: 'tasks', component: TasksComponent },
             { path: 'capacityPlanning', component: CapacityPlanningComponent },
-            { path: '', component: HomeComponent }
+            { path: '', component: HomeComponent },
+            { path: 'materialPlanning', component: MaterialPlanningComponent}
 
         ])
     ],

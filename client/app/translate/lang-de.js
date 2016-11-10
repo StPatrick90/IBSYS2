@@ -28,6 +28,6 @@ exports.LANG_DE_TRANS = {
     //CapacityPlanning
     'capacity_workstations': 'Arbeitsplätze',
     'capacity_parts': 'Teile',
-    'capacity_amount': 'Menge'
+    'capacity_amount': 'Menge',
 };
 //# sourceMappingURL=lang-de.js.map
