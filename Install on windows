@@ -1,0 +1,14 @@
+Zuerst installieren:
+
+http://landinghub.visualstudio.com/visual-cpp-build-tools
+
+und
+
+PYTHON 2!!!!!! https://www.python.org/downloads/
+
+Danach:
+npm config set msvs_version 2015
+npm install -g node-gyp
+npm install xml2json
+
+Nun sollte das projekt wieder laufen
