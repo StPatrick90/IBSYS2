@@ -3,10 +3,10 @@
         <div class="row">
             <h2>XML Import & JSON convert</h2>
             <ul class="breadcrumb">
-                <li class="completed"><a href="javascript:void(0);">XML Import</a></li>
-                <li class="active"><a href="javascript:void(0);">xxxx</a></li>
-                <li><a href="javascript:void(0);">xxx</a></li>
-                <li><a href="javascript:void(0);">xxx</a></li>
+                <li class="completed"><a href="javascript:void(0);">{{'xmlImport' | translate}}</a></li>
+                <li class="active"><a href="javascript:void(0);">{{'prediction_planning' | translate}}</a></li>
+                <li><a href="javascript:void(0);">{{'material_Planning' | translate}}</a></li>
+                <li><a href="javascript:void(0);">{{'capacity_planning' | translate}}</a></li>
             </ul>
         </div>
     </div>
@@ -15,4 +15,5 @@
     <input type="file" (change)="changeListener($event)">
 </div>
 <textarea class="fullScreenTextArea" [hidden]="!resultObj.results" [(ngModel)]="xml"></textarea>
+<button></button>
 

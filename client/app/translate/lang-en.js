@@ -30,7 +30,12 @@ exports.LANG_EN_TRANS = {
     'capacity_workstations': 'Workstations',
     'capacity_parts': 'Parts',
     'capacity_amount': 'Amount',
+    'capacity_planning': 'Capacity Planning',
     //MaterialPlanning
-    'material_Planning': 'Material Planning'
+    'material_Planning': 'Material Planning',
+    //xmlImport
+    'xmlImport': 'XML Import',
+    //prediction
+    'prediction_planning': 'Prediciton Planning',
 };
 //# sourceMappingURL=lang-en.js.map

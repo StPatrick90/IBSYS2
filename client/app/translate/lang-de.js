@@ -30,7 +30,12 @@ exports.LANG_DE_TRANS = {
     'capacity_workstations': 'Arbeitsplätze',
     'capacity_parts': 'Teile',
     'capacity_amount': 'Menge',
+    'capacity_planning': 'Kapazitäts Planung',
     //MaterialPlanning
-    'material_Planning': 'Kaufteildisposition'
+    'material_Planning': 'Kaufteildisposition',
+    //xmlImport
+    'xmlImport': 'XML Import',
+    //prediction
+    'prediction_planning': 'Prognose Planung',
 };
 //# sourceMappingURL=lang-de.js.map

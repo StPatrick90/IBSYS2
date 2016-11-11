@@ -4,7 +4,8 @@
 export const LANG_EN_NAME = 'en';
 
 export const LANG_EN_TRANS = {
-    //Sidebar
+
+//Sidebar
     'sidebar_readXML': 'Read XML',
     'sidebar_taskPlanning': 'Task planning',
     'sidebar_task': 'Tasks',
@@ -22,14 +23,24 @@ export const LANG_EN_TRANS = {
     'sidebar_workstations': 'Workstations',
     'sidebar_partsLists': 'Parts lists',
     'sidebar_parts': 'Parts',
-    //Headbar
+
+//Headbar
     'headbar_languages': 'Languages',
     'headbar_german': 'German',
     'headbar_english': 'English',
-    //CapacityPlanning
+
+//CapacityPlanning
     'capacity_workstations': 'Workstations',
     'capacity_parts': 'Parts',
     'capacity_amount': 'Amount',
-    //MaterialPlanning
-    'material_Planning': 'Material Planning'
+    'capacity_planning': 'Capacity Planning',
+
+//MaterialPlanning
+    'material_Planning': 'Material Planning',
+
+//xmlImport
+    'xmlImport': 'XML Import',
+
+//prediction
+    'prediction_planning': 'Prediciton Planning',
 };
