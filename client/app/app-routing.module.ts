@@ -9,8 +9,7 @@ import {HomeComponent} from './components/home/home.component';
 import {XmlImportComponent} from './components/xmlImport/xmlImport.component';
 import {MaterialPlanningComponent} from './components/materialPlanning/materialPlanning.component';
 import {PredictionComponent} from './components/prediction/prediction.component';
-
-//import {XMLUploadComponent} from './components/xmlUpload/xmlUpload.component';
+import {WorkstationsComponent} from './components/settings/workstations/workstations.component';
 
 @NgModule({
     imports: [
@@ -20,7 +19,8 @@ import {PredictionComponent} from './components/prediction/prediction.component'
             { path: 'tasks', component: TasksComponent },
             { path: 'capacityPlanning', component: CapacityPlanningComponent },
             { path: '', component: HomeComponent },
-            { path: 'materialPlanning', component: MaterialPlanningComponent}
+            { path: 'materialPlanning', component: MaterialPlanningComponent},
+            { path: 'workstations', component: WorkstationsComponent}
         ])
     ],
     exports: [

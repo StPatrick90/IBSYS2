@@ -34,6 +34,22 @@ export const LANG_EN_TRANS = {
     'capacity_parts': 'Parts',
     'capacity_amount': 'Amount',
     'capacity_planning': 'Capacity Planning',
+    'capacity_requirements': 'Capacity requirements (new)',
+    'capacity_setupTime': 'Setup time (new)',
+    'capacity_capacityBacklog': 'Cap. req. (backlog prev. periods)',
+    'capacity_setupTimeBacklog': 'Setup time. (backlog prev. periods)',
+    'capacity_totalCapacity': 'Total capacity requirements',
+    'capacity_shifts': 'Shifts',
+    'capacity_overtime': 'Overtimes',
+
+//Settings-Workstations
+    'setWorkstations_workstations': 'Workstations',
+    'setWorkstations_number': 'Number',
+    'setWorkstations_name': 'Name',
+    'setWorkstations_add': 'Add',
+    'setWorkstations_reset': 'Reset',
+    'setWorkstations_delete': 'Delete',
+    'setWorkstations_edit': 'Edit',
 
 //MaterialPlanning
     'material_Planning': 'Material Planning',

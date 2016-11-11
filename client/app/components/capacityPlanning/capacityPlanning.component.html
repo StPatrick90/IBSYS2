@@ -30,27 +30,31 @@
             </td>
         </tr>
         <tr>
-            <td width="5%" colspan="2">Kapazitätsbedarf (neu)</td>
-            <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
-        </tr>
-        <tr>
-            <td width="5%" colspan="2">Rüstzeit (neu)</td>
-            <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
-        </tr>
-        <tr>
-            <td width="5%" colspan="2">Kap. Bed. (Rückstand Vorperiode)</td>
-            <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
-        </tr>
-        <tr>
-            <td width="5%" colspan="2">Rüstzeit (Rückstand Vorperiode)</td>
-            <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
-        </tr>
-        <tr>
-            <td width="5%" colspan="2">Gesamt-Kapazitätsbedarf</td>
+            <td width="5%" colspan="2">{{'capacity_requirements' | translate}}</td>
             <td *ngFor="let ws of workstations" align="center">0</td>
         </tr>
         <tr>
-            <td width="5%" colspan="2">Schichten und Überstunden</td>
+            <td width="5%" colspan="2">{{'capacity_setupTime' | translate}}</td>
+            <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+            <td width="5%" colspan="2">{{'capacity_capacityBacklog' | translate}}</td>
+            <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+            <td width="5%" colspan="2">{{'capacity_setupTimeBacklog' | translate}}</td>
+            <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+            <td width="5%" colspan="2">{{'capacity_totalCapacity' | translate}}</td>
+            <td *ngFor="let ws of workstations" align="center">0</td>
+        </tr>
+        <tr>
+            <td width="5%" colspan="2">{{'capacity_shifts' | translate}}</td>
+            <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+            <td width="5%" colspan="2">{{'capacity_overtime' | translate}}</td>
             <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
         </tr>
         </tbody>

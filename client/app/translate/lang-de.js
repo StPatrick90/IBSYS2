@@ -31,6 +31,21 @@ exports.LANG_DE_TRANS = {
     'capacity_parts': 'Teile',
     'capacity_amount': 'Menge',
     'capacity_planning': 'Kapazitäts Planung',
+    'capacity_requirements': 'Kapazitätsbedarf (neu)',
+    'capacity_setupTime': 'Rüstzeit (neu)',
+    'capacity_capacityBacklog': 'Kap. Bed. (Rückstand Vorperiode)',
+    'capacity_setupTimeBacklog': 'Rüstzeit. (Rückstand Vorperiode)',
+    'capacity_totalCapacity': 'Gesamt Kapazitätsbedarf',
+    'capacity_shifts': 'Schichten',
+    'capacity_overtime': 'Überstunden',
+    //Settings-Workstations
+    'setWorkstations_workstations': 'Arbeitsplätze',
+    'setWorkstations_number': 'Nummer',
+    'setWorkstations_name': 'Name',
+    'setWorkstations_add': 'Anlegen',
+    'setWorkstations_reset': 'Zurücksetzen',
+    'setWorkstations_delete': 'Löschen',
+    'setWorkstations_edit': 'Bearbeiten',
     //MaterialPlanning
     'material_Planning': 'Kaufteildisposition',
     //xmlImport

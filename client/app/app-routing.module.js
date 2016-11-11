@@ -19,7 +19,7 @@ var home_component_1 = require('./components/home/home.component');
 var xmlImport_component_1 = require('./components/xmlImport/xmlImport.component');
 var materialPlanning_component_1 = require('./components/materialPlanning/materialPlanning.component');
 var prediction_component_1 = require('./components/prediction/prediction.component');
-//import {XMLUploadComponent} from './components/xmlUpload/xmlUpload.component';
+var workstations_component_1 = require('./components/settings/workstations/workstations.component');
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
     }
@@ -32,7 +32,8 @@ var AppRoutingModule = (function () {
                     { path: 'tasks', component: tasks_component_1.TasksComponent },
                     { path: 'capacityPlanning', component: capacityPlanning_component_1.CapacityPlanningComponent },
                     { path: '', component: home_component_1.HomeComponent },
-                    { path: 'materialPlanning', component: materialPlanning_component_1.MaterialPlanningComponent }
+                    { path: 'materialPlanning', component: materialPlanning_component_1.MaterialPlanningComponent },
+                    { path: 'workstations', component: workstations_component_1.WorkstationsComponent }
                 ])
             ],
             exports: [

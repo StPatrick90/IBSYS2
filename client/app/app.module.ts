@@ -7,26 +7,24 @@ import {HttpModule} from '@angular/http';
 import {FormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
 import {TasksComponent} from './components/tasks/tasks.component';
-
 import {XmlImportComponent} from './components/xmlImport/xmlImport.component';
-
-
 import {CapacityPlanningComponent} from './components/capacityPlanning/capacityPlanning.component';
 import {MaterialPlanningComponent} from './components/materialPlanning/materialPlanning.component';
-
-//import { XMLUploadComponent} from './components/xmlUpload/xmlUpload.component';
 import {HomeComponent} from './components/home/home.component';
 import {AppRoutingModule} from './app-routing.module';
 import {TranslatePipe}   from './translate/translate.pipe';
 import {TranslateService}   from './translate/translate.service';
 import {TRANSLATION_PROVIDERS} from './translate/index';
 import { PredictionComponent } from './components/prediction/prediction.component';
+import { WorkstationsComponent } from './components/settings/workstations/workstations.component';
 
 
 @NgModule({
     imports: [BrowserModule, HttpModule, FormsModule, AppRoutingModule],
 
-    declarations: [AppComponent, TasksComponent, CapacityPlanningComponent, HomeComponent, TranslatePipe, XmlImportComponent, MaterialPlanningComponent, PredictionComponent],
+    declarations: [AppComponent, TasksComponent, CapacityPlanningComponent,
+        HomeComponent, TranslatePipe, XmlImportComponent, MaterialPlanningComponent,
+        PredictionComponent, WorkstationsComponent],
 
     bootstrap: [AppComponent],
     providers: [TRANSLATION_PROVIDERS, TranslateService]

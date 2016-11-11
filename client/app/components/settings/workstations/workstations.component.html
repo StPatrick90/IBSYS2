@@ -1,0 +1,47 @@
+<div class="container-fluid">
+    <h1>{{'setWorkstations_workstations' | translate}}</h1>
+</div>
+<div class="well col-md-3" style="margin-left: 1%; margin-right: 1%;">
+    <div class="form-group">
+        <label for="ws_nummer">{{'setWorkstations_number' | translate}}</label>
+        <input type="text" [(ngModel)]="nummer" name="nummer" class="form-control" placeholder="Nummer" id="ws_nummer">
+    </div>
+    <div class="form-group">
+        <label for="ws_name">{{'setWorkstations_name' | translate}}</label>
+        <input type="text" [(ngModel)]="name" name="name" class="form-control" placeholder="Name" id="ws_name">
+    </div>
+    <div class="form-group" align="right">
+        <button type="button" class="btn btn-danger">{{'setWorkstations_reset' | translate}}</button>
+        <button type="button" class="btn btn-success">{{'setWorkstations_add' | translate}}</button>
+    </div>
+</div>
+
+<div class="well col-md-8" style="margin-left: 1%; margin-right: 1%;">
+    <table width="100%">
+        <thead>
+        <tr>
+            <th width="10%">{{'setWorkstations_number' | translate}}</th>
+            <th width="65%">{{'setWorkstations_name' | translate}}</th>
+            <th width="12.5%"></th>
+            <th width="12.5%%"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let ws of workstations" style="height: 40px;">
+            <td width="10%">
+                {{ws.nummer}}
+            </td>
+            <td width="65%">
+                {{ws.name}}
+            </td>
+            <td width="12.5%%" style="padding-right: 5px" align="right">
+                <input type="button"  value="{{'setWorkstations_edit' | translate}}" class="btn btn-info">
+            </td>
+            <td width="12.5%%" style="padding-left: 5px" align="left">
+                <input type="button"  value="{{'setWorkstations_delete' | translate}}" class="btn btn-danger">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>

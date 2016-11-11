@@ -19,7 +19,6 @@ var TasksComponent = (function () {
         this.taskService = taskService;
         this.taskService.getTasks()
             .subscribe(function (tasks) {
-            console.log(tasks);
             _this.tasks = tasks;
         });
     }

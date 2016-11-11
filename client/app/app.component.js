@@ -15,6 +15,7 @@ var app_service_1 = require('./services/app.service');
 var translate_service_1 = require('./translate/translate.service');
 var xmlImport_service_1 = require('./services/xmlImport.service');
 var window_service_1 = require('./services/window.service');
+var workstation_service_1 = require('./services/workstation.service');
 var AppComponent = (function () {
     function AppComponent(appService, capacityPlanningService, _translate) {
         this.appService = appService;
@@ -58,7 +59,7 @@ var AppComponent = (function () {
             moduleId: module.id,
             selector: 'my-app',
             templateUrl: 'app.component.html',
-            providers: [task_service_1.TaskService, capacityPlanning_service_1.CapacityPlanningService, app_service_1.AppService, translate_service_1.TranslateService, xmlImport_service_1.XmlImportService, window_service_1.WindowRef]
+            providers: [task_service_1.TaskService, capacityPlanning_service_1.CapacityPlanningService, app_service_1.AppService, translate_service_1.TranslateService, xmlImport_service_1.XmlImportService, window_service_1.WindowRef, workstation_service_1.WorkstationService]
         }), 
         __metadata('design:paramtypes', [app_service_1.AppService, capacityPlanning_service_1.CapacityPlanningService, translate_service_1.TranslateService])
     ], AppComponent);
