@@ -59,8 +59,7 @@
         {{'setWorkstations_number' | translate}} {{this.nummer}} {{'setWorkstations_exists_body' | translate}}
     </modal-body>
     <modal-footer>
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="modal.close()">Ok</button>
+        <button type="button" class="btn btn-primary" (click)="modalWsExists.close()">Ok</button>
     </modal-footer>
 </modal>
 <modal #modalWsEmpty>
@@ -71,7 +70,6 @@
         {{'setWorkstations_empty_body' | translate}}
     </modal-body>
     <modal-footer>
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="modal.close()">Ok</button>
+        <button type="button" class="btn btn-primary" (click)="modalWsEmpty.close()">Ok</button>
     </modal-footer>
 </modal>
