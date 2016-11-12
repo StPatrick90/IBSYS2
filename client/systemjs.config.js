@@ -23,7 +23,8 @@
             '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
             // other libraries
             'rxjs': 'npm:rxjs',
-            'angular-in-memory-web-api': 'npm:angular-in-memory-web-api'
+            'angular-in-memory-web-api': 'npm:angular-in-memory-web-api',
+            'ng2-bs3-modal': 'npm:ng2-bs3-modal'
 
         },
         // packages tells the System loader how to load when no filename and/or no extension
@@ -38,6 +39,9 @@
             'angular-in-memory-web-api': {
                 main: './index.js',
                 defaultExtension: 'js'
+            },
+            'ng2-bs3-modal':{
+                defaultExtensions: 'js'
             }
         }
     });

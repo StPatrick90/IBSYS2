@@ -17,10 +17,11 @@ import {TranslateService}   from './translate/translate.service';
 import {TRANSLATION_PROVIDERS} from './translate/index';
 import { PredictionComponent } from './components/prediction/prediction.component';
 import { WorkstationsComponent } from './components/settings/workstations/workstations.component';
+import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 
 @NgModule({
-    imports: [BrowserModule, HttpModule, FormsModule, AppRoutingModule],
+    imports: [BrowserModule, HttpModule, FormsModule, AppRoutingModule, Ng2Bs3ModalModule],
 
     declarations: [AppComponent, TasksComponent, CapacityPlanningComponent,
         HomeComponent, TranslatePipe, XmlImportComponent, MaterialPlanningComponent,

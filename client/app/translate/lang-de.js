@@ -47,6 +47,10 @@ exports.LANG_DE_TRANS = {
     'setWorkstations_delete': 'Löschen',
     'setWorkstations_edit': 'Bearbeiten',
     'setWorkstations_update': 'Aktualisieren',
+    'setWorkstations_exists': 'Arbeitsplatz bereits vorhanden!',
+    'setWorkstations_exists_body': ' bereits vorhanden.\n\nBitte wählen Sie eine neue Nummer.',
+    'setWorkstations_empty': 'Arbeitsplatz nicht vollständig',
+    'setWorkstations_empty_body': 'Die Nummer und der Name des Arbeitsplatzes muss ausgefüllt sein.',
     //MaterialPlanning
     'material_Planning': 'Kaufteildisposition',
     //xmlImport

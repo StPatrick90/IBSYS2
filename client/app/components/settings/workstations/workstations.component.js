@@ -13,6 +13,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var core_1 = require('@angular/core');
 var workstation_service_1 = require('../../../services/workstation.service');
+var ng2_bs3_modal_1 = require('ng2-bs3-modal/ng2-bs3-modal');
 var WorkstationsComponent = (function () {
     function WorkstationsComponent(workstationService) {
         var _this = this;
@@ -42,7 +43,7 @@ var WorkstationsComponent = (function () {
         var bereitsVorhanden = false;
         for (var _i = 0, workstations_1 = workstations; _i < workstations_1.length; _i++) {
             var ws = workstations_1[_i];
-            if (ws.nummer === this.nummer && ws._id !== this._id) {
+            if (ws.nummer == this.nummer && ws._id != this._id) {
                 bereitsVorhanden = true;
             }
         }
@@ -52,13 +53,18 @@ var WorkstationsComponent = (function () {
                     nummer: this.nummer,
                     name: this.name
                 };
-                this.workstationService.addWorkstation(newWorkstation)
-                    .subscribe(function (workstation) {
-                    _this.workstations.push(workstation);
-                    _this._id = null;
-                    _this.nummer = null;
-                    _this.name = null;
-                });
+                if (newWorkstation.nummer != null && newWorkstation != null) {
+                    this.workstationService.addWorkstation(newWorkstation)
+                        .subscribe(function (workstation) {
+                        _this.workstations.push(workstation);
+                        _this._id = null;
+                        _this.nummer = null;
+                        _this.name = null;
+                    });
+                }
+                else {
+                    this.modalWsEmpty.open();
+                }
             }
             else {
                 var _workstation = {
@@ -81,7 +87,18 @@ var WorkstationsComponent = (function () {
                 });
             }
         }
+        else {
+            this.modalWsExists.open();
+        }
     };
+    __decorate([
+        core_1.ViewChild('modalWsExists'), 
+        __metadata('design:type', ng2_bs3_modal_1.ModalComponent)
+    ], WorkstationsComponent.prototype, "modalWsExists", void 0);
+    __decorate([
+        core_1.ViewChild('modalWsEmpty'), 
+        __metadata('design:type', ng2_bs3_modal_1.ModalComponent)
+    ], WorkstationsComponent.prototype, "modalWsEmpty", void 0);
     WorkstationsComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

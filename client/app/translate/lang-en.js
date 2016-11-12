@@ -47,6 +47,10 @@ exports.LANG_EN_TRANS = {
     'setWorkstations_delete': 'Delete',
     'setWorkstations_edit': 'Edit',
     'setWorkstations_update': 'Update',
+    'setWorkstations_exists': 'Workstation already exists!',
+    'setWorkstations_exists_body': ' already exists.\n\nPlease choose another number',
+    'setWorkstations_empty': 'Workstation incomplete!',
+    'setWorkstations_empty_body': 'Number and name have to be filled.',
     //MaterialPlanning
     'material_Planning': 'Material Planning',
     //xmlImport

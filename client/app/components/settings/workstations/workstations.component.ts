@@ -1,10 +1,11 @@
 /**
  * Created by Paddy on 11.11.2016.
  */
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {Workstation} from '../../../model/workstastion';
 import {WorkstationService} from '../../../services/workstation.service';
-import {isNull} from "util";
+import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import {isNullOrUndefined} from "util";
 
 @Component({
     moduleId: module.id,
@@ -12,6 +13,11 @@ import {isNull} from "util";
     templateUrl: 'workstations.component.html'
 })
 export class WorkstationsComponent {
+    @ViewChild('modalWsExists')
+    modalWsExists: ModalComponent;
+    @ViewChild('modalWsEmpty')
+    modalWsEmpty: ModalComponent;
+
     workstations: Workstation[];
     _id: string;
     nummer: number;
@@ -45,7 +51,7 @@ export class WorkstationsComponent {
         var bereitsVorhanden = false;
 
         for(let ws of workstations){
-            if (ws.nummer === this.nummer && ws._id !== this._id){
+            if (ws.nummer == this.nummer && ws._id != this._id){
                 bereitsVorhanden = true;
             }
         }
@@ -55,13 +61,20 @@ export class WorkstationsComponent {
                     nummer: this.nummer,
                     name: this.name
                 }
-                this.workstationService.addWorkstation(newWorkstation)
-                    .subscribe(workstation => {
-                        this.workstations.push(workstation);
-                        this._id = null;
-                        this.nummer = null;
-                        this.name = null;
-                    });
+                if(newWorkstation.nummer != null && newWorkstation != null){
+                    this.workstationService.addWorkstation(newWorkstation)
+                        .subscribe(workstation => {
+                            this.workstations.push(workstation);
+                            this._id = null;
+                            this.nummer = null;
+                            this.name = null;
+                        });
+                }
+                else{
+                    this.modalWsEmpty.open();
+                }
+
+
             }
             else {
                 var _workstation = {
@@ -84,6 +97,9 @@ export class WorkstationsComponent {
                         this.name = null;
                     });
             }
+        }
+        else {
+            this.modalWsExists.open();
         }
     }
 }
