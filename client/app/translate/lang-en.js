@@ -46,6 +46,7 @@ exports.LANG_EN_TRANS = {
     'setWorkstations_reset': 'Reset',
     'setWorkstations_delete': 'Delete',
     'setWorkstations_edit': 'Edit',
+    'setWorkstations_update': 'Update',
     //MaterialPlanning
     'material_Planning': 'Material Planning',
     //xmlImport

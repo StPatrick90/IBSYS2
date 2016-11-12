@@ -22,6 +22,66 @@ var WorkstationsComponent = (function () {
             _this.workstations = workstations;
         });
     }
+    WorkstationsComponent.prototype.deleteWorkstation = function (id) {
+        var workstations = this.workstations;
+        this.workstationService.deleteWorkstation(id)
+            .subscribe((function (data) {
+            if (data.n == 1) {
+                for (var i = 0; i < workstations.length; i++) {
+                    if (workstations[i]._id == id) {
+                        workstations.splice(i, 1);
+                    }
+                }
+            }
+        }));
+    };
+    WorkstationsComponent.prototype.updateWorkstation = function (event) {
+        var _this = this;
+        event.preventDefault();
+        var workstations = this.workstations;
+        var bereitsVorhanden = false;
+        for (var _i = 0, workstations_1 = workstations; _i < workstations_1.length; _i++) {
+            var ws = workstations_1[_i];
+            if (ws.nummer === this.nummer && ws._id !== this._id) {
+                bereitsVorhanden = true;
+            }
+        }
+        if (!bereitsVorhanden) {
+            if (!this._id) {
+                var newWorkstation = {
+                    nummer: this.nummer,
+                    name: this.name
+                };
+                this.workstationService.addWorkstation(newWorkstation)
+                    .subscribe(function (workstation) {
+                    _this.workstations.push(workstation);
+                    _this._id = null;
+                    _this.nummer = null;
+                    _this.name = null;
+                });
+            }
+            else {
+                var _workstation = {
+                    _id: this._id,
+                    nummer: this.nummer,
+                    name: this.name
+                };
+                this.workstationService.updateWorkstation(_workstation)
+                    .subscribe(function (data) {
+                    if (data.n == 1) {
+                        for (var i = 0; i < workstations.length; i++) {
+                            if (workstations[i]._id == _this._id) {
+                                workstations[i] = _workstation;
+                            }
+                        }
+                    }
+                    _this._id = null;
+                    _this.nummer = null;
+                    _this.name = null;
+                });
+            }
+        }
+    };
     WorkstationsComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

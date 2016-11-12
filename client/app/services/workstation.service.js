@@ -23,6 +23,22 @@ var WorkstationService = (function () {
         return this.http.get('api/workstations')
             .map(function (res) { return res.json(); });
     };
+    WorkstationService.prototype.addWorkstation = function (newWorkstation) {
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post('/api/workstation', JSON.stringify(newWorkstation), { headers: headers })
+            .map(function (res) { return res.json(); });
+    };
+    WorkstationService.prototype.deleteWorkstation = function (id) {
+        return this.http.delete('/api/workstation/' + id)
+            .map(function (res) { return res.json(); });
+    };
+    WorkstationService.prototype.updateWorkstation = function (workstation) {
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.put('/api/workstation/' + workstation._id, JSON.stringify(workstation), { headers: headers })
+            .map(function (res) { return res.json(); });
+    };
     WorkstationService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])
