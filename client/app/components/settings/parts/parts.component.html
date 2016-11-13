@@ -8,8 +8,32 @@
         <input type="text" [(ngModel)]="bezeichnung" name="bezeichnung" class="form-control" placeholder="Bezeichnung" id="part_bez">
     </div>
     <div class="form-group">
-        <ss-multiselect-dropdown [options]="typOptions" [texts]="typTexts" [settings]="typSettings" [(ngModel)]="typ"></ss-multiselect-dropdown>
+        <label for="part_nummer">Wert</label>
+        <input type="number" [(ngModel)]="wert" name="wert" class="form-control" placeholder="Wert" id="part_wert">
     </div>
+    <div class="form-group">
+        <label for="part_nummer">Lagermenge</label>
+        <input type="number" [(ngModel)]="lagerMenge" name="lagermenge" class="form-control" placeholder="Lagermenge" id="part_lagermenge">
+    </div>
+    <div class="form-group">
+        <label for="part_typ">Typ </label>
+        <ss-multiselect-dropdown [options]="typOptions" [texts]="multiSelectTexts" [settings]="typSettings"
+                                 [(ngModel)]="typ" id="part_typ">
+        </ss-multiselect-dropdown>
+
+        <label for="part_verwendung">Verwendung </label>
+        <ss-multiselect-dropdown [options]="verwOptions" [texts]="multiSelectTexts" [settings]="verwSettings"
+                                 [(ngModel)]="verwendung" id="part_verwendung">
+        </ss-multiselect-dropdown>
+    </div>
+    <div class="form-group">
+        <label for="part_bestandteile">Bestandteile </label>
+        <ss-multiselect-dropdown [options]="bestOptions" [texts]="multiSelectTexts" [settings]="bestSettings"
+                                 [(ngModel)]="bestandteile" id="part_bestandteile">
+        </ss-multiselect-dropdown>
+
+    </div>
+
     <div class="form-group" align="right">
         <button type="button" class="btn btn-danger" (click)="_id = null; nummer = null; name = null;">
             {{'setWorkstations_reset' | translate}}</button>

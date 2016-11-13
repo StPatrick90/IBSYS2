@@ -17,24 +17,61 @@ var PartsComponent = (function () {
     function PartsComponent(partservice) {
         var _this = this;
         this.partservice = partservice;
+        this.partservice.getParts()
+            .subscribe(function (parts) {
+            _this.parts = parts;
+        }, function (err) { return console.error(err); }, function () { return _this.fillBestandteileCombo(); });
+        this.initMultiSelects();
+    }
+    PartsComponent.prototype.initMultiSelects = function () {
         this.typOptions = [
+            { id: 1, name: 'P' },
+            { id: 2, name: 'E' },
+            { id: 3, name: 'K' }
+        ];
+        this.verwOptions = [
             { id: 1, name: 'K' },
             { id: 2, name: 'D' },
             { id: 3, name: 'H' }
         ];
+        this.bestOptions = [];
         this.typSettings = {
             pullRight: false,
             enableSearch: false,
             checkedStyle: 'glyphicon',
             buttonClasses: 'btn btn-default',
-            selectionLimit: 0,
+            selectionLimit: 1,
+            closeOnSelect: false,
+            showCheckAll: false,
+            showUncheckAll: false,
+            dynamicTitleMaxItems: 1,
+            maxHeight: '100px',
+        };
+        this.verwSettings = {
+            pullRight: false,
+            enableSearch: false,
+            checkedStyle: 'glyphicon',
+            buttonClasses: 'btn btn-default',
+            selectionLimit: 3,
             closeOnSelect: false,
             showCheckAll: true,
             showUncheckAll: true,
             dynamicTitleMaxItems: 3,
             maxHeight: '300px',
         };
-        this.typTexts = {
+        this.bestSettings = {
+            pullRight: false,
+            enableSearch: true,
+            checkedStyle: 'glyphicon',
+            buttonClasses: 'btn btn-default',
+            selectionLimit: 0,
+            closeOnSelect: false,
+            showCheckAll: true,
+            showUncheckAll: true,
+            dynamicTitleMaxItems: 1,
+            maxHeight: '500px',
+        };
+        this.multiSelectTexts = {
             checkAll: 'Check all',
             uncheckAll: 'Uncheck all',
             checked: 'checked',
@@ -42,11 +79,15 @@ var PartsComponent = (function () {
             searchPlaceholder: 'Search...',
             defaultTitle: 'Select',
         };
-        this.partservice.getParts()
-            .subscribe(function (parts) {
-            _this.parts = parts;
-        });
-    }
+    };
+    PartsComponent.prototype.fillBestandteileCombo = function () {
+        var id = 1;
+        for (var _i = 0, _a = this.parts; _i < _a.length; _i++) {
+            var part = _a[_i];
+            this.bestOptions.push({ id: id, name: part.bezeichnung + ' - ' + part.verwendung.toString() });
+            id++;
+        }
+    };
     PartsComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

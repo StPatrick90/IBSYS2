@@ -13,131 +13,87 @@ import {IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts} from 'angul
     templateUrl: 'parts.component.html'
 })
 export class PartsComponent {
+    private typOptions: IMultiSelectOption[];
+    private verwOptions: IMultiSelectOption[];
+    private bestOptions: IMultiSelectOption[];
+    private typSettings: IMultiSelectSettings;
+    private verwSettings: IMultiSelectSettings;
+    private bestSettings: IMultiSelectSettings;
+    private multiSelectTexts: IMultiSelectTexts;
+
     parts: Part[];
-
-    private selectedOptions: number[];
-    private typOptions: IMultiSelectOption[] = [
-        { id: 1, name: 'K' },
-        { id: 2, name: 'D' },
-        { id: 3, name: 'H' }
-    ];
-
-    private typSettings: IMultiSelectSettings = {
-        pullRight: false,
-        enableSearch: false,
-        checkedStyle: 'glyphicon',
-        buttonClasses: 'btn btn-default',
-        selectionLimit: 0,
-        closeOnSelect: false,
-        showCheckAll: true,
-        showUncheckAll: true,
-        dynamicTitleMaxItems: 3,
-        maxHeight: '300px',
-    };
-
-    private typTexts: IMultiSelectTexts = {
-        checkAll: 'Check all',
-        uncheckAll: 'Uncheck all',
-        checked: 'checked',
-        checkedPlural: 'checked',
-        searchPlaceholder: 'Search...',
-        defaultTitle: 'Select',
-    };
 
     constructor(private partservice:PartService){
         this.partservice.getParts()
             .subscribe(parts => {
                 this.parts = parts;
-            })
+            },
+            err => console.error(err),
+            () => this.fillBestandteileCombo())
+        this.initMultiSelects();
     }
-   /* @ViewChild('modalWsExists')
-    modalWsExists: ModalComponent;
-    @ViewChild('modalWsEmpty')
-    modalWsEmpty: ModalComponent;
-
-    workstations: Workstation[];
-    _id: string;
-    nummer: number;
-    name: string;
-
-    constructor(private workstationService: WorkstationService) {
-        this.workstationService.getWorkstations()
-            .subscribe(workstations => {
-                this.workstations = workstations;
-            })
+    initMultiSelects(){
+        this.typOptions = [
+            { id: 1, name: 'P' },
+            { id: 2, name: 'E' },
+            { id: 3, name: 'K' }
+        ];
+        this.verwOptions = [
+            { id: 1, name: 'K' },
+            { id: 2, name: 'D' },
+            { id: 3, name: 'H' }
+        ];
+        this.bestOptions = [];
+        this.typSettings = {
+            pullRight: false,
+            enableSearch: false,
+            checkedStyle: 'glyphicon',
+            buttonClasses: 'btn btn-default',
+            selectionLimit: 1,
+            closeOnSelect: false,
+            showCheckAll: false,
+            showUncheckAll: false,
+            dynamicTitleMaxItems: 1,
+            maxHeight: '100px',
+        };
+        this.verwSettings = {
+            pullRight: false,
+            enableSearch: false,
+            checkedStyle: 'glyphicon',
+            buttonClasses: 'btn btn-default',
+            selectionLimit: 3,
+            closeOnSelect: false,
+            showCheckAll: true,
+            showUncheckAll: true,
+            dynamicTitleMaxItems: 3,
+            maxHeight: '300px',
+        };
+        this.bestSettings = {
+            pullRight: false,
+            enableSearch: true,
+            checkedStyle: 'glyphicon',
+            buttonClasses: 'btn btn-default',
+            selectionLimit: 0,
+            closeOnSelect: false,
+            showCheckAll: true,
+            showUncheckAll: true,
+            dynamicTitleMaxItems: 1,
+            maxHeight: '500px',
+        };
+        this.multiSelectTexts = {
+            checkAll: 'Check all',
+            uncheckAll: 'Uncheck all',
+            checked: 'checked',
+            checkedPlural: 'checked',
+            searchPlaceholder: 'Search...',
+            defaultTitle: 'Select',
+        };
     }
-
-    deleteWorkstation(id) {
-        var workstations = this.workstations;
-
-        this.workstationService.deleteWorkstation(id)
-            .subscribe((data => {
-                if (data.n == 1) {
-                    for (var i = 0; i < workstations.length; i++) {
-                        if (workstations[i]._id == id) {
-                            workstations.splice(i, 1);
-                        }
-                    }
-                }
-            }))
-    }
-
-    updateWorkstation(event) {
-        event.preventDefault();
-        var workstations = this.workstations;
-        var bereitsVorhanden = false;
-
-        for(let ws of workstations){
-            if (ws.nummer == this.nummer && ws._id != this._id){
-                bereitsVorhanden = true;
-            }
-        }
-        if(!bereitsVorhanden) {
-            if (!this._id) {
-                var newWorkstation = {
-                    nummer: this.nummer,
-                    name: this.name
-                }
-                if(newWorkstation.nummer != null && newWorkstation != null){
-                    this.workstationService.addWorkstation(newWorkstation)
-                        .subscribe(workstation => {
-                            this.workstations.push(workstation);
-                            this._id = null;
-                            this.nummer = null;
-                            this.name = null;
-                        });
-                }
-                else{
-                    this.modalWsEmpty.open();
-                }
-
-
-            }
-            else {
-                var _workstation = {
-                    _id: this._id,
-                    nummer: this.nummer,
-                    name: this.name
-                };
-
-                this.workstationService.updateWorkstation(_workstation)
-                    .subscribe(data => {
-                        if (data.n == 1) {
-                            for (var i = 0; i < workstations.length; i++) {
-                                if (workstations[i]._id == this._id) {
-                                    workstations[i] = _workstation;
-                                }
-                            }
-                        }
-                        this._id = null;
-                        this.nummer = null;
-                        this.name = null;
-                    });
-            }
-        }
-        else {
-            this.modalWsExists.open();
+    fillBestandteileCombo(){
+        var id = 1;
+        for(var part of this.parts){
+            this.bestOptions.push({id: id, name: part.bezeichnung + ' - ' + part.verwendung.toString()});
+            id++;
         }
     }
-    */
 }
