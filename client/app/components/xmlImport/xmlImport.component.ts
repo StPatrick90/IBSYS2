@@ -23,6 +23,8 @@ export class XmlImportComponent {
     constructor(private xmlImportService: XmlImportService, sessionService: SessionService){
         this.xmlService = xmlImportService;
         this.sessionService = sessionService;
+        this.resultObj = sessionService.getResultObject();
+        this.xml = JSON.stringify(this.resultObj);
     }
 
     changeListener($event) : void {

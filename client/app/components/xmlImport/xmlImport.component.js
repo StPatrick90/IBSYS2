@@ -21,6 +21,8 @@ var XmlImportComponent = (function () {
         this.resultObj = {};
         this.xmlService = xmlImportService;
         this.sessionService = sessionService;
+        this.resultObj = sessionService.getResultObject();
+        this.xml = JSON.stringify(this.resultObj);
     }
     XmlImportComponent.prototype.changeListener = function ($event) {
         this.readThis($event.target);
