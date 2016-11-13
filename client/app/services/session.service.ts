@@ -12,7 +12,7 @@ export class SessionService{
 
 
     getResultObject(){
-        return this.resultObj;
+        return this.resultObj? this.resultObj: {};
     }
     setResultObject(Obj){
         this.resultObj = Obj;

@@ -18,7 +18,7 @@ var SessionService = (function () {
     function SessionService() {
     }
     SessionService.prototype.getResultObject = function () {
-        return this.resultObj;
+        return this.resultObj ? this.resultObj : {};
     };
     SessionService.prototype.setResultObject = function (Obj) {
         this.resultObj = Obj;
