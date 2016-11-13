@@ -11,6 +11,7 @@ var workstations = require('./routes/workstations');
 var processingTimes = require('./routes/processingTimes');
 var epparts = require('./routes/epparts');
 var xml = require('./routes/xmlConverter');
+var parts = require('./routes/parts');
 
 
 var port = 3000;
@@ -35,7 +36,7 @@ app.use('/api', workstations);
 app.use('/api', processingTimes);
 app.use('/api', epparts);
 app.use('/api', xml);
-
+app.use('/api', parts);
 
 
 

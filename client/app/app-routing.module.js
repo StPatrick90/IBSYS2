@@ -20,6 +20,7 @@ var xmlImport_component_1 = require('./components/xmlImport/xmlImport.component'
 var materialPlanning_component_1 = require('./components/materialPlanning/materialPlanning.component');
 var prediction_component_1 = require('./components/prediction/prediction.component');
 var workstations_component_1 = require('./components/settings/workstations/workstations.component');
+var parts_component_1 = require('./components/settings/parts/parts.component');
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
     }
@@ -33,7 +34,8 @@ var AppRoutingModule = (function () {
                     { path: 'capacityPlanning', component: capacityPlanning_component_1.CapacityPlanningComponent },
                     { path: '', component: home_component_1.HomeComponent },
                     { path: 'materialPlanning', component: materialPlanning_component_1.MaterialPlanningComponent },
-                    { path: 'workstations', component: workstations_component_1.WorkstationsComponent }
+                    { path: 'workstations', component: workstations_component_1.WorkstationsComponent },
+                    { path: 'parts', component: parts_component_1.PartsComponent }
                 ])
             ],
             exports: [

@@ -17,15 +17,17 @@ import {TranslateService}   from './translate/translate.service';
 import {TRANSLATION_PROVIDERS} from './translate/index';
 import { PredictionComponent } from './components/prediction/prediction.component';
 import { WorkstationsComponent } from './components/settings/workstations/workstations.component';
+import { PartsComponent} from './components/settings/parts/parts.component';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import {MultiselectDropdownModule} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
 
 
 @NgModule({
-    imports: [BrowserModule, HttpModule, FormsModule, AppRoutingModule, Ng2Bs3ModalModule],
+    imports: [BrowserModule, HttpModule, FormsModule, AppRoutingModule, Ng2Bs3ModalModule, MultiselectDropdownModule],
 
     declarations: [AppComponent, TasksComponent, CapacityPlanningComponent,
         HomeComponent, TranslatePipe, XmlImportComponent, MaterialPlanningComponent,
-        PredictionComponent, WorkstationsComponent],
+        PredictionComponent, WorkstationsComponent, PartsComponent],
 
     bootstrap: [AppComponent],
     providers: [TRANSLATION_PROVIDERS, TranslateService]

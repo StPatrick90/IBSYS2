@@ -1,0 +1,64 @@
+<div class="well col-md-3" style="margin-left: 1%; margin-right: 1%;">
+    <div class="form-group">
+        <label for="part_nummer">Nummer</label>
+        <input type="number" [(ngModel)]="nummer" name="nummer" class="form-control" placeholder="Nummer" id="part_nummer">
+    </div>
+    <div class="form-group">
+        <label for="part_bez">{{'setWorkstations_name' | translate}}</label>
+        <input type="text" [(ngModel)]="bezeichnung" name="bezeichnung" class="form-control" placeholder="Bezeichnung" id="part_bez">
+    </div>
+    <div class="form-group">
+        <ss-multiselect-dropdown [options]="typOptions" [texts]="typTexts" [settings]="typSettings" [(ngModel)]="typ"></ss-multiselect-dropdown>
+    </div>
+    <div class="form-group" align="right">
+        <button type="button" class="btn btn-danger" (click)="_id = null; nummer = null; name = null;">
+            {{'setWorkstations_reset' | translate}}</button>
+        <button type="button" class="btn btn-success" (click)="updateWorkstation($event)">
+            <span *ngIf="!_id">{{'setWorkstations_add' | translate}}</span>
+            <span *ngIf="_id">{{'setWorkstations_update' | translate}}</span>
+        </button>
+    </div>
+</div>
+
+<div class="well col-md-8" style="margin-left: 1%; margin-right: 1%;">
+    <table width="100%">
+        <thead>
+        <tr>
+            <th width="10%">Nummer</th>
+            <th width="25%">Bezeichnung</th>
+            <th width="10%">Typ</th>
+            <th width="15%">Wert</th>
+            <th width="15%">Lagermenge</th>
+            <th width="12.5%"></th>
+            <th width="12.5%"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let part of parts" style="height: 40px;">
+            <td width="10%">
+                {{part.nummer}}
+            </td>
+            <td width="25%">
+                {{part.bezeichnung}}
+            </td>
+            <td width="10%">
+                {{part.typ}}
+            </td>
+            <td width="15%">
+                {{part.wert}}
+            </td>
+            <td width="15%">
+                {{part.lagerMenge}}
+            </td>
+            <td width="12.5%" style="padding-right: 5px" align="right">
+                <input type="button"  value="{{'setWorkstations_edit' | translate}}"
+                       class="btn btn-info" (click)="_id = ws._id; nummer = ws.nummer; name = ws.name">
+            </td>
+            <td width="12.5%" style="padding-left: 5px" align="left">
+                <input type="button"  value="{{'setWorkstations_delete' | translate}}"
+                       class="btn btn-danger" (click)="deleteWorkstation(ws._id)">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

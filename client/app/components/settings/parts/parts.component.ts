@@ -1,18 +1,56 @@
 /**
- * Created by Paddy on 11.11.2016.
+ * Created by Paddy on 13.11.2016.
  */
 import {Component, ViewChild} from '@angular/core';
-import {Workstation} from '../../../model/workstastion';
-import {WorkstationService} from '../../../services/workstation.service';
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import {Part} from '../../../model/part';
+import {PartService} from '../../../services/part.service';
+import {IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
+
 
 @Component({
     moduleId: module.id,
-    selector: 'workstations',
-    templateUrl: 'workstations.component.html'
+    selector: 'parts',
+    templateUrl: 'parts.component.html'
 })
-export class WorkstationsComponent {
-    @ViewChild('modalWsExists')
+export class PartsComponent {
+    parts: Part[];
+
+    private selectedOptions: number[];
+    private typOptions: IMultiSelectOption[] = [
+        { id: 1, name: 'K' },
+        { id: 2, name: 'D' },
+        { id: 3, name: 'H' }
+    ];
+
+    private typSettings: IMultiSelectSettings = {
+        pullRight: false,
+        enableSearch: false,
+        checkedStyle: 'glyphicon',
+        buttonClasses: 'btn btn-default',
+        selectionLimit: 0,
+        closeOnSelect: false,
+        showCheckAll: true,
+        showUncheckAll: true,
+        dynamicTitleMaxItems: 3,
+        maxHeight: '300px',
+    };
+
+    private typTexts: IMultiSelectTexts = {
+        checkAll: 'Check all',
+        uncheckAll: 'Uncheck all',
+        checked: 'checked',
+        checkedPlural: 'checked',
+        searchPlaceholder: 'Search...',
+        defaultTitle: 'Select',
+    };
+
+    constructor(private partservice:PartService){
+        this.partservice.getParts()
+            .subscribe(parts => {
+                this.parts = parts;
+            })
+    }
+   /* @ViewChild('modalWsExists')
     modalWsExists: ModalComponent;
     @ViewChild('modalWsEmpty')
     modalWsEmpty: ModalComponent;
@@ -101,4 +139,5 @@ export class WorkstationsComponent {
             this.modalWsExists.open();
         }
     }
+    */
 }

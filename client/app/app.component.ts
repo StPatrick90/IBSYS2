@@ -6,13 +6,15 @@ import { TranslateService } from './translate/translate.service';
 import { XmlImportService } from './services/xmlImport.service';
 import { WindowRef } from './services/window.service';
 import { WorkstationService } from './services/workstation.service';
+import { PartService } from './services/part.service';
 
 @Component({
     moduleId: module.id,
     selector: 'my-app',
     templateUrl: 'app.component.html',
 
-    providers: [TaskService,CapacityPlanningService, AppService, TranslateService,XmlImportService, WindowRef, WorkstationService]
+    providers: [TaskService,CapacityPlanningService, AppService, TranslateService,
+        XmlImportService, WindowRef, WorkstationService, PartService]
 
 })
 export class AppComponent {
