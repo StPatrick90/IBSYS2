@@ -24,10 +24,6 @@ var TasksComponent = (function () {
         });
         this.sessionService = sessionService;
     }
-    //TODO: löschen / example
-    TasksComponent.prototype.test = function () {
-        console.log(this.sessionService.getResultObject());
-    };
     TasksComponent.prototype.addTask = function (event) {
         var _this = this;
         event.preventDefault();

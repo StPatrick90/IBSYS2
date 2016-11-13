@@ -24,11 +24,6 @@ export class TasksComponent {
         this.sessionService = sessionService;
     }
 
-    //TODO: löschen / example
-    test(){
-        console.log(this.sessionService.getResultObject());
-    }
-
     addTask(event){
         event.preventDefault();
         var newTask = {
