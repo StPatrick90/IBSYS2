@@ -18,6 +18,7 @@ import {TRANSLATION_PROVIDERS} from './translate/index';
 import { PredictionComponent } from './components/prediction/prediction.component';
 import { WorkstationsComponent } from './components/settings/workstations/workstations.component';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import {LocalStorageService} from "angular2-localstorage/LocalStorageEmitter";
 
 
 @NgModule({
@@ -28,8 +29,9 @@ import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
         PredictionComponent, WorkstationsComponent],
 
     bootstrap: [AppComponent],
-    providers: [TRANSLATION_PROVIDERS, TranslateService]
+    providers: [TRANSLATION_PROVIDERS, TranslateService, LocalStorageService]
 
 })
 export class AppModule {
+    constructor(storageService: LocalStorageService){}
 }

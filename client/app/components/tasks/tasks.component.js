@@ -13,15 +13,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var core_1 = require('@angular/core');
 var task_service_1 = require('../../services/task.service');
+var session_service_1 = require('../../services/session.service');
 var TasksComponent = (function () {
-    function TasksComponent(taskService) {
+    function TasksComponent(taskService, sessionService) {
         var _this = this;
         this.taskService = taskService;
         this.taskService.getTasks()
             .subscribe(function (tasks) {
             _this.tasks = tasks;
         });
+        this.sessionService = sessionService;
     }
+    //TODO: löschen / example
+    TasksComponent.prototype.test = function () {
+        console.log(this.sessionService.getResultObject());
+    };
     TasksComponent.prototype.addTask = function (event) {
         var _this = this;
         event.preventDefault();
@@ -65,7 +71,7 @@ var TasksComponent = (function () {
             selector: 'tasks',
             templateUrl: 'tasks.component.html'
         }), 
-        __metadata('design:paramtypes', [task_service_1.TaskService])
+        __metadata('design:paramtypes', [task_service_1.TaskService, session_service_1.SessionService])
     ], TasksComponent);
     return TasksComponent;
 }());
