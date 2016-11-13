@@ -4,6 +4,7 @@
 import { Component } from '@angular/core';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../../Task';
+import { SessionService } from '../../services/session.service';
 
 @Component({
     moduleId: module.id,
@@ -13,12 +14,19 @@ import { Task } from '../../../Task';
 export class TasksComponent {
     tasks: Task[];
     title: string;
+    sessionService: any;
 
-    constructor(private taskService:TaskService){
+    constructor(private taskService:TaskService, sessionService: SessionService){
         this.taskService.getTasks()
             .subscribe(tasks => {
                 this.tasks = tasks;
             })
+        this.sessionService = sessionService;
+    }
+
+    //TODO: löschen / example
+    test(){
+        console.log(this.sessionService.getResultObject());
     }
 
     addTask(event){

@@ -4,6 +4,8 @@
 import { Component } from '@angular/core';
 import { XmlImportService } from '../../services/xmlImport.service';
 import { WindowRef } from '../../services/window.service';
+import { SessionService } from '../../services/session.service';
+
 
 @Component({
     moduleId: module.id,
@@ -11,12 +13,18 @@ import { WindowRef } from '../../services/window.service';
     templateUrl: 'xmlImport.component.html'
 })
 export class XmlImportComponent {
+
+
     xml = "";
     xmlService: any;
+    sessionService: any;
     resultObj = {};
 
-    constructor(private xmlImportService: XmlImportService){
+    constructor(private xmlImportService: XmlImportService, sessionService: SessionService){
         this.xmlService = xmlImportService;
+        this.sessionService = sessionService;
+        this.resultObj = sessionService.getResultObject();
+        this.xml = JSON.stringify(this.resultObj);
     }
 
     changeListener($event) : void {
@@ -34,6 +42,7 @@ export class XmlImportComponent {
                 .subscribe(jsonObj => {
                     self.resultObj = JSON.parse(jsonObj);
                     self.xml = JSON.stringify(self.resultObj);
+                    self.sessionService.setResultObject(self.resultObj);
                 })
         }
         myReader.readAsText(file);

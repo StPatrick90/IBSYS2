@@ -13,12 +13,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var core_1 = require('@angular/core');
 var xmlImport_service_1 = require('../../services/xmlImport.service');
+var session_service_1 = require('../../services/session.service');
 var XmlImportComponent = (function () {
-    function XmlImportComponent(xmlImportService) {
+    function XmlImportComponent(xmlImportService, sessionService) {
         this.xmlImportService = xmlImportService;
         this.xml = "";
         this.resultObj = {};
         this.xmlService = xmlImportService;
+        this.sessionService = sessionService;
+        this.resultObj = sessionService.getResultObject();
+        this.xml = JSON.stringify(this.resultObj);
     }
     XmlImportComponent.prototype.changeListener = function ($event) {
         this.readThis($event.target);
@@ -33,6 +37,7 @@ var XmlImportComponent = (function () {
                 .subscribe(function (jsonObj) {
                 self.resultObj = JSON.parse(jsonObj);
                 self.xml = JSON.stringify(self.resultObj);
+                self.sessionService.setResultObject(self.resultObj);
             });
         };
         myReader.readAsText(file);
@@ -43,7 +48,7 @@ var XmlImportComponent = (function () {
             selector: 'xmlImport',
             templateUrl: 'xmlImport.component.html'
         }), 
-        __metadata('design:paramtypes', [xmlImport_service_1.XmlImportService])
+        __metadata('design:paramtypes', [xmlImport_service_1.XmlImportService, session_service_1.SessionService])
     ], XmlImportComponent);
     return XmlImportComponent;
 }());

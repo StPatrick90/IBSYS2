@@ -25,7 +25,9 @@
             'rxjs': 'npm:rxjs',
             'angular-in-memory-web-api': 'npm:angular-in-memory-web-api',
             'ng2-bs3-modal': 'npm:ng2-bs3-modal',
-            'angular-2-dropdown-multiselect': 'npm:angular-2-dropdown-multiselect'
+            'angular-2-dropdown-multiselect': 'npm:angular-2-dropdown-multiselect',
+            'angular2-localstorage': 'npm:angular2-localstorage'
+
 
         },
         // packages tells the System loader how to load when no filename and/or no extension
@@ -44,7 +46,11 @@
             'ng2-bs3-modal':{
                 defaultExtensions: 'js'
             },
-            'angular-2-dropdown-multiselect':{
+            'angular-2-dropdown-multiselect': {
+                defaultExtensions: 'js'
+            },
+            'angular2-localstorage':{
+
                 defaultExtensions: 'js'
             }
         }

@@ -6,7 +6,11 @@ import { TranslateService } from './translate/translate.service';
 import { XmlImportService } from './services/xmlImport.service';
 import { WindowRef } from './services/window.service';
 import { WorkstationService } from './services/workstation.service';
+
 import { PartService } from './services/part.service';
+
+import { SessionService} from './services/session.service';
+
 
 @Component({
     moduleId: module.id,
@@ -14,7 +18,8 @@ import { PartService } from './services/part.service';
     templateUrl: 'app.component.html',
 
     providers: [TaskService,CapacityPlanningService, AppService, TranslateService,
-        XmlImportService, WindowRef, WorkstationService, PartService]
+        XmlImportService, WindowRef, WorkstationService, PartService, SessionService]
+
 
 })
 export class AppComponent {

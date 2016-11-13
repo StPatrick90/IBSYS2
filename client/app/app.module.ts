@@ -20,6 +20,8 @@ import { WorkstationsComponent } from './components/settings/workstations/workst
 import { PartsComponent} from './components/settings/parts/parts.component';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import {MultiselectDropdownModule} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
+import {LocalStorageService} from "angular2-localstorage/LocalStorageEmitter";
+
 
 
 @NgModule({
@@ -30,8 +32,9 @@ import {MultiselectDropdownModule} from 'angular-2-dropdown-multiselect/src/mult
         PredictionComponent, WorkstationsComponent, PartsComponent],
 
     bootstrap: [AppComponent],
-    providers: [TRANSLATION_PROVIDERS, TranslateService]
+    providers: [TRANSLATION_PROVIDERS, TranslateService, LocalStorageService]
 
 })
 export class AppModule {
+    constructor(storageService: LocalStorageService){}
 }
