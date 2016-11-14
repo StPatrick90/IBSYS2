@@ -22,11 +22,13 @@ import { PartsComponent} from './components/settings/parts/parts.component';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import {MultiselectDropdownModule} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
 import {LocalStorageService} from "angular2-localstorage/LocalStorageEmitter";
+import {DndModule} from 'ng2-dnd';
 
 
 
 @NgModule({
-    imports: [BrowserModule, HttpModule, FormsModule, AppRoutingModule, Ng2Bs3ModalModule, MultiselectDropdownModule],
+    imports: [BrowserModule, HttpModule, FormsModule, AppRoutingModule, Ng2Bs3ModalModule,
+        MultiselectDropdownModule, DndModule.forRoot()],
 
     declarations: [AppComponent, TasksComponent, CapacityPlanningComponent,
         HomeComponent, TranslatePipe, XmlImportComponent, MaterialPlanningComponent,

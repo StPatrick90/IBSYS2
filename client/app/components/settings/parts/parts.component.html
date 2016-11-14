@@ -27,11 +27,10 @@
         </ss-multiselect-dropdown>
     </div>
     <div class="form-group">
-        <label for="part_bestandteile">Bestandteile </label>
-        <ss-multiselect-dropdown [options]="bestOptions" [texts]="multiSelectTexts" [settings]="bestSettings"
-                                 [(ngModel)]="bestandteile" id="part_bestandteile">
-        </ss-multiselect-dropdown>
-
+        <button type="button" class="btn btn-default btn-block" (click)="openBestandteile()">Bestandteile</button>
+    </div>
+    <div class="form-group">
+        <button type="button" class="btn btn-default btn-block">Arbeitsplätze</button>
     </div>
 
     <div class="form-group" align="right">
@@ -86,3 +85,44 @@
         </tbody>
     </table>
 </div>
+
+<modal #modalBestandteile style="width: 100%">
+    <modal-header [show-close]="true">
+        <h4 class="modal-title">Bestandteile auswählen</h4>
+    </modal-header>
+    <modal-body>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        Verfügbare Teile
+                    </div>
+                    <div class="panel-body" dnd-sortable-container [dropZones]="['teileDropZone']" [sortableData]="listVerfuegbareTeile">
+                        <ul class="list-group" >
+                            <li *ngFor="let verfPart of listVerfuegbareTeile; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">
+                                {{verfPart.typ + verfPart.nummer + "-" + verfPart.bezeichnung + " - " + verfPart.verwendung}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                       Bestandteile von xy
+                    </div>
+                    <div class="panel-body" dnd-sortable-container [dropZones]="['teileDropZone']" [sortableData]="listBestandteile">
+                        <ul class="list-group" >
+                            <li *ngFor="let bestPart of listBestandteile; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">
+                                {{bestPart.typ + bestPart.nummer + "-" + bestPart.bezeichnung + " - " + bestPart.verwendung}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>`
+    </modal-body>
+    <modal-footer>
+        <button type="button" class="btn btn-primary" (click)="modalBestandteile.close()">Ok</button>
+    </modal-footer>
+</modal>

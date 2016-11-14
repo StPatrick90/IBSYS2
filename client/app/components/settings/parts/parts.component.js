@@ -12,15 +12,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by Paddy on 13.11.2016.
  */
 var core_1 = require('@angular/core');
+var part_1 = require('../../../model/part');
 var part_service_1 = require('../../../services/part.service');
+var ng2_bs3_modal_1 = require('ng2-bs3-modal/ng2-bs3-modal');
 var PartsComponent = (function () {
     function PartsComponent(partservice) {
         var _this = this;
         this.partservice = partservice;
+        this.listVerfuegbareTeile = [];
+        this.listBestandteile = [];
+        this.part = new part_1.Part();
         this.partservice.getParts()
             .subscribe(function (parts) {
             _this.parts = parts;
-        }, function (err) { return console.error(err); }, function () { return _this.fillBestandteileCombo(); });
+        }, function (err) { return console.error(err); }, function () { return _this.fillVerfuegbareTeile(); });
         this.initMultiSelects();
     }
     PartsComponent.prototype.initMultiSelects = function () {
@@ -34,7 +39,6 @@ var PartsComponent = (function () {
             { id: 2, name: 'D' },
             { id: 3, name: 'H' }
         ];
-        this.bestOptions = [];
         this.typSettings = {
             pullRight: false,
             enableSearch: false,
@@ -59,18 +63,6 @@ var PartsComponent = (function () {
             dynamicTitleMaxItems: 3,
             maxHeight: '300px',
         };
-        this.bestSettings = {
-            pullRight: false,
-            enableSearch: true,
-            checkedStyle: 'glyphicon',
-            buttonClasses: 'btn btn-default',
-            selectionLimit: 0,
-            closeOnSelect: false,
-            showCheckAll: true,
-            showUncheckAll: true,
-            dynamicTitleMaxItems: 1,
-            maxHeight: '500px',
-        };
         this.multiSelectTexts = {
             checkAll: 'Check all',
             uncheckAll: 'Uncheck all',
@@ -80,14 +72,26 @@ var PartsComponent = (function () {
             defaultTitle: 'Select',
         };
     };
-    PartsComponent.prototype.fillBestandteileCombo = function () {
-        var id = 1;
-        for (var _i = 0, _a = this.parts; _i < _a.length; _i++) {
-            var part = _a[_i];
-            this.bestOptions.push({ id: id, name: part.bezeichnung + ' - ' + part.verwendung.toString() });
-            id++;
+    PartsComponent.prototype.fillVerfuegbareTeile = function () {
+        if (this.part._id == null) {
+            this.listVerfuegbareTeile = this.parts.slice();
+        }
+        else {
+            for (var _i = 0, _a = this.parts; _i < _a.length; _i++) {
+                var part = _a[_i];
+                if (part._id != this.part._id) {
+                    this.listVerfuegbareTeile.push(part);
+                }
+            }
         }
     };
+    PartsComponent.prototype.openBestandteile = function () {
+        this.modalBestandteile.open('lg');
+    };
+    __decorate([
+        core_1.ViewChild('modalBestandteile'), 
+        __metadata('design:type', ng2_bs3_modal_1.ModalComponent)
+    ], PartsComponent.prototype, "modalBestandteile", void 0);
     PartsComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

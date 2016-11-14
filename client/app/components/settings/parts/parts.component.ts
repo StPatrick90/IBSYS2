@@ -5,6 +5,7 @@ import {Component, ViewChild} from '@angular/core';
 import {Part} from '../../../model/part';
 import {PartService} from '../../../services/part.service';
 import {IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
+import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 
 @Component({
@@ -13,14 +14,19 @@ import {IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts} from 'angul
     templateUrl: 'parts.component.html'
 })
 export class PartsComponent {
+    @ViewChild('modalBestandteile')
+    modalBestandteile: ModalComponent;
+
     private typOptions: IMultiSelectOption[];
     private verwOptions: IMultiSelectOption[];
-    private bestOptions: IMultiSelectOption[];
     private typSettings: IMultiSelectSettings;
     private verwSettings: IMultiSelectSettings;
-    private bestSettings: IMultiSelectSettings;
     private multiSelectTexts: IMultiSelectTexts;
 
+    listVerfuegbareTeile:Array<Part> = [];
+    listBestandteile:Array<Part> = [];
+
+    part: Part = new Part();
     parts: Part[];
 
     constructor(private partservice:PartService){
@@ -29,7 +35,7 @@ export class PartsComponent {
                 this.parts = parts;
             },
             err => console.error(err),
-            () => this.fillBestandteileCombo())
+            () => this.fillVerfuegbareTeile())
         this.initMultiSelects();
     }
     initMultiSelects(){
@@ -43,7 +49,7 @@ export class PartsComponent {
             { id: 2, name: 'D' },
             { id: 3, name: 'H' }
         ];
-        this.bestOptions = [];
+
         this.typSettings = {
             pullRight: false,
             enableSearch: false,
@@ -68,18 +74,6 @@ export class PartsComponent {
             dynamicTitleMaxItems: 3,
             maxHeight: '300px',
         };
-        this.bestSettings = {
-            pullRight: false,
-            enableSearch: true,
-            checkedStyle: 'glyphicon',
-            buttonClasses: 'btn btn-default',
-            selectionLimit: 0,
-            closeOnSelect: false,
-            showCheckAll: true,
-            showUncheckAll: true,
-            dynamicTitleMaxItems: 1,
-            maxHeight: '500px',
-        };
         this.multiSelectTexts = {
             checkAll: 'Check all',
             uncheckAll: 'Uncheck all',
@@ -89,11 +83,23 @@ export class PartsComponent {
             defaultTitle: 'Select',
         };
     }
-    fillBestandteileCombo(){
-        var id = 1;
-        for(var part of this.parts){
-            this.bestOptions.push({id: id, name: part.bezeichnung + ' - ' + part.verwendung.toString()});
-            id++;
+
+    fillVerfuegbareTeile(){
+        if(this.part._id == null){
+            this.listVerfuegbareTeile = this.parts.slice();
         }
+        else{
+            for(var part of this.parts){
+                if(part._id != this.part._id){
+                    this.listVerfuegbareTeile.push(part);
+                }
+            }
+        }
+
+
+    }
+
+    openBestandteile(){
+        this.modalBestandteile.open('lg');
     }
 }
