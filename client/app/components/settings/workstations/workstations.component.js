@@ -93,11 +93,11 @@ var WorkstationsComponent = (function () {
     };
     __decorate([
         core_1.ViewChild('modalWsExists'), 
-        __metadata('design:type', (typeof (_a = typeof ng2_bs3_modal_1.ModalComponent !== 'undefined' && ng2_bs3_modal_1.ModalComponent) === 'function' && _a) || Object)
+        __metadata('design:type', ng2_bs3_modal_1.ModalComponent)
     ], WorkstationsComponent.prototype, "modalWsExists", void 0);
     __decorate([
         core_1.ViewChild('modalWsEmpty'), 
-        __metadata('design:type', (typeof (_b = typeof ng2_bs3_modal_1.ModalComponent !== 'undefined' && ng2_bs3_modal_1.ModalComponent) === 'function' && _b) || Object)
+        __metadata('design:type', ng2_bs3_modal_1.ModalComponent)
     ], WorkstationsComponent.prototype, "modalWsEmpty", void 0);
     WorkstationsComponent = __decorate([
         core_1.Component({
@@ -108,7 +108,6 @@ var WorkstationsComponent = (function () {
         __metadata('design:paramtypes', [workstation_service_1.WorkstationService])
     ], WorkstationsComponent);
     return WorkstationsComponent;
-    var _a, _b;
 }());
 exports.WorkstationsComponent = WorkstationsComponent;
 //# sourceMappingURL=workstations.component.js.map

@@ -43,10 +43,9 @@ var AppModule = (function () {
             bootstrap: [app_component_1.AppComponent],
             providers: [index_1.TRANSLATION_PROVIDERS, translate_service_1.TranslateService, LocalStorageEmitter_1.LocalStorageService]
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof LocalStorageEmitter_1.LocalStorageService !== 'undefined' && LocalStorageEmitter_1.LocalStorageService) === 'function' && _a) || Object])
+        __metadata('design:paramtypes', [LocalStorageEmitter_1.LocalStorageService])
     ], AppModule);
     return AppModule;
-    var _a;
 }());
 exports.AppModule = AppModule;
 //# sourceMappingURL=app.module.js.map

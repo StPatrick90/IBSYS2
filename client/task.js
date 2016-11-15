@@ -8,4 +8,4 @@ var Task = (function () {
     return Task;
 }());
 exports.Task = Task;
-//# sourceMappingURL=Task.js.map
+//# sourceMappingURL=task.js.map
