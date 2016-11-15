@@ -51,11 +51,23 @@ exports.LANG_EN_TRANS = {
     'setWorkstations_exists_body': ' already exists.\n\nPlease choose another number',
     'setWorkstations_empty': 'Workstation incomplete!',
     'setWorkstations_empty_body': 'Number and name have to be filled.',
-    //MaterialPlanning
-    'material_Planning': 'Material Planning',
     //xmlImport
     'xmlImport': 'XML Import',
     //prediction
     'prediction_planning': 'Prediciton Planning',
+    //MaterialPlanning
+    'material_Planning': 'Material Planning',
+    'num_purchase_part': 'Nr. Purchase Part',
+    'delivery_time': 'Del.Time',
+    'deviation': 'Deviation',
+    'sum': 'Sum',
+    'use': 'Use',
+    'discount_sum': 'Discount Sum',
+    'opening_stock': 'Opening Stock',
+    'gross_requirements_period': 'Gross Req. Per.',
+    'sum_without_order': 'Sum without order',
+    'volume_ordered': 'Volume ordered',
+    'ordertype': 'Order Type',
+    'stock_after_receipt': 'Stock after receipt'
 };
 //# sourceMappingURL=lang-en.js.map

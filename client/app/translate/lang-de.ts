@@ -56,13 +56,25 @@ export const LANG_DE_TRANS = {
     'setWorkstations_empty': 'Arbeitsplatz nicht vollständig',
     'setWorkstations_empty_body': 'Die Nummer und der Name des Arbeitsplatzes muss ausgefüllt sein.',
 
-
-//MaterialPlanning
-    'material_Planning': 'Kaufteildisposition',
-
 //xmlImport
     'xmlImport': 'XML Import',
 
 //prediction
     'prediction_planning': 'Prognose Planung',
+
+    //MaterialPlanning
+    'material_Planning': 'Kaufteildisposition',
+    'num_purchase_part': 'Nr.Kaufteil',
+    'delivery_time': 'Lieferfrist',
+    'deviation': 'Abweichung',
+    'sum': 'Summe',
+    'use':'Verwendung',
+    'discount_sum':'Diskontmenge',
+    'opening_stock':'Anfangsbestand',
+    'gross_requirements_period':'Bruttobedarf n.Pp.',
+    'sum_without_order':'Menge oh. Best.',
+    'volume_ordered':'Bestellmenge',
+    'ordertype':'Bestellung E/N',
+    'stock_after_receipt':'Bestand n. gepl. WE'
+
 };

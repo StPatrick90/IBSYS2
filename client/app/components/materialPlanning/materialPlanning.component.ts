@@ -1,4 +1,6 @@
 import {Component} from '@angular/core';
+import {purchasepart} from '../../model/purchasepart';
+
 
 @Component({
     moduleId: module.id,
@@ -7,4 +9,5 @@ import {Component} from '@angular/core';
 })
 
 export class MaterialPlanningComponent {
+    purchasepart: purchasepart[];
 }
