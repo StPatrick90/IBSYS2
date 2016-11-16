@@ -14,8 +14,8 @@
         <button type="button" class="btn btn-danger" (click)="resetWorkstation()">
             {{'setWorkstations_reset' | translate}}</button>
         <button type="button" class="btn btn-success" (click)="updateWorkstation($event)">
-            <span *ngIf="!_id">{{'setWorkstations_add' | translate}}</span>
-            <span *ngIf="_id">{{'setWorkstations_update' | translate}}</span>
+            <span *ngIf="!workstation._id">{{'setWorkstations_add' | translate}}</span>
+            <span *ngIf="workstation._id">{{'setWorkstations_update' | translate}}</span>
         </button>
     </div>
 </div>
