@@ -12,16 +12,147 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by Paddy on 21.10.2016.
  */
 var core_1 = require('@angular/core');
+var http_1 = require('@angular/http');
 require('rxjs/add/operator/map');
 var WebStorage_1 = require("angular2-localstorage/WebStorage");
 var SessionService = (function () {
-    function SessionService() {
+    function SessionService(http) {
+        this.http = http;
+        this.dummyObj = { results: {
+                game: "",
+                group: "",
+                period: "",
+                warehousestock: {
+                    article: [{ id: "", amount: "", startamount: "", pct: "", price: "", stockvalue: "" }],
+                    totalstockvalue: "" },
+                inwardstockmovement: {
+                    order: [{ orderperiod: "", id: "", mode: "", article: "", amount: "", time: "", materialcosts: "", ordercosts: "", entirecosts: "", piececosts: "" }] },
+                futureinwardstockmovement: {
+                    order: [{ orderperiod: "", id: "", mode: "", article: "", amount: "" }] },
+                idletimecosts: {
+                    workplace: [{ id: "", setupevents: "", idletime: "", wageidletimecosts: "", wagecosts: "", machineidletimecosts: "" }],
+                    sum: { setupevents: "", idletime: "", wageidletimecosts: "", wagecosts: "", machineidletimecosts: "" } },
+                waitinglistworkstations: {
+                    workplace: [{ id: "", timeneed: "", waitinglist: { period: "", order: "", firstbatch: "", lastbatch: "", item: "", amount: "", timeneed: "" } }] },
+                waitingliststock: {
+                    missingpart: [{ id: "", waitinglist: { period: "", order: "", firstbatch: "", lastbatch: "", item: "", amount: "" } }] },
+                ordersinwork: {
+                    workplace: [{ id: "", period: "", order: "", batch: "", item: "", amount: "", timeneed: "" }] },
+                completedorders: {
+                    order: [{ period: "", id: "", item: "", quantity: "", cost: "", averageunitcosts: "", batch: [{ id: "", amount: "", cycletime: "", cost: "" }] }] },
+                cycletimes: {
+                    startedorders: "",
+                    waitingorders: "",
+                    order: [{ id: "", period: "", starttime: "", finishtime: "", cycletimemin: "", cycletimefactor: "" }] },
+                result: {
+                    general: {
+                        capacity: {
+                            current: "",
+                            average: "",
+                            all: "" },
+                        possiblecapacity: {
+                            current: "",
+                            average: "", all: "" },
+                        relpossiblenormalcapacity: {
+                            current: "",
+                            average: "",
+                            all: "" },
+                        productivetime: {
+                            current: "",
+                            average: "",
+                            all: "" },
+                        effiency: {
+                            current: "",
+                            average: "",
+                            all: "" },
+                        sellwish: {
+                            current: "",
+                            average: "",
+                            all: "" },
+                        salesquantity: {
+                            current: "",
+                            average: "",
+                            all: "" },
+                        deliveryreliability: {
+                            current: "",
+                            average: "",
+                            all: "" },
+                        idletime: {
+                            current: "",
+                            average: "",
+                            all: "" },
+                        idletimecosts: {
+                            current: "",
+                            average: "",
+                            all: "" },
+                        storevalue: {
+                            current: "",
+                            average: "",
+                            all: "" },
+                        storagecosts: {
+                            current: "",
+                            average: "",
+                            all: "" } },
+                    defectivegoods: {
+                        quantity: {
+                            current: "",
+                            average: "",
+                            all: "" },
+                        costs: {
+                            current: "",
+                            average: "",
+                            all: "" } },
+                    normalsale: {
+                        salesprice: {
+                            current: "",
+                            average: "",
+                            all: "" },
+                        profit: {
+                            current: "",
+                            average: "",
+                            all: "" },
+                        profitperunit: {
+                            current: "",
+                            average: "",
+                            all: "" } },
+                    directsale: {
+                        profit: {
+                            current: "",
+                            average: "",
+                            all: "" },
+                        contractpenalty: {
+                            current: "",
+                            average: "",
+                            all: "" } },
+                    marketplacesale: {
+                        profit: {
+                            current: "",
+                            average: "",
+                            all: "" } },
+                    summary: {
+                        profit: {
+                            current: "",
+                            average: "",
+                            all: "" } } } } };
+        console.log('Session Service Initialized...');
     }
     SessionService.prototype.getResultObject = function () {
-        return this.resultObj ? this.resultObj : {};
+        return (this.resultObj == null || this.resultObj == {}) ? this.dummyObj : this.resultObj;
     };
     SessionService.prototype.setResultObject = function (Obj) {
         this.resultObj = Obj;
+        //DB save
+        this.addResults({ name: "hallo" });
+        console.log("geht");
+        console.log(this.resultObj);
+    };
+    SessionService.prototype.addResults = function (result) {
+        var headers = new http_1.Headers();
+        console.log(result);
+        console.log(JSON.stringify(result));
+        headers.append('Content-Type', 'application/json');
+        return this.http.post('/api/results', JSON.stringify(result), { headers: headers })
+            .map(function (res) { return res.json(); });
     };
     __decorate([
         WebStorage_1.SessionStorage(), 
@@ -29,7 +160,7 @@ var SessionService = (function () {
     ], SessionService.prototype, "resultObj", void 0);
     SessionService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [http_1.Http])
     ], SessionService);
     return SessionService;
 }());

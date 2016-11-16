@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
 import { XmlImportService } from '../../services/xmlImport.service';
 import { WindowRef } from '../../services/window.service';
 import { SessionService } from '../../services/session.service';
+import {resumeBootstrap} from "@angular/upgrade/src/angular_js";
 
 
 @Component({
@@ -18,7 +19,7 @@ export class XmlImportComponent {
     xml = "";
     xmlService: any;
     sessionService: any;
-    resultObj = {};
+    resultObj;
 
     constructor(private xmlImportService: XmlImportService, sessionService: SessionService){
         this.xmlService = xmlImportService;
@@ -43,6 +44,7 @@ export class XmlImportComponent {
                     self.resultObj = JSON.parse(jsonObj);
                     self.xml = JSON.stringify(self.resultObj);
                     self.sessionService.setResultObject(self.resultObj);
+                    console.log(self.resultObj);
                 })
         }
         myReader.readAsText(file);

@@ -147,16 +147,20 @@ export class SessionService{
     setResultObject(Obj){
         this.resultObj = Obj;
         //DB save
-        //this.addResults({name: "hallo"});
+        this.addResults({name: "hallo"});
         console.log("geht");
         console.log(this.resultObj);
     }
 
     addResults(result){
         var headers = new Headers();
+        console.log(result);
+        console.log(JSON.stringify(result));
         headers.append('Content-Type', 'application/json');
-        return this.http.post('/api/result', JSON.stringify(result), {headers:headers})
+        return this.http.post('/api/results', JSON.stringify(result), {headers:headers})
             .map(res => res.json());
     }
+
+
 
 }

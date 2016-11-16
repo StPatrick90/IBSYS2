@@ -12,6 +12,7 @@ var processingTimes = require('./routes/processingTimes');
 var epparts = require('./routes/epparts');
 var xml = require('./routes/xmlConverter');
 var parts = require('./routes/parts');
+var results = require('./routes/results');
 
 
 var port = 3000;
@@ -37,7 +38,7 @@ app.use('/api', processingTimes);
 app.use('/api', epparts);
 app.use('/api', xml);
 app.use('/api', parts);
-
+app.use('/api', results);
 
 
 app.listen(port, function(){

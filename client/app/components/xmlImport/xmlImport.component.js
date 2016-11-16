@@ -18,7 +18,6 @@ var XmlImportComponent = (function () {
     function XmlImportComponent(xmlImportService, sessionService) {
         this.xmlImportService = xmlImportService;
         this.xml = "";
-        this.resultObj = {};
         this.xmlService = xmlImportService;
         this.sessionService = sessionService;
         this.resultObj = sessionService.getResultObject();
