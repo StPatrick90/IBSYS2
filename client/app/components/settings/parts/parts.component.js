@@ -24,7 +24,7 @@ var PartsComponent = (function () {
         this.listBestandteile = [];
         this.part = new part_1.Part();
         this.nextArbeitsplaetze = Array();
-        this.partservice.getWorkstationsAndParts()
+        this.partservice.getWorkstationsAndPartsAndBearbeitung()
             .subscribe(function (data) {
             _this.workstations = data[0];
             _this.parts = data[1];

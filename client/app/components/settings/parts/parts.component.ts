@@ -40,7 +40,7 @@ export class PartsComponent {
     nextArbeitsplaetze: Workstation[] = Array<Workstation>();
 
     constructor(private partservice:PartService){
-        this.partservice.getWorkstationsAndParts()
+        this.partservice.getWorkstationsAndPartsAndBearbeitung()
             .subscribe(data => {
                 this.workstations = data[0]
                 this.parts = data[1]
