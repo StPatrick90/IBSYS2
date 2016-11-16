@@ -4,14 +4,14 @@
 <div class="well col-md-3" style="margin-left: 1%; margin-right: 1%;">
     <div class="form-group">
         <label for="ws_nummer">{{'setWorkstations_number' | translate}}</label>
-        <input type="number" min="1" [(ngModel)]="nummer" name="nummer" class="form-control" placeholder="{{'setWorkstations_number' | translate}}" id="ws_nummer">
+        <input type="number" min="1" [(ngModel)]="workstation.nummer" name="nummer" class="form-control" placeholder="{{'setWorkstations_number' | translate}}" id="ws_nummer">
     </div>
     <div class="form-group">
         <label for="ws_name">{{'setWorkstations_name' | translate}}</label>
-        <input type="text" [(ngModel)]="name" name="name" class="form-control" placeholder="{{'setWorkstations_name' | translate}}" id="ws_name">
+        <input type="text" [(ngModel)]="workstation.name" name="name" class="form-control" placeholder="{{'setWorkstations_name' | translate}}" id="ws_name">
     </div>
     <div class="form-group" align="right">
-        <button type="button" class="btn btn-danger" (click)="_id = null; nummer = null; name = null;">
+        <button type="button" class="btn btn-danger" (click)="resetWorkstation()">
             {{'setWorkstations_reset' | translate}}</button>
         <button type="button" class="btn btn-success" (click)="updateWorkstation($event)">
             <span *ngIf="!_id">{{'setWorkstations_add' | translate}}</span>
@@ -40,11 +40,11 @@
             </td>
             <td width="12.5%" style="padding-right: 5px" align="right">
                 <input type="button"  value="{{'setWorkstations_edit' | translate}}"
-                       class="btn btn-info" (click)="_id = ws._id; nummer = ws.nummer; name = ws.name">
+                       class="btn btn-info" (click)="setWorkstation(ws)">
             </td>
             <td width="12.5%" style="padding-left: 5px" align="left">
                 <input type="button"  value="{{'setWorkstations_delete' | translate}}"
-                       class="btn btn-danger" (click)="deleteWorkstation(ws._id)">
+                       class="btn btn-danger" (click)="deleteWorkstation(ws)">
             </td>
         </tr>
         </tbody>
@@ -56,7 +56,7 @@
         <h4 class="modal-title">{{'setWorkstations_exists' | translate}}</h4>
     </modal-header>
     <modal-body>
-        {{'setWorkstations_number' | translate}} {{this.nummer}} {{'setWorkstations_exists_body' | translate}}
+        {{'setWorkstations_number' | translate}} {{workstation.nummer}} {{'setWorkstations_exists_body' | translate}}
     </modal-body>
     <modal-footer>
         <button type="button" class="btn btn-primary" (click)="modalWsExists.close()">Ok</button>

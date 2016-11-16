@@ -18,9 +18,7 @@ export class WorkstationsComponent {
     modalWsEmpty: ModalComponent;
 
     workstations: Workstation[];
-    _id: string;
-    nummer: number;
-    name: string;
+    workstation: Workstation = new Workstation();
 
     constructor(private workstationService: WorkstationService) {
         this.workstationService.getWorkstations()
@@ -29,14 +27,14 @@ export class WorkstationsComponent {
             })
     }
 
-    deleteWorkstation(id) {
+    deleteWorkstation(workstation) {
         var workstations = this.workstations;
 
-        this.workstationService.deleteWorkstation(id)
+        this.workstationService.deleteWorkstation(workstation._id)
             .subscribe((data => {
                 if (data.n == 1) {
                     for (var i = 0; i < workstations.length; i++) {
-                        if (workstations[i]._id == id) {
+                        if (workstations[i]._id == workstation._id) {
                             workstations.splice(i, 1);
                         }
                     }
@@ -50,23 +48,21 @@ export class WorkstationsComponent {
         var bereitsVorhanden = false;
 
         for(let ws of workstations){
-            if (ws.nummer == this.nummer && ws._id != this._id){
+            if (ws.nummer == this.workstation.nummer && ws._id != this.workstation._id){
                 bereitsVorhanden = true;
             }
         }
         if(!bereitsVorhanden) {
-            if (!this._id) {
+            if (!this.workstation._id) {
                 var newWorkstation = {
-                    nummer: this.nummer,
-                    name: this.name
+                    nummer: this.workstation.nummer,
+                    name: this.workstation.name
                 }
-                if(newWorkstation.nummer != null && newWorkstation != null){
+                if(newWorkstation.nummer != null && newWorkstation.name != null){
                     this.workstationService.addWorkstation(newWorkstation)
                         .subscribe(workstation => {
                             this.workstations.push(workstation);
-                            this._id = null;
-                            this.nummer = null;
-                            this.name = null;
+                            this.resetWorkstation();
                         });
                 }
                 else{
@@ -76,29 +72,29 @@ export class WorkstationsComponent {
 
             }
             else {
-                var _workstation = {
-                    _id: this._id,
-                    nummer: this.nummer,
-                    name: this.name
-                };
-
-                this.workstationService.updateWorkstation(_workstation)
+                this.workstationService.updateWorkstation(this.workstation)
                     .subscribe(data => {
                         if (data.n == 1) {
                             for (var i = 0; i < workstations.length; i++) {
-                                if (workstations[i]._id == this._id) {
-                                    workstations[i] = _workstation;
+                                if (workstations[i]._id == this.workstation._id) {
+                                    workstations[i] = this.workstation;
                                 }
                             }
                         }
-                        this._id = null;
-                        this.nummer = null;
-                        this.name = null;
+                        this.resetWorkstation();
                     });
             }
         }
         else {
             this.modalWsExists.open();
         }
+    }
+
+    resetWorkstation(){
+        this.workstation = {_id: null, nummer: null, name: null};
+    }
+
+    setWorkstation(ws){
+        this.workstation = ws;
     }
 }
