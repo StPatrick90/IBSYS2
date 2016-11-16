@@ -14,6 +14,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 require('rxjs/add/operator/map');
+var Rx_1 = require('rxjs/Rx');
 var PartService = (function () {
     function PartService(http) {
         this.http = http;
@@ -22,6 +23,9 @@ var PartService = (function () {
     PartService.prototype.getParts = function () {
         return this.http.get('api/parts')
             .map(function (res) { return res.json(); });
+    };
+    PartService.prototype.getWorkstationsAndPartsAndBearbeitung = function () {
+        return Rx_1.Observable.forkJoin(this.http.get('/api/workstations').map(function (res) { return res.json(); }), this.http.get('/api/parts').map(function (res) { return res.json(); }), this.http.get('/api/processingTimes').map(function (res) { return res.json(); }));
     };
     PartService = __decorate([
         core_1.Injectable(), 

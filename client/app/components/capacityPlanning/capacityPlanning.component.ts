@@ -27,8 +27,8 @@ export class CapacityPlanningComponent {
         this.capacityPlanningService.getWorkstations()
             .subscribe(workstations => {
                 this.workstations = workstations;
-                this.getTimesAndEPParts();
             });
+        this.getTimesAndEPParts();
     }
 
     getTimesAndEPParts() {

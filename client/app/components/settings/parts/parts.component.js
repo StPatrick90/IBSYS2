@@ -19,15 +19,22 @@ var PartsComponent = (function () {
     function PartsComponent(partservice) {
         var _this = this;
         this.partservice = partservice;
+        this.nextWsOptions = Array();
         this.listVerfuegbareTeile = [];
         this.listBestandteile = [];
         this.part = new part_1.Part();
-        this.partservice.getParts()
-            .subscribe(function (parts) {
-            _this.parts = parts;
-        }, function (err) { return console.error(err); }, function () { return _this.fillVerfuegbareTeile(); });
-        this.initMultiSelects();
+        this.nextArbeitsplaetze = Array();
+        this.partservice.getWorkstationsAndParts()
+            .subscribe(function (data) {
+            _this.workstations = data[0];
+            _this.parts = data[1];
+            _this.processingTimes = data[2];
+        }, function (err) { return console.error(err); }, function () { return _this.initLists(); });
     }
+    PartsComponent.prototype.initLists = function () {
+        this.fillVerfuegbareTeile();
+        this.initMultiSelects();
+    };
     PartsComponent.prototype.initMultiSelects = function () {
         this.typOptions = [
             { id: 1, name: 'P' },
@@ -39,6 +46,10 @@ var PartsComponent = (function () {
             { id: 2, name: 'D' },
             { id: 3, name: 'H' }
         ];
+        for (var _i = 0, _a = this.workstations; _i < _a.length; _i++) {
+            var ws = _a[_i];
+            this.nextWsOptions.push({ id: ws.nummer, name: ws.nummer.toString() });
+        }
         this.typSettings = {
             pullRight: false,
             enableSearch: false,
@@ -63,6 +74,18 @@ var PartsComponent = (function () {
             dynamicTitleMaxItems: 3,
             maxHeight: '300px',
         };
+        this.nextWsSettings = {
+            pullRight: false,
+            enableSearch: true,
+            checkedStyle: 'glyphicon',
+            buttonClasses: 'btn btn-default',
+            selectionLimit: 1,
+            closeOnSelect: false,
+            showCheckAll: false,
+            showUncheckAll: false,
+            dynamicTitleMaxItems: 1,
+            maxHeight: '300px',
+        };
         this.multiSelectTexts = {
             checkAll: 'Check all',
             uncheckAll: 'Uncheck all',
@@ -84,9 +107,6 @@ var PartsComponent = (function () {
                 }
             }
         }
-    };
-    PartsComponent.prototype.openBestandteile = function () {
-        this.modalBestandteile.open('lg');
     };
     __decorate([
         core_1.ViewChild('modalBestandteile'), 

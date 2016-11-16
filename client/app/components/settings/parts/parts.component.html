@@ -20,21 +20,22 @@
         <ss-multiselect-dropdown [options]="typOptions" [texts]="multiSelectTexts" [settings]="typSettings"
                                  [(ngModel)]="typ" id="part_typ">
         </ss-multiselect-dropdown>
-
+    </div>
+    <div class="form-group">
         <label for="part_verwendung">Verwendung </label>
         <ss-multiselect-dropdown [options]="verwOptions" [texts]="multiSelectTexts" [settings]="verwSettings"
                                  [(ngModel)]="verwendung" id="part_verwendung">
         </ss-multiselect-dropdown>
     </div>
     <div class="form-group">
-        <button type="button" class="btn btn-default btn-block" (click)="openBestandteile()">Bestandteile</button>
+        <button type="button" class="btn btn-default btn-block" (click)="modalBestandteile.open('lg')">Bestandteile</button>
     </div>
     <div class="form-group">
-        <button type="button" class="btn btn-default btn-block">Arbeitsplätze</button>
+        <button type="button" class="btn btn-default btn-block" (click)="modalArbeitsplaetze.open('lg')">Arbeitsplätze</button>
     </div>
 
     <div class="form-group" align="right">
-        <button type="button" class="btn btn-danger" (click)="_id = null; nummer = null; name = null;">
+        <button type="button" class="btn btn-danger">
             {{'setWorkstations_reset' | translate}}</button>
         <button type="button" class="btn btn-success" (click)="updateWorkstation($event)">
             <span *ngIf="!_id">{{'setWorkstations_add' | translate}}</span>
@@ -124,5 +125,54 @@
     </modal-body>
     <modal-footer>
         <button type="button" class="btn btn-primary" (click)="modalBestandteile.close()">Ok</button>
+    </modal-footer>
+</modal>
+
+<modal #modalArbeitsplaetze style="width: 100%">
+    <modal-header [show-close]="true">
+        <h4 class="modal-title">Arbeitsplätze auswählen</h4>
+    </modal-header>
+    <modal-body>
+        <div class="workstation-list" align="center">
+            <div class="col-md-1">
+                Auswahl
+            </div>
+            <div class="col-md-4">
+                Arbeitsplatz
+            </div>
+            <div class="col-md-2">
+                Rüstzeit
+            </div>
+            <div class="col-md-2">
+                Fertigugnszeit
+            </div>
+            <div class="col-md-3">
+                Nächster Arbeitsplatz
+            </div>
+            <br><br>
+            <div *ngFor="let ws of workstations">
+                <div class="col-md-1">
+                    <input type="checkbox" [checked]="false">
+                </div>
+                <div class="col-md-4" align="left">
+                    {{ws.nummer + " - " + ws.name}}
+                </div>
+                <div class="col-md-2">
+                    <input type="number"  name="ruestZeit" class="form-control" placeholder="Rüstzeit">
+                </div>
+                <div class="col-md-2">
+                    <input type="number"  name="fertigungsZeit" class="form-control" placeholder="Fertigungszeit">
+                </div>
+                <div class="col-md-3">
+                    <ss-multiselect-dropdown [options]="nextWsOptions" [(ngModel)]="nextArbeitsplaetze[ws.nummer]"
+                                             [texts]="multiSelectTexts" [settings]="nextWsSettings">
+                    </ss-multiselect-dropdown>
+                </div>
+                <br><br>
+            </div>
+        </div>
+    </modal-body>
+    <modal-footer>
+        <button type="button" class="btn btn-primary" (click)="modalArbeitsplaetze.close()">Ok</button>
     </modal-footer>
 </modal>

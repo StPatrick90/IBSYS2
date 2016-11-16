@@ -4,6 +4,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
+import {Observable} from 'rxjs/Rx';
 
 @Injectable()
 export class PartService{
@@ -15,6 +16,15 @@ export class PartService{
         return this.http.get('api/parts')
             .map(res => res.json());
     }
+
+    getWorkstationsAndPartsAndBearbeitung() {
+        return Observable.forkJoin(
+            this.http.get('/api/workstations').map(res => res.json()),
+            this.http.get('/api/parts').map(res => res.json()),
+            this.http.get('/api/processingTimes').map(res => res.json())
+        );
+    }
+
     /*
     addWorkstation(newWorkstation){
         var headers = new Headers();

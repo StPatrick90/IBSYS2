@@ -6,6 +6,8 @@ import {Part} from '../../../model/part';
 import {PartService} from '../../../services/part.service';
 import {IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import {Workstation} from "../../../model/workstastion";
+import {ProcessingTime} from "../../../model/processingTime";
 
 
 @Component({
@@ -19,8 +21,10 @@ export class PartsComponent {
 
     private typOptions: IMultiSelectOption[];
     private verwOptions: IMultiSelectOption[];
+    private nextWsOptions: IMultiSelectOption[] = Array<IMultiSelectOption>();
     private typSettings: IMultiSelectSettings;
     private verwSettings: IMultiSelectSettings;
+    private nextWsSettings: IMultiSelectSettings;
     private multiSelectTexts: IMultiSelectTexts;
 
     listVerfuegbareTeile:Array<Part> = [];
@@ -28,16 +32,30 @@ export class PartsComponent {
 
     part: Part = new Part();
     parts: Part[];
+    workstations: Workstation[];
+    processingTimes: ProcessingTime[];
+    verwendung: string[];
+    typ: string[];
+
+    nextArbeitsplaetze: Workstation[] = Array<Workstation>();
 
     constructor(private partservice:PartService){
-        this.partservice.getParts()
-            .subscribe(parts => {
-                this.parts = parts;
+        this.partservice.getWorkstationsAndParts()
+            .subscribe(data => {
+                this.workstations = data[0]
+                this.parts = data[1]
+                this.processingTimes = data[2]
             },
             err => console.error(err),
-            () => this.fillVerfuegbareTeile())
+            () => this.initLists())
+
+    }
+
+    initLists(){
+        this.fillVerfuegbareTeile();
         this.initMultiSelects();
     }
+
     initMultiSelects(){
         this.typOptions = [
             { id: 1, name: 'P' },
@@ -49,6 +67,9 @@ export class PartsComponent {
             { id: 2, name: 'D' },
             { id: 3, name: 'H' }
         ];
+        for(let ws of this.workstations){
+            this.nextWsOptions.push({id:ws.nummer, name: ws.nummer.toString()});
+        }
 
         this.typSettings = {
             pullRight: false,
@@ -72,6 +93,18 @@ export class PartsComponent {
             showCheckAll: true,
             showUncheckAll: true,
             dynamicTitleMaxItems: 3,
+            maxHeight: '300px',
+        };
+        this.nextWsSettings = {
+            pullRight: false,
+            enableSearch: true,
+            checkedStyle: 'glyphicon',
+            buttonClasses: 'btn btn-default',
+            selectionLimit: 1,
+            closeOnSelect: false,
+            showCheckAll: false,
+            showUncheckAll: false,
+            dynamicTitleMaxItems: 1,
             maxHeight: '300px',
         };
         this.multiSelectTexts = {
@@ -99,7 +132,4 @@ export class PartsComponent {
 
     }
 
-    openBestandteile(){
-        this.modalBestandteile.open('lg');
-    }
 }
