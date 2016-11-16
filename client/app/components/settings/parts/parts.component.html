@@ -8,8 +8,8 @@
         <input type="text" [(ngModel)]="bezeichnung" name="bezeichnung" class="form-control" placeholder="Bezeichnung" id="part_bez">
     </div>
     <div class="form-group">
-        <label for="part_nummer">Wert</label>
-        <input type="number" [(ngModel)]="wert" name="wert" class="form-control" placeholder="Wert" id="part_wert">
+        <label for="part_wert">Wert</label>
+        <input type="number" min="1" [(ngModel)]="wert" name="wert" class="form-control" placeholder="Wert" id="part_wert">
     </div>
     <div class="form-group">
         <label for="part_nummer">Lagermenge</label>
@@ -158,10 +158,10 @@
                     {{ws.nummer + " - " + ws.name}}
                 </div>
                 <div class="col-md-2">
-                    <input type="number"  name="ruestZeit" class="form-control" placeholder="Rüstzeit">
+                    <input type="number" min="1"  name="ruestZeit" class="form-control" placeholder="Rüstzeit">
                 </div>
                 <div class="col-md-2">
-                    <input type="number"  name="fertigungsZeit" class="form-control" placeholder="Fertigungszeit">
+                    <input type="number" min="1" name="fertigungsZeit" class="form-control" placeholder="Fertigungszeit">
                 </div>
                 <div class="col-md-3">
                     <ss-multiselect-dropdown [options]="nextWsOptions" [(ngModel)]="nextArbeitsplaetze[ws.nummer]"
