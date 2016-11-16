@@ -9,22 +9,35 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var prediction_service_1 = require('../../services/prediction.service');
+var session_service_1 = require('../../services/session.service');
 var PredictionComponent = (function () {
-    function PredictionComponent(predictionsService) {
-        this.predictionsService = predictionsService;
-        this.predictionsService.getPeriods()
-            .subscribe(function (periods) {
-            console.log(periods);
-        });
+    function PredictionComponent(sessionService) {
+        this.periods = [];
+        this.sessionService = sessionService;
+        this.resultObjs = this.sessionService.getResultObject();
     }
+    PredictionComponent.prototype.generatePeriods = function () {
+        this.period = parseInt(this.resultObjs.results.period, 10);
+        this.periods.push(this.period + 1);
+        this.periods.push(this.period + 2);
+        this.periods.push(this.period + 3);
+        console.log(this.periods);
+        /*
+        for(var i = 0; i < 3; i++){
+            this.period = this.period + 1;
+            this.periods.push(this.period);
+        }*/
+    };
+    PredictionComponent.prototype.generateArray = function (obj) {
+        return Object.keys(obj).map(function (key) { return obj[key]; });
+    };
     PredictionComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'prediction',
             templateUrl: 'prediction.component.html'
         }), 
-        __metadata('design:paramtypes', [prediction_service_1.PredictionService])
+        __metadata('design:paramtypes', [session_service_1.SessionService])
     ], PredictionComponent);
     return PredictionComponent;
 }());

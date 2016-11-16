@@ -16,10 +16,6 @@ var PredictionService = (function () {
         this.http = http;
         console.log('Prediction Service Initialized...');
     }
-    PredictionService.prototype.getPeriods = function () {
-        return this.http.get('api/periods');
-        map(function (res) { return res.json(); });
-    };
     PredictionService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

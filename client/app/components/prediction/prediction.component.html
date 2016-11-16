@@ -3,7 +3,6 @@
         <div class="row">
             <h2>Prognose</h2>
             <ul class="breadcrumb">
-                <!--completed-->
                 <li class="completed"><a routerLink="/xmlImport" routerLinkActive="active">{{'xmlImport' | translate}}</a></li>
                 <li class="active"><a routerLink="/prediction" routerLinkActive="active">{{'prediction_planning' | translate}}</a></li>
                 <li class=""><a routerLink="/materialPlanning" routerLinkActive="active">{{'material_Planning' | translate}}</a></li>
@@ -12,15 +11,16 @@
         </div>
     </div>
 </div>
+<ul>
 <h3>Verbindliche Aufträge</h3>
 <table class="table">
     <thead>
     <tr>
         <th>Periode</th>
-        <th>5</th>
-        <th>6</th>
-        <th>7</th>
-        <th>8</th>
+        <th>{{ resultObjs.results.period }}</th>
+        <th [(ngModel)]="period">{{ generatePeriods() }}</th>
+        <th>{{ resultObjs.results.period }}</th>
+        <th>{{ resultObjs.results.period }}</th>
     </tr>
     </thead>
     <tbody>

@@ -16,7 +16,7 @@ export class TasksComponent {
     title: string;
     sessionService: any;
 
-    constructor(private taskService:TaskService, sessionService: SessionService){
+    constructor(private taskService: TaskService, sessionService: SessionService){
         this.taskService.getTasks()
             .subscribe(tasks => {
                 this.tasks = tasks;
