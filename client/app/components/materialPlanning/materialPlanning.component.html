@@ -1,4 +1,23 @@
-<table class="table" border = "1 " >
+<div class="well">
+    <div class="">
+        <div class="row">
+            <h2>Kapazitätsplanung</h2>
+            <ul class="breadcrumb">
+                <!--completed-->
+                <li class="completed"><a routerLink="/xmlImport" routerLinkActive="active">{{'xmlImport' |
+                    translate}}</a></li>
+                <li class="completed"><a routerLink="/prediction" routerLinkActive="active">{{'prediction_planning' |
+                    translate}}</a></li>
+                <li class="active"><a routerLink="/materialPlanning" routerLinkActive="active">{{'material_Planning' |
+                    translate}}</a></li>
+                <li class=""><a routerLink="/capacityPlanning" routerLinkActive="active">{{'capacity_planning' |
+                    translate}}</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<table class="table" border="1 ">
     <caption class="text-center">{{'material_Planning' | translate}}</caption>
     <thead>
     <tr>
@@ -42,7 +61,7 @@
     <tbody>
     <tr>
         <!-- 1. Zeile-->
-        <td>21</td>
+        <td>{{price}}</td>
         <td>1,8</td>
         <td>0,4</td>
         <td>2,2</td>
@@ -53,7 +72,7 @@
         <td>300</td>
         <td>150</td>
         <td>150</td>
-        <td>150</td>
+        <td>{{openingStock}}</td>
         <td>150</td>
         <td>-300</td>
         <td>-</td>
@@ -62,28 +81,6 @@
         <td>700</td>
         <td>800</td>
         <td>900</td>
-    </tr>
-    <tr>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
     </tr>
     </tbody>
 </table>

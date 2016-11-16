@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {purchasepart} from '../../model/purchasepart';
+import {SessionService} from '../../services/session.service';
 
 
 @Component({
@@ -9,5 +9,19 @@ import {purchasepart} from '../../model/purchasepart';
 })
 
 export class MaterialPlanningComponent {
-    purchasepart: purchasepart[];
+
+    resultObj: any;
+    price: number;
+    openingStock;
+
+    constructor(private sessionService: SessionService) {
+        this.resultObj = this.sessionService.getResultObject();
+        this.setParameters();
+
+    }
+
+    setParameters() {
+        this.price = this.resultObj.results.warehousestock.article[0].price;
+        this.openingStock = this.resultObj.results.warehousestock.article[0].startamount;
+    }
 }

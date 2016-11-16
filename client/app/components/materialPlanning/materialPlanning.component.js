@@ -9,16 +9,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var session_service_1 = require('../../services/session.service');
 var MaterialPlanningComponent = (function () {
-    function MaterialPlanningComponent() {
+    function MaterialPlanningComponent(sessionService) {
+        this.sessionService = sessionService;
+        this.resultObj = this.sessionService.getResultObject();
+        this.setParameters();
     }
+    MaterialPlanningComponent.prototype.setParameters = function () {
+        this.price = this.resultObj.results.warehousestock.article[0].price;
+        this.openingStock = this.resultObj.results.warehousestock.article[0].startamount;
+    };
     MaterialPlanningComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'materialPlanning',
             templateUrl: 'materialPlanning.component.html'
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [session_service_1.SessionService])
     ], MaterialPlanningComponent);
     return MaterialPlanningComponent;
 }());

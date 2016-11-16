@@ -145,6 +145,7 @@ export class SessionService{
     getResultObject(){
         return (this.resultObj == null || this.resultObj == {})? this.dummyObj: this.resultObj;
     }
+
     setResultObject(Obj){
         this.resultObj = Obj;
     }

@@ -3,3 +3,4 @@
 /client/bower_components/**/*
 .idea/*
 /client/typings/**/*
+/client/npm-debug.log*
