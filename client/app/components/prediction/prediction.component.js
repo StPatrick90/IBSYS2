@@ -16,17 +16,13 @@ var PredictionComponent = (function () {
         this.sessionService = sessionService;
         this.resultObjs = this.sessionService.getResultObject();
     }
-    PredictionComponent.prototype.generatePeriods = function () {
+    PredictionComponent.prototype.generatePeriods = function (index) {
         this.period = parseInt(this.resultObjs.results.period, 10);
+        this.periods.push(this.period);
         this.periods.push(this.period + 1);
         this.periods.push(this.period + 2);
         this.periods.push(this.period + 3);
-        console.log(this.periods);
-        /*
-        for(var i = 0; i < 3; i++){
-            this.period = this.period + 1;
-            this.periods.push(this.period);
-        }*/
+        return this.periods[index];
     };
     PredictionComponent.prototype.generateArray = function (obj) {
         return Object.keys(obj).map(function (key) { return obj[key]; });

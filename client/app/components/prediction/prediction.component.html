@@ -17,10 +17,10 @@
     <thead>
     <tr>
         <th>Periode</th>
-        <th>{{ resultObjs.results.period }}</th>
-        <th [(ngModel)]="period">{{ generatePeriods() }}</th>
-        <th>{{ resultObjs.results.period }}</th>
-        <th>{{ resultObjs.results.period }}</th>
+        <th>{{ generatePeriods(0) }}</th>
+        <th>{{ generatePeriods(1) }}</th>
+        <th>{{ generatePeriods(2) }}</th>
+        <th>{{ generatePeriods(3) }}</th>
     </tr>
     </thead>
     <tbody>
@@ -59,10 +59,10 @@
     <thead>
     <tr>
         <th>Periode</th>
-        <th>5</th>
-        <th>6</th>
-        <th>7</th>
-        <th>8</th>
+        <th>{{ generatePeriods(0) }}</th>
+        <th>{{ generatePeriods(1) }}</th>
+        <th>{{ generatePeriods(2) }}</th>
+        <th>{{ generatePeriods(3) }}</th>
     </tr>
     </thead>
     <tbody>
@@ -101,16 +101,16 @@
     <thead>
     <tr>
         <th>Periode</th>
-        <th>5</th>
-        <th>6</th>
-        <th>7</th>
-        <th>8</th>
+        <th>{{ generatePeriods(0) }}</th>
+        <th>{{ generatePeriods(1) }}</th>
+        <th>{{ generatePeriods(2) }}</th>
+        <th>{{ generatePeriods(3) }}</th>
     </tr>
     </thead>
     <tbody>
     <tr>
         <th scope="row">Produkt 1</th>
-        <td>100</td>
+        <td><input type="text" class="form-control"></td>
         <td>200</td>
         <td>450</td>
         <td>600</td>

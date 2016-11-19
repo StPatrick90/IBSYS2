@@ -18,36 +18,17 @@ export class PredictionComponent {
         this.resultObjs = this.sessionService.getResultObject();
     }
 
-    generatePeriods(){
+    generatePeriods(index: number){
         this.period = parseInt(this.resultObjs.results.period, 10);
+        this.periods.push(this.period);
         this.periods.push(this.period + 1);
         this.periods.push(this.period + 2);
         this.periods.push(this.period + 3);
-        console.log(this.periods);
-        /*
-        for(var i = 0; i < 3; i++){
-            this.period = this.period + 1;
-            this.periods.push(this.period);
-        }*/
+        return this.periods[index];
     }
 
     generateArray(obj){
         return Object.keys(obj).map((key)=>{ return obj[key]});
     }
-
-    /*getPeriodFromSessionStorage(){
-        this.resultObj = this.sessionService.getResultObject();
-        function iterateOverObject(resultObj){
-            for(var key in resultObj){
-                if(resultObj.hasOwnProperty(key) && key.valueOf() == "period"){
-                    var val = resultObj[key];
-                    console.log(val);
-                    iterateOverObject(val);
-                }
-            }
-        }
-        iterateOverObject(this.resultObj);
-    }*/
-
 }
 
