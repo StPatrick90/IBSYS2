@@ -6,10 +6,9 @@ import { TranslateService } from './translate/translate.service';
 import { XmlImportService } from './services/xmlImport.service';
 import { WindowRef } from './services/window.service';
 import { WorkstationService } from './services/workstation.service';
-
 import { PartService } from './services/part.service';
-
 import { SessionService} from './services/session.service';
+import { DBService} from './services/db.service';
 
 
 @Component({
@@ -18,7 +17,7 @@ import { SessionService} from './services/session.service';
     templateUrl: 'app.component.html',
 
     providers: [TaskService,CapacityPlanningService, AppService, TranslateService,
-        XmlImportService, WindowRef, WorkstationService, PartService, SessionService]
+        XmlImportService, WindowRef, WorkstationService, PartService, SessionService, DBService]
 
 
 })

@@ -1,3 +1,7 @@
+.leftRightMargin{
+    margin-left: 15px !important;
+    margin-right: 15px !important;
+}
 .breadcrumb {
     padding: 0px;
     background: #D4D4D4;

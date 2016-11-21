@@ -14,14 +14,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var xmlImport_service_1 = require('../../services/xmlImport.service');
 var session_service_1 = require('../../services/session.service');
+var db_service_1 = require('../../services/db.service');
 var XmlImportComponent = (function () {
-    function XmlImportComponent(xmlImportService, sessionService) {
+    function XmlImportComponent(xmlImportService, sessionService, dbService) {
+        var _this = this;
         this.xmlImportService = xmlImportService;
         this.xml = "";
+        this.periods = [];
+        this.errorMessage = "";
         this.xmlService = xmlImportService;
         this.sessionService = sessionService;
-        this.resultObj = sessionService.getResultObject();
-        this.xml = JSON.stringify(this.resultObj);
+        this.dbService = dbService;
+        this.selectedPeriod = sessionService.getResultObject();
+        if (this.selectedPeriod)
+            this.success = true;
+        dbService.getResults()
+            .subscribe(function (results) {
+            _this.allResults = results;
+            for (var i = 0; i <= _this.allResults.length - 1; i++) {
+                console.log(_this.allResults[i]);
+                if (_this.allResults[i].results) {
+                    _this.periods.push(_this.allResults[i].results.period);
+                }
+            }
+            _this.periods.sort();
+        }, function (err) { return console.log(err); }, function () { return console.log("Completed"); });
+        //this.xml = JSON.stringify(this.resultObj);
     }
     XmlImportComponent.prototype.changeListener = function ($event) {
         this.readThis($event.target);
@@ -34,12 +52,40 @@ var XmlImportComponent = (function () {
             self.xml = myReader.result;
             self.xmlService.convertToJson(self.xml)
                 .subscribe(function (jsonObj) {
-                self.resultObj = JSON.parse(jsonObj);
-                self.xml = JSON.stringify(self.resultObj);
-                self.sessionService.setResultObject(self.resultObj);
+                var result = JSON.parse(jsonObj);
+                //self.xml = JSON.stringify(self.resultObj);
+                for (var i = 0; i <= self.periods.length; i++) {
+                    console.log(self.periods[i]);
+                    if (result.results.period === self.periods[i]) {
+                        self.errorMessage = "Periode " + self.periods[i] + " ist schon vorhanden.";
+                        self.success = false;
+                        console.log(self.success);
+                        return;
+                    }
+                }
+                self.selectedPeriod = result;
+                self.sessionService.setResultObject(self.selectedPeriod);
+                self.success = true;
             });
         };
         myReader.readAsText(file);
+    };
+    XmlImportComponent.prototype.periodSelected = function (event) {
+        for (var i = 0; i <= this.allResults.length - 1; i++) {
+            if (this.allResults[i].results) {
+                if (this.allResults[i].results.period === event) {
+                    this.selectedPeriod = this.allResults[i].results;
+                    this.sessionService.setResultObject(this.selectedPeriod);
+                }
+            }
+        }
+        if (this.selectedPeriod) {
+            this.success = true;
+        }
+        else {
+            this.errorMessage = "Fehler, inkonsistente Daten.";
+            this.success = false;
+        }
     };
     XmlImportComponent = __decorate([
         core_1.Component({
@@ -47,7 +93,7 @@ var XmlImportComponent = (function () {
             selector: 'xmlImport',
             templateUrl: 'xmlImport.component.html'
         }), 
-        __metadata('design:paramtypes', [xmlImport_service_1.XmlImportService, session_service_1.SessionService])
+        __metadata('design:paramtypes', [xmlImport_service_1.XmlImportService, session_service_1.SessionService, db_service_1.DBService])
     ], XmlImportComponent);
     return XmlImportComponent;
 }());

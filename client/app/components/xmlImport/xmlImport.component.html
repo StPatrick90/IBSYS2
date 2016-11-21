@@ -12,8 +12,84 @@
         </div>
     </div>
 </div>
-<div class="col-lg-2">
-    <input type="file" (change)="changeListener($event)">
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-5 col-md-6 col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">XML Import</div>
+                <div class="panel-body">
+                    <input type="file" (change)="changeListener($event)">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5 col-md-6 col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Vorhandene Periode auswählen</div>
+                <div class="panel-body">
+                    <div class="btn-group">
+                        <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Periode <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" >
+                            <li *ngFor="let period of periods" class="text-center"><a (click)="periodSelected(period)">{{period}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row leftRightMargin">
+        <div class="panel panel-success" [hidden]="!success">
+            <div class="panel-heading">Erfolgreich!</div>
+            <div class="panel-body">
+                <span class="text-center">
+                    Periode {{(selectedPeriod)? selectedPeriod.period : "X"}} erfolgreich eingebunden!
+                </span>
+                <button class="btn pull-right btn-success">
+                    Fortfahren
+                </button>
+            </div>
+        </div>
+        <div class="panel panel-danger" [hidden]="(success !== false)">
+            <div class="panel-heading">Fehler!</div>
+            <div class="panel-body">
+                <span class="text-center">
+                    Die Periode wurde nicht richtig eingebunden!<br>
+                    {{(errorMessage)? errorMessage : ""}}<br>
+                    Bitte versuche es erneut oder wähle die Periode über das DropDown Menu.
+                </span>
+            </div>
+        </div>
+    </div>
 </div>
-<textarea class="fullScreenTextArea" [hidden]="!resultObj.results" [(ngModel)]="xml"></textarea>
+
+
+<!--
+<div class="row">
+
+
+   </div>
+       <div class="col-lg-2">
+           <input type="file" (change)="changeListener($event)">
+       </div>
+       <div class="col-lg-4">
+           oder Periode auswählen:
+
+           <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               Large button <span class="caret"></span>
+           </button>
+           <ul class="dropdown-menu">
+               <li>test</li>
+           </ul>
+       </div>
+
+
+   <div >
+
+   </div>
+
+
+   <button [hidden]="!resultObj.results" class="btn btn-primary pull-right">Fortfahren</button>-->
+<!--<textarea class="fullScreenTextArea" [hidden]="!resultObj.results" [(ngModel)]="xml"></textarea>-->
 

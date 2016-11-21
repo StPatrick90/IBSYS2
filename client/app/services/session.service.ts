@@ -2,9 +2,10 @@
  * Created by Paddy on 21.10.2016.
  */
 import { Injectable } from '@angular/core';
+import {SessionStorage} from "angular2-localstorage/WebStorage";
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
-import {SessionStorage} from "angular2-localstorage/WebStorage";
+
 
 @Injectable()
 export class SessionService{
@@ -146,21 +147,26 @@ export class SessionService{
     }
     setResultObject(Obj){
         this.resultObj = Obj;
-        //DB save
-        this.addResults({name: "hallo"});
-        console.log("geht");
-        console.log(this.resultObj);
+        this.addResults(Obj)
+            .subscribe(result => result);
     }
+
+/*
+    //DB save
+    this.addResults(Obj)
+.subscribe(task => {
+    console.log("yooooo");
+    console.log(task);
+})*/
 
     addResults(result){
         var headers = new Headers();
-        console.log(result);
-        console.log(JSON.stringify(result));
         headers.append('Content-Type', 'application/json');
-        return this.http.post('/api/results', JSON.stringify(result), {headers:headers})
+        return this.http.post('/api/result', JSON.stringify(result), {headers:headers})
             .map(res => res.json());
     }
-
-
-
+    getResult(){
+        return this.http.get('/api/results')
+            .map(res => res.json());
+    }
 }

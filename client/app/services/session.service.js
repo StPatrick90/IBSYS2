@@ -12,9 +12,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by Paddy on 21.10.2016.
  */
 var core_1 = require('@angular/core');
+var WebStorage_1 = require("angular2-localstorage/WebStorage");
 var http_1 = require('@angular/http');
 require('rxjs/add/operator/map');
-var WebStorage_1 = require("angular2-localstorage/WebStorage");
 var SessionService = (function () {
     function SessionService(http) {
         this.http = http;
@@ -141,17 +141,24 @@ var SessionService = (function () {
     };
     SessionService.prototype.setResultObject = function (Obj) {
         this.resultObj = Obj;
-        //DB save
-        this.addResults({ name: "hallo" });
-        console.log("geht");
-        console.log(this.resultObj);
+        this.addResults(Obj)
+            .subscribe(function (result) { return result; });
     };
+    /*
+        //DB save
+        this.addResults(Obj)
+    .subscribe(task => {
+        console.log("yooooo");
+        console.log(task);
+    })*/
     SessionService.prototype.addResults = function (result) {
         var headers = new http_1.Headers();
-        console.log(result);
-        console.log(JSON.stringify(result));
         headers.append('Content-Type', 'application/json');
-        return this.http.post('/api/results', JSON.stringify(result), { headers: headers })
+        return this.http.post('/api/result', JSON.stringify(result), { headers: headers })
+            .map(function (res) { return res.json(); });
+    };
+    SessionService.prototype.getResult = function () {
+        return this.http.get('/api/results')
             .map(function (res) { return res.json(); });
     };
     __decorate([
