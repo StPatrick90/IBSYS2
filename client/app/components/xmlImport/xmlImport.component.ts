@@ -31,9 +31,9 @@ export class XmlImportComponent {
         this.xmlService = xmlImportService;
         this.sessionService = sessionService;
         this.dbService = dbService;
-        this.selectedPeriod = sessionService.getResultObject();
+        this.selectedPeriod = sessionService.getResultObject().results;
 
-        if(this.selectedPeriod)
+        if(this.selectedPeriod.period !== "")
             this.success = true;
 
         dbService.getResults()
@@ -41,14 +41,13 @@ export class XmlImportComponent {
                 results =>{
                     this.allResults = results;
                     for(var i = 0; i <= this.allResults.length-1; i++){
-                        console.log(this.allResults[i]);
                         if(this.allResults[i].results){
                             this.periods.push(this.allResults[i].results.period);
                         }
                     }
                     this.periods.sort();},
                 err => console.log(err),
-                () => console.log("Completed"));
+                () => console.log("Periods loaded!"));
         //this.xml = JSON.stringify(this.resultObj);
     }
 
@@ -68,16 +67,23 @@ export class XmlImportComponent {
                     var result = JSON.parse(jsonObj);
                     //self.xml = JSON.stringify(self.resultObj);
                     for(var i = 0; i <= self.periods.length; i++){
-                        console.log(self.periods[i]);
                         if(result.results.period === self.periods[i]){
                             self.errorMessage = "Periode " + self.periods[i] + " ist schon vorhanden."
                             self.success = false;
-                            console.log(self.success);
                             return;
                         }
                     }
-                    self.selectedPeriod = result;
-                    self.sessionService.setResultObject(self.selectedPeriod);
+                    self.selectedPeriod = result.results;
+                    self.sessionService.setResultObject(result);
+                    self.dbService.addResult(result)
+                        .subscribe(
+                            result => result,
+                            err => {
+                                console.log(err);
+                                self.errorMessage = err;
+                                self.success = false;
+                            },
+                            () => console.log("Period Added"));
                     self.success = true;
                 })
         }
@@ -88,7 +94,7 @@ export class XmlImportComponent {
         for(var i = 0; i <= this.allResults.length-1; i++){
             if(this.allResults[i].results){
                 if(this.allResults[i].results.period === event){
-                    this.selectedPeriod = this.allResults[i].results;
+                    this.selectedPeriod = this.allResults[i];
                     this.sessionService.setResultObject(this.selectedPeriod);
                 }
             }

@@ -46,9 +46,11 @@
                 <span class="text-center">
                     Periode {{(selectedPeriod)? selectedPeriod.period : "X"}} erfolgreich eingebunden!
                 </span>
-                <button class="btn pull-right btn-success">
-                    Fortfahren
-                </button>
+                <a routerLink="/prediction" routerLinkActive="active">
+                    <button class="btn pull-right btn-success">
+                        Fortfahren
+                    </button>
+                </a>
             </div>
         </div>
         <div class="panel panel-danger" [hidden]="(success !== false)">

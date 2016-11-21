@@ -25,20 +25,19 @@ var XmlImportComponent = (function () {
         this.xmlService = xmlImportService;
         this.sessionService = sessionService;
         this.dbService = dbService;
-        this.selectedPeriod = sessionService.getResultObject();
-        if (this.selectedPeriod)
+        this.selectedPeriod = sessionService.getResultObject().results;
+        if (this.selectedPeriod.period !== "")
             this.success = true;
         dbService.getResults()
             .subscribe(function (results) {
             _this.allResults = results;
             for (var i = 0; i <= _this.allResults.length - 1; i++) {
-                console.log(_this.allResults[i]);
                 if (_this.allResults[i].results) {
                     _this.periods.push(_this.allResults[i].results.period);
                 }
             }
             _this.periods.sort();
-        }, function (err) { return console.log(err); }, function () { return console.log("Completed"); });
+        }, function (err) { return console.log(err); }, function () { return console.log("Periods loaded!"); });
         //this.xml = JSON.stringify(this.resultObj);
     }
     XmlImportComponent.prototype.changeListener = function ($event) {
@@ -55,16 +54,20 @@ var XmlImportComponent = (function () {
                 var result = JSON.parse(jsonObj);
                 //self.xml = JSON.stringify(self.resultObj);
                 for (var i = 0; i <= self.periods.length; i++) {
-                    console.log(self.periods[i]);
                     if (result.results.period === self.periods[i]) {
                         self.errorMessage = "Periode " + self.periods[i] + " ist schon vorhanden.";
                         self.success = false;
-                        console.log(self.success);
                         return;
                     }
                 }
-                self.selectedPeriod = result;
-                self.sessionService.setResultObject(self.selectedPeriod);
+                self.selectedPeriod = result.results;
+                self.sessionService.setResultObject(result);
+                self.dbService.addResult(result)
+                    .subscribe(function (result) { return result; }, function (err) {
+                    console.log(err);
+                    self.errorMessage = err;
+                    self.success = false;
+                }, function () { return console.log("Period Added"); });
                 self.success = true;
             });
         };
@@ -74,7 +77,7 @@ var XmlImportComponent = (function () {
         for (var i = 0; i <= this.allResults.length - 1; i++) {
             if (this.allResults[i].results) {
                 if (this.allResults[i].results.period === event) {
-                    this.selectedPeriod = this.allResults[i].results;
+                    this.selectedPeriod = this.allResults[i];
                     this.sessionService.setResultObject(this.selectedPeriod);
                 }
             }
