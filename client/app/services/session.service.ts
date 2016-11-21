@@ -147,26 +147,5 @@ export class SessionService{
     }
     setResultObject(Obj){
         this.resultObj = Obj;
-        this.addResults(Obj)
-            .subscribe(result => result);
-    }
-
-/*
-    //DB save
-    this.addResults(Obj)
-.subscribe(task => {
-    console.log("yooooo");
-    console.log(task);
-})*/
-
-    addResults(result){
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post('/api/result', JSON.stringify(result), {headers:headers})
-            .map(res => res.json());
-    }
-    getResult(){
-        return this.http.get('/api/results')
-            .map(res => res.json());
     }
 }

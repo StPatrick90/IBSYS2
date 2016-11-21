@@ -32,9 +32,9 @@ export class XmlImportComponent {
         this.sessionService = sessionService;
         this.dbService = dbService;
         this.selectedPeriod = sessionService.getResultObject().results;
-
-        if(this.selectedPeriod.period !== "")
-            this.success = true;
+        if(this.selectedPeriod)
+            if(this.selectedPeriod.period !== "")
+                this.success = true;
 
         dbService.getResults()
             .subscribe(
@@ -77,7 +77,10 @@ export class XmlImportComponent {
                     self.sessionService.setResultObject(result);
                     self.dbService.addResult(result)
                         .subscribe(
-                            result => result,
+                            result => {
+                                self.periods.push(result.results.period);
+                                self.periods.sort();
+                            },
                             err => {
                                 console.log(err);
                                 self.errorMessage = err;
@@ -94,8 +97,8 @@ export class XmlImportComponent {
         for(var i = 0; i <= this.allResults.length-1; i++){
             if(this.allResults[i].results){
                 if(this.allResults[i].results.period === event){
-                    this.selectedPeriod = this.allResults[i];
-                    this.sessionService.setResultObject(this.selectedPeriod);
+                    this.selectedPeriod = this.allResults[i].results;
+                    this.sessionService.setResultObject(this.allResults[i]);
                 }
             }
         }

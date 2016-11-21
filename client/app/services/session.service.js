@@ -141,25 +141,6 @@ var SessionService = (function () {
     };
     SessionService.prototype.setResultObject = function (Obj) {
         this.resultObj = Obj;
-        this.addResults(Obj)
-            .subscribe(function (result) { return result; });
-    };
-    /*
-        //DB save
-        this.addResults(Obj)
-    .subscribe(task => {
-        console.log("yooooo");
-        console.log(task);
-    })*/
-    SessionService.prototype.addResults = function (result) {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post('/api/result', JSON.stringify(result), { headers: headers })
-            .map(function (res) { return res.json(); });
-    };
-    SessionService.prototype.getResult = function () {
-        return this.http.get('/api/results')
-            .map(function (res) { return res.json(); });
     };
     __decorate([
         WebStorage_1.SessionStorage(), 

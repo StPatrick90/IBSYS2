@@ -19,7 +19,7 @@ var DBService = (function () {
         this.http = http;
         console.log('Database Service Initialized...');
     }
-    DBService.prototype.addResults = function (result) {
+    DBService.prototype.addResult = function (result) {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
         return this.http.post('/api/result', JSON.stringify(result), { headers: headers })

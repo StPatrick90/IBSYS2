@@ -12,7 +12,7 @@ export class DBService{
         console.log('Database Service Initialized...');
     }
 
-    addResults(result){
+    addResult(result){
         var headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return this.http.post('/api/result', JSON.stringify(result), {headers:headers})

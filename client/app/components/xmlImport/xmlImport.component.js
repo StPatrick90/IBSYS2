@@ -26,8 +26,9 @@ var XmlImportComponent = (function () {
         this.sessionService = sessionService;
         this.dbService = dbService;
         this.selectedPeriod = sessionService.getResultObject().results;
-        if (this.selectedPeriod.period !== "")
-            this.success = true;
+        if (this.selectedPeriod)
+            if (this.selectedPeriod.period !== "")
+                this.success = true;
         dbService.getResults()
             .subscribe(function (results) {
             _this.allResults = results;
@@ -63,7 +64,10 @@ var XmlImportComponent = (function () {
                 self.selectedPeriod = result.results;
                 self.sessionService.setResultObject(result);
                 self.dbService.addResult(result)
-                    .subscribe(function (result) { return result; }, function (err) {
+                    .subscribe(function (result) {
+                    self.periods.push(result.results.period);
+                    self.periods.sort();
+                }, function (err) {
                     console.log(err);
                     self.errorMessage = err;
                     self.success = false;
@@ -77,8 +81,8 @@ var XmlImportComponent = (function () {
         for (var i = 0; i <= this.allResults.length - 1; i++) {
             if (this.allResults[i].results) {
                 if (this.allResults[i].results.period === event) {
-                    this.selectedPeriod = this.allResults[i];
-                    this.sessionService.setResultObject(this.selectedPeriod);
+                    this.selectedPeriod = this.allResults[i].results;
+                    this.sessionService.setResultObject(this.allResults[i]);
                 }
             }
         }
