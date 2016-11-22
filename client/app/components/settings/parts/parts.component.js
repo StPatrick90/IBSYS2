@@ -15,21 +15,35 @@ var core_1 = require('@angular/core');
 var part_1 = require('../../../model/part');
 var part_service_1 = require('../../../services/part.service');
 var ng2_bs3_modal_1 = require('ng2-bs3-modal/ng2-bs3-modal');
+var session_service_1 = require('../../../services/session.service');
 var PartsComponent = (function () {
-    function PartsComponent(partservice) {
+    function PartsComponent(partservice, sessionService) {
         var _this = this;
         this.partservice = partservice;
+        this.sessionService = sessionService;
         this.nextWsOptions = Array();
         this.listVerfuegbareTeile = [];
         this.listBestandteile = [];
         this.part = new part_1.Part();
+        this.ruestZeit = Array();
+        this.fertigungsZeit = Array();
         this.nextArbeitsplaetze = Array();
-        this.partservice.getWorkstationsAndPartsAndBearbeitung()
-            .subscribe(function (data) {
-            _this.workstations = data[0];
-            _this.parts = data[1];
-            _this.processingTimes = data[2];
-        }, function (err) { return console.error(err); }, function () { return _this.initLists(); });
+        if (this.sessionService.getWorkstations() != null || this.sessionService.getWorkstations() != undefined ||
+            this.sessionService.getParts() != null || this.sessionService.getParts() != undefined ||
+            this.sessionService.getProcessingTimes() != null || this.sessionService.getProcessingTimes() != undefined) {
+            this.workstations = this.sessionService.getWorkstations();
+            this.parts = this.sessionService.getParts();
+            this.processingTimes = this.sessionService.getProcessingTimes();
+            this.initLists();
+        }
+        else {
+            this.partservice.getWorkstationsAndPartsAndBearbeitung()
+                .subscribe(function (data) {
+                _this.workstations = data[0];
+                _this.parts = data[1];
+                _this.processingTimes = data[2];
+            }, function (err) { return console.error(err); }, function () { return _this.initLists(); });
+        }
     }
     PartsComponent.prototype.initLists = function () {
         this.fillVerfuegbareTeile();
@@ -118,7 +132,7 @@ var PartsComponent = (function () {
             selector: 'parts',
             templateUrl: 'parts.component.html'
         }), 
-        __metadata('design:paramtypes', [part_service_1.PartService])
+        __metadata('design:paramtypes', [part_service_1.PartService, session_service_1.SessionService])
     ], PartsComponent);
     return PartsComponent;
 }());

@@ -21,13 +21,14 @@ var session_service_1 = require('./services/session.service');
 var db_service_1 = require('./services/db.service');
 var materialPlanning_service_1 = require('./services/materialPlanning.service');
 var AppComponent = (function () {
-    function AppComponent(appService, capacityPlanningService, _translate, materialPlanningService, sessionService, dbService) {
+    function AppComponent(appService, _translate, materialPlanningService, sessionService, partService, workstationService, dbService) {
         var _this = this;
         this.appService = appService;
-        this.capacityPlanningService = capacityPlanningService;
         this._translate = _translate;
         this.materialPlanningService = materialPlanningService;
         this.sessionService = sessionService;
+        this.partService = partService;
+        this.workstationService = workstationService;
         this.dbService = dbService;
         this.mobileView = 992;
         this.toggle = false;
@@ -35,7 +36,16 @@ var AppComponent = (function () {
         this.attachEvents();
         this.language = (navigator.language || navigator.userLanguage).substring(0, 2);
         this._translate.use(this.language);
-        dbService.getResults().subscribe(function (results) {
+        this.partService.getParts().subscribe(function (parts) {
+            _this.sessionService.setParts(parts);
+        });
+        this.workstationService.getWorkstations().subscribe(function (workstations) {
+            _this.sessionService.setWorkstations(workstations);
+        });
+        this.partService.getProcessingTimes().subscribe(function (processingTimes) {
+            _this.sessionService.setProcessingTimes(processingTimes);
+        });
+        this.dbService.getResults().subscribe(function (results) {
             if (results.length > 0) {
                 var lastResult = results.pop();
                 _this.lastPeriod = lastResult.results.period;
@@ -77,7 +87,7 @@ var AppComponent = (function () {
             providers: [task_service_1.TaskService, capacityPlanning_service_1.CapacityPlanningService, app_service_1.AppService, translate_service_1.TranslateService,
                 xmlImport_service_1.XmlImportService, window_service_1.WindowRef, workstation_service_1.WorkstationService, part_service_1.PartService, session_service_1.SessionService, db_service_1.DBService, materialPlanning_service_1.MaterialPlanningService]
         }), 
-        __metadata('design:paramtypes', [app_service_1.AppService, capacityPlanning_service_1.CapacityPlanningService, translate_service_1.TranslateService, materialPlanning_service_1.MaterialPlanningService, session_service_1.SessionService, db_service_1.DBService])
+        __metadata('design:paramtypes', [app_service_1.AppService, translate_service_1.TranslateService, materialPlanning_service_1.MaterialPlanningService, session_service_1.SessionService, part_service_1.PartService, workstation_service_1.WorkstationService, db_service_1.DBService])
     ], AppComponent);
     return AppComponent;
 }());

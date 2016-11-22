@@ -23,8 +23,8 @@ var CapacityPlanningComponent = (function () {
         this.capacityPlanningService.getWorkstations()
             .subscribe(function (workstations) {
             _this.workstations = workstations;
-            _this.getTimesAndEPParts();
         });
+        this.getTimesAndEPParts();
     };
     CapacityPlanningComponent.prototype.getTimesAndEPParts = function () {
         var _this = this;

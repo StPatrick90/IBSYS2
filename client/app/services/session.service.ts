@@ -5,12 +5,19 @@ import { Injectable } from '@angular/core';
 import {SessionStorage} from "angular2-localstorage/WebStorage";
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { Part } from '../model/part';
+import { Workstation } from '../model/workstastion';
+import { ProcessingTime } from '../model/processingTime';
 
 
 @Injectable()
 export class SessionService{
 
+<<<<<<< HEAD
     @SessionStorage() public resultObj;
+    @SessionStorage() private parts : Part[];
+    @SessionStorage() private workstations : Workstation[];
+    @SessionStorage() private processingTimes : ProcessingTime[];
 
     constructor(private http:Http){
         console.log('Session Service Initialized...');
@@ -149,4 +156,23 @@ export class SessionService{
     setResultObject(Obj){
         this.resultObj = Obj;
     }
+    getParts(){
+        return this.parts;
+    }
+    setParts(parts){
+        this.parts = parts;
+    }
+    getWorkstations(){
+        return this.workstations;
+    }
+    setWorkstations(workstations){
+        this.workstations = workstations;
+    }
+    getProcessingTimes(){
+        return this.processingTimes;
+    }
+    setProcessingTimes(processingTimes){
+        this.processingTimes = processingTimes;
+    }
+
 }

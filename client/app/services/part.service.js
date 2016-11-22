@@ -27,6 +27,10 @@ var PartService = (function () {
     PartService.prototype.getWorkstationsAndPartsAndBearbeitung = function () {
         return Rx_1.Observable.forkJoin(this.http.get('/api/workstations').map(function (res) { return res.json(); }), this.http.get('/api/parts').map(function (res) { return res.json(); }), this.http.get('/api/processingTimes').map(function (res) { return res.json(); }));
     };
+    PartService.prototype.getProcessingTimes = function () {
+        return this.http.get('api/processingTimes')
+            .map(function (res) { return res.json(); });
+    };
     PartService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

@@ -14,18 +14,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var workstastion_1 = require('../../../model/workstastion');
 var workstation_service_1 = require('../../../services/workstation.service');
+var session_service_1 = require('../../../services/session.service');
 var ng2_bs3_modal_1 = require('ng2-bs3-modal/ng2-bs3-modal');
 var WorkstationsComponent = (function () {
-    function WorkstationsComponent(workstationService) {
+    function WorkstationsComponent(workstationService, sessionService) {
         var _this = this;
         this.workstationService = workstationService;
+        this.sessionService = sessionService;
         this.workstation = new workstastion_1.Workstation();
-        this.workstationService.getWorkstations()
-            .subscribe(function (workstations) {
-            _this.workstations = workstations;
-        });
+        if (this.sessionService.getWorkstations() != null || this.sessionService.getWorkstations() != undefined) {
+            this.workstations = this.sessionService.getWorkstations();
+        }
+        else {
+            this.workstationService.getWorkstations()
+                .subscribe(function (workstations) {
+                _this.workstations = workstations;
+            });
+        }
     }
     WorkstationsComponent.prototype.deleteWorkstation = function (workstation) {
+        var _this = this;
         var workstations = this.workstations;
         this.workstationService.deleteWorkstation(workstation._id)
             .subscribe((function (data) {
@@ -33,6 +41,7 @@ var WorkstationsComponent = (function () {
                 for (var i = 0; i < workstations.length; i++) {
                     if (workstations[i]._id == workstation._id) {
                         workstations.splice(i, 1);
+                        _this.sessionService.setWorkstations(workstations);
                     }
                 }
             }
@@ -59,6 +68,7 @@ var WorkstationsComponent = (function () {
                     this.workstationService.addWorkstation(newWorkstation)
                         .subscribe(function (workstation) {
                         _this.workstations.push(workstation);
+                        _this.sessionService.setWorkstations(workstations);
                         _this.resetWorkstation();
                     });
                 }
@@ -73,6 +83,7 @@ var WorkstationsComponent = (function () {
                         for (var i = 0; i < workstations.length; i++) {
                             if (workstations[i]._id == _this.workstation._id) {
                                 workstations[i] = _this.workstation;
+                                _this.sessionService.setWorkstations(workstations);
                             }
                         }
                     }
@@ -104,7 +115,7 @@ var WorkstationsComponent = (function () {
             selector: 'workstations',
             templateUrl: 'workstations.component.html'
         }), 
-        __metadata('design:paramtypes', [workstation_service_1.WorkstationService])
+        __metadata('design:paramtypes', [workstation_service_1.WorkstationService, session_service_1.SessionService])
     ], WorkstationsComponent);
     return WorkstationsComponent;
 }());

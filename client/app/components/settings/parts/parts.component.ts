@@ -4,10 +4,15 @@
 import {Component, ViewChild} from '@angular/core';
 import {Part} from '../../../model/part';
 import {PartService} from '../../../services/part.service';
-import {IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import {
+    IMultiSelectOption,
+    IMultiSelectSettings,
+    IMultiSelectTexts
+} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
+import {ModalComponent} from 'ng2-bs3-modal/ng2-bs3-modal';
 import {Workstation} from "../../../model/workstastion";
 import {ProcessingTime} from "../../../model/processingTime";
+import { SessionService} from '../../../services/session.service';
 
 
 @Component({
@@ -27,48 +32,58 @@ export class PartsComponent {
     private nextWsSettings: IMultiSelectSettings;
     private multiSelectTexts: IMultiSelectTexts;
 
-    listVerfuegbareTeile:Array<Part> = [];
-    listBestandteile:Array<Part> = [];
+    listVerfuegbareTeile: Array<Part> = [];
+    listBestandteile: Array<Part> = [];
 
     part: Part = new Part();
     parts: Part[];
     workstations: Workstation[];
     processingTimes: ProcessingTime[];
-    verwendung: string[];
-    typ: string[];
+
+    ruestZeit: number[] = Array<number>();
+    fertigungsZeit: number[] = Array<number>();
 
     nextArbeitsplaetze: Workstation[] = Array<Workstation>();
 
-    constructor(private partservice:PartService){
-        this.partservice.getWorkstationsAndPartsAndBearbeitung()
-            .subscribe(data => {
-                this.workstations = data[0]
-                this.parts = data[1]
-                this.processingTimes = data[2]
-            },
-            err => console.error(err),
-            () => this.initLists())
-
+    constructor(private partservice: PartService, private sessionService:SessionService) {
+        if(this.sessionService.getWorkstations() != null || this.sessionService.getWorkstations() != undefined ||
+            this.sessionService.getParts() != null || this.sessionService.getParts() != undefined ||
+            this.sessionService.getProcessingTimes() != null || this.sessionService.getProcessingTimes() != undefined) {
+                this.workstations = this.sessionService.getWorkstations();
+                this.parts = this.sessionService.getParts();
+                this.processingTimes = this.sessionService.getProcessingTimes();
+                this.initLists();
+        }
+        else{
+            this.partservice.getWorkstationsAndPartsAndBearbeitung()
+                .subscribe(data => {
+                        this.workstations = data[0]
+                        this.parts = data[1]
+                        this.processingTimes = data[2]
+                    },
+                    err => console.error(err),
+                    () => this.initLists());
+        }
     }
 
-    initLists(){
+    initLists() {
         this.fillVerfuegbareTeile();
         this.initMultiSelects();
     }
 
-    initMultiSelects(){
+    initMultiSelects() {
         this.typOptions = [
-            { id: 1, name: 'P' },
-            { id: 2, name: 'E' },
-            { id: 3, name: 'K' }
+            {id: 1, name: 'P'},
+            {id: 2, name: 'E'},
+            {id: 3, name: 'K'}
         ];
         this.verwOptions = [
-            { id: 1, name: 'K' },
-            { id: 2, name: 'D' },
-            { id: 3, name: 'H' }
+            {id: 1, name: 'K'},
+            {id: 2, name: 'D'},
+            {id: 3, name: 'H'}
         ];
-        for(let ws of this.workstations){
-            this.nextWsOptions.push({id:ws.nummer, name: ws.nummer.toString()});
+        for (let ws of this.workstations) {
+            this.nextWsOptions.push({id: ws.nummer, name: ws.nummer.toString()});
         }
 
         this.typSettings = {
@@ -117,19 +132,16 @@ export class PartsComponent {
         };
     }
 
-    fillVerfuegbareTeile(){
-        if(this.part._id == null){
+    fillVerfuegbareTeile() {
+        if (this.part._id == null) {
             this.listVerfuegbareTeile = this.parts.slice();
         }
-        else{
-            for(var part of this.parts){
-                if(part._id != this.part._id){
+        else {
+            for (var part of this.parts) {
+                if (part._id != this.part._id) {
                     this.listVerfuegbareTeile.push(part);
                 }
             }
         }
-
-
     }
-
 }

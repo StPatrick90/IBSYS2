@@ -142,10 +142,40 @@ var SessionService = (function () {
     SessionService.prototype.setResultObject = function (Obj) {
         this.resultObj = Obj;
     };
+    SessionService.prototype.getParts = function () {
+        return this.parts;
+    };
+    SessionService.prototype.setParts = function (parts) {
+        this.parts = parts;
+    };
+    SessionService.prototype.getWorkstations = function () {
+        return this.workstations;
+    };
+    SessionService.prototype.setWorkstations = function (workstations) {
+        this.workstations = workstations;
+    };
+    SessionService.prototype.getProcessingTimes = function () {
+        return this.processingTimes;
+    };
+    SessionService.prototype.setProcessingTimes = function (processingTimes) {
+        this.processingTimes = processingTimes;
+    };
     __decorate([
         WebStorage_1.SessionStorage(), 
         __metadata('design:type', Object)
     ], SessionService.prototype, "resultObj", void 0);
+    __decorate([
+        WebStorage_1.SessionStorage(), 
+        __metadata('design:type', Array)
+    ], SessionService.prototype, "parts", void 0);
+    __decorate([
+        WebStorage_1.SessionStorage(), 
+        __metadata('design:type', Array)
+    ], SessionService.prototype, "workstations", void 0);
+    __decorate([
+        WebStorage_1.SessionStorage(), 
+        __metadata('design:type', Array)
+    ], SessionService.prototype, "processingTimes", void 0);
     SessionService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

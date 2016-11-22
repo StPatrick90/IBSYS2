@@ -4,6 +4,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {Workstation} from '../../../model/workstastion';
 import {WorkstationService} from '../../../services/workstation.service';
+import {SessionService} from '../../../services/session.service';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 @Component({
@@ -20,11 +21,16 @@ export class WorkstationsComponent {
     workstations: Workstation[];
     workstation: Workstation = new Workstation();
 
-    constructor(private workstationService: WorkstationService) {
-        this.workstationService.getWorkstations()
-            .subscribe(workstations => {
-                this.workstations = workstations;
-            })
+    constructor(private workstationService: WorkstationService, private sessionService:SessionService) {
+        if(this.sessionService.getWorkstations() != null || this.sessionService.getWorkstations() != undefined){
+            this.workstations = this.sessionService.getWorkstations();
+        }
+        else {
+            this.workstationService.getWorkstations()
+                .subscribe(workstations => {
+                    this.workstations = workstations;
+                })
+        }
     }
 
     deleteWorkstation(workstation) {
@@ -36,6 +42,7 @@ export class WorkstationsComponent {
                     for (var i = 0; i < workstations.length; i++) {
                         if (workstations[i]._id == workstation._id) {
                             workstations.splice(i, 1);
+                            this.sessionService.setWorkstations(workstations);
                         }
                     }
                 }
@@ -62,6 +69,7 @@ export class WorkstationsComponent {
                     this.workstationService.addWorkstation(newWorkstation)
                         .subscribe(workstation => {
                             this.workstations.push(workstation);
+                            this.sessionService.setWorkstations(workstations);
                             this.resetWorkstation();
                         });
                 }
@@ -78,6 +86,7 @@ export class WorkstationsComponent {
                             for (var i = 0; i < workstations.length; i++) {
                                 if (workstations[i]._id == this.workstation._id) {
                                     workstations[i] = this.workstation;
+                                    this.sessionService.setWorkstations(workstations);
                                 }
                             }
                         }

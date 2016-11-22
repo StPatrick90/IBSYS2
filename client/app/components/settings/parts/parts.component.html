@@ -1,30 +1,30 @@
 <div class="well col-md-3" style="margin-left: 1%; margin-right: 1%;">
     <div class="form-group">
         <label for="part_nummer">Nummer</label>
-        <input type="number" [(ngModel)]="nummer" name="nummer" class="form-control" placeholder="Nummer" id="part_nummer">
+        <input type="number" [(ngModel)]="part.nummer" name="nummer" class="form-control" placeholder="Nummer" id="part_nummer">
     </div>
     <div class="form-group">
         <label for="part_bez">{{'setWorkstations_name' | translate}}</label>
-        <input type="text" [(ngModel)]="bezeichnung" name="bezeichnung" class="form-control" placeholder="Bezeichnung" id="part_bez">
+        <input type="text" [(ngModel)]="part.bezeichnung" name="bezeichnung" class="form-control" placeholder="Bezeichnung" id="part_bez">
     </div>
     <div class="form-group">
         <label for="part_wert">Wert</label>
-        <input type="number" min="1" [(ngModel)]="wert" name="wert" class="form-control" placeholder="Wert" id="part_wert">
+        <input type="number" min="1" [(ngModel)]="part.wert" name="wert" class="form-control" placeholder="Wert" id="part_wert">
     </div>
     <div class="form-group">
         <label for="part_nummer">Lagermenge</label>
-        <input type="number" [(ngModel)]="lagerMenge" name="lagermenge" class="form-control" placeholder="Lagermenge" id="part_lagermenge">
+        <input type="number" [(ngModel)]="part.lagerMenge" name="lagermenge" class="form-control" placeholder="Lagermenge" id="part_lagermenge">
     </div>
     <div class="form-group">
         <label for="part_typ">Typ </label>
         <ss-multiselect-dropdown [options]="typOptions" [texts]="multiSelectTexts" [settings]="typSettings"
-                                 [(ngModel)]="typ" id="part_typ">
+                                 [(ngModel)]="part.typ" id="part_typ">
         </ss-multiselect-dropdown>
     </div>
     <div class="form-group">
         <label for="part_verwendung">Verwendung </label>
         <ss-multiselect-dropdown [options]="verwOptions" [texts]="multiSelectTexts" [settings]="verwSettings"
-                                 [(ngModel)]="verwendung" id="part_verwendung">
+                                 [(ngModel)]="part.typ" id="part_verwendung">
         </ss-multiselect-dropdown>
     </div>
     <div class="form-group">
@@ -36,10 +36,9 @@
 
     <div class="form-group" align="right">
         <button type="button" class="btn btn-danger">
-            {{'setWorkstations_reset' | translate}}</button>
-        <button type="button" class="btn btn-success" (click)="updateWorkstation($event)">
-            <span *ngIf="!_id">{{'setWorkstations_add' | translate}}</span>
-            <span *ngIf="_id">{{'setWorkstations_update' | translate}}</span>
+            Zurücksetzen</button>
+        <button type="button" class="btn btn-success">
+            Hinzufügen
         </button>
     </div>
 </div>
@@ -58,29 +57,29 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let part of parts" style="height: 40px;">
+        <tr *ngFor="let pt of parts" style="height: 40px;">
             <td width="10%">
-                {{part.nummer}}
+                {{pt.nummer}}
             </td>
             <td width="25%">
-                {{part.bezeichnung}}
+                {{pt.bezeichnung}}
             </td>
             <td width="10%">
-                {{part.typ}}
+                {{pt.typ}}
             </td>
             <td width="15%">
-                {{part.wert}}
+                {{pt.wert}}
             </td>
             <td width="15%">
-                {{part.lagerMenge}}
+                {{pt.lagerMenge}}
             </td>
             <td width="12.5%" style="padding-right: 5px" align="right">
                 <input type="button"  value="{{'setWorkstations_edit' | translate}}"
-                       class="btn btn-info" (click)="_id = ws._id; nummer = ws.nummer; name = ws.name">
+                       class="btn btn-info">
             </td>
             <td width="12.5%" style="padding-left: 5px" align="left">
                 <input type="button"  value="{{'setWorkstations_delete' | translate}}"
-                       class="btn btn-danger" (click)="deleteWorkstation(ws._id)">
+                       class="btn btn-danger">
             </td>
         </tr>
         </tbody>
@@ -158,10 +157,12 @@
                     {{ws.nummer + " - " + ws.name}}
                 </div>
                 <div class="col-md-2">
-                    <input type="number" min="1"  name="ruestZeit" class="form-control" placeholder="Rüstzeit">
+                    <input type="number" min="1" [(ngModel)]="ruestZeit[ws.nummer]" name="ruestZeit"
+                           class="form-control" placeholder="Rüstzeit">
                 </div>
                 <div class="col-md-2">
-                    <input type="number" min="1" name="fertigungsZeit" class="form-control" placeholder="Fertigungszeit">
+                    <input type="number" min="1" [(ngModel)]="fertigungsZeit[ws.nummer]" name="fertigungsZeit"
+                           class="form-control" placeholder="Fertigungszeit">
                 </div>
                 <div class="col-md-3">
                     <ss-multiselect-dropdown [options]="nextWsOptions" [(ngModel)]="nextArbeitsplaetze[ws.nummer]"

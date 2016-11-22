@@ -25,6 +25,11 @@ export class PartService{
         );
     }
 
+    getProcessingTimes() {
+        return this.http.get('api/processingTimes')
+            .map(res => res.json());
+    }
+
     /*
     addWorkstation(newWorkstation){
         var headers = new Headers();
