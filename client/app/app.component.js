@@ -19,11 +19,13 @@ var workstation_service_1 = require('./services/workstation.service');
 var part_service_1 = require('./services/part.service');
 var session_service_1 = require('./services/session.service');
 var db_service_1 = require('./services/db.service');
+var materialPlanning_service_1 = require('./services/materialPlanning.service');
 var AppComponent = (function () {
-    function AppComponent(appService, capacityPlanningService, _translate) {
+    function AppComponent(appService, capacityPlanningService, _translate, materialPlanningService) {
         this.appService = appService;
         this.capacityPlanningService = capacityPlanningService;
         this._translate = _translate;
+        this.materialPlanningService = materialPlanningService;
         this.mobileView = 992;
         this.toggle = false;
         this.language = "de";
@@ -63,9 +65,9 @@ var AppComponent = (function () {
             selector: 'my-app',
             templateUrl: 'app.component.html',
             providers: [task_service_1.TaskService, capacityPlanning_service_1.CapacityPlanningService, app_service_1.AppService, translate_service_1.TranslateService,
-                xmlImport_service_1.XmlImportService, window_service_1.WindowRef, workstation_service_1.WorkstationService, part_service_1.PartService, session_service_1.SessionService, db_service_1.DBService]
+                xmlImport_service_1.XmlImportService, window_service_1.WindowRef, workstation_service_1.WorkstationService, part_service_1.PartService, session_service_1.SessionService, db_service_1.DBService, materialPlanning_service_1.MaterialPlanningService]
         }), 
-        __metadata('design:paramtypes', [app_service_1.AppService, capacityPlanning_service_1.CapacityPlanningService, translate_service_1.TranslateService])
+        __metadata('design:paramtypes', [app_service_1.AppService, capacityPlanning_service_1.CapacityPlanningService, translate_service_1.TranslateService, materialPlanning_service_1.MaterialPlanningService])
     ], AppComponent);
     return AppComponent;
 }());

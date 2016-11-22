@@ -17,7 +17,7 @@
     </div>
 </div>
 
-<table class="table" border="1 ">
+<table class="table-responsive table-bordered table-striped">
     <caption class="text-center">{{'material_Planning' | translate}}</caption>
     <thead>
     <tr>
@@ -59,28 +59,27 @@
     </thead>
 
     <tbody>
-    <tr>
-        <!-- 1. Zeile-->
-        <td>{{price}}</td>
-        <td>1,8</td>
-        <td>0,4</td>
-        <td>2,2</td>
-        <td>1</td>
-        <td>0</td>
-        <td>0</td>
-        <td>300</td>
-        <td>300</td>
-        <td>150</td>
-        <td>150</td>
+    <tr *ngFor="let pP of purchaseParts">
+        <td>{{pP.nummer}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>{{pP.lagerMenge}}</td>
+        <td></td>
         <td>{{openingStock}}</td>
-        <td>150</td>
-        <td>-300</td>
-        <td>-</td>
-        <td>E</td>
-        <td>600</td>
-        <td>700</td>
-        <td>800</td>
-        <td>900</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
     </tr>
     </tbody>
 </table>

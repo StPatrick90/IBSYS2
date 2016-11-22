@@ -9,6 +9,7 @@ import { WorkstationService } from './services/workstation.service';
 import { PartService } from './services/part.service';
 import { SessionService} from './services/session.service';
 import { DBService} from './services/db.service';
+import {MaterialPlanningService} from './services/materialPlanning.service';
 
 
 @Component({
@@ -17,7 +18,8 @@ import { DBService} from './services/db.service';
     templateUrl: 'app.component.html',
 
     providers: [TaskService,CapacityPlanningService, AppService, TranslateService,
-        XmlImportService, WindowRef, WorkstationService, PartService, SessionService, DBService]
+        XmlImportService, WindowRef, WorkstationService, PartService, SessionService, DBService, MaterialPlanningService]
+
 
 
 })
@@ -26,7 +28,7 @@ export class AppComponent {
     toggle: boolean = false;
     language: string = "de";
 
-    constructor(private appService:AppService,private capacityPlanningService:CapacityPlanningService, private _translate: TranslateService){
+    constructor(private appService:AppService,private capacityPlanningService:CapacityPlanningService, private _translate: TranslateService, private materialPlanningService:MaterialPlanningService){
         this.attachEvents();
         this.language = (navigator.language || navigator.userLanguage).substring(0,2);
         this._translate.use(this.language);

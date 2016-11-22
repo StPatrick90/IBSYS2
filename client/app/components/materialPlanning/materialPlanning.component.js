@@ -10,15 +10,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var session_service_1 = require('../../services/session.service');
+var materialPlanning_service_1 = require('../../services/materialPlanning.service');
 var MaterialPlanningComponent = (function () {
-    function MaterialPlanningComponent(sessionService) {
+    function MaterialPlanningComponent(sessionService, materialPlanningService) {
         this.sessionService = sessionService;
+        this.materialPlanningService = materialPlanningService;
         this.resultObj = this.sessionService.getResultObject();
         this.setParameters();
     }
     MaterialPlanningComponent.prototype.setParameters = function () {
-        this.price = this.resultObj.results.warehousestock.article[0].price;
         this.openingStock = this.resultObj.results.warehousestock.article[0].startamount;
+        this.getKParts();
+    };
+    MaterialPlanningComponent.prototype.getKParts = function () {
+        var _this = this;
+        this.materialPlanningService.getKParts().subscribe(function (data) {
+            _this.purchaseParts = data;
+            console.log(_this.purchaseParts);
+        }, function (err) { return console.error(err); }, function () { return _this.generateRows(); });
+    };
+    ;
+    MaterialPlanningComponent.prototype.generateRows = function () {
+        for (var _i = 0, _a = this.purchaseParts; _i < _a.length; _i++) {
+            var purchasePart = _a[_i];
+        }
     };
     MaterialPlanningComponent = __decorate([
         core_1.Component({
@@ -26,7 +41,7 @@ var MaterialPlanningComponent = (function () {
             selector: 'materialPlanning',
             templateUrl: 'materialPlanning.component.html'
         }), 
-        __metadata('design:paramtypes', [session_service_1.SessionService])
+        __metadata('design:paramtypes', [session_service_1.SessionService, materialPlanning_service_1.MaterialPlanningService])
     ], MaterialPlanningComponent);
     return MaterialPlanningComponent;
 }());

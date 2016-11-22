@@ -10,11 +10,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
+require('rxjs/add/operator/map');
 var MaterialPlanningService = (function () {
     function MaterialPlanningService(http) {
         this.http = http;
         console.log('MaterialPlanning Service Initialzed...');
     }
+    MaterialPlanningService.prototype.getKParts = function () {
+        return this.http.get('/api/kparts')
+            .map(function (res) { return res.json(); });
+    };
     MaterialPlanningService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])
