@@ -11,28 +11,45 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var session_service_1 = require('../../services/session.service');
 var materialPlanning_service_1 = require('../../services/materialPlanning.service');
+var matPlanRow_1 = require("../../model/matPlanRow");
 var MaterialPlanningComponent = (function () {
     function MaterialPlanningComponent(sessionService, materialPlanningService) {
         this.sessionService = sessionService;
         this.materialPlanningService = materialPlanningService;
         this.resultObj = this.sessionService.getResultObject();
-        this.setParameters();
-    }
-    MaterialPlanningComponent.prototype.setParameters = function () {
-        this.openingStock = this.resultObj.results.warehousestock.article[0].startamount;
+        this.matPlanRow = new matPlanRow_1.matPlanRow();
+        this.matPlan = new Array();
         this.getKParts();
-    };
+    }
     MaterialPlanningComponent.prototype.getKParts = function () {
         var _this = this;
-        this.materialPlanningService.getKParts().subscribe(function (data) {
+        this.materialPlanningService.getKParts()
+            .subscribe(function (data) {
             _this.purchaseParts = data;
-            console.log(_this.purchaseParts);
-        }, function (err) { return console.error(err); }, function () { return _this.generateRows(); });
+        }, function (err) { return console.error(err); }, function () { return _this.setParameters(); });
     };
     ;
-    MaterialPlanningComponent.prototype.generateRows = function () {
-        for (var _i = 0, _a = this.purchaseParts; _i < _a.length; _i++) {
-            var purchasePart = _a[_i];
+    MaterialPlanningComponent.prototype.setParameters = function () {
+        for (var i = 0; i <= this.purchaseParts.length - 1; i++) {
+            // declaration
+            var matPlanRow = {
+                kpartnr: this.matPlanRow.kpartnr,
+                lieferfrist: this.matPlanRow.lieferfrist,
+                abweichung: this.matPlanRow.abweichung,
+                summe: this.matPlanRow.summe,
+                verwendung: this.matPlanRow.verwendung,
+                diskontmenge: this.matPlanRow.diskontmenge,
+                anfangsbestand: this.matPlanRow.anfangsbestand,
+                bruttobedarfnP: this.matPlanRow.bruttobedarfnP,
+                mengeohbest: this.matPlanRow.mengeohbest,
+                bestellmenge: this.matPlanRow.bestellmenge,
+                bestellung: this.matPlanRow.bestellung,
+                bestandnWe: this.matPlanRow.bestandnWe
+            };
+            // collect values
+            matPlanRow.kpartnr = this.purchaseParts[i].nummer;
+            matPlanRow.anfangsbestand = this.resultObj.results.warehousestock.article[i].startamount;
+            this.matPlan[i] = matPlanRow;
         }
     };
     MaterialPlanningComponent = __decorate([

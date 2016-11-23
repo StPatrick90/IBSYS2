@@ -1,7 +1,7 @@
 <div class="well">
     <div class="">
         <div class="row">
-            <h2>Kapazitätsplanung</h2>
+            <h2>Kaufteildisposition</h2>
             <ul class="breadcrumb">
                 <!--completed-->
                 <li class="completed"><a routerLink="/xmlImport" routerLinkActive="active">{{'xmlImport' |
@@ -18,7 +18,7 @@
 </div>
 
 <table class="table-responsive table-bordered table-striped">
-    <caption class="text-center">{{'material_Planning' | translate}}</caption>
+    <caption width="100%" class="text-center">{{'material_Planning' | translate}}</caption>
     <thead>
     <tr>
         <th colspan="1" class="text-center">{{'num_purchase_part' | translate}}</th>
@@ -39,9 +39,9 @@
         <th></th>
         <th></th>
         <th></th>
-        <th scope="col">P1</th>
-        <th scope="col">P2</th>
-        <th scope="col">P3</th>
+        <th scope="col" class="text-center">P1</th>
+        <th scope="col" class="text-center">P2</th>
+        <th scope="col" class="text-center">P3</th>
         <th scope="col"></th>
         <th scope="col"></th>
         <th>1</th>
@@ -50,7 +50,7 @@
         <th>4</th>
         <th></th>
         <th></th>
-        <th>E</th>
+        <th></th>
         <th>2</th>
         <th>3</th>
         <th>4</th>
@@ -59,16 +59,16 @@
     </thead>
 
     <tbody>
-    <tr *ngFor="let pP of purchaseParts">
-        <td>{{pP.nummer}}</td>
+    <tr *ngFor="let m of matPlan">
+    <td>{{m.kpartnr}}</td>
         <td></td>
         <td></td>
         <td></td>
         <td></td>
         <td></td>
-        <td>{{pP.lagerMenge}}</td>
         <td></td>
-        <td>{{openingStock}}</td>
+        <td></td>
+        <td>{{m.anfangsbestand}}</td>
         <td></td>
         <td></td>
         <td></td>

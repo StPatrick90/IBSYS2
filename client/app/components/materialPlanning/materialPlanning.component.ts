@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {SessionService} from '../../services/session.service';
 import {MaterialPlanningService} from '../../services/materialPlanning.service';
 import {Part} from '../../model/part';
+import {matPlanRow} from "../../model/matPlanRow";
 
 @Component({
     moduleId: module.id,
@@ -12,35 +13,48 @@ import {Part} from '../../model/part';
 export class MaterialPlanningComponent {
 
     resultObj: any;
-    openingStock: any;
     purchaseParts: Part[];
+    matPlanRow: matPlanRow;
+    matPlan: matPlanRow[];
 
     constructor(private sessionService: SessionService, private  materialPlanningService: MaterialPlanningService) {
         this.resultObj = this.sessionService.getResultObject();
-        this.setParameters();
-    }
-
-    setParameters() {
-        this.openingStock = this.resultObj.results.warehousestock.article[0].startamount;
+        this.matPlanRow = new matPlanRow();
+        this.matPlan = new Array<matPlanRow>();
         this.getKParts();
     }
 
     getKParts() {
-        this.materialPlanningService.getKParts().subscribe(
-            data => {
-                this.purchaseParts = data
+        this.materialPlanningService.getKParts()
+            .subscribe(data => {
+                    this.purchaseParts = data
+                },
+                err => console.error(err),
 
-                console.log(this.purchaseParts);
-            },
-
-            err => console.error(err),
-            () => this.generateRows())
-
+                () => this.setParameters())
     };
 
-    generateRows() {
-        for (var purchasePart of this.purchaseParts) {
-
+    setParameters() {
+        for (var i = 0; i <= this.purchaseParts.length - 1; i++) {
+            // declaration
+            var matPlanRow = {
+                kpartnr: this.matPlanRow.kpartnr,
+                lieferfrist: this.matPlanRow.lieferfrist,
+                abweichung: this.matPlanRow.abweichung,
+                summe: this.matPlanRow.summe,
+                verwendung: this.matPlanRow.verwendung,
+                diskontmenge: this.matPlanRow.diskontmenge,
+                anfangsbestand: this.matPlanRow.anfangsbestand,
+                bruttobedarfnP: this.matPlanRow.bruttobedarfnP,
+                mengeohbest: this.matPlanRow.mengeohbest,
+                bestellmenge: this.matPlanRow.bestellmenge,
+                bestellung: this.matPlanRow.bestellung,
+                bestandnWe: this.matPlanRow.bestandnWe
+            }
+            // collect values
+            matPlanRow.kpartnr = this.purchaseParts[i].nummer;
+            matPlanRow.anfangsbestand = this.resultObj.results.warehousestock.article[i].startamount;
+            this.matPlan[i] = matPlanRow;
         }
     }
 
