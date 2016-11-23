@@ -31,3 +31,21 @@
     margin-top: 20px;
     margin-right: 20px;
 }
+
+footer {
+    background-color: #f2f2f2;
+    padding: 25px;
+}
+
+.carousel-inner img {
+    width: 100%;
+    margin: auto;
+    min-height:200px;
+    max-height:350px;
+}
+
+@media (max-width: 600px) {
+    .carousel-caption {
+        display: none;
+    }
+}
