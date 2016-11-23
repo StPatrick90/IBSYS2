@@ -21,17 +21,27 @@ var session_service_1 = require('./services/session.service');
 var db_service_1 = require('./services/db.service');
 var materialPlanning_service_1 = require('./services/materialPlanning.service');
 var AppComponent = (function () {
-    function AppComponent(appService, capacityPlanningService, _translate, materialPlanningService) {
+    function AppComponent(appService, capacityPlanningService, _translate, materialPlanningService, sessionService, dbService) {
+        var _this = this;
         this.appService = appService;
         this.capacityPlanningService = capacityPlanningService;
         this._translate = _translate;
         this.materialPlanningService = materialPlanningService;
+        this.sessionService = sessionService;
+        this.dbService = dbService;
         this.mobileView = 992;
         this.toggle = false;
         this.language = "de";
         this.attachEvents();
         this.language = (navigator.language || navigator.userLanguage).substring(0, 2);
         this._translate.use(this.language);
+        dbService.getResults().subscribe(function (results) {
+            if (results.length > 0) {
+                var lastResult = results.pop();
+                _this.lastPeriod = lastResult.results.period;
+                _this.sessionService.setResultObject(lastResult);
+            }
+        });
     }
     AppComponent.prototype.toggleSidebar = function () {
         this.toggle = !this.toggle;
@@ -67,7 +77,7 @@ var AppComponent = (function () {
             providers: [task_service_1.TaskService, capacityPlanning_service_1.CapacityPlanningService, app_service_1.AppService, translate_service_1.TranslateService,
                 xmlImport_service_1.XmlImportService, window_service_1.WindowRef, workstation_service_1.WorkstationService, part_service_1.PartService, session_service_1.SessionService, db_service_1.DBService, materialPlanning_service_1.MaterialPlanningService]
         }), 
-        __metadata('design:paramtypes', [app_service_1.AppService, capacityPlanning_service_1.CapacityPlanningService, translate_service_1.TranslateService, materialPlanning_service_1.MaterialPlanningService])
+        __metadata('design:paramtypes', [app_service_1.AppService, capacityPlanning_service_1.CapacityPlanningService, translate_service_1.TranslateService, materialPlanning_service_1.MaterialPlanningService, session_service_1.SessionService, db_service_1.DBService])
     ], AppComponent);
     return AppComponent;
 }());

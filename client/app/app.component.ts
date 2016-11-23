@@ -27,11 +27,22 @@ export class AppComponent {
     mobileView:number = 992;
     toggle: boolean = false;
     language: string = "de";
+    lastPeriod: string;
 
-    constructor(private appService:AppService,private capacityPlanningService:CapacityPlanningService, private _translate: TranslateService, private materialPlanningService:MaterialPlanningService){
+    constructor(private appService:AppService,private capacityPlanningService:CapacityPlanningService, private _translate: TranslateService,
+                private materialPlanningService:MaterialPlanningService, private sessionService: SessionService, private dbService: DBService){
         this.attachEvents();
         this.language = (navigator.language || navigator.userLanguage).substring(0,2);
         this._translate.use(this.language);
+
+        dbService.getResults().subscribe(results => {
+                if(results.length > 0){
+                    var lastResult = results.pop();
+                    this.lastPeriod = lastResult.results.period;
+                    this.sessionService.setResultObject(lastResult);
+                }
+            }
+        );
     }
 
     toggleSidebar(){
