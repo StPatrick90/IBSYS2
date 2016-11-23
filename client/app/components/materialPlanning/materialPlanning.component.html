@@ -34,14 +34,60 @@
         <th colspan="1" class="text-center">{{'ordertype' | translate}}</th>
         <th colspan="4" class="text-center">{{'stock_after_receipt' | translate}}</th>
     </tr>
+
+    <!--&lt;!&ndash;versuch1  bringt alles nichts, ich hole mir die verwendungen in eine seperate liste und mach dann was mit ngif&ndash;&gt;-->
+    <!--<tr>-->
+        <!--<th></th>-->
+        <!--<th></th>-->
+        <!--<th></th>-->
+        <!--<th></th>-->
+        <!--<th *ngFor="let m of matPlan" scope="col" class="text-center">{{m.verwendung}}</th>-->
+        <!--<th scope="col"></th>-->
+        <!--<th scope="col"></th>-->
+        <!--<th>1</th>-->
+        <!--<th>2</th>-->
+        <!--<th>3</th>-->
+        <!--<th>4</th>-->
+        <!--<th></th>-->
+        <!--<th></th>-->
+        <!--<th></th>-->
+        <!--<th>2</th>-->
+        <!--<th>3</th>-->
+        <!--<th>4</th>-->
+        <!--<th>5</th>-->
+    <!--</tr>-->
+
+    <!--versuch2-->
+    <!--<tr *ngFor="let m of matPlan">-->
+        <!--<th></th>-->
+        <!--<th></th>-->
+        <!--<th></th>-->
+        <!--<th></th>-->
+        <!--<th *ngFor="let v of m.verwendung"scope="col" class="text-center">{{m.verwendung}}</th>-->
+        <!--<th scope="col"></th>-->
+        <!--<th scope="col"></th>-->
+        <!--<th>1</th>-->
+        <!--<th>2</th>-->
+        <!--<th>3</th>-->
+        <!--<th>4</th>-->
+        <!--<th></th>-->
+        <!--<th></th>-->
+        <!--<th></th>-->
+        <!--<th>2</th>-->
+        <!--<th>3</th>-->
+        <!--<th>4</th>-->
+        <!--<th>5</th>-->
+    <!--</tr>-->
+
+    <!--ursrpünglich funktioniert-->
     <tr>
         <th></th>
         <th></th>
         <th></th>
         <th></th>
-        <th scope="col" class="text-center">P1</th>
-        <th scope="col" class="text-center">P2</th>
-        <th scope="col" class="text-center">P3</th>
+        <th scope="col" class="text-center">Produkt1</th>
+        <th scope="col" class="text-center">Produkt2</th>
+        <th scope="col" class="text-center">Produkt3</th>
         <th scope="col"></th>
         <th scope="col"></th>
         <th>1</th>
@@ -61,9 +107,9 @@
     <tbody>
     <tr *ngFor="let m of matPlan">
     <td>{{m.kpartnr}}</td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td>{{m.lieferfrist}}</td>
+        <td>{{m.abweichung}}</td>
+        <td>{{m.summe}}</td>
         <td></td>
         <td></td>
         <td></td>

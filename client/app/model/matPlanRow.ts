@@ -7,7 +7,7 @@ export class matPlanRow {
     lieferfrist: number;
     abweichung: number;
     summe: number;
-    verwendung: number[];
+    verwendung: string[];
     diskontmenge: number;
     anfangsbestand: number;
     bruttobedarfnP: number[];
@@ -15,5 +15,9 @@ export class matPlanRow {
     bestellmenge: number;
     bestellung: string;
     bestandnWe: number[];
+
+    constructor () {
+        this.verwendung = [];
+    }
 
 }

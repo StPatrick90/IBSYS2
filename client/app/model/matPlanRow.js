@@ -4,6 +4,7 @@
 "use strict";
 var matPlanRow = (function () {
     function matPlanRow() {
+        this.verwendung = [];
     }
     return matPlanRow;
 }());

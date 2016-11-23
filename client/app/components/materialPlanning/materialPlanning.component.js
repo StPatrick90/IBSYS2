@@ -30,26 +30,39 @@ var MaterialPlanningComponent = (function () {
     };
     ;
     MaterialPlanningComponent.prototype.setParameters = function () {
-        for (var i = 0; i <= this.purchaseParts.length - 1; i++) {
-            // declaration
-            var matPlanRow = {
-                kpartnr: this.matPlanRow.kpartnr,
-                lieferfrist: this.matPlanRow.lieferfrist,
-                abweichung: this.matPlanRow.abweichung,
-                summe: this.matPlanRow.summe,
-                verwendung: this.matPlanRow.verwendung,
-                diskontmenge: this.matPlanRow.diskontmenge,
-                anfangsbestand: this.matPlanRow.anfangsbestand,
-                bruttobedarfnP: this.matPlanRow.bruttobedarfnP,
-                mengeohbest: this.matPlanRow.mengeohbest,
-                bestellmenge: this.matPlanRow.bestellmenge,
-                bestellung: this.matPlanRow.bestellung,
-                bestandnWe: this.matPlanRow.bestandnWe
-            };
-            // collect values
-            matPlanRow.kpartnr = this.purchaseParts[i].nummer;
-            matPlanRow.anfangsbestand = this.resultObj.results.warehousestock.article[i].startamount;
-            this.matPlan[i] = matPlanRow;
+        if (typeof this.resultObj != 'undefined') {
+            for (var i = 0; i <= this.purchaseParts.length - 1; i++) {
+                // declaration
+                var matPlanRow = {
+                    kpartnr: this.matPlanRow.kpartnr,
+                    lieferfrist: this.matPlanRow.lieferfrist,
+                    abweichung: this.matPlanRow.abweichung,
+                    summe: this.matPlanRow.summe,
+                    verwendung: this.matPlanRow.verwendung,
+                    diskontmenge: this.matPlanRow.diskontmenge,
+                    anfangsbestand: this.matPlanRow.anfangsbestand,
+                    bruttobedarfnP: this.matPlanRow.bruttobedarfnP,
+                    mengeohbest: this.matPlanRow.mengeohbest,
+                    bestellmenge: this.matPlanRow.bestellmenge,
+                    bestellung: this.matPlanRow.bestellung,
+                    bestandnWe: this.matPlanRow.bestandnWe
+                };
+                // collect values
+                matPlanRow.kpartnr = this.purchaseParts[i].nummer;
+                matPlanRow.anfangsbestand = this.resultObj.results.warehousestock.article[i].startamount; // dbwerte falsch?
+                matPlanRow.abweichung = this.purchaseParts[i].abweichung;
+                matPlanRow.lieferfrist = this.purchaseParts[i].lieferfrist;
+                matPlanRow.diskontmenge = this.purchaseParts[i].diskontmenge;
+                matPlanRow.summe = matPlanRow.lieferfrist + matPlanRow.abweichung;
+                for (var v = 0; v <= this.purchaseParts[i].verwendung.length - 1; v++) {
+                    matPlanRow.verwendung[v] = this.purchaseParts[i].verwendung[v];
+                }
+                this.matPlan[i] = matPlanRow;
+            }
+            console.log(this.matPlan);
+        }
+        else {
+            console.log("Please load XML");
         }
     };
     MaterialPlanningComponent = __decorate([

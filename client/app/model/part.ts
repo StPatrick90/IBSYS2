@@ -10,5 +10,8 @@ export class Part{
     wert: number;
     lagerMenge: number;
     bestandteile: Part[];
-
+    lieferfrist: number;
+    abweichung: number;
+    diskontmenge: number;
+    summe : number;
 }
