@@ -24,7 +24,7 @@
     <div class="form-group">
         <label for="part_verwendung">Verwendung </label>
         <ss-multiselect-dropdown [options]="verwOptions" [texts]="multiSelectTexts" [settings]="verwSettings"
-                                 [(ngModel)]="part.typ" id="part_verwendung">
+                                 [(ngModel)]="part.verwendung" id="part_verwendung">
         </ss-multiselect-dropdown>
     </div>
     <div class="form-group">
@@ -37,7 +37,7 @@
     <div class="form-group" align="right">
         <button type="button" class="btn btn-danger">
             Zurücksetzen</button>
-        <button type="button" class="btn btn-success">
+        <button type="button" class="btn btn-success" (click)="test()">
             Hinzufügen
         </button>
     </div>
@@ -151,7 +151,7 @@
             <br><br>
             <div *ngFor="let ws of workstations">
                 <div class="col-md-1">
-                    <input type="checkbox" [checked]="false">
+                    <input type="checkbox" [checked]="checkedAP[ws.nummer]" (click)="updateCheckedStatus(ws)">
                 </div>
                 <div class="col-md-4" align="left">
                     {{ws.nummer + " - " + ws.name}}

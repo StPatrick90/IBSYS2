@@ -31,6 +31,12 @@ var PartService = (function () {
         return this.http.get('api/processingTimes')
             .map(function (res) { return res.json(); });
     };
+    PartService.prototype.addPart = function (newPart) {
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post('/api/part', JSON.stringify(newPart), { headers: headers })
+            .map(function (res) { return res.json(); });
+    };
     PartService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

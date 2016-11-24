@@ -51,10 +51,9 @@ export class WorkstationsComponent {
 
     updateWorkstation(event) {
         event.preventDefault();
-        var workstations = this.workstations;
         var bereitsVorhanden = false;
 
-        for(let ws of workstations){
+        for(let ws of this.workstations){
             if (ws.nummer == this.workstation.nummer && ws._id != this.workstation._id){
                 bereitsVorhanden = true;
             }
@@ -69,7 +68,7 @@ export class WorkstationsComponent {
                     this.workstationService.addWorkstation(newWorkstation)
                         .subscribe(workstation => {
                             this.workstations.push(workstation);
-                            this.sessionService.setWorkstations(workstations);
+                            this.sessionService.setWorkstations(this.workstations);
                             this.resetWorkstation();
                         });
                 }
@@ -83,10 +82,10 @@ export class WorkstationsComponent {
                 this.workstationService.updateWorkstation(this.workstation)
                     .subscribe(data => {
                         if (data.n == 1) {
-                            for (var i = 0; i < workstations.length; i++) {
-                                if (workstations[i]._id == this.workstation._id) {
-                                    workstations[i] = this.workstation;
-                                    this.sessionService.setWorkstations(workstations);
+                            for (var i = 0; i < this.workstations.length; i++) {
+                                if (this.workstations[i]._id == this.workstation._id) {
+                                    this.workstations[i] = this.workstation;
+                                    this.sessionService.setWorkstations(this.workstations);
                                 }
                             }
                         }

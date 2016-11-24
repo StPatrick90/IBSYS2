@@ -50,10 +50,9 @@ var WorkstationsComponent = (function () {
     WorkstationsComponent.prototype.updateWorkstation = function (event) {
         var _this = this;
         event.preventDefault();
-        var workstations = this.workstations;
         var bereitsVorhanden = false;
-        for (var _i = 0, workstations_1 = workstations; _i < workstations_1.length; _i++) {
-            var ws = workstations_1[_i];
+        for (var _i = 0, _a = this.workstations; _i < _a.length; _i++) {
+            var ws = _a[_i];
             if (ws.nummer == this.workstation.nummer && ws._id != this.workstation._id) {
                 bereitsVorhanden = true;
             }
@@ -68,7 +67,7 @@ var WorkstationsComponent = (function () {
                     this.workstationService.addWorkstation(newWorkstation)
                         .subscribe(function (workstation) {
                         _this.workstations.push(workstation);
-                        _this.sessionService.setWorkstations(workstations);
+                        _this.sessionService.setWorkstations(_this.workstations);
                         _this.resetWorkstation();
                     });
                 }
@@ -80,10 +79,10 @@ var WorkstationsComponent = (function () {
                 this.workstationService.updateWorkstation(this.workstation)
                     .subscribe(function (data) {
                     if (data.n == 1) {
-                        for (var i = 0; i < workstations.length; i++) {
-                            if (workstations[i]._id == _this.workstation._id) {
-                                workstations[i] = _this.workstation;
-                                _this.sessionService.setWorkstations(workstations);
+                        for (var i = 0; i < _this.workstations.length; i++) {
+                            if (_this.workstations[i]._id == _this.workstation._id) {
+                                _this.workstations[i] = _this.workstation;
+                                _this.sessionService.setWorkstations(_this.workstations);
                             }
                         }
                     }

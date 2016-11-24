@@ -22,11 +22,13 @@ var PartsComponent = (function () {
         this.partservice = partservice;
         this.sessionService = sessionService;
         this.nextWsOptions = Array();
-        this.listVerfuegbareTeile = [];
-        this.listBestandteile = [];
+        this.listVerfuegbareTeile = Array();
+        this.listBestandteile = Array();
         this.part = new part_1.Part();
+        this.bearbeitungsZeiten = Array();
         this.ruestZeit = Array();
         this.fertigungsZeit = Array();
+        this.checkedAP = Array();
         this.nextArbeitsplaetze = Array();
         if (this.sessionService.getWorkstations() != null || this.sessionService.getWorkstations() != undefined ||
             this.sessionService.getParts() != null || this.sessionService.getParts() != undefined ||
@@ -48,6 +50,7 @@ var PartsComponent = (function () {
     PartsComponent.prototype.initLists = function () {
         this.fillVerfuegbareTeile();
         this.initMultiSelects();
+        this.initCheckboxes();
     };
     PartsComponent.prototype.initMultiSelects = function () {
         this.typOptions = [
@@ -121,6 +124,103 @@ var PartsComponent = (function () {
                 }
             }
         }
+    };
+    PartsComponent.prototype.initCheckboxes = function () {
+        for (var _i = 0, _a = this.workstations; _i < _a.length; _i++) {
+            var ap = _a[_i];
+            this.checkedAP[ap.nummer] = false;
+        }
+    };
+    PartsComponent.prototype.updatePart = function (event) {
+        var _this = this;
+        event.preventDefault();
+        var bereitsVorhanden = false;
+        for (var _i = 0, _a = this.parts; _i < _a.length; _i++) {
+            var pts = _a[_i];
+            if (pts.nummer == this.part.nummer && pts._id != this.part._id) {
+                bereitsVorhanden = true;
+            }
+        }
+        if (!bereitsVorhanden) {
+            if (!this.part._id) {
+                var newPart = {
+                    nummer: this.part.nummer,
+                    bezeichnung: this.part.bezeichnung,
+                };
+                if (newPart.nummer != null && newPart.bezeichnung != null) {
+                    this.workstationService.addWorkstation(newWorkstation)
+                        .subscribe(function (workstation) {
+                        _this.workstations.push(workstation);
+                        _this.sessionService.setWorkstations(workstations);
+                        _this.resetWorkstation();
+                    });
+                }
+                else {
+                    this.modalWsEmpty.open();
+                }
+            }
+        }
+        /*
+        else {
+            this.modalWsExists.open();
+        }
+         */
+    };
+    PartsComponent.prototype.updateCheckedStatus = function (ws) {
+        this.checkedAP[ws.nummer] = !this.checkedAP[ws.nummer];
+    };
+    PartsComponent.prototype.setBearbeitungszeiten = function () {
+        var _this = this;
+        for (var i = 0; i < this.checkedAP.length - 1; i++) {
+            if (this.checkedAP[i]) {
+                var bearbeitungsZeit = {
+                    arbeitsplatz: this.workstations.find(function (ws) { return ws.nummer == i; }),
+                    ruestZeit: this.ruestZeit[i] ? this.ruestZeit[i] : 0,
+                    fertigungsZeit: this.fertigungsZeit[i] ? this.fertigungsZeit[i] : 0,
+                    nextArbeitsplatz: this.workstations.find(function (ws) { return ws.nummer == _this.nextArbeitsplaetze[i]; }) ?
+                        this.workstations.find(function (ws) { return ws.nummer == _this.nextArbeitsplaetze[i]; })
+                        : null
+                };
+                this.bearbeitungsZeiten.push(bearbeitungsZeit);
+            }
+        }
+    };
+    PartsComponent.prototype.test = function () {
+        var verwendung = [];
+        var typ;
+        if (this.part.verwendung) {
+            for (var _i = 0, _a = this.part.verwendung; _i < _a.length; _i++) {
+                var verw = _a[_i];
+                verwendung.push(verw == "1" ? "K" : verw == "2" ? "D" : "H");
+            }
+            verwendung = verwendung.sort(function (s1, s2) {
+                if (s1 > s2) {
+                    return 1;
+                }
+                if (s1 < s2) {
+                    return -1;
+                }
+                return 0;
+            });
+        }
+        if (this.part.typ) {
+            typ = this.part.typ[0] == "1" ? "P" : this.part.typ[0] == "2" ? "E" : "K";
+        }
+        console.log(typ);
+        /*
+        var newPart : Part = {
+            nummer: this.part.nummer,
+            bezeichnung: this.part.bezeichnung,
+            verwendung: this.part.verwendung.
+        }
+
+
+        this.partservice.addPart(newPart)
+            .subscribe(part => {
+                this.parts.push(part);
+                this.title = '';
+            });
+            */
     };
     __decorate([
         core_1.ViewChild('modalBestandteile'), 

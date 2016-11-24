@@ -7,7 +7,8 @@ var express = require('express');
 //Get All Tasksuire('express');
 var router = express.Router();
 var mongojs = require('mongojs');
-var db = mongojs('mongodb://admin:yppj@ds063546.mlab.com:63546/ibsys',['results']);
+//var db = mongojs('mongodb://admin:yppj@ds063546.mlab.com:63546/ibsys',['results']);
+var db = mongojs('mongodb://localhost:27017/local',['results']);
 
 router.get('/results', function(req, res, next){
     db.results.find(function (err, results) {

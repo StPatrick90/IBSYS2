@@ -2,7 +2,7 @@
  * Created by Paddy on 06.11.2016.
  */
 export class Part{
-    _id: string;
+    _id?: string;
     nummer: number;
     bezeichnung: string;
     verwendung: string[];
