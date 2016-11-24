@@ -47,4 +47,22 @@ router.get('/processingTimes', function (req, res, next) {
         })
 });
 
+//Save ProcessingTimes
+router.post('/processingTimes', function (req, res, next) {
+    var processingTimes = req.body;
+    if(!processingTimes){
+        res.status(400);
+        res.json({
+            "error": "Bad Data"
+        })
+    } else{
+        db.bearbeitungszeiten.insert(processingTimes, function (err, processingTimes) {
+            if(err){
+                res.send(err);
+            }
+            res.json(processingTimes);
+        })
+    }
+})
+
 module.exports = router;

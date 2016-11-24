@@ -25,10 +25,11 @@ var PartsComponent = (function () {
         this.listVerfuegbareTeile = Array();
         this.listBestandteile = Array();
         this.part = new part_1.Part();
-        this.bearbeitungsZeiten = Array();
         this.ruestZeit = Array();
         this.fertigungsZeit = Array();
         this.checkedAP = Array();
+        this.anzahl = Array();
+        this.checkedParts = Array();
         this.nextArbeitsplaetze = Array();
         if (this.sessionService.getWorkstations() != null || this.sessionService.getWorkstations() != undefined ||
             this.sessionService.getParts() != null || this.sessionService.getParts() != undefined ||
@@ -127,8 +128,12 @@ var PartsComponent = (function () {
     };
     PartsComponent.prototype.initCheckboxes = function () {
         for (var _i = 0, _a = this.workstations; _i < _a.length; _i++) {
-            var ap = _a[_i];
-            this.checkedAP[ap.nummer] = false;
+            var ws = _a[_i];
+            this.checkedAP[ws.nummer] = false;
+        }
+        for (var _b = 0, _c = this.parts; _b < _c.length; _b++) {
+            var part = _c[_b];
+            this.checkedAP[part.nummer] = false;
         }
     };
     PartsComponent.prototype.updatePart = function (event) {
@@ -166,27 +171,18 @@ var PartsComponent = (function () {
         }
          */
     };
-    PartsComponent.prototype.updateCheckedStatus = function (ws) {
-        this.checkedAP[ws.nummer] = !this.checkedAP[ws.nummer];
-    };
-    PartsComponent.prototype.setBearbeitungszeiten = function () {
-        var _this = this;
-        for (var i = 0; i < this.checkedAP.length - 1; i++) {
-            if (this.checkedAP[i]) {
-                var bearbeitungsZeit = {
-                    arbeitsplatz: this.workstations.find(function (ws) { return ws.nummer == i; }),
-                    ruestZeit: this.ruestZeit[i] ? this.ruestZeit[i] : 0,
-                    fertigungsZeit: this.fertigungsZeit[i] ? this.fertigungsZeit[i] : 0,
-                    nextArbeitsplatz: this.workstations.find(function (ws) { return ws.nummer == _this.nextArbeitsplaetze[i]; }) ?
-                        this.workstations.find(function (ws) { return ws.nummer == _this.nextArbeitsplaetze[i]; })
-                        : null
-                };
-                this.bearbeitungsZeiten.push(bearbeitungsZeit);
-            }
+    PartsComponent.prototype.updateCheckedStatus = function (mode, item) {
+        if (mode == 1) {
+            this.checkedAP[item.nummer] = !this.checkedAP[item.nummer];
+        }
+        if (mode == 2) {
+            this.checkedParts[item.nummer] = !this.checkedParts[item.nummer];
         }
     };
     PartsComponent.prototype.test = function () {
+        var _this = this;
         var verwendung = [];
+        var bestandteile = [];
         var typ;
         if (this.part.verwendung) {
             for (var _i = 0, _a = this.part.verwendung; _i < _a.length; _i++) {
@@ -203,24 +199,56 @@ var PartsComponent = (function () {
                 return 0;
             });
         }
+        for (var i = 0; i < this.checkedParts.length - 1; i++) {
+            if (this.checkedParts[i]) {
+                bestandteile.push({
+                    _id: this.parts.find(function (part) { return part.nummer == i; })._id,
+                    anzahl: this.anzahl[i] ? this.anzahl[i] : 0
+                });
+            }
+        }
         if (this.part.typ) {
             typ = this.part.typ[0] == "1" ? "P" : this.part.typ[0] == "2" ? "E" : "K";
         }
-        console.log(typ);
-        /*
-        var newPart : Part = {
+        var newPart = {
             nummer: this.part.nummer,
             bezeichnung: this.part.bezeichnung,
-            verwendung: this.part.verwendung.
-        }
-
-
+            verwendung: verwendung,
+            typ: typ,
+            wert: this.part.wert,
+            lagerMenge: this.part.lagerMenge,
+            bestandteile: bestandteile,
+            lieferfrist: this.part.lieferfrist,
+            abweichung: this.part.abweichung,
+            diskontmenge: this.part.diskontmenge
+        };
         this.partservice.addPart(newPart)
-            .subscribe(part => {
-                this.parts.push(part);
-                this.title = '';
-            });
-            */
+            .subscribe(function (part) {
+            _this.parts.push(part);
+            _this.lastId = part._id;
+        }, function (err) { return console.error(err); }, function () { return _this.addProcessingTime(); });
+    };
+    PartsComponent.prototype.addProcessingTime = function () {
+        var _this = this;
+        var bearbeitungsZeiten = [];
+        for (var i = 0; i < this.checkedAP.length - 1; i++) {
+            if (this.checkedAP[i]) {
+                var bearbeitungsZeit = {
+                    arbeitsplatz: 'ObjectId("' + this.workstations.find(function (ws) { return ws.nummer == i; })._id + '")',
+                    teil: 'ObjectId("' + this.lastId + '")',
+                    ruestZeit: this.ruestZeit[i] ? this.ruestZeit[i] : 0,
+                    fertigungsZeit: this.fertigungsZeit[i] ? this.fertigungsZeit[i] : 0,
+                    nextArbeitsplatz: this.workstations.find(function (ws) { return ws.nummer == _this.nextArbeitsplaetze[i]; }) ?
+                        'ObjectId("' + this.workstations.find(function (ws) { return ws.nummer == _this.nextArbeitsplaetze[i]; })._id + '")'
+                        : null
+                };
+                bearbeitungsZeiten.push(bearbeitungsZeit);
+            }
+        }
+        this.partservice.addProcessingTimes(bearbeitungsZeiten)
+            .subscribe(function (ba) {
+            console.log(ba);
+        }, function (err) { return console.error(err); });
     };
     __decorate([
         core_1.ViewChild('modalBestandteile'), 

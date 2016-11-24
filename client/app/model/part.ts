@@ -13,5 +13,5 @@ export class Part{
     lieferfrist: number;
     abweichung: number;
     diskontmenge: number;
-    summe : number;
+    summe?: number;
 }

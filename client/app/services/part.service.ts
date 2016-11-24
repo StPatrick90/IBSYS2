@@ -36,6 +36,13 @@ export class PartService{
         return this.http.post('/api/part', JSON.stringify(newPart), {headers:headers})
             .map(res => res.json());
     }
+
+    addProcessingTimes(newProcessingTimes){
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post('/api/processingTimes', JSON.stringify(newProcessingTimes), {headers:headers})
+            .map(res => res.json());
+    }
     /*
     addWorkstation(newWorkstation){
         var headers = new Headers();

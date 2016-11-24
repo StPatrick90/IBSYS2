@@ -7,7 +7,7 @@ import {Part} from "./part";
 export class ProcessingTime{
     _id?: string;
     arbeitsplatz: Workstation;
-    teil?: Part;
+    teil: Part;
     ruestZeit: number;
     fertigungsZeit: number;
     nextArbeitsplatz: Workstation;

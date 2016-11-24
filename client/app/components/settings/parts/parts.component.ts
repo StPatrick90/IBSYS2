@@ -39,13 +39,17 @@ export class PartsComponent {
     parts: Part[];
     workstations: Workstation[];
     processingTimes: ProcessingTime[];
-    bearbeitungsZeiten: ProcessingTime[] = Array<ProcessingTime>();
 
     ruestZeit: number[] = Array<number>();
     fertigungsZeit: number[] = Array<number>();
     checkedAP: boolean[] = Array<boolean>();
 
+    anzahl: number[] = Array<number>();
+    checkedParts: boolean[] = Array<boolean>();
+
     nextArbeitsplaetze: number[] = Array<number>();
+
+    lastId: string;
 
     constructor(private partservice: PartService, private sessionService:SessionService) {
         if(this.sessionService.getWorkstations() != null || this.sessionService.getWorkstations() != undefined ||
@@ -149,8 +153,11 @@ export class PartsComponent {
     }
 
     initCheckboxes(){
-        for(var ap of this.workstations){
-            this.checkedAP[ap.nummer] = false;
+        for(var ws of this.workstations){
+            this.checkedAP[ws.nummer] = false;
+        }
+        for(var part of this.parts){
+            this.checkedAP[part.nummer] = false;
         }
     }
 
@@ -208,27 +215,18 @@ export class PartsComponent {
          */
     }
 
-    updateCheckedStatus(ws){
-        this.checkedAP[ws.nummer] = !this.checkedAP[ws.nummer];
-    }
-
-    setBearbeitungszeiten(){
-        for(var i = 0; i < this.checkedAP.length -1; i++){
-            if(this.checkedAP[i]){
-                var bearbeitungsZeit : ProcessingTime = {
-                    arbeitsplatz: this.workstations.find(ws => ws.nummer == i),
-                    ruestZeit:this.ruestZeit[i] ? this.ruestZeit[i] : 0,
-                    fertigungsZeit: this.fertigungsZeit[i] ? this.fertigungsZeit[i] : 0,
-                    nextArbeitsplatz: this.workstations.find(ws => ws.nummer == this.nextArbeitsplaetze[i]) ?
-                        this.workstations.find(ws => ws.nummer == this.nextArbeitsplaetze[i])
-                        : null
-                }
-                this.bearbeitungsZeiten.push(bearbeitungsZeit);
-            }
+    updateCheckedStatus(mode,item){
+        if(mode == 1) {
+            this.checkedAP[item.nummer] = !this.checkedAP[item.nummer];
+        }
+        if(mode == 2){
+            this.checkedParts[item.nummer] = !this.checkedParts[item.nummer];
         }
     }
+
     test(){
         var verwendung = [];
+        var bestandteile = [];
         var typ;
 
         if(this.part.verwendung) {
@@ -245,24 +243,65 @@ export class PartsComponent {
                 return 0;
             })
         }
+        for(var i = 0; i < this.checkedParts.length -1; i++) {
+            if (this.checkedParts[i]) {
+                bestandteile.push({
+                    _id: this.parts.find(part => part.nummer == i)._id,
+                    anzahl: this.anzahl[i] ? this.anzahl[i] : 0
+                });
+            }
+        }
+
         if(this.part.typ) {
             typ = this.part.typ[0] == "1" ? "P" : this.part.typ[0] == "2" ? "E" : "K";
         }
-        console.log(typ);
 
-        /*
+
         var newPart : Part = {
             nummer: this.part.nummer,
             bezeichnung: this.part.bezeichnung,
-            verwendung: this.part.verwendung.
+            verwendung: verwendung,
+            typ: typ,
+            wert: this.part.wert,
+            lagerMenge: this.part.lagerMenge,
+            bestandteile: bestandteile,
+            lieferfrist: this.part.lieferfrist,
+            abweichung: this.part.abweichung,
+            diskontmenge: this.part.diskontmenge
         }
-
 
         this.partservice.addPart(newPart)
             .subscribe(part => {
                 this.parts.push(part);
-                this.title = '';
-            });
-            */
+                this.lastId = part._id;
+            }
+                ,
+                err => console.error(err),
+                () => this.addProcessingTime());
+
+    }
+    addProcessingTime(){
+        var bearbeitungsZeiten = [];
+
+        for(var i = 0; i < this.checkedAP.length -1; i++){
+            if(this.checkedAP[i]){
+                var bearbeitungsZeit  = {
+                    arbeitsplatz: 'ObjectId("' + this.workstations.find(ws => ws.nummer == i)._id + '")',
+                    teil: 'ObjectId("' + this.lastId + '")',
+                    ruestZeit:this.ruestZeit[i] ? this.ruestZeit[i] : 0,
+                    fertigungsZeit: this.fertigungsZeit[i] ? this.fertigungsZeit[i] : 0,
+                    nextArbeitsplatz: this.workstations.find(ws => ws.nummer == this.nextArbeitsplaetze[i]) ?
+                    'ObjectId("' + this.workstations.find(ws => ws.nummer == this.nextArbeitsplaetze[i])._id + '")'
+                        : null
+                }
+                bearbeitungsZeiten.push(bearbeitungsZeit);
+            }
+        }
+        this.partservice.addProcessingTimes(bearbeitungsZeiten)
+            .subscribe(ba => {
+                console.log(ba);
+            }
+            ,
+            err => console.error(err));
     }
 }
