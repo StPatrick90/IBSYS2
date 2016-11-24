@@ -11,6 +11,7 @@ import {XmlImportComponent} from './components/xmlImport/xmlImport.component';
 import {CapacityPlanningComponent} from './components/capacityPlanning/capacityPlanning.component';
 import {MaterialPlanningComponent} from './components/materialPlanning/materialPlanning.component';
 import {HomeComponent} from './components/home/home.component';
+import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {AppRoutingModule} from './app-routing.module';
 import {TranslatePipe}   from './translate/translate.pipe';
 import {TranslateService}   from './translate/translate.service';
@@ -29,7 +30,7 @@ import {LocalStorageService} from "angular2-localstorage/LocalStorageEmitter";
 
     declarations: [AppComponent, TasksComponent, CapacityPlanningComponent,
         HomeComponent, TranslatePipe, XmlImportComponent, MaterialPlanningComponent,
-        PredictionComponent, WorkstationsComponent, PartsComponent],
+        PredictionComponent, WorkstationsComponent, PartsComponent, DashboardComponent],
 
     bootstrap: [AppComponent],
     providers: [TRANSLATION_PROVIDERS, TranslateService, LocalStorageService]

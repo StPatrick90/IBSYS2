@@ -23,6 +23,7 @@ export const LANG_DE_TRANS = {
     'sidebar_workstations': 'Arbeitsplätze',
     'sidebar_partsLists': 'Stücklisten',
     'sidebar_parts': 'Teile',
+    'sidebar_dashboard': 'Übersicht',
 
 //Headbar
     'headbar_languages': 'Sprachen',

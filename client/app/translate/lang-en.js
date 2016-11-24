@@ -22,6 +22,7 @@ exports.LANG_EN_TRANS = {
     'sidebar_workstations': 'Workstations',
     'sidebar_partsLists': 'Parts lists',
     'sidebar_parts': 'Parts',
+    'sidebar_dashboard': 'Dashboard',
     //Headbar
     'headbar_languages': 'Languages',
     'headbar_german': 'German',

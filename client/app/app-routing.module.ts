@@ -11,6 +11,7 @@ import {MaterialPlanningComponent} from './components/materialPlanning/materialP
 import {PredictionComponent} from './components/prediction/prediction.component';
 import {WorkstationsComponent} from './components/settings/workstations/workstations.component';
 import {PartsComponent} from './components/settings/parts/parts.component';
+import {DashboardComponent} from './components/dashboard/dashboard.component';
 
 @NgModule({
     imports: [
@@ -22,7 +23,8 @@ import {PartsComponent} from './components/settings/parts/parts.component';
             { path: '', component: HomeComponent },
             { path: 'materialPlanning', component: MaterialPlanningComponent},
             { path: 'workstations', component: WorkstationsComponent},
-            { path: 'parts', component: PartsComponent}
+            { path: 'parts', component: PartsComponent},
+            { path: 'dashboard', component: DashboardComponent}
         ])
     ],
     exports: [
