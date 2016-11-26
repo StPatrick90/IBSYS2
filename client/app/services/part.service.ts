@@ -43,6 +43,18 @@ export class PartService{
         return this.http.post('/api/processingTimes', JSON.stringify(newProcessingTimes), {headers:headers})
             .map(res => res.json());
     }
+    updatePart(part){
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.put('/api/part/' + part._id, JSON.stringify(part), {headers:headers})
+            .map(res => res.json());
+    }
+
+    deleteProcessingTime(id){
+        return this.http.delete('/api/processingTime/' + id)
+            .map(res => res.json());
+    }
+
     /*
     addWorkstation(newWorkstation){
         var headers = new Headers();

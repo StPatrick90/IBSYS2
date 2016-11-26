@@ -1,7 +1,7 @@
 /**
  * Created by Paddy on 21.10.2016.
  */
-import {NgModule}      from '@angular/core';
+import {NgModule, ValueProvider}      from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpModule} from '@angular/http';
 import {FormsModule} from '@angular/forms';
@@ -24,7 +24,10 @@ import {MultiselectDropdownModule} from 'angular-2-dropdown-multiselect/src/mult
 import {LocalStorageService} from "angular2-localstorage/LocalStorageEmitter";
 import {DndModule} from 'ng2-dnd';
 
-
+const WINDOW_PROVIDER: ValueProvider = {
+    provide: Window,
+    useValue: window
+};
 
 @NgModule({
     imports: [BrowserModule, HttpModule, FormsModule, AppRoutingModule, Ng2Bs3ModalModule,
@@ -35,9 +38,10 @@ import {DndModule} from 'ng2-dnd';
         PredictionComponent, WorkstationsComponent, PartsComponent, DashboardComponent],
 
     bootstrap: [AppComponent],
-    providers: [TRANSLATION_PROVIDERS, TranslateService, LocalStorageService]
+    providers: [TRANSLATION_PROVIDERS, TranslateService, LocalStorageService, WINDOW_PROVIDER]
 
 })
 export class AppModule {
-    constructor(storageService: LocalStorageService){}
+    constructor(){
+    }
 }

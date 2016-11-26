@@ -13,14 +13,14 @@ import { ProcessingTime } from '../model/processingTime';
 @Injectable()
 export class SessionService{
 
-<<<<<<< HEAD
-    @SessionStorage() public resultObj;
+    @SessionStorage() private resultObj;
     @SessionStorage() private parts : Part[];
     @SessionStorage() private workstations : Workstation[];
     @SessionStorage() private processingTimes : ProcessingTime[];
 
     constructor(private http:Http){
         console.log('Session Service Initialized...');
+        this.clear();
     }
 
     public dummyObj = {results:{
@@ -173,6 +173,13 @@ export class SessionService{
     }
     setProcessingTimes(processingTimes){
         this.processingTimes = processingTimes;
+    }
+
+    clear(){
+        this.setResultObject(null);
+        this.setParts(null);
+        this.setWorkstations(null);
+        this.setProcessingTimes(null);
     }
 
 }

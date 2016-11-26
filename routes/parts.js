@@ -56,4 +56,23 @@ router.post('/part', function (req, res, next) {
         })
     }
 })
+//Update Task
+router.put('/part/:id', function (req, res, next) {
+    var part = req.body;
+
+    if(!part){
+        res.status(400);
+        res.json({
+            "error": "Bad Data"
+        });
+    } else{
+        db.teile.update({_id: mongojs.ObjectId(req.params.id)},part,{}, function (err, part) {
+            if(err){
+                res.send(err);
+            }
+            res.json(part);
+        })
+    }
+})
+
 module.exports = router;

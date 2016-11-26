@@ -43,6 +43,16 @@ var PartService = (function () {
         return this.http.post('/api/processingTimes', JSON.stringify(newProcessingTimes), { headers: headers })
             .map(function (res) { return res.json(); });
     };
+    PartService.prototype.updatePart = function (part) {
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.put('/api/part/' + part._id, JSON.stringify(part), { headers: headers })
+            .map(function (res) { return res.json(); });
+    };
+    PartService.prototype.deleteProcessingTime = function (id) {
+        return this.http.delete('/api/processingTime/' + id)
+            .map(function (res) { return res.json(); });
+    };
     PartService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

@@ -65,4 +65,16 @@ router.post('/processingTimes', function (req, res, next) {
     }
 })
 
+//Delete ProcessingTime
+router.delete('/processingTime/:id', function(req, res, next){
+    db.bearbeitungszeiten.remove({_id: mongojs.ObjectId(req.params.id)}, function (err, processingTime) {
+        if(err){
+            res.send(err);
+        }
+        res.json(processingTime);
+    })
+});
+
+
+
 module.exports = router;

@@ -6,7 +6,7 @@ export class Part{
     nummer: number;
     bezeichnung: string;
     verwendung: string[];
-    typ: string;
+    typ: any;
     wert: number;
     lagerMenge: number;
     bestandteile: Part[];

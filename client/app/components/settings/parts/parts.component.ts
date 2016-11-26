@@ -12,7 +12,7 @@ import {
 import {ModalComponent} from 'ng2-bs3-modal/ng2-bs3-modal';
 import {Workstation} from "../../../model/workstastion";
 import {ProcessingTime} from "../../../model/processingTime";
-import { SessionService} from '../../../services/session.service';
+import {SessionService} from '../../../services/session.service';
 
 
 @Component({
@@ -21,8 +21,15 @@ import { SessionService} from '../../../services/session.service';
     templateUrl: 'parts.component.html'
 })
 export class PartsComponent {
+    //TODO Object ID richtig her holen
+    ObjectID = require('mongojs').ObjectID;
+
     @ViewChild('modalBestandteile')
     modalBestandteile: ModalComponent;
+    @ViewChild('modalPartExists')
+    modalPartExists: ModalComponent;
+    @ViewChild('modalPartEmpty')
+    modalPartEmpty: ModalComponent;
 
     private typOptions: IMultiSelectOption[];
     private verwOptions: IMultiSelectOption[];
@@ -31,9 +38,6 @@ export class PartsComponent {
     private verwSettings: IMultiSelectSettings;
     private nextWsSettings: IMultiSelectSettings;
     private multiSelectTexts: IMultiSelectTexts;
-
-    listVerfuegbareTeile: Part[] = Array<Part>();
-    listBestandteile: Part[] =  Array<Part>();
 
     part: Part = new Part();
     parts: Part[];
@@ -47,20 +51,21 @@ export class PartsComponent {
     anzahl: number[] = Array<number>();
     checkedParts: boolean[] = Array<boolean>();
 
-    nextArbeitsplaetze: number[] = Array<number>();
+    nextArbeitsplaetze: any = Array<Array<number>>();
 
     lastId: string;
+    procTimeIds: string[] = new Array<string>();
 
-    constructor(private partservice: PartService, private sessionService:SessionService) {
-        if(this.sessionService.getWorkstations() != null || this.sessionService.getWorkstations() != undefined ||
+    constructor(private partservice: PartService, private sessionService: SessionService, private window: Window) {
+        /*if (this.sessionService.getWorkstations() != null || this.sessionService.getWorkstations() != undefined ||
             this.sessionService.getParts() != null || this.sessionService.getParts() != undefined ||
             this.sessionService.getProcessingTimes() != null || this.sessionService.getProcessingTimes() != undefined) {
-                this.workstations = this.sessionService.getWorkstations();
-                this.parts = this.sessionService.getParts();
-                this.processingTimes = this.sessionService.getProcessingTimes();
-                this.initLists();
-        }
-        else{
+            this.workstations = this.sessionService.getWorkstations();
+            this.parts = this.sessionService.getParts();
+            this.processingTimes = this.sessionService.getProcessingTimes();
+            this.initLists();
+        }*/
+        //else {
             this.partservice.getWorkstationsAndPartsAndBearbeitung()
                 .subscribe(data => {
                         this.workstations = data[0]
@@ -69,11 +74,12 @@ export class PartsComponent {
                     },
                     err => console.error(err),
                     () => this.initLists());
-        }
+        //}
+
     }
 
     initLists() {
-        this.fillVerfuegbareTeile();
+        console.log(this.processingTimes);
         this.initMultiSelects();
         this.initCheckboxes();
     }
@@ -139,159 +145,160 @@ export class PartsComponent {
         };
     }
 
-    fillVerfuegbareTeile() {
-        if (this.part._id == null) {
-            this.listVerfuegbareTeile = this.parts.slice();
-        }
-        else {
-            for (var part of this.parts) {
-                if (part._id != this.part._id) {
-                    this.listVerfuegbareTeile.push(part);
-                }
-            }
-        }
-    }
-
-    initCheckboxes(){
-        for(var ws of this.workstations){
+    initCheckboxes() {
+        for (var ws of this.workstations) {
             this.checkedAP[ws.nummer] = false;
         }
-        for(var part of this.parts){
-            this.checkedAP[part.nummer] = false;
+        for (var part of this.parts) {
+            this.checkedParts[part.nummer] = false;
         }
     }
 
-    updatePart(event){
-        event.preventDefault();
-        var bereitsVorhanden = false;
-
-        for(let pts of this.parts){
-            if (pts.nummer == this.part.nummer && pts._id != this.part._id){
-                bereitsVorhanden = true;
-            }
-        }
-        if(!bereitsVorhanden) {
-            if (!this.part._id) {
-                var newPart = {
-                    nummer: this.part.nummer,
-                    bezeichnung: this.part.bezeichnung,
-
-                }
-                if(newPart.nummer != null && newPart.bezeichnung != null){
-                    this.workstationService.addWorkstation(newWorkstation)
-                        .subscribe(workstation => {
-                            this.workstations.push(workstation);
-                            this.sessionService.setWorkstations(workstations);
-                            this.resetWorkstation();
-                        });
-                }
-                else{
-                    this.modalWsEmpty.open();
-                }
-
-
-            }
-            /*
-            else {
-                this.workstationService.updateWorkstation(this.workstation)
-                    .subscribe(data => {
-                        if (data.n == 1) {
-                            for (var i = 0; i < workstations.length; i++) {
-                                if (workstations[i]._id == this.workstation._id) {
-                                    workstations[i] = this.workstation;
-                                    this.sessionService.setWorkstations(workstations);
-                                }
-                            }
-                        }
-                        this.resetWorkstation();
-                    });
-            }
-             */
-        }
-        /*
-        else {
-            this.modalWsExists.open();
-        }
-         */
-    }
-
-    updateCheckedStatus(mode,item){
-        if(mode == 1) {
+    updateCheckedStatus(mode, item) {
+        if (mode == 1) {
             this.checkedAP[item.nummer] = !this.checkedAP[item.nummer];
         }
-        if(mode == 2){
+        if (mode == 2) {
             this.checkedParts[item.nummer] = !this.checkedParts[item.nummer];
         }
     }
 
-    test(){
+    updatePart(event) {
+        event.preventDefault();
+        var bereitsVorhanden = false;
         var verwendung = [];
         var bestandteile = [];
         var typ;
 
-        if(this.part.verwendung) {
-            for (var verw of this.part.verwendung) {
-                verwendung.push(verw == "1" ? "K" : verw == "2" ? "D" : "H")
+        for (let pts of this.parts) {
+            if (pts.nummer == this.part.nummer && pts._id != this.part._id) {
+                bereitsVorhanden = true;
             }
-            verwendung = verwendung.sort((s1, s2) => {
-                if (s1 > s2) {
-                    return 1;
+        }
+        if (!bereitsVorhanden) {
+            if (this.part.typ) {
+                typ = this.part.typ[0] == "1" ? "P" : this.part.typ[0] == "2" ? "E" : "K";
+            }
+            if (this.part.verwendung) {
+                for (var verw of this.part.verwendung) {
+                    verwendung.push(verw == "1" ? "K" : verw == "2" ? "D" : "H")
                 }
-                if (s1 < s2) {
-                    return -1;
+                verwendung = verwendung.sort((s1, s2) => {
+                    if (s1 > s2) {
+                        return 1;
+                    }
+                    if (s1 < s2) {
+                        return -1;
+                    }
+                    return 0;
+                })
+            }
+            else {
+                this.modalPartEmpty.open();
+                return;
+            }
+            if (typ == "P" || typ == "E") {
+                for (var i = 0; i < this.checkedParts.length - 1; i++) {
+                    if (this.checkedParts[i]) {
+                        bestandteile.push({
+                            _id: this.parts.find(part => part.nummer == i)._id,
+                            anzahl: this.anzahl[i] ? this.anzahl[i] : 0
+                        });
+                    }
                 }
-                return 0;
-            })
-        }
-        for(var i = 0; i < this.checkedParts.length -1; i++) {
-            if (this.checkedParts[i]) {
-                bestandteile.push({
-                    _id: this.parts.find(part => part.nummer == i)._id,
-                    anzahl: this.anzahl[i] ? this.anzahl[i] : 0
-                });
+            }
+
+            if (!this.part._id) {
+                var newPart: Part = {
+                    nummer: this.part.nummer,
+                    bezeichnung: this.part.bezeichnung,
+                    verwendung: verwendung,
+                    typ: typ,
+                    wert: this.part.wert,
+                    lagerMenge: this.part.lagerMenge,
+                    bestandteile: bestandteile,
+                    lieferfrist: this.part.lieferfrist ? this.part.lieferfrist : null,
+                    abweichung: this.part.abweichung ? this.part.abweichung : null,
+                    diskontmenge: this.part.diskontmenge ? this.part.diskontmenge : null
+                }
+
+                this.partservice.addPart(newPart)
+                    .subscribe(part => {
+                            this.parts.push(part);
+                            this.lastId = part._id;
+                        }
+                        ,
+                        err => console.error(err),
+                        () => {
+                            typ != "K" ? this.addProcessingTime() : this.resetAll()
+                        });
+
+            }
+
+            else {
+                var _part: Part = {
+                    _id: this.part._id,
+                    nummer: this.part.nummer,
+                    bezeichnung: this.part.bezeichnung,
+                    verwendung: verwendung,
+                    typ: typ,
+                    wert: this.part.wert,
+                    lagerMenge: this.part.lagerMenge,
+                    bestandteile: bestandteile,
+                    lieferfrist: this.part.lieferfrist ? this.part.lieferfrist : null,
+                    abweichung: this.part.abweichung ? this.part.abweichung : null,
+                    diskontmenge: this.part.diskontmenge ? this.part.diskontmenge : null
+                }
+                this.partservice.updatePart(_part)
+                    .subscribe(data => {
+                                for (var i = 0; i < this.parts.length; i++) {
+                                    if (this.parts[i]._id == this.part._id) {
+                                        this.parts[i] = _part;
+                                    }
+                                };
+                            this.sessionService.setParts(this.parts);
+                            this.lastId = _part._id;
+                        },
+                        err => console.error(err),
+                        () => {
+                            typ != "K" ? this.addProcessingTime() : this.resetAll()
+                        });
             }
         }
-
-        if(this.part.typ) {
-            typ = this.part.typ[0] == "1" ? "P" : this.part.typ[0] == "2" ? "E" : "K";
+        else {
+            this.modalPartExists.open();
         }
-
-
-        var newPart : Part = {
-            nummer: this.part.nummer,
-            bezeichnung: this.part.bezeichnung,
-            verwendung: verwendung,
-            typ: typ,
-            wert: this.part.wert,
-            lagerMenge: this.part.lagerMenge,
-            bestandteile: bestandteile,
-            lieferfrist: this.part.lieferfrist,
-            abweichung: this.part.abweichung,
-            diskontmenge: this.part.diskontmenge
-        }
-
-        this.partservice.addPart(newPart)
-            .subscribe(part => {
-                this.parts.push(part);
-                this.lastId = part._id;
-            }
-                ,
-                err => console.error(err),
-                () => this.addProcessingTime());
-
     }
-    addProcessingTime(){
+
+    addProcessingTime() {
         var bearbeitungsZeiten = [];
 
-        for(var i = 0; i < this.checkedAP.length -1; i++){
-            if(this.checkedAP[i]){
-                var bearbeitungsZeit  = {
-                    arbeitsplatz: 'ObjectId("' + this.workstations.find(ws => ws.nummer == i)._id + '")',
-                    teil: 'ObjectId("' + this.lastId + '")',
-                    ruestZeit:this.ruestZeit[i] ? this.ruestZeit[i] : 0,
+        if (this.procTimeIds.length > 0) {
+            for (var procTimeId of this.procTimeIds) {
+                this.partservice.deleteProcessingTime(procTimeId)
+                    .subscribe((data => {
+                        if (data.n == 1) {
+                            for (var i = 0; i < this.processingTimes.length; i++) {
+                                if (this.processingTimes[i]._id == procTimeId) {
+                                    this.processingTimes.splice(i, 1);
+                                    this.sessionService.setProcessingTimes(this.processingTimes);
+                                }
+                            }
+                        }
+                    }))
+            }
+        }
+
+
+        for (var i = 0; i < this.checkedAP.length - 1; i++) {
+            if (this.checkedAP[i]) {
+                var bearbeitungsZeit = {
+                    arbeitsplatz: this.ObjectID(this.workstations.find(ws => ws.nummer == i)._id),
+                    teil: this.ObjectID(this.lastId),
+                    ruestZeit: this.ruestZeit[i] ? this.ruestZeit[i] : 0,
                     fertigungsZeit: this.fertigungsZeit[i] ? this.fertigungsZeit[i] : 0,
                     nextArbeitsplatz: this.workstations.find(ws => ws.nummer == this.nextArbeitsplaetze[i]) ?
-                    'ObjectId("' + this.workstations.find(ws => ws.nummer == this.nextArbeitsplaetze[i])._id + '")'
+                        this.ObjectID(this.workstations.find(ws => ws.nummer == this.nextArbeitsplaetze[i])._id)
                         : null
                 }
                 bearbeitungsZeiten.push(bearbeitungsZeit);
@@ -299,9 +306,78 @@ export class PartsComponent {
         }
         this.partservice.addProcessingTimes(bearbeitungsZeiten)
             .subscribe(ba => {
-                console.log(ba);
+                    this.processingTimes.push(ba);
+                    this.sessionService.setProcessingTimes(this.processingTimes);
+                    this.resetAll();
+                }
+                ,
+                err => console.error(err));
+
+    }
+
+    setPart(pt) {
+        this.resetAll();
+
+        var verwendung = [];
+        for (var p of pt.verwendung) {
+            verwendung.push(p == "K" ? 1 : p == "D" ? 2 : 3);
+        }
+
+        this.part._id = pt._id;
+        this.part.nummer = pt.nummer;
+        this.part.bezeichnung = pt.bezeichnung;
+        this.part.verwendung = verwendung;
+        this.part.typ = pt.typ == "P" ? [1] : pt.typ == "E" ? [2] : [3];
+        this.part.wert = pt.wert;
+        this.part.lagerMenge = pt.lagermenge;
+
+        for (var chkAp of pt.bestandteile) {
+            for (var part of this.parts) {
+                if (part._id == chkAp._id) {
+                    this.checkedParts[part.nummer] = true;
+                    this.anzahl[part.nummer] = chkAp.anzahl;
+                }
             }
-            ,
-            err => console.error(err));
+        }
+        for (var procTime of this.processingTimes) {
+            console.log(procTime);
+            if (pt._id == procTime.teil._id) {
+                this.checkedAP[procTime.arbeitsplatz.nummer] = true;
+                this.ruestZeit[procTime.arbeitsplatz.nummer] = procTime.ruestZeit;
+                this.fertigungsZeit[procTime.arbeitsplatz.nummer] = procTime.fertigungsZeit;
+                this.nextArbeitsplaetze[procTime.arbeitsplatz.nummer] = procTime.nextArbeitsplatz ? [procTime.nextArbeitsplatz.nummer] : null;
+                this.procTimeIds.push(procTime._id);
+            }
+        }
+        window.scrollTo(0, 0);
+    }
+
+    resetAll() {
+        this.part = {
+            _id: null,
+            nummer: null,
+            bezeichnung: null,
+            verwendung: null,
+            typ: null,
+            wert: null,
+            lagerMenge: null,
+            bestandteile: null,
+            lieferfrist: null,
+            abweichung: null,
+            diskontmenge: null,
+            summe: null
+        }
+        this.ruestZeit.length = 0;
+        this.fertigungsZeit.length = 0;
+        this.checkedAP.length = 0;
+
+        this.anzahl.length = 0;
+        this.checkedParts.length = 0;
+        this.nextArbeitsplaetze.length = 0;
+
+        this.lastId = null;
+        this.procTimeIds.length = 0;
+
+        this.initCheckboxes();
     }
 }

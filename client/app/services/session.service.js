@@ -135,6 +135,7 @@ var SessionService = (function () {
                             average: "",
                             all: "" } } } } };
         console.log('Session Service Initialized...');
+        this.clear();
     }
     SessionService.prototype.getResultObject = function () {
         return (this.resultObj == null || this.resultObj == {}) ? this.dummyObj : this.resultObj;
@@ -159,6 +160,12 @@ var SessionService = (function () {
     };
     SessionService.prototype.setProcessingTimes = function (processingTimes) {
         this.processingTimes = processingTimes;
+    };
+    SessionService.prototype.clear = function () {
+        this.setResultObject(null);
+        this.setParts(null);
+        this.setWorkstations(null);
+        this.setProcessingTimes(null);
     };
     __decorate([
         WebStorage_1.SessionStorage(), 

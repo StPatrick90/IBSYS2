@@ -33,8 +33,12 @@ var ng2_bs3_modal_1 = require('ng2-bs3-modal/ng2-bs3-modal');
 var multiselect_dropdown_1 = require('angular-2-dropdown-multiselect/src/multiselect-dropdown');
 var LocalStorageEmitter_1 = require("angular2-localstorage/LocalStorageEmitter");
 var ng2_dnd_1 = require('ng2-dnd');
+var WINDOW_PROVIDER = {
+    provide: Window,
+    useValue: window
+};
 var AppModule = (function () {
-    function AppModule(storageService) {
+    function AppModule() {
     }
     AppModule = __decorate([
         core_1.NgModule({
@@ -44,9 +48,9 @@ var AppModule = (function () {
                 home_component_1.HomeComponent, translate_pipe_1.TranslatePipe, xmlImport_component_1.XmlImportComponent, materialPlanning_component_1.MaterialPlanningComponent,
                 prediction_component_1.PredictionComponent, workstations_component_1.WorkstationsComponent, parts_component_1.PartsComponent, dashboard_component_1.DashboardComponent],
             bootstrap: [app_component_1.AppComponent],
-            providers: [index_1.TRANSLATION_PROVIDERS, translate_service_1.TranslateService, LocalStorageEmitter_1.LocalStorageService]
+            providers: [index_1.TRANSLATION_PROVIDERS, translate_service_1.TranslateService, LocalStorageEmitter_1.LocalStorageService, WINDOW_PROVIDER]
         }), 
-        __metadata('design:paramtypes', [LocalStorageEmitter_1.LocalStorageService])
+        __metadata('design:paramtypes', [])
     ], AppModule);
     return AppModule;
 }());
