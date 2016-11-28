@@ -50,27 +50,13 @@ export class PartService{
             .map(res => res.json());
     }
 
-    deleteProcessingTime(id){
-        return this.http.delete('/api/processingTime/' + id)
+    deleteProcessingTimes(ids){
+        return this.http.delete('/api/processingTime/' + ids)
             .map(res => res.json());
     }
 
-    /*
-    addWorkstation(newWorkstation){
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post('/api/workstation', JSON.stringify(newWorkstation), {headers:headers})
+    deletePart(id){
+        return this.http.delete('/api/part/' + id)
             .map(res => res.json());
     }
-
-    deleteWorkstation(id){
-        return this.http.delete('/api/workstation/' + id)
-            .map(res => res.json());
-    }
-    updateWorkstation(workstation){
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.put('/api/workstation/' + workstation._id, JSON.stringify(workstation), {headers:headers})
-            .map(res => res.json());
-    }*/
 }

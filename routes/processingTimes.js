@@ -50,6 +50,18 @@ router.get('/processingTimes', function (req, res, next) {
 //Save ProcessingTimes
 router.post('/processingTimes', function (req, res, next) {
     var processingTimes = req.body;
+    for(var i = 0; i <= processingTimes.length -1; i++){
+        if(processingTimes[i].arbeitsplatz){
+            processingTimes[i].arbeitsplatz = new mongojs.ObjectID(processingTimes[i].arbeitsplatz);
+        }
+        if(processingTimes[i].teil){
+            processingTimes[i].teil = new mongojs.ObjectID(processingTimes[i].teil);
+        }
+        if(processingTimes[i].nextArbeitsplatz){
+            processingTimes[i].nextArbeitsplatz = new mongojs.ObjectID(processingTimes[i].nextArbeitsplatz);
+        }
+    }
+
     if(!processingTimes){
         res.status(400);
         res.json({
@@ -67,7 +79,14 @@ router.post('/processingTimes', function (req, res, next) {
 
 //Delete ProcessingTime
 router.delete('/processingTime/:id', function(req, res, next){
-    db.bearbeitungszeiten.remove({_id: mongojs.ObjectId(req.params.id)}, function (err, processingTime) {
+    var ids = [];
+    ids = req.params.id.split(',');
+
+    for(i = 0; i < ids.length; i++){
+        ids[i] = mongojs.ObjectId(ids[i]);
+    }
+
+    db.bearbeitungszeiten.remove({_id: {$in: ids}}, function (err, processingTime) {
         if(err){
             res.send(err);
         }

@@ -49,8 +49,12 @@ var PartService = (function () {
         return this.http.put('/api/part/' + part._id, JSON.stringify(part), { headers: headers })
             .map(function (res) { return res.json(); });
     };
-    PartService.prototype.deleteProcessingTime = function (id) {
-        return this.http.delete('/api/processingTime/' + id)
+    PartService.prototype.deleteProcessingTimes = function (ids) {
+        return this.http.delete('/api/processingTime/' + ids)
+            .map(function (res) { return res.json(); });
+    };
+    PartService.prototype.deletePart = function (id) {
+        return this.http.delete('/api/part/' + id)
             .map(function (res) { return res.json(); });
     };
     PartService = __decorate([

@@ -22,8 +22,6 @@ var PartsComponent = (function () {
         this.partservice = partservice;
         this.sessionService = sessionService;
         this.window = window;
-        //TODO Object ID richtig her holen
-        this.ObjectID = require('mongojs').ObjectID;
         this.nextWsOptions = Array();
         this.part = new part_1.Part();
         this.ruestZeit = Array();
@@ -33,25 +31,24 @@ var PartsComponent = (function () {
         this.checkedParts = Array();
         this.nextArbeitsplaetze = Array();
         this.procTimeIds = new Array();
-        /*if (this.sessionService.getWorkstations() != null || this.sessionService.getWorkstations() != undefined ||
+        if (this.sessionService.getWorkstations() != null || this.sessionService.getWorkstations() != undefined ||
             this.sessionService.getParts() != null || this.sessionService.getParts() != undefined ||
             this.sessionService.getProcessingTimes() != null || this.sessionService.getProcessingTimes() != undefined) {
             this.workstations = this.sessionService.getWorkstations();
             this.parts = this.sessionService.getParts();
             this.processingTimes = this.sessionService.getProcessingTimes();
             this.initLists();
-        }*/
-        //else {
-        this.partservice.getWorkstationsAndPartsAndBearbeitung()
-            .subscribe(function (data) {
-            _this.workstations = data[0];
-            _this.parts = data[1];
-            _this.processingTimes = data[2];
-        }, function (err) { return console.error(err); }, function () { return _this.initLists(); });
-        //}
+        }
+        else {
+            this.partservice.getWorkstationsAndPartsAndBearbeitung()
+                .subscribe(function (data) {
+                _this.workstations = data[0];
+                _this.parts = data[1];
+                _this.processingTimes = data[2];
+            }, function (err) { return console.error(err); }, function () { return _this.initLists(); });
+        }
     }
     PartsComponent.prototype.initLists = function () {
-        console.log(this.processingTimes);
         this.initMultiSelects();
         this.initCheckboxes();
     };
@@ -197,7 +194,7 @@ var PartsComponent = (function () {
                     _this.parts.push(part);
                     _this.lastId = part._id;
                 }, function (err) { return console.error(err); }, function () {
-                    typ != "K" ? _this.addProcessingTime() : _this.resetAll();
+                    typ != "K" ? _this.deleteProcessingTimes() : _this.resetAll();
                 });
             }
             else {
@@ -217,7 +214,7 @@ var PartsComponent = (function () {
                 this.partservice.updatePart(_part)
                     .subscribe(function (data) {
                     for (var i = 0; i < _this.parts.length; i++) {
-                        if (_this.parts[i]._id == _this.part._id) {
+                        if (_this.parts[i]._id == _part._id) {
                             _this.parts[i] = _part;
                         }
                     }
@@ -225,7 +222,7 @@ var PartsComponent = (function () {
                     _this.sessionService.setParts(_this.parts);
                     _this.lastId = _part._id;
                 }, function (err) { return console.error(err); }, function () {
-                    typ != "K" ? _this.addProcessingTime() : _this.resetAll();
+                    typ != "K" ? _this.deleteProcessingTimes() : _this.resetAll();
                 });
             }
         }
@@ -233,15 +230,14 @@ var PartsComponent = (function () {
             this.modalPartExists.open();
         }
     };
-    PartsComponent.prototype.addProcessingTime = function () {
+    PartsComponent.prototype.deleteProcessingTimes = function () {
         var _this = this;
-        var bearbeitungsZeiten = [];
         if (this.procTimeIds.length > 0) {
-            for (var _i = 0, _a = this.procTimeIds; _i < _a.length; _i++) {
-                var procTimeId = _a[_i];
-                this.partservice.deleteProcessingTime(procTimeId)
-                    .subscribe((function (data) {
-                    if (data.n == 1) {
+            this.partservice.deleteProcessingTimes(this.procTimeIds)
+                .subscribe(function (data) {
+                if (data.n == _this.procTimeIds.length) {
+                    for (var _i = 0, _a = _this.procTimeIds; _i < _a.length; _i++) {
+                        var procTimeId = _a[_i];
                         for (var i = 0; i < _this.processingTimes.length; i++) {
                             if (_this.processingTimes[i]._id == procTimeId) {
                                 _this.processingTimes.splice(i, 1);
@@ -249,29 +245,71 @@ var PartsComponent = (function () {
                             }
                         }
                     }
-                }));
-            }
+                }
+            });
         }
+        this.addProcessingTime();
+    };
+    PartsComponent.prototype.addProcessingTime = function () {
+        var _this = this;
+        var bearbeitungsZeiten = [];
         for (var i = 0; i < this.checkedAP.length - 1; i++) {
             if (this.checkedAP[i]) {
                 var bearbeitungsZeit = {
-                    arbeitsplatz: this.ObjectID(this.workstations.find(function (ws) { return ws.nummer == i; })._id),
-                    teil: this.ObjectID(this.lastId),
+                    arbeitsplatz: this.workstations.find(function (ws) { return ws.nummer == i; })._id,
+                    teil: this.lastId,
                     ruestZeit: this.ruestZeit[i] ? this.ruestZeit[i] : 0,
                     fertigungsZeit: this.fertigungsZeit[i] ? this.fertigungsZeit[i] : 0,
                     nextArbeitsplatz: this.workstations.find(function (ws) { return ws.nummer == _this.nextArbeitsplaetze[i]; }) ?
-                        this.ObjectID(this.workstations.find(function (ws) { return ws.nummer == _this.nextArbeitsplaetze[i]; })._id)
+                        this.workstations.find(function (ws) { return ws.nummer == _this.nextArbeitsplaetze[i]; })._id
                         : null
                 };
                 bearbeitungsZeiten.push(bearbeitungsZeit);
             }
         }
-        this.partservice.addProcessingTimes(bearbeitungsZeiten)
-            .subscribe(function (ba) {
-            _this.processingTimes.push(ba);
-            _this.sessionService.setProcessingTimes(_this.processingTimes);
-            _this.resetAll();
-        }, function (err) { return console.error(err); });
+        if (bearbeitungsZeiten.length > 0) {
+            this.partservice.addProcessingTimes(bearbeitungsZeiten)
+                .subscribe(function (ba) {
+                for (var _i = 0, ba_1 = ba; _i < ba_1.length; _i++) {
+                    var _ba = ba_1[_i];
+                    for (var _a = 0, _b = _this.parts; _a < _b.length; _a++) {
+                        var pt = _b[_a];
+                        if (pt._id == _ba.teil) {
+                            _ba.teil = pt;
+                        }
+                    }
+                    for (var _c = 0, _d = _this.workstations; _c < _d.length; _c++) {
+                        var ws = _d[_c];
+                        if (ws._id == _ba.arbeitsplatz) {
+                            _ba.arbeitsplatz = ws;
+                        }
+                        if (ws._id == _ba.nextArbeitsplatz) {
+                            _ba.nextArbeitsplatz = ws;
+                        }
+                    }
+                    _this.processingTimes.push(_ba);
+                }
+                _this.sessionService.setProcessingTimes(_this.processingTimes);
+                _this.resetAll();
+            }, function (err) { return console.error(err); });
+        }
+        else {
+            this.resetAll();
+        }
+    };
+    PartsComponent.prototype.deletePart = function (part) {
+        var _this = this;
+        this.partservice.deletePart(part._id)
+            .subscribe((function (data) {
+            if (data.n == 1) {
+                for (var i = 0; i < _this.parts.length; i++) {
+                    if (_this.parts[i]._id == part._id) {
+                        _this.parts.splice(i, 1);
+                        _this.sessionService.setParts(_this.parts);
+                    }
+                }
+            }
+        }));
     };
     PartsComponent.prototype.setPart = function (pt) {
         this.resetAll();
@@ -286,7 +324,7 @@ var PartsComponent = (function () {
         this.part.verwendung = verwendung;
         this.part.typ = pt.typ == "P" ? [1] : pt.typ == "E" ? [2] : [3];
         this.part.wert = pt.wert;
-        this.part.lagerMenge = pt.lagermenge;
+        this.part.lagerMenge = pt.lagerMenge;
         for (var _b = 0, _c = pt.bestandteile; _b < _c.length; _b++) {
             var chkAp = _c[_b];
             for (var _d = 0, _e = this.parts; _d < _e.length; _d++) {
@@ -299,7 +337,6 @@ var PartsComponent = (function () {
         }
         for (var _f = 0, _g = this.processingTimes; _f < _g.length; _f++) {
             var procTime = _g[_f];
-            console.log(procTime);
             if (pt._id == procTime.teil._id) {
                 this.checkedAP[procTime.arbeitsplatz.nummer] = true;
                 this.ruestZeit[procTime.arbeitsplatz.nummer] = procTime.ruestZeit;
@@ -325,14 +362,28 @@ var PartsComponent = (function () {
             diskontmenge: null,
             summe: null
         };
-        this.ruestZeit.length = 0;
-        this.fertigungsZeit.length = 0;
-        this.checkedAP.length = 0;
-        this.anzahl.length = 0;
-        this.checkedParts.length = 0;
-        this.nextArbeitsplaetze.length = 0;
+        while (this.ruestZeit.length > 0) {
+            this.ruestZeit.pop();
+        }
+        while (this.fertigungsZeit.length > 0) {
+            this.fertigungsZeit.pop();
+        }
+        while (this.checkedAP.length > 0) {
+            this.checkedAP.pop();
+        }
+        while (this.nextArbeitsplaetze.length > 0) {
+            this.nextArbeitsplaetze.pop();
+        }
+        while (this.anzahl.length > 0) {
+            this.anzahl.pop();
+        }
+        while (this.checkedParts.length > 0) {
+            this.checkedParts.pop();
+        }
+        while (this.procTimeIds.length > 0) {
+            this.procTimeIds.pop();
+        }
         this.lastId = null;
-        this.procTimeIds.length = 0;
         this.initCheckboxes();
     };
     __decorate([

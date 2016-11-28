@@ -42,6 +42,12 @@ router.get('/epparts', function (req, res, next) {
 //Save Task
 router.post('/part', function (req, res, next) {
     var part = req.body;
+    for(var i = 0; i <= part.bestandteile.length -1; i++){
+        if(part.bestandteile[i]._id){
+            part.bestandteile[i]._id = new mongojs.ObjectID(part.bestandteile[i]._id);
+        }
+    }
+
     if(!part){
         res.status(400);
         res.json({
@@ -74,5 +80,15 @@ router.put('/part/:id', function (req, res, next) {
         })
     }
 })
+
+//Delete Part
+router.delete('/part/:id', function(req, res, next){
+    db.teile.remove({_id: mongojs.ObjectId(req.params.id)}, function (err, part) {
+        if(err){
+            res.send(err);
+        }
+        res.json(part);
+    })
+});
 
 module.exports = router;
