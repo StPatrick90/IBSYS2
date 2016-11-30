@@ -63,7 +63,7 @@ export class MaterialPlanningComponent {
                 matPlanRow.abweichung = this.purchaseParts[i].abweichung;
                 matPlanRow.lieferfrist = this.purchaseParts[i].lieferfrist;
                 matPlanRow.diskontmenge = this.purchaseParts[i].diskontmenge;
-                matPlanRow.summe = matPlanRow.lieferfrist + matPlanRow.abweichung;
+                matPlanRow.summe = Number((matPlanRow.lieferfrist + matPlanRow.abweichung).toFixed(2));
                 for (var v = 0; v <= this.purchaseParts[i].verwendung.length - 1; v++) {
                     matPlanRow.verwendung[v] = this.purchaseParts[i].verwendung[v];
                 }
@@ -82,6 +82,9 @@ export class MaterialPlanningComponent {
             console.log("Please load XML");
         }
         this.setColspan();
+
+        console.log(this.purchaseParts);
+        console.log(this.purchaseParts);
     }
 
     setColspan() {
