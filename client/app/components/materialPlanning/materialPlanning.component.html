@@ -17,7 +17,14 @@
     </div>
 </div>
 
+
 <table class="table-responsive table-bordered table-striped">
+    <script language="javascript">
+        function setColspan() {
+            var th = document.getElementById("verwendung").colSpan = "4";
+            th.setAttribute("colspan", 4);
+        }
+    </script>
     <caption width="100%" class="text-center">{{'material_Planning' | translate}}</caption>
     <thead>
     <tr>
@@ -25,7 +32,8 @@
         <th colspan="1" class="text-center">{{'delivery_time' | translate}}</th>
         <th colspan="1" class="text-center">{{'deviation' | translate}}</th>
         <th colspan="1" class="text-center">{{'sum' | translate}}</th>
-        <th colspan="3" class="text-center">{{'use' | translate}}</th>
+        <!--<th onload="setColspan()" id="verwendung" class="text-center">{{'use' | translate}}</th>-->
+        <th colspan="4" id="verwendung" class="text-center">{{'use' | translate}}</th>
         <th colspan="1" class="text-center">{{'discount_sum' | translate}}</th>
         <th colspan="1" class="text-center">{{'opening_stock' | translate}}</th>
         <th colspan="4" class="text-center">{{'gross_requirements_period' | translate}}</th>
@@ -35,59 +43,12 @@
         <th colspan="4" class="text-center">{{'stock_after_receipt' | translate}}</th>
     </tr>
 
-    <!--&lt;!&ndash;versuch1  bringt alles nichts, ich hole mir die verwendungen in eine seperate liste und mach dann was mit ngif&ndash;&gt;-->
-    <!--<tr>-->
-        <!--<th></th>-->
-        <!--<th></th>-->
-        <!--<th></th>-->
-        <!--<th></th>-->
-        <!--<th *ngFor="let m of matPlan" scope="col" class="text-center">{{m.verwendung}}</th>-->
-        <!--<th scope="col"></th>-->
-        <!--<th scope="col"></th>-->
-        <!--<th>1</th>-->
-        <!--<th>2</th>-->
-        <!--<th>3</th>-->
-        <!--<th>4</th>-->
-        <!--<th></th>-->
-        <!--<th></th>-->
-        <!--<th></th>-->
-        <!--<th>2</th>-->
-        <!--<th>3</th>-->
-        <!--<th>4</th>-->
-        <!--<th>5</th>-->
-    <!--</tr>-->
-
-    <!--versuch2-->
-    <!--<tr *ngFor="let m of matPlan">-->
-        <!--<th></th>-->
-        <!--<th></th>-->
-        <!--<th></th>-->
-        <!--<th></th>-->
-        <!--<th *ngFor="let v of m.verwendung"scope="col" class="text-center">{{m.verwendung}}</th>-->
-        <!--<th scope="col"></th>-->
-        <!--<th scope="col"></th>-->
-        <!--<th>1</th>-->
-        <!--<th>2</th>-->
-        <!--<th>3</th>-->
-        <!--<th>4</th>-->
-        <!--<th></th>-->
-        <!--<th></th>-->
-        <!--<th></th>-->
-        <!--<th>2</th>-->
-        <!--<th>3</th>-->
-        <!--<th>4</th>-->
-        <!--<th>5</th>-->
-    <!--</tr>-->
-
-    <!--ursrpünglich funktioniert-->
     <tr>
         <th></th>
         <th></th>
         <th></th>
         <th></th>
-        <th scope="col" class="text-center">Produkt1</th>
-        <th scope="col" class="text-center">Produkt2</th>
-        <th scope="col" class="text-center">Produkt3</th>
+        <th *ngFor="let m of verwendungRow" scope="col" class="text-center">{{m}}</th>
         <th scope="col"></th>
         <th scope="col"></th>
         <th>1</th>
@@ -106,7 +67,7 @@
 
     <tbody>
     <tr *ngFor="let m of matPlan">
-    <td>{{m.kpartnr}}</td>
+        <td>{{m.kpartnr}}</td>
         <td>{{m.lieferfrist}}</td>
         <td>{{m.abweichung}}</td>
         <td>{{m.summe}}</td>

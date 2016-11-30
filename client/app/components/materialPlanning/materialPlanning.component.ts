@@ -16,11 +16,13 @@ export class MaterialPlanningComponent {
     purchaseParts: Part[];
     matPlanRow: matPlanRow;
     matPlan: matPlanRow[];
+    verwendungRow: string[];
 
     constructor(private sessionService: SessionService, private  materialPlanningService: MaterialPlanningService) {
         this.resultObj = this.sessionService.getResultObject();
         this.matPlanRow = new matPlanRow();
         this.matPlan = new Array<matPlanRow>();
+        this.verwendungRow = new Array<string>();
         this.getKParts();
     }
 
@@ -65,9 +67,17 @@ export class MaterialPlanningComponent {
                     matPlanRow.verwendung[v] = this.purchaseParts[i].verwendung[v];
                 }
 
+                //get Verwendungen
+                for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {
+                    if (!this.verwendungRow.includes(matPlanRow.verwendung[l])) {
+                        this.verwendungRow.push(matPlanRow.verwendung[l]);
+                    }
+                }
                 this.matPlan[i] = matPlanRow;
             }
             console.log(this.matPlan);
+            // document.getElementById("verwendung").colspan="4";
+            var ppp = this.verwendungRow.length;
         }
         else {
             console.log("Please load XML");
