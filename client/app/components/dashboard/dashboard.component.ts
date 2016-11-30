@@ -2,10 +2,12 @@
  * Created by philipp.koepfer on 24.11.16.
  */
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { SessionService } from '../../services/session.service';
 import { DBService} from '../../services/db.service';
 import { DashTask } from '../../model/dashTask';
+import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+
 
 @Component({
     moduleId: module.id,
@@ -22,6 +24,14 @@ export class DashboardComponent {
     warnings: DashTask[];
     goods: DashTask[];
 
+    //Flags
+
+    @ViewChild('configuration')
+    modalConfig: ModalComponent;
+
+    dashTaskTypes= ["Warehouse", "Test"];
+
+
     constructor(sessionService: SessionService, dbService: DBService){
 
         this.resultObj = sessionService.getResultObject();
@@ -35,15 +45,17 @@ export class DashboardComponent {
                 err => console.log(err),
                 () => console.log("Periods loaded!"));
 
-        this.getStorageValues();
+        this.bootstrapDashTasks();
     }
 
-   /*+ function(){
-    $('.clickable').on('click',function(){
-        var effect = $(this).data('effect');
-        $(this).closest('.panel')[effect]();
-    })
-})*/
+    setConfig(){
+        this.modalConfig.open();
+    }
+
+    bootstrapDashTasks(){
+
+        this.getStorageValues();
+    }
 
     deleteClicked(dashTask: DashTask){
         if(dashTask.art == "critical"){
@@ -70,35 +82,37 @@ export class DashboardComponent {
         for(var i = 0;i < storage.length; i++){
             var amount = parseInt(storage[i].amount , 10);
             var startamount = parseInt(storage[i].startamount , 10);
-            if(amount <= (startamount * 0.1)){
-
+            if(amount <= (startamount * 0.05)){
                 var crit = new DashTask;
                 crit.id = this.criticals.length;
-                crit.name = "Weniger als 10% im Lager!"
+                crit.name = "Weniger als 5% im Lager!"
                 crit.art = "critical";
                 crit.link = "/capacityPlanning"
+                crit.article = storage[i].id;
                 crit.value = amount;
                 this.criticals.push(crit);
                 continue;
             }
-            if(amount <= (startamount * 0.4)){
+            if(amount <= (startamount * 0.2)){
 
                 var warn = new DashTask;
                 warn.id = this.warnings.length;
-                warn.name = "Weniger als 40% im Lager!"
+                warn.name = "Weniger als 20% im Lager!"
                 warn.art = "warning";
                 warn.link = "/capacityPlanning"
+                warn.article = storage[i].id;
                 warn.value = amount;
                 this.warnings.push(warn);
                 continue;
             }
-            if(amount >= startamount){
+            if(amount > startamount){
 
                 var good = new DashTask;
                 good.id = this.goods.length;
-                good.name = "100% und mehr im Lager verfügbar!"
+                good.name = "Mehr als 100% im Lager verfügbar!"
                 good.art = "good";
                 good.link = "/capacityPlanning"
+                good.article = storage[i].id;
                 good.value = amount;
                 this.goods.push(good);
                 continue;

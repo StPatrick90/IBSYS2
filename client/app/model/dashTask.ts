@@ -8,4 +8,5 @@ export class DashTask{
     art: string;
     value: number;
     link: string;
+    article: string;
 }

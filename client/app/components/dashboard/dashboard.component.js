@@ -15,10 +15,12 @@ var core_1 = require('@angular/core');
 var session_service_1 = require('../../services/session.service');
 var db_service_1 = require('../../services/db.service');
 var dashTask_1 = require('../../model/dashTask');
+var ng2_bs3_modal_1 = require('ng2-bs3-modal/ng2-bs3-modal');
 var DashboardComponent = (function () {
     function DashboardComponent(sessionService, dbService) {
         var _this = this;
         this.allResults = [];
+        this.dashTaskTypes = ["Warehouse", "Test"];
         this.resultObj = sessionService.getResultObject();
         this.warnings = [];
         this.normals = [];
@@ -26,14 +28,14 @@ var DashboardComponent = (function () {
         this.criticals = [];
         dbService.getResults()
             .subscribe(function (results) { _this.allResults = results; }, function (err) { return console.log(err); }, function () { return console.log("Periods loaded!"); });
-        this.getStorageValues();
+        this.bootstrapDashTasks();
     }
-    /*+ function(){
-     $('.clickable').on('click',function(){
-         var effect = $(this).data('effect');
-         $(this).closest('.panel')[effect]();
-     })
- })*/
+    DashboardComponent.prototype.setConfig = function () {
+        this.modalConfig.open();
+    };
+    DashboardComponent.prototype.bootstrapDashTasks = function () {
+        this.getStorageValues();
+    };
     DashboardComponent.prototype.deleteClicked = function (dashTask) {
         if (dashTask.art == "critical") {
             var index = this.criticals.indexOf(dashTask);
@@ -55,38 +57,45 @@ var DashboardComponent = (function () {
         for (var i = 0; i < storage.length; i++) {
             var amount = parseInt(storage[i].amount, 10);
             var startamount = parseInt(storage[i].startamount, 10);
-            if (amount <= (startamount * 0.1)) {
+            if (amount <= (startamount * 0.05)) {
                 var crit = new dashTask_1.DashTask;
                 crit.id = this.criticals.length;
-                crit.name = "Weniger als 10% im Lager!";
+                crit.name = "Weniger als 5% im Lager!";
                 crit.art = "critical";
                 crit.link = "/capacityPlanning";
+                crit.article = storage[i].id;
                 crit.value = amount;
                 this.criticals.push(crit);
                 continue;
             }
-            if (amount <= (startamount * 0.4)) {
+            if (amount <= (startamount * 0.2)) {
                 var warn = new dashTask_1.DashTask;
                 warn.id = this.warnings.length;
-                warn.name = "Weniger als 40% im Lager!";
+                warn.name = "Weniger als 20% im Lager!";
                 warn.art = "warning";
                 warn.link = "/capacityPlanning";
+                warn.article = storage[i].id;
                 warn.value = amount;
                 this.warnings.push(warn);
                 continue;
             }
-            if (amount >= startamount) {
+            if (amount > startamount) {
                 var good = new dashTask_1.DashTask;
                 good.id = this.goods.length;
-                good.name = "100% und mehr im Lager verfügbar!";
+                good.name = "Mehr als 100% im Lager verfügbar!";
                 good.art = "good";
                 good.link = "/capacityPlanning";
+                good.article = storage[i].id;
                 good.value = amount;
                 this.goods.push(good);
                 continue;
             }
         }
     };
+    __decorate([
+        core_1.ViewChild('configuration'), 
+        __metadata('design:type', ng2_bs3_modal_1.ModalComponent)
+    ], DashboardComponent.prototype, "modalConfig", void 0);
     DashboardComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

@@ -12,3 +12,34 @@
     border-radius: 4px;
     cursor: pointer;
 }
+
+.flowting-button {
+    background: none;
+    margin: 5px;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 70px;
+    height: 70px;
+    z-index: 100;
+    display: none;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #ff9000;
+}
+
+.flowting-button i {
+
+    font-size: 60px;
+
+}
+
+.stayAtTop{
+    margin-bottom: 90ch;
+    position: relative;
+    z-index: 100;
+    background: none;
+    text-decoration: none;
+    bottom: 0;
+    right: 0;
+}

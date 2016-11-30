@@ -54,6 +54,7 @@ exports.LANG_EN_TRANS = {
     'setWorkstations_empty_body': 'Number and name have to be filled.',
     //Settings-Parts
     'setParts_parts': 'Parts',
+    'setParts_part': 'Part',
     'setParts_typ': 'Type',
     'setParts_number': 'Number',
     'setParts_title': 'Title',

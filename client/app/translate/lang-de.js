@@ -54,6 +54,7 @@ exports.LANG_DE_TRANS = {
     'setWorkstations_empty_body': 'Die Nummer und der Name des Arbeitsplatzes muss ausgefüllt sein.',
     //Settings-Parts
     'setParts_parts': 'Teile',
+    'setParts_part': 'Teil',
     'setParts_typ': 'Typ',
     'setParts_number': 'Nummer',
     'setParts_title': 'Bezeichnung',
