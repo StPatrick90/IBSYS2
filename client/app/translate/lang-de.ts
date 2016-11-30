@@ -59,6 +59,7 @@ export const LANG_DE_TRANS = {
 
 //Settings-Parts
     'setParts_parts': 'Teile',
+    'setParts_part': 'Teil',
     'setParts_typ': 'Typ',
     'setParts_number': 'Nummer',
     'setParts_title': 'Bezeichnung',
