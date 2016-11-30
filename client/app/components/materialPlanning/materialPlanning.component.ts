@@ -17,6 +17,7 @@ export class MaterialPlanningComponent {
     matPlanRow: matPlanRow;
     matPlan: matPlanRow[];
     verwendungRow: string[];
+    colspan: number;
 
     constructor(private sessionService: SessionService, private  materialPlanningService: MaterialPlanningService) {
         this.resultObj = this.sessionService.getResultObject();
@@ -66,23 +67,25 @@ export class MaterialPlanningComponent {
                 for (var v = 0; v <= this.purchaseParts[i].verwendung.length - 1; v++) {
                     matPlanRow.verwendung[v] = this.purchaseParts[i].verwendung[v];
                 }
-
-                //get Verwendungen
+                // get Verwendungen
                 for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {
                     if (!this.verwendungRow.includes(matPlanRow.verwendung[l])) {
                         this.verwendungRow.push(matPlanRow.verwendung[l]);
                     }
                 }
+                this.colspan = this.verwendungRow.length;
                 this.matPlan[i] = matPlanRow;
             }
-            console.log(this.matPlan);
-            // document.getElementById("verwendung").colspan="4";
-            var ppp = this.verwendungRow.length;
         }
+
         else {
             console.log("Please load XML");
         }
+        this.setColspan();
+    }
 
+    setColspan() {
+        document.getElementById("Verwendung").setAttribute("colspan", String(this.colspan));
     }
 
 }

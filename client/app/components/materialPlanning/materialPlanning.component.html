@@ -17,17 +17,7 @@
     </div>
 </div>
 
-<script language="javascript">
-
-    alert("Rabbit out of the hat!");
-    console.log("skript ausgeführt");
-    function setColspan() {
-        alert("Rabbit out of the hat!");
-        console.log("Funktion ausgeführt");
-        var th = document.getElementById("verwendung").colSpan = "4";
-        th.setAttribute("colspan", 4);
-    }
-</script>
+<body>
 
 <table class="table-responsive table-bordered table-striped" onload="setColspan()">
     <caption width="100%" class="text-center">{{'material_Planning' | translate}}</caption>
@@ -37,8 +27,7 @@
         <th colspan="1" class="text-center">{{'delivery_time' | translate}}</th>
         <th colspan="1" class="text-center">{{'deviation' | translate}}</th>
         <th colspan="1" class="text-center">{{'sum' | translate}}</th>
-        <th id="verwendung" class="text-center">{{'use' | translate}}></th>
-        <!--<th colspan="4" id="verwendung" class="text-center">{{'use' | translate}}</th>-->
+        <th id="Verwendung" class="text-center">{{'use' | translate}}</th>
         <th colspan="1" class="text-center">{{'discount_sum' | translate}}</th>
         <th colspan="1" class="text-center">{{'opening_stock' | translate}}</th>
         <th colspan="4" class="text-center">{{'gross_requirements_period' | translate}}</th>
@@ -95,3 +84,5 @@
     </tr>
     </tbody>
 </table>
+
+</body>
