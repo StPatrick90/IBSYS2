@@ -55,7 +55,6 @@ var DashboardComponent = (function () {
         for (var i = 0; i < storage.length; i++) {
             var amount = parseInt(storage[i].amount, 10);
             var startamount = parseInt(storage[i].startamount, 10);
-            console.log(startamount * 0.1);
             if (amount <= (startamount * 0.1)) {
                 var crit = new dashTask_1.DashTask;
                 crit.id = this.criticals.length;
