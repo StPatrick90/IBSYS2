@@ -162,10 +162,6 @@ var PartsComponent = (function () {
                     return 0;
                 });
             }
-            else {
-                this.modalPartEmpty.open();
-                return;
-            }
             if (typ == "P" || typ == "E") {
                 for (var i = 0; i < this.checkedParts.length - 1; i++) {
                     if (this.checkedParts[i]) {
@@ -189,13 +185,18 @@ var PartsComponent = (function () {
                     abweichung: this.part.abweichung ? this.part.abweichung : null,
                     diskontmenge: this.part.diskontmenge ? this.part.diskontmenge : null
                 };
-                this.partservice.addPart(newPart)
-                    .subscribe(function (part) {
-                    _this.parts.push(part);
-                    _this.lastId = part._id;
-                }, function (err) { return console.error(err); }, function () {
-                    typ != "K" ? _this.deleteProcessingTimes() : _this.resetAll();
-                });
+                if (!this.isEmpty(newPart)) {
+                    this.partservice.addPart(newPart)
+                        .subscribe(function (part) {
+                        _this.parts.push(part);
+                        _this.lastId = part._id;
+                    }, function (err) { return console.error(err); }, function () {
+                        typ != "K" ? _this.deleteProcessingTimes() : _this.resetAll();
+                    });
+                }
+                else {
+                    this.modalPartEmpty.open();
+                }
             }
             else {
                 var _part = {
@@ -211,19 +212,24 @@ var PartsComponent = (function () {
                     abweichung: this.part.abweichung ? this.part.abweichung : null,
                     diskontmenge: this.part.diskontmenge ? this.part.diskontmenge : null
                 };
-                this.partservice.updatePart(_part)
-                    .subscribe(function (data) {
-                    for (var i = 0; i < _this.parts.length; i++) {
-                        if (_this.parts[i]._id == _part._id) {
-                            _this.parts[i] = _part;
+                if (!this.isEmpty(newPart)) {
+                    this.partservice.updatePart(_part)
+                        .subscribe(function (data) {
+                        for (var i = 0; i < _this.parts.length; i++) {
+                            if (_this.parts[i]._id == _part._id) {
+                                _this.parts[i] = _part;
+                            }
                         }
-                    }
-                    ;
-                    _this.sessionService.setParts(_this.parts);
-                    _this.lastId = _part._id;
-                }, function (err) { return console.error(err); }, function () {
-                    typ != "K" ? _this.deleteProcessingTimes() : _this.resetAll();
-                });
+                        ;
+                        _this.sessionService.setParts(_this.parts);
+                        _this.lastId = _part._id;
+                    }, function (err) { return console.error(err); }, function () {
+                        typ != "K" ? _this.deleteProcessingTimes() : _this.resetAll();
+                    });
+                }
+                else {
+                    this.modalPartEmpty.open();
+                }
             }
         }
         else {
@@ -386,10 +392,17 @@ var PartsComponent = (function () {
         this.lastId = null;
         this.initCheckboxes();
     };
-    __decorate([
-        core_1.ViewChild('modalBestandteile'), 
-        __metadata('design:type', ng2_bs3_modal_1.ModalComponent)
-    ], PartsComponent.prototype, "modalBestandteile", void 0);
+    PartsComponent.prototype.isEmpty = function (part) {
+        if (part.typ == "P" || part.typ == "E") {
+            return part.nummer == null && part.bezeichnung == null && part.lagerMenge == null
+                && part.wert == null && part.verwendung.length <= 0;
+        }
+        else {
+            return part.nummer == null && part.bezeichnung == null && part.lagerMenge == null
+                && part.wert == null && part.verwendung.length <= 0 && part.lieferfrist == null
+                && part.abweichung == null && part.diskontmenge == null;
+        }
+    };
     __decorate([
         core_1.ViewChild('modalPartExists'), 
         __metadata('design:type', ng2_bs3_modal_1.ModalComponent)

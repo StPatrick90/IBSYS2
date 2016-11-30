@@ -21,8 +21,6 @@ import {SessionService} from '../../../services/session.service';
     templateUrl: 'parts.component.html'
 })
 export class PartsComponent {
-    @ViewChild('modalBestandteile')
-    modalBestandteile: ModalComponent;
     @ViewChild('modalPartExists')
     modalPartExists: ModalComponent;
     @ViewChild('modalPartEmpty')
@@ -189,10 +187,6 @@ export class PartsComponent {
                     return 0;
                 })
             }
-            else {
-                this.modalPartEmpty.open();
-                return;
-            }
             if (typ == "P" || typ == "E") {
                 for (var i = 0; i < this.checkedParts.length - 1; i++) {
                     if (this.checkedParts[i]) {
@@ -217,18 +211,21 @@ export class PartsComponent {
                     abweichung: this.part.abweichung ? this.part.abweichung : null,
                     diskontmenge: this.part.diskontmenge ? this.part.diskontmenge : null
                 }
-
-                this.partservice.addPart(newPart)
-                    .subscribe(part => {
-                            this.parts.push(part);
-                            this.lastId = part._id;
-                        }
-                        ,
-                        err => console.error(err),
-                        () => {
-                            typ != "K" ? this.deleteProcessingTimes() : this.resetAll()
-                        });
-
+                if(!this.isEmpty(newPart)) {
+                    this.partservice.addPart(newPart)
+                        .subscribe(part => {
+                                this.parts.push(part);
+                                this.lastId = part._id;
+                            }
+                            ,
+                            err => console.error(err),
+                            () => {
+                                typ != "K" ? this.deleteProcessingTimes() : this.resetAll()
+                            });
+                }
+                else{
+                    this.modalPartEmpty.open();
+                }
             }
 
             else {
@@ -245,20 +242,26 @@ export class PartsComponent {
                     abweichung: this.part.abweichung ? this.part.abweichung : null,
                     diskontmenge: this.part.diskontmenge ? this.part.diskontmenge : null
                 }
-                this.partservice.updatePart(_part)
-                    .subscribe(data => {
+                if(!this.isEmpty(newPart)) {
+                    this.partservice.updatePart(_part)
+                        .subscribe(data => {
                                 for (var i = 0; i < this.parts.length; i++) {
                                     if (this.parts[i]._id == _part._id) {
                                         this.parts[i] = _part;
                                     }
-                                };
-                            this.sessionService.setParts(this.parts);
-                            this.lastId = _part._id;
-                        },
-                        err => console.error(err),
-                        () => {
-                            typ != "K" ? this.deleteProcessingTimes() : this.resetAll()
-                        });
+                                }
+                                ;
+                                this.sessionService.setParts(this.parts);
+                                this.lastId = _part._id;
+                            },
+                            err => console.error(err),
+                            () => {
+                                typ != "K" ? this.deleteProcessingTimes() : this.resetAll()
+                            });
+                }
+                else{
+                    this.modalPartEmpty.open();
+                }
             }
         }
         else {
@@ -423,5 +426,17 @@ export class PartsComponent {
         this.lastId = null;
 
         this.initCheckboxes();
+    }
+
+    isEmpty(part){
+        if(part.typ == "P" || part.typ == "E") {
+            return part.nummer == null && part.bezeichnung == null && part.lagerMenge == null
+                && part.wert == null && part.verwendung.length <= 0;
+        }
+        else{
+            return part.nummer == null && part.bezeichnung == null && part.lagerMenge == null
+                && part.wert == null && part.verwendung.length <= 0 && part.lieferfrist == null
+                && part.abweichung == null && part.diskontmenge == null;
+        }
     }
 }

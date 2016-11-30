@@ -76,18 +76,23 @@ var WorkstationsComponent = (function () {
                 }
             }
             else {
-                this.workstationService.updateWorkstation(this.workstation)
-                    .subscribe(function (data) {
-                    if (data.n == 1) {
-                        for (var i = 0; i < _this.workstations.length; i++) {
-                            if (_this.workstations[i]._id == _this.workstation._id) {
-                                _this.workstations[i] = _this.workstation;
-                                _this.sessionService.setWorkstations(_this.workstations);
+                if (newWorkstation.nummer != null && newWorkstation.name != null) {
+                    this.workstationService.updateWorkstation(this.workstation)
+                        .subscribe(function (data) {
+                        if (data.n == 1) {
+                            for (var i = 0; i < _this.workstations.length; i++) {
+                                if (_this.workstations[i]._id == _this.workstation._id) {
+                                    _this.workstations[i] = _this.workstation;
+                                    _this.sessionService.setWorkstations(_this.workstations);
+                                }
                             }
                         }
-                    }
-                    _this.resetWorkstation();
-                });
+                        _this.resetWorkstation();
+                    });
+                }
+                else {
+                    this.modalWsEmpty.open();
+                }
             }
         }
         else {

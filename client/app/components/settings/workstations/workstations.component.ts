@@ -79,6 +79,7 @@ export class WorkstationsComponent {
 
             }
             else {
+                if(newWorkstation.nummer != null && newWorkstation.name != null){
                 this.workstationService.updateWorkstation(this.workstation)
                     .subscribe(data => {
                         if (data.n == 1) {
@@ -91,6 +92,10 @@ export class WorkstationsComponent {
                         }
                         this.resetWorkstation();
                     });
+                }
+                else{
+                    this.modalWsEmpty.open();
+                }
             }
         }
         else {

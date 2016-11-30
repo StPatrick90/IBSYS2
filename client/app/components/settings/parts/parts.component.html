@@ -1,56 +1,57 @@
 <div class="well col-md-3" style="margin-left: 1%; margin-right: 1%;">
     <div class="form-group">
-        <label for="part_typ">Typ </label>
+        <label for="part_typ">{{'setParts_typ' | translate}}</label>
         <ss-multiselect-dropdown [options]="typOptions" [texts]="multiSelectTexts" [settings]="typSettings"
                                  [(ngModel)]="part.typ" id="part_typ">
         </ss-multiselect-dropdown>
     </div>
     <div class="form-group"  [hidden]="!(part.typ != undefined && part.typ.length > 0)">
-        <label for="part_nummer">Nummer</label>
-        <input type="number" [(ngModel)]="part.nummer" name="nummer" class="form-control" placeholder="Nummer" id="part_nummer">
+        <label for="part_nummer">{{'setParts_number' | translate}}</label>
+        <input type="number" [(ngModel)]="part.nummer" name="nummer" class="form-control" placeholder="{{'setParts_number' | translate}}" id="part_nummer">
     </div>
     <div class="form-group" [hidden]="!(part.typ != undefined && part.typ.length > 0)">
-        <label for="part_bez">{{'setWorkstations_name' | translate}}</label>
-        <input type="text" [(ngModel)]="part.bezeichnung" name="bezeichnung" class="form-control" placeholder="Bezeichnung" id="part_bez">
+        <label for="part_bez">{{'setParts_title' | translate}}</label>
+        <input type="text" [(ngModel)]="part.bezeichnung" name="bezeichnung" class="form-control" placeholder="{{'setParts_title' | translate}}" id="part_bez">
     </div>
     <div class="form-group" [hidden]="!(part.typ != undefined && part.typ.length > 0)">
-        <label for="part_wert">Wert</label>
-        <input type="number" min="1" [(ngModel)]="part.wert" name="wert" class="form-control" placeholder="Wert" id="part_wert">
+        <label for="part_wert">{{'setParts_worth' | translate}}</label>
+        <input type="number" min="1" [(ngModel)]="part.wert" name="wert" class="form-control" placeholder="{{'setParts_worth' | translate}}" id="part_wert">
     </div>
     <div class="form-group" [hidden]="!(part.typ != undefined && part.typ.length > 0)">
-        <label for="part_nummer">Lagermenge</label>
-        <input type="number" [(ngModel)]="part.lagerMenge" name="lagermenge" class="form-control" placeholder="Lagermenge" id="part_lagermenge">
+        <label for="part_nummer">{{'setParts_stock' | translate}}</label>
+        <input type="number" [(ngModel)]="part.lagerMenge" name="lagermenge" class="form-control" placeholder="{{'setParts_stock' | translate}}" id="part_lagermenge">
     </div>
     <div class="form-group" [hidden]="!(part.typ != undefined && part.typ[0] == '3' && part.typ[0] != undefined)">
-        <label for="part_lieferfrist">Lieferfrist</label>
-        <input type="number" [(ngModel)]="part.lieferfrist" name="lieferfrist" class="form-control" placeholder="Lieferfrist" id="part_lieferfrist">
+        <label for="part_lieferfrist">{{'setParts_delPeriod' | translate}}</label>
+        <input type="number" [(ngModel)]="part.lieferfrist" name="lieferfrist" class="form-control" placeholder="{{'setParts_delPeriod' | translate}}" id="part_lieferfrist">
     </div>
     <div class="form-group" [hidden]="!(part.typ != undefined && part.typ[0] == '3' && part.typ[0] != undefined)">
-        <label for="part_abweichung">Abweichung</label>
-        <input type="number" [(ngModel)]="part.abweichung" name="abweichung" class="form-control" placeholder="Abweichung" id="part_abweichung">
+        <label for="part_abweichung">{{'setParts_deviation' | translate}}</label>
+        <input type="number" [(ngModel)]="part.abweichung" name="abweichung" class="form-control" placeholder="{{'setParts_deviation' | translate}}" id="part_abweichung">
     </div>
     <div class="form-group" [hidden]="!(part.typ != undefined && part.typ[0] == '3' && part.typ[0] != undefined)">
-        <label for="part_diskontmenge">Diskontmenge</label>
-        <input type="number" [(ngModel)]="part.diskontmenge" name="diskontmenge" class="form-control" placeholder="Diskontmenge" id="part_diskontmenge">
+        <label for="part_diskontmenge">{{'setParts_discount' | translate}}</label>
+        <input type="number" [(ngModel)]="part.diskontmenge" name="diskontmenge" class="form-control" placeholder="{{'setParts_discount' | translate}}" id="part_diskontmenge">
     </div>
     <div class="form-group" [hidden]="!(part.typ != undefined && part.typ.length > 0)">
-        <label for="part_verwendung">Verwendung </label>
+        <label for="part_verwendung">{{'setParts_usage' | translate}}</label>
         <ss-multiselect-dropdown [options]="verwOptions" [texts]="multiSelectTexts" [settings]="verwSettings"
                                  [(ngModel)]="part.verwendung" id="part_verwendung">
         </ss-multiselect-dropdown>
     </div>
     <div class="form-group" [hidden]="!(part.typ != undefined && part.typ[0] != '3' && part.typ[0] != undefined)">
-        <button type="button" class="btn btn-default btn-block" (click)="modalBestandteile.open()">Bestandteile</button>
+        <button type="button" class="btn btn-default btn-block" (click)="modalBestandteile.open()">{{'setParts_components' | translate}}</button>
     </div>
     <div class="form-group" [hidden]="!(part.typ != undefined && part.typ[0] != '3' && part.typ[0] != undefined)">
-        <button type="button" class="btn btn-default btn-block" (click)="modalArbeitsplaetze.open('lg')">Arbeitsplätze</button>
+        <button type="button" class="btn btn-default btn-block" (click)="modalArbeitsplaetze.open('lg')">{{'setParts_workstations' | translate}}</button>
     </div>
 
     <div class="form-group" align="right" [hidden]="!(part.typ != undefined && part.typ.length > 0)">
-        <button type="button" class="btn btn-danger">
-            Zurücksetzen</button>
+        <button type="button" class="btn btn-danger" (click)="resetAll()">
+            {{'setParts_reset' | translate}}</button>
         <button type="button" class="btn btn-success" (click)="updatePart($event)">
-            Hinzufügen
+            <span *ngIf="!part._id">{{'setParts_add' | translate}}</span>
+            <span *ngIf="part._id">{{'setParts_update' | translate}}</span>
         </button>
     </div>
 </div>
@@ -59,11 +60,11 @@
     <table width="100%">
         <thead>
         <tr>
-            <th width="10%">Nummer</th>
-            <th width="25%">Bezeichnung</th>
-            <th width="10%">Typ</th>
-            <th width="15%">Wert</th>
-            <th width="15%">Lagermenge</th>
+            <th width="10%">{{'setParts_number' | translate}}</th>
+            <th width="25%">{{'setParts_title' | translate}}</th>
+            <th width="10%">{{'setParts_typ' | translate}}</th>
+            <th width="15%">{{'setParts_worth' | translate}}</th>
+            <th width="15%">{{'setParts_stock' | translate}}</th>
             <th width="12.5%"></th>
             <th width="12.5%"></th>
         </tr>
@@ -86,11 +87,11 @@
                 {{pt.lagerMenge}}
             </td>
             <td width="12.5%" style="padding-right: 5px" align="right">
-                <input type="button"  value="{{'setWorkstations_edit' | translate}}"
+                <input type="button"  value="{{'setParts_edit' | translate}}"
                        class="btn btn-info" (click)="setPart(pt)">
             </td>
             <td width="12.5%" style="padding-left: 5px" align="left">
-                <input type="button"  value="{{'setWorkstations_delete' | translate}}"
+                <input type="button"  value="{{'setParts_delete' | translate}}"
                        class="btn btn-danger" (click)="deletePart(pt)">
             </td>
         </tr>
@@ -100,18 +101,18 @@
 
 <modal #modalBestandteile style="width: 100%">
     <modal-header [show-close]="true">
-        <h4 class="modal-title">Bestandteile auswählen</h4>
+        <h4 class="modal-title">{{'setParts_chooseComp' | translate}}</h4>
     </modal-header>
     <modal-body>
         <div class="parts-list" align="center">
             <div class="col-md-2">
-                Auswahl
+                {{'setParts_check' | translate}}
             </div>
             <div class="col-md-6">
-                Teil
+                {{'setParts_part' | translate}}
             </div>
             <div class="col-md-4">
-                Anzahl
+                {{'setParts_amount' | translate}}
             </div>
             <br><br>
             <div *ngFor="let pts of parts">
@@ -136,24 +137,24 @@
 
 <modal #modalArbeitsplaetze style="width: 100%">
     <modal-header [show-close]="true">
-        <h4 class="modal-title">Arbeitsplätze auswählen</h4>
+        <h4 class="modal-title">{{'setParts_chooseWs' | translate}}</h4>
     </modal-header>
     <modal-body>
         <div class="workstation-list" align="center">
             <div class="col-md-1">
-                Auswahl
+                {{'setParts_check' | translate}}
             </div>
             <div class="col-md-4">
-                Arbeitsplatz
+                {{'setParts_workstation' | translate}}
             </div>
             <div class="col-md-2">
-                Rüstzeit
+                {{'setParts_setUp' | translate}}
             </div>
             <div class="col-md-2">
-                Fertigugnszeit
+                {{'setParts_procTime' | translate}}
             </div>
             <div class="col-md-3">
-                Nächster Arbeitsplatz
+                {{'setParts_nextWs' | translate}}
             </div>
             <br><br>
             <div *ngFor="let ws of workstations">
@@ -186,10 +187,10 @@
 </modal>
 <modal #modalPartExists>
     <modal-header [show-close]="true">
-        <h4 class="modal-title">{{'setWorkstations_exists' | translate}}</h4>
+        <h4 class="modal-title">{{'setParts_exists' | translate}}</h4>
     </modal-header>
     <modal-body>
-        {{'setWorkstations_number' | translate}} {{part.nummer}} {{'setWorkstations_exists_body' | translate}}
+        {{'setParts_number' | translate}} {{part.nummer}} {{'setParts_exists_body' | translate}}
     </modal-body>
     <modal-footer>
         <button type="button" class="btn btn-primary" (click)="modalPartExists.close()">Ok</button>
@@ -197,10 +198,10 @@
 </modal>
 <modal #modalPartEmpty>
     <modal-header [show-close]="true">
-        <h4 class="modal-title">{{'setWorkstations_empty' | translate}}</h4>
+        <h4 class="modal-title">{{'setParts_empty' | translate}}</h4>
     </modal-header>
     <modal-body>
-        {{'setWorkstations_empty_body' | translate}}
+        {{'setParts_empty_body' | translate}}
     </modal-body>
     <modal-footer>
         <button type="button" class="btn btn-primary" (click)="modalPartEmpty.close()">Ok</button>
