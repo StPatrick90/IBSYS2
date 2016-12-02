@@ -65,7 +65,7 @@
         <td>{{m.lieferfrist}}</td>
         <td>{{m.abweichung}}</td>
         <td>{{m.summe}}</td>
-        <td></td>
+        <td *ngFor="let v of m.verwendung">{{v.Menge}}</td>
         <td></td>
         <td></td>
         <td></td>

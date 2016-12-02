@@ -1,11 +1,12 @@
+import {verwendung} from "./verwendung";
 /**
  * Created by Paddy on 06.11.2016.
  */
-export class Part{
+export class Part {
     _id?: string;
     nummer: number;
     bezeichnung: string;
-    verwendung: string[];
+    verwendung: verwendung[];
     typ: any;
     wert: number;
     lagerMenge: number;
