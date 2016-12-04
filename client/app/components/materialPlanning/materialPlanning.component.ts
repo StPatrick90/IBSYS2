@@ -71,18 +71,23 @@ export class MaterialPlanningComponent {
                 matPlanRow.verwendung[v].Menge = this.purchaseParts[i].verwendung[v].Menge;
                 matPlanRow.verwendung[v].Produkt = this.purchaseParts[i].verwendung[v].Produkt;
             }
+            // console.log("MPRV", matPlanRow.verwendung);
+            // console.log("MPRVM", matPlanRow.verwendung[2].Menge);
+
+
             // get Produktverwendungen
             for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {
                 if (!this.verwendungRow.includes(matPlanRow.verwendung[l].Produkt)) {
                     this.verwendungRow.push(matPlanRow.verwendung[l].Produkt);
                 }
             }
+
             // store them finally
             this.matPlan[i] = matPlanRow;
+            console.log(this.matPlan[i].verwendung[1].Menge);
         }
 
         this.setColspan();
-        console.log(this.matPlan);
     }
 
     setColspan() {
