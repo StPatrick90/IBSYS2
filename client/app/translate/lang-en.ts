@@ -93,7 +93,13 @@ export const LANG_EN_TRANS = {
     'xmlImport': 'XML Import',
 
 //prediction
-    'prediction_planning': 'Prediciton Planning',
+    'binding_orders': 'Binding Orders',
+    'period': 'Periode',
+    'product': 'Product',
+    'planned': 'Planned',
+    'remaining_stock': 'Remaining Stock',
+    'prediction_planning': 'Forecast',
+
 
     //MaterialPlanning
     'material_Planning': 'Material Planning',

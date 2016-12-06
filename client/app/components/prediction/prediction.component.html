@@ -3,138 +3,133 @@
         <div class="row">
             <h2>Prognose</h2>
             <ul class="breadcrumb">
-                <li class="completed"><a routerLink="/xmlImport" routerLinkActive="active">{{'xmlImport' | translate}}</a></li>
-                <li class="active"><a routerLink="/prediction" routerLinkActive="active">{{'prediction_planning' | translate}}</a></li>
-                <li class=""><a routerLink="/materialPlanning" routerLinkActive="active">{{'material_Planning' | translate}}</a></li>
-                <li class=""><a routerLink="/capacityPlanning" routerLinkActive="active">{{'capacity_planning' | translate}}</a></li>
+                <li class="completed"><a routerLink="/xmlImport" routerLinkActive="active">{{'xmlImport' |
+                    translate}}</a></li>
+                <li class="active"><a routerLink="/prediction" routerLinkActive="active">{{'prediction_planning' |
+                    translate}}</a></li>
+                <li class=""><a routerLink="/materialPlanning" routerLinkActive="active">{{'material_Planning' |
+                    translate}}</a></li>
+                <li class=""><a routerLink="/capacityPlanning" routerLinkActive="active">{{'capacity_planning' |
+                    translate}}</a></li>
             </ul>
         </div>
     </div>
 </div>
 <ul>
-<h3>Verbindliche Aufträge</h3>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Periode</th>
-        <th>{{ generatePeriods(0) }}</th>
-        <th>{{ generatePeriods(1) }}</th>
-        <th>{{ generatePeriods(2) }}</th>
-        <th>{{ generatePeriods(3) }}</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <th scope="row">Produkt 1</th>
-        <td>100</td>
-        <td>200</td>
-        <td>450</td>
-        <td>600</td>
-    </tr>
-    <tr>
-        <th scope="row">Produkt 2</th>
-        <td>100</td>
-        <td>200</td>
-        <td>450</td>
-        <td>600</td>
-    </tr>
-    <tr>
-        <th scope="row">Produkt 3</th>
-        <td>100</td>
-        <td>200</td>
-        <td>450</td>
-        <td>600</td>
-    </tr>
-    <tr>
-        <th scope="row">Summe</th>
-        <td>100</td>
-        <td>200</td>
-        <td>450</td>
-        <td>600</td>
-    </tr>
-    </tbody>
-</table>
-<h2>Geplant</h2>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Periode</th>
-        <th>{{ generatePeriods(0) }}</th>
-        <th>{{ generatePeriods(1) }}</th>
-        <th>{{ generatePeriods(2) }}</th>
-        <th>{{ generatePeriods(3) }}</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <th scope="row">Produkt 1</th>
-        <td>100</td>
-        <td>200</td>
-        <td>450</td>
-        <td>600</td>
-    </tr>
-    <tr>
-        <th scope="row">Produkt 2</th>
-        <td>100</td>
-        <td>200</td>
-        <td>450</td>
-        <td>600</td>
-    </tr>
-    <tr>
-        <th scope="row">Produkt 3</th>
-        <td>100</td>
-        <td>200</td>
-        <td>450</td>
-        <td>600</td>
-    </tr>
-    <tr>
-        <th scope="row">Summe</th>
-        <td>100</td>
-        <td>200</td>
-        <td>450</td>
-        <td>600</td>
-    </tr>
-    </tbody>
-</table>
-<h2>Rest Bestand</h2>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Periode</th>
-        <th>{{ generatePeriods(0) }}</th>
-        <th>{{ generatePeriods(1) }}</th>
-        <th>{{ generatePeriods(2) }}</th>
-        <th>{{ generatePeriods(3) }}</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <th scope="row">Produkt 1</th>
-        <td><input type="text" class="form-control"></td>
-        <td>200</td>
-        <td>450</td>
-        <td>600</td>
-    </tr>
-    <tr>
-        <th scope="row">Produkt 2</th>
-        <td>100</td>
-        <td>200</td>
-        <td>450</td>
-        <td>600</td>
-    </tr>
-    <tr>
-        <th scope="row">Produkt 3</th>
-        <td>100</td>
-        <td>200</td>
-        <td>450</td>
-        <td>600</td>
-    </tr>
-    <tr>
-        <th scope="row">Summe</th>
-        <td>100</td>
-        <td>200</td>
-        <td>450</td>
-        <td>600</td>
-    </tr>
-    </tbody>
-</table>
+    <h3>{{'binding_orders' | translate}}</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>{{'period' | translate}}</th>
+            <th>{{ generatePeriods(0) }}</th>
+            <th>{{ generatePeriods(1) }}</th>
+            <th>{{ generatePeriods(2) }}</th>
+            <th>{{ generatePeriods(3) }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">{{'product' | translate}} 1</th>
+            <td *ngFor="let bindingOrder of bindingOrders"><input type="text" value="{{ bindingOrder.product1 }}"
+                                                                  class="form-control"></td>
+        </tr>
+        <tr>
+            <th scope="row">{{'product' | translate}} 2</th>
+            <td *ngFor="let bindingOrder of bindingOrders"><input type="text" value="{{ bindingOrder.product2 }}"
+                                                                  class="form-control"></td>
+        </tr>
+        <tr>
+            <th scope="row">{{'product' | translate}} 3</th>
+            <td *ngFor="let bindingOrder of bindingOrders"><input type="text" value="{{ bindingOrder.product3 }}"
+                                                                  class="form-control"></td>
+        </tr>
+        <tr>
+            <th scope="row">{{'sum' | translate}}</th>
+            <td>{{ sumBindingOrders(generatePeriods(0)) }}</td>
+            <td>{{ sumBindingOrders(generatePeriods(1)) }}</td>
+            <td>{{ sumBindingOrders(generatePeriods(2)) }}</td>
+            <td>{{ sumBindingOrders(generatePeriods(3)) }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <h2>{{'planned' | translate}}</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>{{'period' | translate}}</th>
+            <th>{{ generatePeriods(0) }}</th>
+            <th>{{ generatePeriods(1) }}</th>
+            <th>{{ generatePeriods(2) }}</th>
+            <th>{{ generatePeriods(3) }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">{{'product' | translate}} 1</th>
+            <td *ngFor="let planning of plannings"><input type="text" value="{{ planning.product1 }}"
+                                                          class="form-control"></td>
+        </tr>
+        <tr>
+            <th scope="row">{{'product' | translate}} 2</th>
+            <td *ngFor="let planning of plannings"><input type="text" value="{{ planning.product2 }}"
+                                                          class="form-control"></td>
+        </tr>
+        <tr>
+            <th scope="row">{{'product' | translate}} 3</th>
+            <td *ngFor="let planning of plannings"><input type="text" value="{{ planning.product3 }}"
+                                                          class="form-control"></td>
+        </tr>
+        <tr>
+            <th scope="row">{{'sum' | translate}}</th>
+            <td>{{ sumPlannedOrders(generatePeriods(0)) }}</td>
+            <td>{{ sumPlannedOrders(generatePeriods(1)) }}</td>
+            <td>{{ sumPlannedOrders(generatePeriods(2)) }}</td>
+            <td>{{ sumPlannedOrders(generatePeriods(3)) }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <h2>{{'remaining_stock' | translate}}</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>{{'period' | translate}}</th>
+            <th>{{ generatePeriods(0) }}</th>
+            <th>{{ generatePeriods(1) }}</th>
+            <th>{{ generatePeriods(2) }}</th>
+            <th>{{ generatePeriods(3) }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">{{'product' | translate}} 1</th>
+            <td><input type="text" value="{{ row1res}}"
+                       class="form-control"></td>
+            <td><input type="text" value="{{ row1res2 }}" class="form-control"></td>
+            <td><input type="text" value="{{ row1res3 }}" class="form-control"></td>
+            <td><input type="text" value="{{ row1res4 }}" class="form-control"></td>
+        </tr>
+        <tr>
+            <th scope="row">{{'product' | translate}} 2</th>
+            <td><input type="text" value="{{ row2res }}"
+                       class="form-control"></td>
+            <td><input type="text" value="{{ row2res2 }}" class="form-control"></td>
+            <td><input type="text" value="{{ row2res3 }}" class="form-control"></td>
+            <td><input type="text" value="{{ row2res4 }}" class="form-control"></td>
+        </tr>
+        <tr>
+            <th scope="row">{{'product' | translate}} 3</th>
+            <td><input type="text" value="{{ row3res }}"
+                       class="form-control"></td>
+            <td><input type="text" value="{{ row3res2 }}" class="form-control"></td>
+            <td><input type="text" value="{{ row3res3 }}" class="form-control"></td>
+            <td><input type="text" value="{{ row3res4 }}" class="form-control"></td>
+        </tr>
+        <tr>
+            <th scope="row">{{'sum' | translate}}</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>

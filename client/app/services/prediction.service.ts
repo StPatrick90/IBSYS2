@@ -9,10 +9,14 @@ export class PredictionService{
         console.log('Prediction Service Initialized...');
     }
 
-    /*
-    getPeriodFromDataBase(){
-        return this.http.get('api/period')
-        .map(res => res.json());
-    }*/
+    getBindingOrders(){
+        return this.http.get('api/bindingOrders')
+            .map(res => res.json());
+    }
+
+    getPlannings(){
+        return this.http.get('api/plannings')
+            .map(res => res.json());
+    }
 }
 
