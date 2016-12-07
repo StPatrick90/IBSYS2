@@ -27,6 +27,17 @@ exports.LANG_DE_TRANS = {
     'headbar_languages': 'Sprachen',
     'headbar_german': 'Deutsch',
     'headbar_english': 'Englisch',
+    //Dashboard
+    'dashboard_danger': 'Gefahr',
+    'dashboard_warning': 'Warnung',
+    'dashboard_good': 'Hervoragend',
+    'dashboard_critical': 'Kritisch',
+    'dashboard_configuration': 'Konfiguration',
+    'dashboard_types': 'Arten',
+    'dashboard_onoff': 'An / Aus',
+    'dashboard_20%capacity': 'Weniger als 20% im Lager!',
+    'dashboard_article': 'Artikel',
+    'dashboard_value': 'Anzahl',
     //CapacityPlanning
     'capacity_workstations': 'Arbeitsplätze',
     'capacity_parts': 'Teile',

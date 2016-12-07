@@ -54,6 +54,9 @@ var AppComponent = (function () {
             }
         });
     }
+    AppComponent.prototype.setPeriod = function () {
+        this.lastPeriod = this.sessionService.getResultObject().results.period;
+    };
     AppComponent.prototype.toggleSidebar = function () {
         this.toggle = !this.toggle;
         this.appService.toggleSidebar(this.toggle);

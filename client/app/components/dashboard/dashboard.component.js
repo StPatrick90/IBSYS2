@@ -16,11 +16,14 @@ var session_service_1 = require('../../services/session.service');
 var db_service_1 = require('../../services/db.service');
 var dashTask_1 = require('../../model/dashTask');
 var ng2_bs3_modal_1 = require('ng2-bs3-modal/ng2-bs3-modal');
+var translate_service_1 = require("../../translate/translate.service");
 var DashboardComponent = (function () {
-    function DashboardComponent(sessionService, dbService) {
+    function DashboardComponent(sessionService, dbService, translation) {
         var _this = this;
+        this.translation = translation;
         this.allResults = [];
         this.dashTaskTypes = ["Warehouse", "Test"];
+        this.selectedType = [];
         this.resultObj = sessionService.getResultObject();
         this.warnings = [];
         this.normals = [];
@@ -33,8 +36,36 @@ var DashboardComponent = (function () {
     DashboardComponent.prototype.setConfig = function () {
         this.modalConfig.open();
     };
+    DashboardComponent.prototype.closeConfig = function () {
+        this.bootstrapDashTasks();
+        this.modalConfig.close();
+    };
     DashboardComponent.prototype.bootstrapDashTasks = function () {
-        this.getStorageValues();
+        this.warnings.length = 0;
+        this.normals.length = 0;
+        this.goods.length = 0;
+        this.criticals.length = 0;
+        for (var i = 0; i < this.selectedType.length; i++) {
+            if (this.selectedType[i] === "Warehouse") {
+                this.getStorageValues();
+            }
+        }
+    };
+    DashboardComponent.prototype.clickRadio = function (type) {
+        for (var i = 0; i < this.selectedType.length; i++) {
+            if (type == this.selectedType[i]) {
+                this.selectedType.splice(i, 1);
+                return;
+            }
+        }
+        this.selectedType.push(type);
+    };
+    DashboardComponent.prototype.isSelected = function (type) {
+        for (var i = 0; i < this.selectedType.length; i++) {
+            if (type == this.selectedType[i])
+                return true;
+        }
+        return false;
     };
     DashboardComponent.prototype.deleteClicked = function (dashTask) {
         if (dashTask.art == "critical") {
@@ -71,7 +102,7 @@ var DashboardComponent = (function () {
             if (amount <= (startamount * 0.2)) {
                 var warn = new dashTask_1.DashTask;
                 warn.id = this.warnings.length;
-                warn.name = "Weniger als 20% im Lager!";
+                warn.name = this.translation.instant("dashboard_20%capacity");
                 warn.art = "warning";
                 warn.link = "/capacityPlanning";
                 warn.article = storage[i].id;
@@ -102,7 +133,7 @@ var DashboardComponent = (function () {
             selector: 'xmlImport',
             templateUrl: 'dashboard.component.html'
         }), 
-        __metadata('design:paramtypes', [session_service_1.SessionService, db_service_1.DBService])
+        __metadata('design:paramtypes', [session_service_1.SessionService, db_service_1.DBService, translate_service_1.TranslateService])
     ], DashboardComponent);
     return DashboardComponent;
 }());

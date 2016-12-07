@@ -7,6 +7,7 @@ import { SessionService } from '../../services/session.service';
 import { DBService} from '../../services/db.service';
 import { DashTask } from '../../model/dashTask';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import {TranslateService} from "../../translate/translate.service";
 
 
 @Component({
@@ -24,15 +25,13 @@ export class DashboardComponent {
     warnings: DashTask[];
     goods: DashTask[];
 
-    //Flags
-
     @ViewChild('configuration')
     modalConfig: ModalComponent;
 
     dashTaskTypes= ["Warehouse", "Test"];
+    selectedType=[];
 
-
-    constructor(sessionService: SessionService, dbService: DBService){
+    constructor(sessionService: SessionService, dbService: DBService, private translation: TranslateService){
 
         this.resultObj = sessionService.getResultObject();
         this.warnings = [];
@@ -52,9 +51,40 @@ export class DashboardComponent {
         this.modalConfig.open();
     }
 
-    bootstrapDashTasks(){
+    closeConfig(){
+        this.bootstrapDashTasks();
+        this.modalConfig.close();
+    }
 
-        this.getStorageValues();
+    bootstrapDashTasks(){
+        this.warnings.length = 0;
+        this.normals.length = 0;
+        this.goods.length = 0;
+        this.criticals.length = 0;
+
+        for(var i = 0; i < this.selectedType.length; i++){
+            if(this.selectedType[i] === "Warehouse"){
+                this.getStorageValues();
+            }
+        }
+    }
+
+    clickRadio(type){
+        for(var i = 0; i < this.selectedType.length; i++){
+            if(type == this.selectedType[i]){
+                this.selectedType.splice(i, 1);
+                return;
+            }
+        }
+        this.selectedType.push(type);
+    }
+
+    isSelected(type){
+        for(var i = 0; i < this.selectedType.length; i++){
+            if(type == this.selectedType[i])
+                return true;
+        }
+        return false;
     }
 
     deleteClicked(dashTask: DashTask){
@@ -97,7 +127,8 @@ export class DashboardComponent {
 
                 var warn = new DashTask;
                 warn.id = this.warnings.length;
-                warn.name = "Weniger als 20% im Lager!"
+
+                warn.name = this.translation.instant("dashboard_20%capacity");
                 warn.art = "warning";
                 warn.link = "/capacityPlanning"
                 warn.article = storage[i].id;

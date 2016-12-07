@@ -2,7 +2,7 @@
     <div class="">
         <div class="row">
             <span>
-                <h2>Dashboard
+                <h2>{{'sidebar_dashboard' | translate}}
                     <button class="btn btn-primary btn-lg pull-right" (click)="setConfig()">
                         <i class="fa fa-cogs"></i>
                     </button>
@@ -15,7 +15,7 @@
 <div class="row">
     <div class="panel panel-danger">
         <div class="panel-heading">
-            Criticals:
+            {{'dashboard_critical' | translate}}:
         </div>
     </div>
 </div>
@@ -26,7 +26,7 @@
             <div class="panel panel-danger">
                 <div class="panel-heading">
                     <span class="pull-right clickable" data-effect="fadeOut" (click)="deleteClicked(crit)"><i class="fa fa-times"></i></span>
-                    Danger!
+                    {{'dashboard_danger' | translate}}!
                     <p>{{crit.name}}</p>
                 </div>
                 <div class="panel-body">
@@ -41,7 +41,7 @@
 <div class="row">
     <div class="panel panel-warning">
         <div class="panel-heading">
-            Warnings:
+            {{'dashboard_warning' | translate}}:
         </div>
     </div>
 </div>
@@ -52,12 +52,13 @@
             <div class="panel panel-warning">
                 <div class="panel-heading">
                     <span class="pull-right clickable" data-effect="fadeOut" (click)="deleteClicked(warn)"><i class="fa fa-times"></i></span>
-                    Warning!
+                    {{'dashboard_warning' | translate}}!
+                    <br>
                     <p>{{warn.name}}</p>
                 </div>
                 <div class="panel-body">
-                    <p>Article: {{warn.article}}</p>
-                    <span>Value: {{warn.value}}</span>
+                    <p>{{'dashboard_article' | translate}}: {{warn.article}}</p>
+                    <span>{{'dashboard_value' | translate}}: {{warn.value}}</span>
                 </div>
             </div>
         </div>
@@ -67,7 +68,7 @@
 <div class="row">
     <div class="panel panel-success">
         <div class="panel-heading">
-            Goods:
+            {{'dashboard_good' | translate}}:
         </div>
     </div>
 </div>
@@ -78,7 +79,7 @@
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <span class="pull-right clickable" data-effect="fadeOut" (click)="deleteClicked(good)"><i class="fa fa-times"></i></span>
-                    Well done!
+                    {{'dashboard_good' | translate}}!
                     <p>{{good.name}}</p>
                 </div>
                 <div class="panel-body">
@@ -92,19 +93,23 @@
 
 <modal #configuration>
     <modal-header [show-close]="true">
-        <h4 class="modal-title">Configuration</h4>
+        <h4 class="modal-title">{{'dashboard_configuration' | translate}}</h4>
     </modal-header>
     <modal-body>
-        <div *ngFor="let type of dashTaskTypes">
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <input type="radio" aria-label="test">
-                </span>
-                <input type="text" disabled="true" class="form-control" aria-label="test" placeholder="{{type}}">
-            </div>
+        <div>
+            <table class="table table-striped">
+                <tr>
+                    <th> {{'dashboard_types' | translate}} </th>
+                    <td> {{'dashboard_onoff' | translate}}</td>
+                </tr>
+                <tr *ngFor="let type of dashTaskTypes">
+                    <td> {{type}} </td>
+                    <td> <input type="radio" [checked]="isSelected(type)" (click)="clickRadio(type)">  </td>
+                </tr>
+            </table>
         </div>
     </modal-body>
     <modal-footer>
-        <button type="button" class="btn btn-primary" (click)="modalConfig.close()">Ok</button>
+        <button type="button" class="btn btn-primary" (click)="closeConfig()">Ok</button>
     </modal-footer>
 </modal>

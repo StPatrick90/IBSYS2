@@ -48,6 +48,10 @@ export class AppComponent {
             );
     }
 
+    setPeriod(){
+        this.lastPeriod = this.sessionService.getResultObject().results.period;
+    }
+
     toggleSidebar(){
         this.toggle = !this.toggle;
         this.appService.toggleSidebar(this.toggle);
