@@ -22,6 +22,7 @@ var prediction_component_1 = require('./components/prediction/prediction.compone
 var workstations_component_1 = require('./components/settings/workstations/workstations.component');
 var parts_component_1 = require('./components/settings/parts/parts.component');
 var dashboard_component_1 = require('./components/dashboard/dashboard.component');
+var partsLists_component_1 = require('./components/settings/partsLists/partsLists.component');
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
     }
@@ -37,7 +38,8 @@ var AppRoutingModule = (function () {
                     { path: 'materialPlanning', component: materialPlanning_component_1.MaterialPlanningComponent },
                     { path: 'workstations', component: workstations_component_1.WorkstationsComponent },
                     { path: 'parts', component: parts_component_1.PartsComponent },
-                    { path: 'dashboard', component: dashboard_component_1.DashboardComponent }
+                    { path: 'dashboard', component: dashboard_component_1.DashboardComponent },
+                    { path: 'partsLists', component: partsLists_component_1.PartsListsComponent },
                 ])
             ],
             exports: [

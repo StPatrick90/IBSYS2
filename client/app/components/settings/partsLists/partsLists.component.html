@@ -1,0 +1,16 @@
+<div class="container-fluid well">
+    <div class="row">
+        <div *ngFor="let pt of parts" class="col-md-2">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="pull-right clickable" data-effect="fadeOut" ><i class="fa fa-times"></i></span>
+                    <p>{{pt.bezeichnung}}</p>
+                </div>
+                <div class="panel-body">
+                    <p>Article: {{pt.nummer}}</p>
+                    <p>Value: {{pt.wert}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

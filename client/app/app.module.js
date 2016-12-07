@@ -33,6 +33,7 @@ var ng2_bs3_modal_1 = require('ng2-bs3-modal/ng2-bs3-modal');
 var multiselect_dropdown_1 = require('angular-2-dropdown-multiselect/src/multiselect-dropdown');
 var LocalStorageEmitter_1 = require("angular2-localstorage/LocalStorageEmitter");
 var ng2_dnd_1 = require('ng2-dnd');
+var partsLists_component_1 = require('./components/settings/partsLists/partsLists.component');
 var WINDOW_PROVIDER = {
     provide: Window,
     useValue: window
@@ -46,7 +47,7 @@ var AppModule = (function () {
                 multiselect_dropdown_1.MultiselectDropdownModule, ng2_dnd_1.DndModule.forRoot()],
             declarations: [app_component_1.AppComponent, tasks_component_1.TasksComponent, capacityPlanning_component_1.CapacityPlanningComponent,
                 home_component_1.HomeComponent, translate_pipe_1.TranslatePipe, xmlImport_component_1.XmlImportComponent, materialPlanning_component_1.MaterialPlanningComponent,
-                prediction_component_1.PredictionComponent, workstations_component_1.WorkstationsComponent, parts_component_1.PartsComponent, dashboard_component_1.DashboardComponent],
+                prediction_component_1.PredictionComponent, workstations_component_1.WorkstationsComponent, parts_component_1.PartsComponent, dashboard_component_1.DashboardComponent, partsLists_component_1.PartsListsComponent],
             bootstrap: [app_component_1.AppComponent],
             providers: [index_1.TRANSLATION_PROVIDERS, translate_service_1.TranslateService, LocalStorageEmitter_1.LocalStorageService, WINDOW_PROVIDER]
         }), 
