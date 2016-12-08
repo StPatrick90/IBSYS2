@@ -15,45 +15,62 @@ var PredictionComponent = (function () {
     function PredictionComponent(sessionService, predictionService) {
         this.predictionService = predictionService;
         this.periods = [];
+        this.sumsBo = [];
+        this.sumsPl = [];
         this.sessionService = sessionService;
         this.resultObjs = this.sessionService.getResultObject();
         this.bindingOrders = new Array();
         this.plannings = new Array();
-        console.log(this.plannings);
     }
     PredictionComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.predictionService.getBindingOrders()
             .subscribe(function (bindingOrders) {
             _this.bindingOrders = bindingOrders;
+            _this.sumBindingOrders();
         });
         this.predictionService.getPlannings()
             .subscribe(function (plannings) {
             _this.plannings = plannings;
             _this.generateRowsRemainingStock();
         });
+        this.dbService.getPlannings()
+            .subscribe(function (plannings) {
+            _this.plannings = plannings;
+            _this.generateRowsRemainingStock();
+        });
     };
-    PredictionComponent.prototype.sumBindingOrders = function (period) {
+    PredictionComponent.prototype.sumBindingOrders = function () {
+        this.period = parseInt(this.resultObjs.results.period, 10);
+        this.periods.push(this.period);
+        this.periods.push(this.period + 1);
+        this.periods.push(this.period + 2);
+        this.periods.push(this.period + 3);
         for (var i = 0; i < this.bindingOrders.length; i++) {
-            if (period == this.bindingOrders[i].period) {
+            if (this.periods[i] == this.bindingOrders[i].period) {
                 var p1 = parseInt(this.bindingOrders[i].product1, 10);
                 var p2 = parseInt(this.bindingOrders[i].product2, 10);
                 var p3 = parseInt(this.bindingOrders[i].product3, 10);
-                this.sum = p1 + p2 + p3;
+                var sumBo = p1 + p2 + p3;
+                this.sumsBo.push(sumBo);
             }
         }
-        return this.sum;
     };
-    PredictionComponent.prototype.sumPlannedOrders = function (period) {
+    PredictionComponent.prototype.sumPlannedOrders = function () {
+        this.period = parseInt(this.resultObjs.results.period, 10);
+        this.periods.push(this.period);
+        this.periods.push(this.period + 1);
+        this.periods.push(this.period + 2);
+        this.periods.push(this.period + 3);
         for (var i = 0; i < this.plannings.length; i++) {
-            if (period == this.plannings[i].period) {
+            if (this.periods[i] == this.plannings[i].period) {
                 var p1 = parseInt(this.plannings[i].product1, 10);
                 var p2 = parseInt(this.plannings[i].product2, 10);
                 var p3 = parseInt(this.plannings[i].product3, 10);
-                this.sum = p1 + p2 + p3;
+                var sumPl = p1 + p2 + p3;
+                this.sumsPl.push(sumPl);
             }
         }
-        return this.sum;
     };
     PredictionComponent.prototype.generateRowsRemainingStock = function () {
         for (var _i = 0, _a = this.resultObjs.results.warehousestock.article; _i < _a.length; _i++) {
@@ -78,9 +95,6 @@ var PredictionComponent = (function () {
                 var re = parseInt(this.resultObjs.results.warehousestock.article[1].amount, 10);
                 var pl = parseInt(this.plannings[0].product2, 10);
                 var bo = parseInt(this.bindingOrders[0].product2, 10);
-                console.log(this.resultObjs.results.warehousestock.article[1].amount);
-                console.log(pl);
-                console.log(bo);
                 this.row2res = re + pl - bo;
                 var pl2 = parseInt(this.plannings[1].product2, 10);
                 var bo2 = parseInt(this.bindingOrders[1].product2, 10);
@@ -116,8 +130,6 @@ var PredictionComponent = (function () {
         this.periods.push(this.period + 2);
         this.periods.push(this.period + 3);
         return this.periods[index];
-    };
-    PredictionComponent.prototype.getArticleNumber = function () {
     };
     PredictionComponent = __decorate([
         core_1.Component({

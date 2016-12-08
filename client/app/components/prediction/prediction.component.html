@@ -45,10 +45,7 @@
         </tr>
         <tr>
             <th scope="row">{{'sum' | translate}}</th>
-            <td>{{ sumBindingOrders(generatePeriods(0)) }}</td>
-            <td>{{ sumBindingOrders(generatePeriods(1)) }}</td>
-            <td>{{ sumBindingOrders(generatePeriods(2)) }}</td>
-            <td>{{ sumBindingOrders(generatePeriods(3)) }}</td>
+            <td *ngFor="let sumBo of sumsBo">{{ sumBo }}</td>
         </tr>
         </tbody>
     </table>
@@ -81,10 +78,7 @@
         </tr>
         <tr>
             <th scope="row">{{'sum' | translate}}</th>
-            <td>{{ sumPlannedOrders(generatePeriods(0)) }}</td>
-            <td>{{ sumPlannedOrders(generatePeriods(1)) }}</td>
-            <td>{{ sumPlannedOrders(generatePeriods(2)) }}</td>
-            <td>{{ sumPlannedOrders(generatePeriods(3)) }}</td>
+            <td *ngFor="let sumPl of sumsPl">{{ sumPl }}</td>
         </tr>
         </tbody>
     </table>
@@ -126,10 +120,10 @@
         </tr>
         <tr>
             <th scope="row">{{'sum' | translate}}</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{ row1res + row2res + row3res }}</td>
+            <td>{{ row1res2 + row2res2 + row3res2 }}</td>
+            <td>{{ row1res3 + row2res3 + row3res3 }}</td>
+            <td>{{ row1res4 + row2res4 + row3res4 }}</td>
         </tr>
         </tbody>
     </table>
