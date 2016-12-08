@@ -31,45 +31,43 @@ var MaterialPlanningComponent = (function () {
     };
     ;
     MaterialPlanningComponent.prototype.setParameters = function () {
-        for (var i = 0; i <= this.purchaseParts.length - 1; i++) {
-            // declaration
+        var i = 0;
+        for (var _i = 0, _a = this.purchaseParts; _i < _a.length; _i++) {
+            var purchPart = _a[_i];
             var matPlanRow = {
-                kpartnr: this.matPlanRow.kpartnr,
-                lieferfrist: this.matPlanRow.lieferfrist,
-                abweichung: this.matPlanRow.abweichung,
-                summe: this.matPlanRow.summe,
-                verwendung: this.matPlanRow.verwendung,
-                diskontmenge: this.matPlanRow.diskontmenge,
-                anfangsbestand: this.matPlanRow.anfangsbestand,
-                bruttobedarfnP: this.matPlanRow.bruttobedarfnP,
-                mengeohbest: this.matPlanRow.mengeohbest,
-                bestellmenge: this.matPlanRow.bestellmenge,
-                bestellung: this.matPlanRow.bestellung,
-                bestandnWe: this.matPlanRow.bestandnWe
+                kpartnr: null,
+                lieferfrist: null,
+                abweichung: null,
+                summe: null,
+                verwendung: [],
+                diskontmenge: null,
+                anfangsbestand: null,
+                bruttobedarfnP: null,
+                mengeohbest: null,
+                bestellmenge: null,
+                bestellung: null,
+                bestandnWe: null
             };
             // collect values
-            matPlanRow.kpartnr = this.purchaseParts[i].nummer;
+            matPlanRow.kpartnr = purchPart.nummer;
             matPlanRow.anfangsbestand = this.resultObj.results.warehousestock.article[i].startamount; // dbwerte falsch?
-            matPlanRow.abweichung = this.purchaseParts[i].abweichung;
-            matPlanRow.lieferfrist = this.purchaseParts[i].lieferfrist;
-            matPlanRow.diskontmenge = this.purchaseParts[i].diskontmenge;
+            matPlanRow.abweichung = purchPart.abweichung;
+            matPlanRow.lieferfrist = purchPart.lieferfrist;
+            matPlanRow.diskontmenge = purchPart.diskontmenge;
             matPlanRow.summe = Number((matPlanRow.lieferfrist + matPlanRow.abweichung).toFixed(2));
-            for (var v = 0; v <= this.purchaseParts[i].verwendung.length - 1; v++) {
-                matPlanRow.verwendung[v] = { Produkt: "", Menge: 0 };
-                matPlanRow.verwendung[v].Menge = this.purchaseParts[i].verwendung[v].Menge;
-                matPlanRow.verwendung[v].Produkt = this.purchaseParts[i].verwendung[v].Produkt;
+            for (var _b = 0, _c = purchPart.verwendung; _b < _c.length; _b++) {
+                var vw = _c[_b];
+                matPlanRow.verwendung.push(vw);
             }
-            // console.log("MPRV", matPlanRow.verwendung);
-            // console.log("MPRVM", matPlanRow.verwendung[2].Menge);
-            // get Produktverwendungen für Kopfzeile
             for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {
                 if (!this.verwendungRow.includes(matPlanRow.verwendung[l].Produkt)) {
                     this.verwendungRow.push(matPlanRow.verwendung[l].Produkt);
                 }
             }
             // store them finally
-            this.matPlan[i] = matPlanRow;
-            console.log(this.matPlan[i].verwendung[1].Menge);
+            this.matPlan.push(matPlanRow);
+            //console.log(this.matPlan[i].verwendung[1].Menge);
+            i++;
         }
         this.setColspan();
     };
