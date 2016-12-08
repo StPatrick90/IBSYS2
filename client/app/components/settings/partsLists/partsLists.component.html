@@ -1,16 +1,28 @@
-<div class="container-fluid well">
+<div class="form-group">
+<label for="partsList_pparts">Produkt</label>
+<ss-multiselect-dropdown [options]="productOptions" [texts]="multiSelectTexts" [settings]="productSettings"
+                         [(ngModel)]="auswahl" id="partsList_pparts" (ngModelChange)="generatePartsList($event)">
+
+</ss-multiselect-dropdown>
+</div>
+
+<div class="container-fluid well" [hidden]="!(auswahl != undefined && auswahl.length == 1)">
     <div class="row">
-        <div *ngFor="let pt of parts" class="col-md-2">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <span class="pull-right clickable" data-effect="fadeOut" ><i class="fa fa-times"></i></span>
-                    <p>{{pt.bezeichnung}}</p>
+                    <p>{{ "1x " + part.typ + part.nummer + " - " + part.bezeichnung}}</p>
                 </div>
                 <div class="panel-body">
-                    <p>Article: {{pt.nummer}}</p>
-                    <p>Value: {{pt.wert}}</p>
+                    <div class="col-md-2" *ngFor="let n of getNumber(nodes)">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <p>{{ "1x " + part.typ + part.nummer + " - " + part.bezeichnung}}</p>
+                            </div>
+                            <div class="panel-body">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
     </div>
 </div>
