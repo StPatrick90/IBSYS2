@@ -11,9 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var session_service_1 = require('../../services/session.service');
 var prediction_service_1 = require('../../services/prediction.service');
+var db_service_1 = require('../../services/db.service');
 var PredictionComponent = (function () {
-    function PredictionComponent(sessionService, predictionService) {
+    function PredictionComponent(sessionService, predictionService, dbService) {
         this.predictionService = predictionService;
+        this.dbService = dbService;
         this.periods = [];
         this.sumsBo = [];
         this.sumsPl = [];
@@ -34,10 +36,10 @@ var PredictionComponent = (function () {
             _this.plannings = plannings;
             _this.generateRowsRemainingStock();
         });
-        this.dbService.getPlannings()
-            .subscribe(function (plannings) {
-            _this.plannings = plannings;
-            _this.generateRowsRemainingStock();
+        this.dbService.getResults()
+            .subscribe(function (results) {
+            _this.results = results;
+            console.log(_this.results);
         });
     };
     PredictionComponent.prototype.sumBindingOrders = function () {
@@ -137,7 +139,7 @@ var PredictionComponent = (function () {
             selector: 'prediction',
             templateUrl: 'prediction.component.html'
         }), 
-        __metadata('design:paramtypes', [session_service_1.SessionService, prediction_service_1.PredictionService])
+        __metadata('design:paramtypes', [session_service_1.SessionService, prediction_service_1.PredictionService, db_service_1.DBService])
     ], PredictionComponent);
     return PredictionComponent;
 }());

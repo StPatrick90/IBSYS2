@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
 import {SessionService} from '../../services/session.service';
 import {PredictionService} from '../../services/prediction.service';
-import {DbService} from '../../services/db.service';
+import {DBService} from '../../services/db.service';
 import {BindingOrders} from "../../model/bindingOrders";
 import {Plannings} from "../../model/plannings";
+import Result = jasmine.Result;
 
 
 @Component({
@@ -14,6 +15,7 @@ import {Plannings} from "../../model/plannings";
 export class PredictionComponent {
     bindingOrders: BindingOrders[];
     plannings: Plannings[];
+    results: any;
     sessionService: any;
     resultObjs;
     period: number;
@@ -33,7 +35,7 @@ export class PredictionComponent {
     row3res3: number;
     row3res4: number;
 
-    constructor(sessionService: SessionService, private predictionService: PredictionService) {
+    constructor(sessionService: SessionService, private predictionService: PredictionService, private dbService: DBService) {
         this.sessionService = sessionService;
         this.resultObjs = this.sessionService.getResultObject();
         this.bindingOrders = new Array<BindingOrders>();
@@ -49,14 +51,14 @@ export class PredictionComponent {
 
         this.predictionService.getPlannings()
             .subscribe(plannings => {
-                this.plannings = plannings
+                this.plannings = plannings;
                 this.generateRowsRemainingStock();
             });
 
-        this.dbService.getPlannings()
-            .subscribe(plannings => {
-                this.plannings = plannings
-                this.generateRowsRemainingStock();
+        this.dbService.getResults()
+            .subscribe(results => {
+                this.results = results;
+                console.log(this.results);
             });
     }
 
