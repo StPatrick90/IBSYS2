@@ -4,9 +4,10 @@
 
 export class DashTask{
     id:number;
-    name: string;
+    displayValue: string;
     art: string;
     value: number;
     link: string;
     article: string;
+    from: string;
 }

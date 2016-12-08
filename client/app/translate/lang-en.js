@@ -38,6 +38,11 @@ exports.LANG_EN_TRANS = {
     'dashboard_20%capacity': 'Less than 20% in the warehouse!',
     'dashboard_article': 'Article',
     'dashboard_value': 'Value',
+    'dashboard_warehouse_crit': 'Warhousestock is very low! The value is under ',
+    'dashboard_warehouse_warn': 'Warhousestock is low! The value is under ',
+    'dashboard_warehouse_good': 'Warehousstock is full filled! Over ',
+    'dashboard_deliveryreliabiliy_bad': 'Your delivery reliability is under ',
+    'dashboard_deliveryreliabiliy_good': 'Delivery reliability is',
     //CapacityPlanning
     'capacity_workstations': 'Workstations',
     'capacity_parts': 'Parts',

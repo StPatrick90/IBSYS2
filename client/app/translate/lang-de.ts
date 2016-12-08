@@ -38,9 +38,16 @@ export const LANG_DE_TRANS = {
     'dashboard_configuration':'Konfiguration',
     'dashboard_types':'Arten',
     'dashboard_onoff':'An / Aus',
-    'dashboard_20%capacity':'Weniger als 20% im Lager!',
     'dashboard_article':'Artikel',
-    'dashboard_value':'Anzahl',
+    'dashboard_value': 'Menge',
+
+    'dashboard_warehouse_crit':'Lagerbestand ist sehr niedrig! Er liegt unter ',
+    'dashboard_warehouse_warn':'Lagerbestand ist niedrig! Er liegt unter ',
+    'dashboard_warehouse_good':'Lagerbestand ist über ',
+
+    'dashboard_deliveryreliabiliy_bad':'Deine Liefertreue ist unter 100%.',
+    'dashboard_deliveryreliabiliy_good':'Gute Liefertreue!',
+
 
 
 //CapacityPlanning
