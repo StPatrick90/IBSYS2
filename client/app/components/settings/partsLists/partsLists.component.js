@@ -21,6 +21,7 @@ var PartsListsComponent = (function () {
         this.partservice = partservice;
         this.sessionService = sessionService;
         this.part = new part_1.Part();
+        this.partsList = Object();
         this.nodes = 5;
         this.productOptions = Array();
         this.getNumber = function (num) {

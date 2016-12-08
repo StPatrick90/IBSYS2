@@ -23,7 +23,7 @@ export class PartsListsComponent {
     part: Part = new Part();
     auswahl: any;
 
-    partsList: any;
+    partsList: any = Object();
     nodes: number = 5;
 
     private productOptions: IMultiSelectOption[] = Array<IMultiSelectOption>();
