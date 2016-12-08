@@ -16,11 +16,14 @@ var session_service_1 = require('../../services/session.service');
 var db_service_1 = require('../../services/db.service');
 var dashTask_1 = require('../../model/dashTask');
 var ng2_bs3_modal_1 = require('ng2-bs3-modal/ng2-bs3-modal');
+var translate_service_1 = require("../../translate/translate.service");
 var DashboardComponent = (function () {
-    function DashboardComponent(sessionService, dbService) {
+    function DashboardComponent(sessionService, dbService, translation) {
         var _this = this;
+        this.translation = translation;
         this.allResults = [];
-        this.dashTaskTypes = ["Warehouse", "Test"];
+        this.dashTaskTypes = ["Warehouse", "Delivery Reliability"];
+        this.selectedType = ["Warehouse", "Delivery Reliability"];
         this.resultObj = sessionService.getResultObject();
         this.warnings = [];
         this.normals = [];
@@ -33,8 +36,39 @@ var DashboardComponent = (function () {
     DashboardComponent.prototype.setConfig = function () {
         this.modalConfig.open();
     };
+    DashboardComponent.prototype.closeConfig = function () {
+        this.bootstrapDashTasks();
+        this.modalConfig.close();
+    };
     DashboardComponent.prototype.bootstrapDashTasks = function () {
-        this.getStorageValues();
+        this.warnings.length = 0;
+        this.normals.length = 0;
+        this.goods.length = 0;
+        this.criticals.length = 0;
+        for (var i = 0; i < this.selectedType.length; i++) {
+            if (this.selectedType[i] === "Warehouse") {
+                this.getStorageValues();
+            }
+            if (this.selectedType[i] === "Delivery Reliability") {
+                this.getDeliveryreliability();
+            }
+        }
+    };
+    DashboardComponent.prototype.clickRadio = function (type) {
+        for (var i = 0; i < this.selectedType.length; i++) {
+            if (type == this.selectedType[i]) {
+                this.selectedType.splice(i, 1);
+                return;
+            }
+        }
+        this.selectedType.push(type);
+    };
+    DashboardComponent.prototype.isSelected = function (type) {
+        for (var i = 0; i < this.selectedType.length; i++) {
+            if (type == this.selectedType[i])
+                return true;
+        }
+        return false;
     };
     DashboardComponent.prototype.deleteClicked = function (dashTask) {
         if (dashTask.art == "critical") {
@@ -50,43 +84,86 @@ var DashboardComponent = (function () {
             this.goods.splice(index, 1);
         }
     };
+    DashboardComponent.prototype.getDeliveryreliability = function () {
+        var warnValue = 0.99;
+        var goodValue = 1;
+        var deliveryObject = this.resultObj.results.result.general.deliveryreliability;
+        var currentString = deliveryObject.current.slice(0, -1);
+        var current = parseInt(currentString);
+        if (current >= goodValue) {
+            var good = new dashTask_1.DashTask();
+            good.art = "good";
+            good.from = "deliveryreliability";
+            good.link = "/prediction";
+            good.displayValue = deliveryObject.current;
+            good.id = this.goods.length;
+            this.goods.push(good);
+            return;
+        }
+        if (current >= warnValue) {
+            var warn = new dashTask_1.DashTask();
+            warn.art = "warning";
+            warn.from = "deliveryreliability";
+            warn.link = "/prediction";
+            warn.displayValue = deliveryObject.current;
+            warn.id = this.goods.length;
+            this.warnings.push(warn);
+            return;
+        }
+        if (current) {
+            var crit = new dashTask_1.DashTask();
+            crit.art = "critical";
+            crit.from = "deliveryreliability";
+            crit.link = "/prediction";
+            crit.displayValue = deliveryObject.current;
+            crit.id = this.goods.length;
+            this.criticals.push(crit);
+            return;
+        }
+    };
     DashboardComponent.prototype.getStorageValues = function () {
         var storage = [];
         storage = this.resultObj.results.warehousestock.article;
         console.log(this.resultObj);
+        var critValue = 0.05;
+        var warnValue = 0.2;
+        //goodValue = startamount
         for (var i = 0; i < storage.length; i++) {
             var amount = parseInt(storage[i].amount, 10);
             var startamount = parseInt(storage[i].startamount, 10);
-            if (amount <= (startamount * 0.05)) {
+            if (amount <= (startamount * critValue)) {
                 var crit = new dashTask_1.DashTask;
                 crit.id = this.criticals.length;
-                crit.name = "Weniger als 5% im Lager!";
+                crit.displayValue = critValue.toString();
                 crit.art = "critical";
                 crit.link = "/capacityPlanning";
                 crit.article = storage[i].id;
                 crit.value = amount;
+                crit.from = "warehousestock";
                 this.criticals.push(crit);
                 continue;
             }
-            if (amount <= (startamount * 0.2)) {
+            if (amount <= (startamount * warnValue)) {
                 var warn = new dashTask_1.DashTask;
                 warn.id = this.warnings.length;
-                warn.name = "Weniger als 20% im Lager!";
+                warn.displayValue = warnValue.toString();
                 warn.art = "warning";
                 warn.link = "/capacityPlanning";
                 warn.article = storage[i].id;
                 warn.value = amount;
+                warn.from = "warehousestock";
                 this.warnings.push(warn);
                 continue;
             }
             if (amount > startamount) {
                 var good = new dashTask_1.DashTask;
                 good.id = this.goods.length;
-                good.name = "Mehr als 100% im Lager verfügbar!";
+                good.displayValue = (Math.floor(((amount / startamount) * 100)) / 100).toString();
                 good.art = "good";
                 good.link = "/capacityPlanning";
                 good.article = storage[i].id;
                 good.value = amount;
+                good.from = "warehousestock";
                 this.goods.push(good);
                 continue;
             }
@@ -102,7 +179,7 @@ var DashboardComponent = (function () {
             selector: 'xmlImport',
             templateUrl: 'dashboard.component.html'
         }), 
-        __metadata('design:paramtypes', [session_service_1.SessionService, db_service_1.DBService])
+        __metadata('design:paramtypes', [session_service_1.SessionService, db_service_1.DBService, translate_service_1.TranslateService])
     ], DashboardComponent);
     return DashboardComponent;
 }());

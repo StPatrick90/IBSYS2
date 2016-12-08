@@ -30,6 +30,25 @@ export const LANG_EN_TRANS = {
     'headbar_german': 'German',
     'headbar_english': 'English',
 
+//Dashboard
+    'dashboard_danger':'Danger',
+    'dashboard_warning':'Warning',
+    'dashboard_good':'Good',
+    'dashboard_critical':'Critical',
+    'dashboard_configuration':'Configuration',
+    'dashboard_types':'Types',
+    'dashboard_onoff':'On / Off',
+    'dashboard_20%capacity':'Less than 20% in the warehouse!',
+    'dashboard_article':'Article',
+    'dashboard_value':'Value',
+
+    'dashboard_warehouse_crit':'Warhousestock is very low! The value is under ',
+    'dashboard_warehouse_warn':'Warhousestock is low! The value is under ',
+    'dashboard_warehouse_good':'Warehousstock is full filled! Over ',
+
+    'dashboard_deliveryreliabiliy_bad':'Your delivery reliability is under ',
+    'dashboard_deliveryreliabiliy_good':'Delivery reliability is',
+
 //CapacityPlanning
     'capacity_workstations': 'Workstations',
     'capacity_parts': 'Parts',
@@ -93,7 +112,13 @@ export const LANG_EN_TRANS = {
     'xmlImport': 'XML Import',
 
 //prediction
-    'prediction_planning': 'Prediciton Planning',
+    'binding_orders': 'Binding Orders',
+    'period': 'Periode',
+    'product': 'Product',
+    'planned': 'Planned',
+    'remaining_stock': 'Remaining Stock',
+    'prediction_planning': 'Forecast',
+
 
     //MaterialPlanning
     'material_Planning': 'Material Planning',

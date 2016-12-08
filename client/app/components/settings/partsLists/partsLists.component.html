@@ -1,0 +1,87 @@
+<div class="form-group">
+    <label for="partsList_pparts">Produkt</label>
+    <ss-multiselect-dropdown [options]="productOptions" [texts]="multiSelectTexts" [settings]="productSettings"
+                             [(ngModel)]="auswahl" id="partsList_pparts" (ngModelChange)="generatePartsList($event)">
+
+    </ss-multiselect-dropdown>
+</div>
+
+<div class="container-fluid well" [hidden]="!(auswahl != undefined && auswahl.length == 1)">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <p>{{ "1x " + part.typ + part.nummer + " - " + part.bezeichnung}}</p>
+        </div>
+        <div class="panel-body">
+            <table width="100%" align="top" >
+                <tr>
+                    <td *ngFor="let best of partsList.bestandteile" valign="top" style="padding: 2px">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <p>{{ best.typ + best.nummer}}</p>
+                            </div>
+                            <div class="panel-body">
+                                <table>
+                                    <tr>
+                                        <td *ngFor="let best of best.bestandteile" valign="top" style="padding: 2px">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading">
+                                                    <p>{{ best.typ + best.nummer}}</p>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <table>
+                                                        <tr>
+                                                            <td *ngFor="let best of best.bestandteile" valign="top" style="padding: 2px">
+                                                                <div class="panel panel-primary">
+                                                                    <div class="panel-heading">
+                                                                        <p>{{best.typ + best.nummer}}</p>
+                                                                    </div>
+                                                                    <div class="panel-body">
+                                                                        <table>
+                                                                            <tr>
+                                                                                <td *ngFor="let best of best.bestandteile" valign="top" style="padding: 2px">
+                                                                                    <div class="panel panel-primary">
+                                                                                        <div class="panel-heading">
+                                                                                            <p>{{best.typ + best.nummer}}</p>
+                                                                                        </div>
+                                                                                        <div class="panel-body">
+                                                                                            <table>
+                                                                                                <tr>
+                                                                                                    <td *ngFor="let best of best.bestandteile" valign="top" style="padding: 2px">
+                                                                                                        <div class="panel panel-primary">
+                                                                                                            <div class="panel-heading">
+                                                                                                                <p>{{best.typ + best.nummer}}</p>
+                                                                                                            </div>
+                                                                                                            <div class="panel-body">
+                                                                                                                {{best.anzahl}}
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </table>
+                                                                                            {{best.anzahl}}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                        {{best.anzahl}}
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        {{best.anzahl}}
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {{best.anzahl}}
+                                </table>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

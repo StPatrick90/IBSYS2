@@ -7,6 +7,8 @@ import { SessionService } from '../../services/session.service';
 import { DBService} from '../../services/db.service';
 import { DashTask } from '../../model/dashTask';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import {TranslateService} from "../../translate/translate.service";
+import {start} from "repl";
 
 
 @Component({
@@ -24,15 +26,13 @@ export class DashboardComponent {
     warnings: DashTask[];
     goods: DashTask[];
 
-    //Flags
-
     @ViewChild('configuration')
     modalConfig: ModalComponent;
 
-    dashTaskTypes= ["Warehouse", "Test"];
+    dashTaskTypes= ["Warehouse", "Delivery Reliability"];
+    selectedType= ["Warehouse", "Delivery Reliability"];
 
-
-    constructor(sessionService: SessionService, dbService: DBService){
+    constructor(sessionService: SessionService, dbService: DBService, private translation: TranslateService){
 
         this.resultObj = sessionService.getResultObject();
         this.warnings = [];
@@ -52,9 +52,43 @@ export class DashboardComponent {
         this.modalConfig.open();
     }
 
-    bootstrapDashTasks(){
+    closeConfig(){
+        this.bootstrapDashTasks();
+        this.modalConfig.close();
+    }
 
-        this.getStorageValues();
+    bootstrapDashTasks(){
+        this.warnings.length = 0;
+        this.normals.length = 0;
+        this.goods.length = 0;
+        this.criticals.length = 0;
+
+        for(var i = 0; i < this.selectedType.length; i++){
+            if(this.selectedType[i] === "Warehouse"){
+                this.getStorageValues();
+            }
+            if(this.selectedType[i] === "Delivery Reliability"){
+                this.getDeliveryreliability();
+            }
+        }
+    }
+
+    clickRadio(type){
+        for(var i = 0; i < this.selectedType.length; i++){
+            if(type == this.selectedType[i]){
+                this.selectedType.splice(i, 1);
+                return;
+            }
+        }
+        this.selectedType.push(type);
+    }
+
+    isSelected(type){
+        for(var i = 0; i < this.selectedType.length; i++){
+            if(type == this.selectedType[i])
+                return true;
+        }
+        return false;
     }
 
     deleteClicked(dashTask: DashTask){
@@ -72,36 +106,85 @@ export class DashboardComponent {
         }
     }
 
+    getDeliveryreliability(){
+        var warnValue = 0.99;
+        var goodValue = 1;
+
+        var deliveryObject = this.resultObj.results.result.general.deliveryreliability;
+        var currentString = deliveryObject.current.slice(0, -1);
+        var current = parseInt(currentString);
+
+        if(current >= goodValue){
+            var good = new DashTask();
+            good.art = "good";
+            good.from = "deliveryreliability";
+            good.link = "/prediction";
+            good.displayValue = deliveryObject.current;
+            good.id = this.goods.length;
+
+            this.goods.push(good);
+            return;
+        }
+        if(current >= warnValue){
+            var warn = new DashTask();
+            warn.art = "warning";
+            warn.from = "deliveryreliability";
+            warn.link = "/prediction";
+            warn.displayValue = deliveryObject.current;
+            warn.id = this.goods.length;
+
+            this.warnings.push(warn);
+            return;
+        }
+        if(current){
+            var crit = new DashTask();
+            crit.art = "critical";
+            crit.from = "deliveryreliability";
+            crit.link = "/prediction";
+            crit.displayValue = deliveryObject.current;
+            crit.id = this.goods.length;
+
+            this.criticals.push(crit);
+            return;
+        }
+    }
+
+
     getStorageValues(){
 
         var storage = [];
         storage = this.resultObj.results.warehousestock.article;
-
         console.log(this.resultObj);
+
+        var critValue = 0.05;
+        var warnValue = 0.2;
+        //goodValue = startamount
 
         for(var i = 0;i < storage.length; i++){
             var amount = parseInt(storage[i].amount , 10);
             var startamount = parseInt(storage[i].startamount , 10);
-            if(amount <= (startamount * 0.05)){
+            if(amount <= (startamount * critValue)){
                 var crit = new DashTask;
                 crit.id = this.criticals.length;
-                crit.name = "Weniger als 5% im Lager!"
+                crit.displayValue = critValue.toString();
                 crit.art = "critical";
                 crit.link = "/capacityPlanning"
                 crit.article = storage[i].id;
                 crit.value = amount;
+                crit.from = "warehousestock";
                 this.criticals.push(crit);
                 continue;
             }
-            if(amount <= (startamount * 0.2)){
+            if(amount <= (startamount * warnValue)){
 
                 var warn = new DashTask;
                 warn.id = this.warnings.length;
-                warn.name = "Weniger als 20% im Lager!"
+                warn.displayValue = warnValue.toString();
                 warn.art = "warning";
                 warn.link = "/capacityPlanning"
                 warn.article = storage[i].id;
                 warn.value = amount;
+                warn.from = "warehousestock";
                 this.warnings.push(warn);
                 continue;
             }
@@ -109,11 +192,12 @@ export class DashboardComponent {
 
                 var good = new DashTask;
                 good.id = this.goods.length;
-                good.name = "Mehr als 100% im Lager verfügbar!"
+                good.displayValue = (Math.floor(((amount / startamount) * 100))/100).toString();
                 good.art = "good";
                 good.link = "/capacityPlanning"
                 good.article = storage[i].id;
                 good.value = amount;
+                good.from = "warehousestock";
                 this.goods.push(good);
                 continue;
             }

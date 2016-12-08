@@ -11,7 +11,7 @@ import { SessionService} from './services/session.service';
 import { DBService} from './services/db.service';
 import {MaterialPlanningService} from './services/materialPlanning.service';
 import {ProcessingTime} from "./model/processingTime";
-
+import { PredictionService } from './services/prediction.service';
 
 @Component({
     moduleId: module.id,
@@ -19,10 +19,7 @@ import {ProcessingTime} from "./model/processingTime";
     templateUrl: 'app.component.html',
 
     providers: [TaskService,CapacityPlanningService, AppService, TranslateService,
-        XmlImportService, WindowRef, WorkstationService, PartService, SessionService, DBService, MaterialPlanningService]
-
-
-
+        XmlImportService, WindowRef, WorkstationService, PartService, SessionService, DBService, MaterialPlanningService, PredictionService]
 })
 export class AppComponent {
     mobileView:number = 992;
@@ -49,6 +46,10 @@ export class AppComponent {
                     }
                 }
             );
+    }
+
+    setPeriod(){
+        this.lastPeriod = this.sessionService.getResultObject().results.period;
     }
 
     toggleSidebar(){

@@ -27,6 +27,21 @@ exports.LANG_DE_TRANS = {
     'headbar_languages': 'Sprachen',
     'headbar_german': 'Deutsch',
     'headbar_english': 'Englisch',
+    //Dashboard
+    'dashboard_danger': 'Gefahr',
+    'dashboard_warning': 'Warnung',
+    'dashboard_good': 'Hervoragend',
+    'dashboard_critical': 'Kritisch',
+    'dashboard_configuration': 'Konfiguration',
+    'dashboard_types': 'Arten',
+    'dashboard_onoff': 'An / Aus',
+    'dashboard_article': 'Artikel',
+    'dashboard_value': 'Menge',
+    'dashboard_warehouse_crit': 'Lagerbestand ist sehr niedrig! Er liegt unter ',
+    'dashboard_warehouse_warn': 'Lagerbestand ist niedrig! Er liegt unter ',
+    'dashboard_warehouse_good': 'Lagerbestand ist über ',
+    'dashboard_deliveryreliabiliy_bad': 'Deine Liefertreue ist unter 100%.',
+    'dashboard_deliveryreliabiliy_good': 'Gute Liefertreue!',
     //CapacityPlanning
     'capacity_workstations': 'Arbeitsplätze',
     'capacity_parts': 'Teile',
@@ -86,7 +101,12 @@ exports.LANG_DE_TRANS = {
     //xmlImport
     'xmlImport': 'XML Import',
     //prediction
-    'prediction_planning': 'Prognose Planung',
+    'binding_orders': 'Verbindliche Aufträge',
+    'period': 'Periode',
+    'product': 'Produkt',
+    'planned': 'Geplant',
+    'remaining_stock': 'Rest Bestand',
+    'prediction_planning': 'Prognose',
     //MaterialPlanning
     'material_Planning': 'Kaufteildisposition',
     'num_purchase_part': 'Nr.Kaufteil',

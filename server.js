@@ -14,6 +14,9 @@ var xml = require('./routes/xmlConverter');
 var parts = require('./routes/parts');
 var results = require('./routes/results');
 var kparts = require('./routes/kparts');
+var bindingOrders = require('./routes/bindingOrders');
+var plannings = require('./routes/plannings');
+
 
 
 var port = 3000;
@@ -41,6 +44,8 @@ app.use('/api', xml);
 app.use('/api', parts);
 app.use('/api', results);
 app.use('/api', kparts);
+app.use('/api', bindingOrders);
+app.use('/api', plannings);
 
 
 app.listen(port, function(){

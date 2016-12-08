@@ -23,6 +23,7 @@ import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import {MultiselectDropdownModule} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
 import {LocalStorageService} from "angular2-localstorage/LocalStorageEmitter";
 import {DndModule} from 'ng2-dnd';
+import { PartsListsComponent} from './components/settings/partsLists/partsLists.component';
 
 const WINDOW_PROVIDER: ValueProvider = {
     provide: Window,
@@ -35,7 +36,7 @@ const WINDOW_PROVIDER: ValueProvider = {
 
     declarations: [AppComponent, TasksComponent, CapacityPlanningComponent,
         HomeComponent, TranslatePipe, XmlImportComponent, MaterialPlanningComponent,
-        PredictionComponent, WorkstationsComponent, PartsComponent, DashboardComponent],
+        PredictionComponent, WorkstationsComponent, PartsComponent, DashboardComponent, PartsListsComponent],
 
     bootstrap: [AppComponent],
     providers: [TRANSLATION_PROVIDERS, TranslateService, LocalStorageService, WINDOW_PROVIDER]
