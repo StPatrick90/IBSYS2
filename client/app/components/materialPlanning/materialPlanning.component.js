@@ -61,7 +61,7 @@ var MaterialPlanningComponent = (function () {
             }
             // console.log("MPRV", matPlanRow.verwendung);
             // console.log("MPRVM", matPlanRow.verwendung[2].Menge);
-            // get Produktverwendungen
+            // get Produktverwendungen für Kopfzeile
             for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {
                 if (!this.verwendungRow.includes(matPlanRow.verwendung[l].Produkt)) {
                     this.verwendungRow.push(matPlanRow.verwendung[l].Produkt);

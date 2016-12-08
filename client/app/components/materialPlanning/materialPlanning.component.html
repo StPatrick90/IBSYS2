@@ -60,7 +60,7 @@
     </thead>
 
     <tbody>
-    <tr>
+    <tr *ngFor="let m of matPlan">
         <td>{{m.kpartnr}}</td>
         <td>{{m.lieferfrist}}</td>
         <td>{{m.abweichung}}</td>
@@ -70,8 +70,6 @@
             <!--{{m.verwendung[0].Menge}}-->
             {{v.Menge}}
         </td>
-        <td></td>
-        <td></td>
         <td></td>
         <td>{{m.anfangsbestand}}</td>
         <td></td>
