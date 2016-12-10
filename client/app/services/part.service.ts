@@ -17,6 +17,11 @@ export class PartService{
             .map(res => res.json());
     }
 
+    getEPParts(){
+        return this.http.get('api/epparts')
+            .map(res => res.json());
+    }
+
     getWorkstationsAndPartsAndBearbeitung() {
         return Observable.forkJoin(
             this.http.get('/api/workstations').map(res => res.json()),

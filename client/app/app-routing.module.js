@@ -23,6 +23,7 @@ var workstations_component_1 = require('./components/settings/workstations/works
 var parts_component_1 = require('./components/settings/parts/parts.component');
 var dashboard_component_1 = require('./components/dashboard/dashboard.component');
 var partsLists_component_1 = require('./components/settings/partsLists/partsLists.component');
+var prio_component_1 = require('./components/prio/prio.component');
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
     }
@@ -40,6 +41,7 @@ var AppRoutingModule = (function () {
                     { path: 'parts', component: parts_component_1.PartsComponent },
                     { path: 'dashboard', component: dashboard_component_1.DashboardComponent },
                     { path: 'partsLists', component: partsLists_component_1.PartsListsComponent },
+                    { path: 'prioritization', component: prio_component_1.PrioComponent }
                 ])
             ],
             exports: [

@@ -49,3 +49,7 @@ footer {
         display: none;
     }
 }
+
+.jumptronhover:hover{
+    background-color: #c1e2b3 !important;
+}

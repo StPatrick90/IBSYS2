@@ -24,6 +24,10 @@ var PartService = (function () {
         return this.http.get('api/parts')
             .map(function (res) { return res.json(); });
     };
+    PartService.prototype.getEPParts = function () {
+        return this.http.get('api/epparts')
+            .map(function (res) { return res.json(); });
+    };
     PartService.prototype.getWorkstationsAndPartsAndBearbeitung = function () {
         return Rx_1.Observable.forkJoin(this.http.get('/api/workstations').map(function (res) { return res.json(); }), this.http.get('/api/parts').map(function (res) { return res.json(); }), this.http.get('/api/processingTimes').map(function (res) { return res.json(); }));
     };

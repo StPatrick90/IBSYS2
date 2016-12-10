@@ -13,6 +13,8 @@ import {WorkstationsComponent} from './components/settings/workstations/workstat
 import {PartsComponent} from './components/settings/parts/parts.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {PartsListsComponent} from './components/settings/partsLists/partsLists.component';
+import { PrioComponent } from './components/prio/prio.component';
+
 
 @NgModule({
     imports: [
@@ -27,6 +29,7 @@ import {PartsListsComponent} from './components/settings/partsLists/partsLists.c
             { path: 'parts', component: PartsComponent},
             { path: 'dashboard', component: DashboardComponent},
             { path: 'partsLists', component: PartsListsComponent},
+            { path: 'prioritization', component: PrioComponent}
         ])
     ],
     exports: [

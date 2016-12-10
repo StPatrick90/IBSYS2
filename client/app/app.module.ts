@@ -24,6 +24,8 @@ import {MultiselectDropdownModule} from 'angular-2-dropdown-multiselect/src/mult
 import {LocalStorageService} from "angular2-localstorage/LocalStorageEmitter";
 import {DndModule} from 'ng2-dnd';
 import { PartsListsComponent} from './components/settings/partsLists/partsLists.component';
+import { PrioComponent } from './components/prio/prio.component';
+
 
 const WINDOW_PROVIDER: ValueProvider = {
     provide: Window,
@@ -36,7 +38,7 @@ const WINDOW_PROVIDER: ValueProvider = {
 
     declarations: [AppComponent, TasksComponent, CapacityPlanningComponent,
         HomeComponent, TranslatePipe, XmlImportComponent, MaterialPlanningComponent,
-        PredictionComponent, WorkstationsComponent, PartsComponent, DashboardComponent, PartsListsComponent],
+        PredictionComponent, WorkstationsComponent, PartsComponent, DashboardComponent, PartsListsComponent, PrioComponent],
 
     bootstrap: [AppComponent],
     providers: [TRANSLATION_PROVIDERS, TranslateService, LocalStorageService, WINDOW_PROVIDER]
