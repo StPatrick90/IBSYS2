@@ -3,8 +3,10 @@ import {SessionService} from '../../services/session.service';
 import {MaterialPlanningService} from '../../services/materialPlanning.service';
 import {Part} from '../../model/part';
 import {matPlanRow} from "../../model/matPlanRow";
-import {verwendung} from "../../model/verwendung";
 import sort = require("core-js/fn/array/sort");
+import {PredictionComponent} from "../prediction/prediction.component";
+import {PredictionService} from "../../services/prediction.service";
+import {DBService} from "../../services/db.service";
 
 @Component({
     moduleId: module.id,
@@ -16,17 +18,19 @@ export class MaterialPlanningComponent {
 
     resultObj: any;
     purchaseParts: Part[];
-    matPlanRow: matPlanRow;
     matPlan: matPlanRow[];
     verwendungRow: string[];
-    colspan: number;
+    predictionComponent: PredictionComponent;
+    predictionService: PredictionService;
+    dbService: DBService;
+    periodrow: number[];
 
     constructor(private sessionService: SessionService, private  materialPlanningService: MaterialPlanningService) {
         this.resultObj = this.sessionService.getResultObject();
-        this.matPlanRow = new matPlanRow();
         this.matPlan = new Array<matPlanRow>();
-
         this.verwendungRow = new Array<string>();
+        this.periodrow = new Array<number>();
+        this.predictionComponent = new PredictionComponent(sessionService, this.predictionService, this.dbService);
         this.getKParts();
     }
 
@@ -43,7 +47,7 @@ export class MaterialPlanningComponent {
     setParameters() {
         var i = 0;
 
-        for(let purchPart of this.purchaseParts){
+        for (let purchPart of this.purchaseParts) {
             var matPlanRow = {
                 kpartnr: null,
                 lieferfrist: null,
@@ -66,27 +70,39 @@ export class MaterialPlanningComponent {
             matPlanRow.lieferfrist = purchPart.lieferfrist;
             matPlanRow.diskontmenge = purchPart.diskontmenge;
             matPlanRow.summe = Number((matPlanRow.lieferfrist + matPlanRow.abweichung).toFixed(2));
-            for(let vw of purchPart.verwendung){
+            for (let vw of purchPart.verwendung) {
                 matPlanRow.verwendung.push(vw);
             }
 
+            // get Verwendungen
             for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {
                 if (!this.verwendungRow.includes(matPlanRow.verwendung[l].Produkt)) {
                     this.verwendungRow.push(matPlanRow.verwendung[l].Produkt);
                 }
             }
 
-            // store them finally
-            this.matPlan.push(matPlanRow);
-            //console.log(this.matPlan[i].verwendung[1].Menge);
-            i++;
 
+            // store values finally
+            this.matPlan.push(matPlanRow);
+            i++;
         }
+        this.getBruttoBedarfandPeriods();
         this.setColspan();
     }
 
     setColspan() {
         document.getElementById("Verwendung").setAttribute("colspan", String(this.verwendungRow.length));
+        document.getElementById("Bruttobedarf").setAttribute("colspan", String(this.periodrow.length));
+    }
+
+    getBruttoBedarfandPeriods() {
+
+        var periods = new Array<number>();
+        periods.push(this.predictionComponent.generatePeriods(0));
+        periods.push(this.predictionComponent.generatePeriods(1));
+        periods.push(this.predictionComponent.generatePeriods(2));
+        periods.push(this.predictionComponent.generatePeriods(3));
+        this.periodrow = periods;
     }
 
 }

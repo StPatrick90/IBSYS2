@@ -11,15 +11,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var session_service_1 = require('../../services/session.service');
 var materialPlanning_service_1 = require('../../services/materialPlanning.service');
-var matPlanRow_1 = require("../../model/matPlanRow");
+var prediction_component_1 = require("../prediction/prediction.component");
 var MaterialPlanningComponent = (function () {
     function MaterialPlanningComponent(sessionService, materialPlanningService) {
         this.sessionService = sessionService;
         this.materialPlanningService = materialPlanningService;
         this.resultObj = this.sessionService.getResultObject();
-        this.matPlanRow = new matPlanRow_1.matPlanRow();
         this.matPlan = new Array();
         this.verwendungRow = new Array();
+        this.periodrow = new Array();
+        this.predictionComponent = new prediction_component_1.PredictionComponent(sessionService, this.predictionService, this.dbService);
         this.getKParts();
     }
     MaterialPlanningComponent.prototype.getKParts = function () {
@@ -59,20 +60,30 @@ var MaterialPlanningComponent = (function () {
                 var vw = _c[_b];
                 matPlanRow.verwendung.push(vw);
             }
+            // get Verwendungen
             for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {
                 if (!this.verwendungRow.includes(matPlanRow.verwendung[l].Produkt)) {
                     this.verwendungRow.push(matPlanRow.verwendung[l].Produkt);
                 }
             }
-            // store them finally
+            // store values finally
             this.matPlan.push(matPlanRow);
-            //console.log(this.matPlan[i].verwendung[1].Menge);
             i++;
         }
+        this.getBruttoBedarfandPeriods();
         this.setColspan();
     };
     MaterialPlanningComponent.prototype.setColspan = function () {
         document.getElementById("Verwendung").setAttribute("colspan", String(this.verwendungRow.length));
+        document.getElementById("Bruttobedarf").setAttribute("colspan", String(this.periodrow.length));
+    };
+    MaterialPlanningComponent.prototype.getBruttoBedarfandPeriods = function () {
+        var periods = new Array();
+        periods.push(this.predictionComponent.generatePeriods(0));
+        periods.push(this.predictionComponent.generatePeriods(1));
+        periods.push(this.predictionComponent.generatePeriods(2));
+        periods.push(this.predictionComponent.generatePeriods(3));
+        this.periodrow = periods;
     };
     MaterialPlanningComponent = __decorate([
         core_1.Component({
