@@ -4,9 +4,8 @@ import {MaterialPlanningService} from '../../services/materialPlanning.service';
 import {Part} from '../../model/part';
 import {matPlanRow} from "../../model/matPlanRow";
 import sort = require("core-js/fn/array/sort");
-import {PredictionComponent} from "../prediction/prediction.component";
-import {PredictionService} from "../../services/prediction.service";
-import {DBService} from "../../services/db.service";
+import {Plannings} from "../../model/plannings";
+import {Http} from "@angular/http";
 
 @Component({
     moduleId: module.id,
@@ -20,17 +19,15 @@ export class MaterialPlanningComponent {
     purchaseParts: Part[];
     matPlan: matPlanRow[];
     verwendungRow: string[];
-    predictionComponent: PredictionComponent;
-    predictionService: PredictionService;
-    dbService: DBService;
     periodrow: number[];
+    plannings: Plannings[];
 
-    constructor(private sessionService: SessionService, private  materialPlanningService: MaterialPlanningService) {
+    constructor(private sessionService: SessionService, private  materialPlanningService: MaterialPlanningService, private http: Http) {
         this.resultObj = this.sessionService.getResultObject();
         this.matPlan = new Array<matPlanRow>();
         this.verwendungRow = new Array<string>();
         this.periodrow = new Array<number>();
-        this.predictionComponent = new PredictionComponent(sessionService, this.predictionService, this.dbService);
+        this.plannings = new Array<Plannings>();
         this.getKParts();
     }
 
@@ -96,13 +93,12 @@ export class MaterialPlanningComponent {
     }
 
     getBruttoBedarfandPeriods() {
+        this.plannings = this.sessionService.getPlannings();
+        console.log("planningss", this.plannings);
 
-        var periods = new Array<number>();
-        periods.push(this.predictionComponent.generatePeriods(0));
-        periods.push(this.predictionComponent.generatePeriods(1));
-        periods.push(this.predictionComponent.generatePeriods(2));
-        periods.push(this.predictionComponent.generatePeriods(3));
-        this.periodrow = periods;
+        for (let p of this.plannings) {
+            this.periodrow.push(p.period);
+        }
     }
 
 }

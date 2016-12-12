@@ -8,6 +8,7 @@ import 'rxjs/add/operator/map';
 import { Part } from '../model/part';
 import { Workstation } from '../model/workstastion';
 import { ProcessingTime } from '../model/processingTime';
+import {Plannings} from "../model/plannings";
 
 
 @Injectable()
@@ -19,6 +20,7 @@ export class SessionService{
     @SessionStorage() private processingTimes : ProcessingTime[];
     @SessionStorage() private partOrders : Array<any>;
     @SessionStorage() private plannedWarehouseStock : Array<any>;
+    @SessionStorage() private plannings : Plannings[];
 
     constructor(private http:Http){
         console.log('Session Service Initialized...');
@@ -176,6 +178,12 @@ export class SessionService{
     setProcessingTimes(processingTimes){
         this.processingTimes = processingTimes;
     }
+    setPlannings(plannings) {
+        this.plannings = plannings;
+    }
+    getPlannings() {
+        return this.plannings;
+    }
 
     getPartOrders(){
         return this.partOrders;
@@ -200,6 +208,7 @@ export class SessionService{
         this.setProcessingTimes(null);
         this.setPartOrders(null);
         this.setPlannedWarehouseStock(null);
+        this.setPlannings(null);
     }
 
 }

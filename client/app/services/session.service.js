@@ -161,6 +161,12 @@ var SessionService = (function () {
     SessionService.prototype.setProcessingTimes = function (processingTimes) {
         this.processingTimes = processingTimes;
     };
+    SessionService.prototype.setPlannings = function (plannings) {
+        this.plannings = plannings;
+    };
+    SessionService.prototype.getPlannings = function () {
+        return this.plannings;
+    };
     SessionService.prototype.getPartOrders = function () {
         return this.partOrders;
     };
@@ -180,6 +186,7 @@ var SessionService = (function () {
         this.setProcessingTimes(null);
         this.setPartOrders(null);
         this.setPlannedWarehouseStock(null);
+        this.setPlannings(null);
     };
     __decorate([
         WebStorage_1.SessionStorage(), 
@@ -205,6 +212,10 @@ var SessionService = (function () {
         WebStorage_1.SessionStorage(), 
         __metadata('design:type', Array)
     ], SessionService.prototype, "plannedWarehouseStock", void 0);
+    __decorate([
+        WebStorage_1.SessionStorage(), 
+        __metadata('design:type', Array)
+    ], SessionService.prototype, "plannings", void 0);
     SessionService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

@@ -11,16 +11,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var session_service_1 = require('../../services/session.service');
 var materialPlanning_service_1 = require('../../services/materialPlanning.service');
-var prediction_component_1 = require("../prediction/prediction.component");
+var http_1 = require("@angular/http");
 var MaterialPlanningComponent = (function () {
-    function MaterialPlanningComponent(sessionService, materialPlanningService) {
+    function MaterialPlanningComponent(sessionService, materialPlanningService, http) {
         this.sessionService = sessionService;
         this.materialPlanningService = materialPlanningService;
+        this.http = http;
         this.resultObj = this.sessionService.getResultObject();
         this.matPlan = new Array();
         this.verwendungRow = new Array();
         this.periodrow = new Array();
-        this.predictionComponent = new prediction_component_1.PredictionComponent(sessionService, this.predictionService, this.dbService);
+        this.plannings = new Array();
         this.getKParts();
     }
     MaterialPlanningComponent.prototype.getKParts = function () {
@@ -78,12 +79,12 @@ var MaterialPlanningComponent = (function () {
         document.getElementById("Bruttobedarf").setAttribute("colspan", String(this.periodrow.length));
     };
     MaterialPlanningComponent.prototype.getBruttoBedarfandPeriods = function () {
-        var periods = new Array();
-        periods.push(this.predictionComponent.generatePeriods(0));
-        periods.push(this.predictionComponent.generatePeriods(1));
-        periods.push(this.predictionComponent.generatePeriods(2));
-        periods.push(this.predictionComponent.generatePeriods(3));
-        this.periodrow = periods;
+        this.plannings = this.sessionService.getPlannings();
+        console.log("planningss", this.plannings);
+        for (var _i = 0, _a = this.plannings; _i < _a.length; _i++) {
+            var p = _a[_i];
+            this.periodrow.push(p.period);
+        }
     };
     MaterialPlanningComponent = __decorate([
         core_1.Component({
@@ -91,7 +92,7 @@ var MaterialPlanningComponent = (function () {
             selector: 'materialPlanning',
             templateUrl: 'materialPlanning.component.html'
         }), 
-        __metadata('design:paramtypes', [session_service_1.SessionService, materialPlanning_service_1.MaterialPlanningService])
+        __metadata('design:paramtypes', [session_service_1.SessionService, materialPlanning_service_1.MaterialPlanningService, http_1.Http])
     ], MaterialPlanningComponent);
     return MaterialPlanningComponent;
 }());
