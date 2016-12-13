@@ -18,17 +18,24 @@ export class PrioComponent {
 
 
     epParts : Array<Part> = [];
+    pParts : Array<Part> = [];
 
     constructor(private sessionService: SessionService, private  partService: PartService) {
         this.partService.getEPParts()
             .subscribe(
-                data => { this.epParts = data},
+                data => {
+                    this.epParts = data;
+                    for(var i = 0; i < data.length; i++){
+                        console.log(data[i]);
+                        if(data[i].typ === "P"){
+                            this.pParts.push(data[i]);
+                        }
+                    }
+                },
                 err => console.error(err),
-                () => console.log(this.epParts));
+                () => console.log(this.pParts));
     }
 
-
-    listOne:Array<string> = ['Coffee','Orange Juice','Red Wine','Unhealty drink!','Water'];
 }
 
 
