@@ -24,7 +24,10 @@ export class PartsListsComponent {
     auswahl: any;
 
     partsList: any = Object();
-    nodes: number = 5;
+    columns: number = 0;
+    rows: number = 0;
+    zeilen: any[] = Array<any>();
+    column: number = 1;
 
     private productOptions: IMultiSelectOption[] = Array<IMultiSelectOption>();
     private productSettings: IMultiSelectSettings;
@@ -75,14 +78,15 @@ export class PartsListsComponent {
         };
     }
 
-    generatePartsList(){
-        if(this.auswahl != undefined && this.auswahl.length == 1) {
+    generatePartsList() {
+        if (this.auswahl != undefined && this.auswahl.length == 1) {
             for (let pt of this.parts) {
                 if (pt.nummer == this.auswahl[0]) {
                     this.part = pt;
                 }
             }
-            if(this.part != null) {
+            var bestandteile = Array<any>();
+            if (this.part != null) {
                 this.partsList = {
                     _id: this.part._id,
                     bezeichnung: this.part.bezeichnung,
@@ -94,7 +98,8 @@ export class PartsListsComponent {
                 for (let best of this.part.bestandteile) {
                     for (let pt of this.parts) {
                         if (best._id == pt._id) {
-                            this.partsList.bestandteile.push({
+                            this.rows++;
+                            bestandteile.push({
                                 _id: pt._id,
                                 bezeichnung: pt.bezeichnung,
                                 typ: pt.typ,
@@ -105,8 +110,26 @@ export class PartsListsComponent {
                         }
                     }
                 }
+                this.partsList.bestandteile = bestandteile.sort(function (a, b) {
+                    var typA = a.typ.toUpperCase();
+                    var typB = b.typ.toUpperCase();
+                    if (typA > typB) {
+                        return -1;
+                    }
+                    if (typA < typB) {
+                        return 1;
+                    }
+                    if (typA == typB && a.nummer < b.nummer) {
+                        return -1
+                    }
+                    if (typA == typB && a.nummer > b.nummer) {
+                        return 1
+                    }
+                    return 0;
+                });
             }
         }
+        this.generateRows();
     }
 
     getBestandteile(part) {
@@ -114,6 +137,7 @@ export class PartsListsComponent {
         for (let ptOut of part.bestandteile) {
             for (let ptIn of this.parts) {
                 if (ptOut._id == ptIn._id) {
+                    this.rows++;
                     bestandteile.push({
                         _id: ptIn._id,
                         bezeichnung: ptIn.bezeichnung,
@@ -125,10 +149,70 @@ export class PartsListsComponent {
                 }
             }
         }
-        return bestandteile;
+        return bestandteile.sort(function (a, b) {
+            var typA = a.typ.toUpperCase();
+            var typB = b.typ.toUpperCase();
+            if (typA > typB) {
+                return -1;
+            }
+            if (typA < typB) {
+                return 1;
+            }
+            if (typA == typB && a.nummer < b.nummer) {
+                return -1
+            }
+            if (typA == typB && a.nummer > b.nummer) {
+                return 1
+            }
+            return 0;
+        });
     }
 
-    getNumber = function(num) {
-        return new Array(num);
+    generateRows() {
+        this.columns = 0;
+        this.column = 1;
+        if (this.zeilen) {
+            while (this.zeilen.length > 0) {
+                this.zeilen.pop();
+            }
+        }
+        for (let best of this.partsList.bestandteile) {
+            this.zeilen.push({teil: best.typ + best.nummer, anzahl: best.anzahl, column: this.column});
+            if (best.bestandteile && best.bestandteile.length > 0) {
+                this.columns++;
+                for (let bt of best.bestandteile) {
+                    this.getRows(bt);
+                }
+            }
+        }
+    }
+
+    getRows(bestandteil) {
+        this.column++;
+        this.zeilen.push({teil: bestandteil.typ + bestandteil.nummer, anzahl: bestandteil.anzahl, column: this.column});
+        for (let best of bestandteil.bestandteile) {
+            this.column++;
+            this.zeilen.push({teil: best.typ + best.nummer, anzahl: best.anzahl, column: this.column});
+            if (best.bestandteile && best.bestandteile.length > 0) {
+                this.columns++;
+                for (let bt of best.bestandteile) {
+                    this.getRows(bt);
+
+                }
+            }
+            this.column--;
+
+        }
+        this.column--;
+    }
+
+    getNumber = function (num) {
+        var array = Array<number>();
+
+        for (let i = 1; i <= num; i++) {
+            array.push(i);
+        }
+        return array;
+
     }
 }

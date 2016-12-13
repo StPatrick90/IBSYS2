@@ -22,10 +22,17 @@ var PartsListsComponent = (function () {
         this.sessionService = sessionService;
         this.part = new part_1.Part();
         this.partsList = Object();
-        this.nodes = 5;
+        this.columns = 0;
+        this.rows = 0;
+        this.zeilen = Array();
+        this.column = 1;
         this.productOptions = Array();
         this.getNumber = function (num) {
-            return new Array(num);
+            var array = Array();
+            for (var i = 1; i <= num; i++) {
+                array.push(i);
+            }
+            return array;
         };
         if (this.sessionService.getParts() != null || this.sessionService.getParts() != undefined) {
             this.parts = this.sessionService.getParts();
@@ -74,6 +81,7 @@ var PartsListsComponent = (function () {
                     this.part = pt;
                 }
             }
+            var bestandteile = Array();
             if (this.part != null) {
                 this.partsList = {
                     _id: this.part._id,
@@ -88,7 +96,8 @@ var PartsListsComponent = (function () {
                     for (var _d = 0, _e = this.parts; _d < _e.length; _d++) {
                         var pt = _e[_d];
                         if (best._id == pt._id) {
-                            this.partsList.bestandteile.push({
+                            this.rows++;
+                            bestandteile.push({
                                 _id: pt._id,
                                 bezeichnung: pt.bezeichnung,
                                 typ: pt.typ,
@@ -99,8 +108,26 @@ var PartsListsComponent = (function () {
                         }
                     }
                 }
+                this.partsList.bestandteile = bestandteile.sort(function (a, b) {
+                    var typA = a.typ.toUpperCase();
+                    var typB = b.typ.toUpperCase();
+                    if (typA > typB) {
+                        return -1;
+                    }
+                    if (typA < typB) {
+                        return 1;
+                    }
+                    if (typA == typB && a.nummer < b.nummer) {
+                        return -1;
+                    }
+                    if (typA == typB && a.nummer > b.nummer) {
+                        return 1;
+                    }
+                    return 0;
+                });
             }
         }
+        this.generateRows();
     };
     PartsListsComponent.prototype.getBestandteile = function (part) {
         var bestandteile = Array();
@@ -109,6 +136,7 @@ var PartsListsComponent = (function () {
             for (var _b = 0, _c = this.parts; _b < _c.length; _b++) {
                 var ptIn = _c[_b];
                 if (ptOut._id == ptIn._id) {
+                    this.rows++;
                     bestandteile.push({
                         _id: ptIn._id,
                         bezeichnung: ptIn.bezeichnung,
@@ -120,7 +148,61 @@ var PartsListsComponent = (function () {
                 }
             }
         }
-        return bestandteile;
+        return bestandteile.sort(function (a, b) {
+            var typA = a.typ.toUpperCase();
+            var typB = b.typ.toUpperCase();
+            if (typA > typB) {
+                return -1;
+            }
+            if (typA < typB) {
+                return 1;
+            }
+            if (typA == typB && a.nummer < b.nummer) {
+                return -1;
+            }
+            if (typA == typB && a.nummer > b.nummer) {
+                return 1;
+            }
+            return 0;
+        });
+    };
+    PartsListsComponent.prototype.generateRows = function () {
+        this.columns = 0;
+        this.column = 1;
+        if (this.zeilen) {
+            while (this.zeilen.length > 0) {
+                this.zeilen.pop();
+            }
+        }
+        for (var _i = 0, _a = this.partsList.bestandteile; _i < _a.length; _i++) {
+            var best = _a[_i];
+            this.zeilen.push({ teil: best.typ + best.nummer, anzahl: best.anzahl, column: this.column });
+            if (best.bestandteile && best.bestandteile.length > 0) {
+                this.columns++;
+                for (var _b = 0, _c = best.bestandteile; _b < _c.length; _b++) {
+                    var bt = _c[_b];
+                    this.getRows(bt);
+                }
+            }
+        }
+    };
+    PartsListsComponent.prototype.getRows = function (bestandteil) {
+        this.column++;
+        this.zeilen.push({ teil: bestandteil.typ + bestandteil.nummer, anzahl: bestandteil.anzahl, column: this.column });
+        for (var _i = 0, _a = bestandteil.bestandteile; _i < _a.length; _i++) {
+            var best = _a[_i];
+            this.column++;
+            this.zeilen.push({ teil: best.typ + best.nummer, anzahl: best.anzahl, column: this.column });
+            if (best.bestandteile && best.bestandteile.length > 0) {
+                this.columns++;
+                for (var _b = 0, _c = best.bestandteile; _b < _c.length; _b++) {
+                    var bt = _c[_b];
+                    this.getRows(bt);
+                }
+            }
+            this.column--;
+        }
+        this.column--;
     };
     PartsListsComponent = __decorate([
         core_1.Component({

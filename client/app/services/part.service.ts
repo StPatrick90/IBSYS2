@@ -16,7 +16,6 @@ export class PartService{
         return this.http.get('api/parts')
             .map(res => res.json());
     }
-
     getEPParts(){
         return this.http.get('api/epparts')
             .map(res => res.json());

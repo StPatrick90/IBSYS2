@@ -6,7 +6,7 @@
     </ss-multiselect-dropdown>
 </div>
 
-<div class="container-fluid well" [hidden]="!(auswahl != undefined && auswahl.length == 1)">
+<!-- <div class="container-fluid well" [hidden]="!(auswahl != undefined && auswahl.length == 1)">
     <div class="panel panel-primary">
         <div class="panel-heading">
             <p>{{ "1x " + part.typ + part.nummer + " - " + part.bezeichnung}}</p>
@@ -80,6 +80,24 @@
                             </div>
                         </div>
                     </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div> -->
+<div class="container-fluid well" [hidden]="!(auswahl != undefined && auswahl.length == 1)">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <p>{{ "1x " + part.typ + part.nummer + " - " + part.bezeichnung}}</p>
+        </div>
+        <div class="panel-body">
+            <table width="100%" align="top">
+                <tr *ngFor="let z of zeilen" style="border-bottom: dotted 1px">
+                    <td valign="top" *ngFor="let col of getNumber(columns)">
+                        <span *ngIf="z.column === col"> {{z.teil}} </span>
+
+                    </td>
+                    <td> {{z.anzahl}}</td>
                 </tr>
             </table>
         </div>
