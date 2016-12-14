@@ -67,6 +67,8 @@ exports.LANG_DE_TRANS = {
     'setWorkstations_exists_body': ' bereits vorhanden.\n\nBitte wählen Sie eine neue Nummer.',
     'setWorkstations_empty': 'Arbeitsplatz nicht vollständig!',
     'setWorkstations_empty_body': 'Die Nummer und der Name des Arbeitsplatzes muss ausgefüllt sein.',
+    //Settings-PartsLists
+    'setPartsList_Overview': 'Mengen(übersichts)- Stückliste',
     //Settings-Parts
     'setParts_parts': 'Teile',
     'setParts_part': 'Teil',

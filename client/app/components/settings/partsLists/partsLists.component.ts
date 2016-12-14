@@ -29,6 +29,8 @@ export class PartsListsComponent {
     zeilen: any[] = Array<any>();
     column: number = 1;
 
+    uebersicht: any[] = Array<any>();
+
     private productOptions: IMultiSelectOption[] = Array<IMultiSelectOption>();
     private productSettings: IMultiSelectSettings;
     private multiSelectTexts: IMultiSelectTexts;
@@ -130,6 +132,7 @@ export class PartsListsComponent {
             }
         }
         this.generateRows();
+        this.generateUebersicht();
     }
 
     getBestandteile(part) {
@@ -204,6 +207,50 @@ export class PartsListsComponent {
 
         }
         this.column--;
+    }
+
+    generateUebersicht(){
+        var speichern = true;
+        if (this.uebersicht) {
+            while (this.uebersicht.length > 0) {
+                this.uebersicht.pop();
+            }
+        }
+
+        for(let z of this.zeilen){
+            speichern = true;
+            for(let u of this.uebersicht){
+                if(u.teil == z.teil){
+                    u.anzahl+=z.anzahl;
+                    speichern = false;
+                    break;
+                }
+            }
+            if(speichern) {
+                this.uebersicht.push({teil: z.teil, anzahl: z.anzahl});
+            }
+        }
+        this.uebersicht.sort(function (a, b) {
+            var typA = a.teil.substring(0,1).toUpperCase();
+            var typB = b.teil.substring(0,1).toUpperCase();
+            var nummerA = Number.parseInt(a.teil.substring(1));
+            var nummerB = Number.parseInt(b.teil.substring(1));
+            if (typA < typB) {
+                return -1;
+            }
+            if (typA > typB) {
+                return 1;
+            }
+            if (typA == typB && nummerA < nummerB) {
+                return -1
+            }
+            if (typA == typB && nummerA > nummerB) {
+                return 1
+            }
+            return 0;
+        });
+
+        this.uebersicht.unshift({teil: this.part.typ + this.part.nummer, anzahl: 1})
     }
 
     getNumber = function (num) {

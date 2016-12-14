@@ -85,6 +85,7 @@
         </div>
     </div>
 </div> -->
+<div class="col-md-9">
 <div class="container-fluid well" [hidden]="!(auswahl != undefined && auswahl.length == 1)">
     <div class="panel panel-primary">
         <div class="panel-heading">
@@ -97,9 +98,27 @@
                         <span *ngIf="z.column === col"> {{z.teil}} </span>
 
                     </td>
-                    <td> {{z.anzahl}}</td>
+                    <td align="right"> {{z.anzahl}}</td>
                 </tr>
             </table>
         </div>
     </div>
+</div>
+</div>
+<div class="col-md-3">
+<div class="container-fluid well" [hidden]="!(auswahl != undefined && auswahl.length == 1)">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <p>{{'setPartsList_Overview' | translate}}</p>
+        </div>
+        <div class="panel-body">
+    <table width="100%">
+        <tr *ngFor="let u of uebersicht" style="border-bottom: dotted 1px">
+            <td>{{u.teil}}</td>
+            <td align="right">{{u.anzahl}}</td>
+        </tr>
+    </table>
+        </div>
+    </div>
+</div>
 </div>
