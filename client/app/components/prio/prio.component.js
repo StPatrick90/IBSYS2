@@ -21,9 +21,17 @@ var PrioComponent = (function () {
         this.partService = partService;
         this.selector = "";
         this.epParts = [];
-        this.listOne = ['Coffee', 'Orange Juice', 'Red Wine', 'Unhealty drink!', 'Water'];
+        this.pParts = [];
         this.partService.getEPParts()
-            .subscribe(function (data) { _this.epParts = data; }, function (err) { return console.error(err); }, function () { return console.log(_this.epParts); });
+            .subscribe(function (data) {
+            _this.epParts = data;
+            for (var i = 0; i < data.length; i++) {
+                console.log(data[i]);
+                if (data[i].typ === "P") {
+                    _this.pParts.push(data[i]);
+                }
+            }
+        }, function (err) { return console.error(err); }, function () { return console.log(_this.pParts); });
     }
     PrioComponent = __decorate([
         core_1.Component({
