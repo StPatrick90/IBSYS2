@@ -11,4 +11,5 @@ export class ProcessingTime{
     ruestZeit: number;
     fertigungsZeit: number;
     nextArbeitsplatz: Workstation;
+    isStart: boolean;
 }
