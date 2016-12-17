@@ -11,10 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 21.10.2016.
  */
-var core_1 = require('@angular/core');
+var core_1 = require("@angular/core");
 var WebStorage_1 = require("angular2-localstorage/WebStorage");
-var http_1 = require('@angular/http');
-require('rxjs/add/operator/map');
+var http_1 = require("@angular/http");
+require("rxjs/add/operator/map");
 var SessionService = (function () {
     function SessionService(http) {
         this.http = http;
@@ -24,116 +24,154 @@ var SessionService = (function () {
                 period: "",
                 warehousestock: {
                     article: [{ id: "", amount: "", startamount: "", pct: "", price: "", stockvalue: "" }],
-                    totalstockvalue: "" },
+                    totalstockvalue: ""
+                },
                 inwardstockmovement: {
-                    order: [{ orderperiod: "", id: "", mode: "", article: "", amount: "", time: "", materialcosts: "", ordercosts: "", entirecosts: "", piececosts: "" }] },
+                    order: [{ orderperiod: "", id: "", mode: "", article: "", amount: "", time: "", materialcosts: "", ordercosts: "", entirecosts: "", piececosts: "" }]
+                },
                 futureinwardstockmovement: {
-                    order: [{ orderperiod: "", id: "", mode: "", article: "", amount: "" }] },
+                    order: [{ orderperiod: "", id: "", mode: "", article: "", amount: "" }]
+                },
                 idletimecosts: {
                     workplace: [{ id: "", setupevents: "", idletime: "", wageidletimecosts: "", wagecosts: "", machineidletimecosts: "" }],
-                    sum: { setupevents: "", idletime: "", wageidletimecosts: "", wagecosts: "", machineidletimecosts: "" } },
+                    sum: { setupevents: "", idletime: "", wageidletimecosts: "", wagecosts: "", machineidletimecosts: "" }
+                },
                 waitinglistworkstations: {
-                    workplace: [{ id: "", timeneed: "", waitinglist: { period: "", order: "", firstbatch: "", lastbatch: "", item: "", amount: "", timeneed: "" } }] },
+                    workplace: [{ id: "", timeneed: "", waitinglist: { period: "", order: "", firstbatch: "", lastbatch: "", item: "", amount: "", timeneed: "" } }]
+                },
                 waitingliststock: {
-                    missingpart: [{ id: "", waitinglist: { period: "", order: "", firstbatch: "", lastbatch: "", item: "", amount: "" } }] },
+                    missingpart: [{ id: "", waitinglist: { period: "", order: "", firstbatch: "", lastbatch: "", item: "", amount: "" } }]
+                },
                 ordersinwork: {
-                    workplace: [{ id: "", period: "", order: "", batch: "", item: "", amount: "", timeneed: "" }] },
+                    workplace: [{ id: "", period: "", order: "", batch: "", item: "", amount: "", timeneed: "" }]
+                },
                 completedorders: {
-                    order: [{ period: "", id: "", item: "", quantity: "", cost: "", averageunitcosts: "", batch: [{ id: "", amount: "", cycletime: "", cost: "" }] }] },
+                    order: [{ period: "", id: "", item: "", quantity: "", cost: "", averageunitcosts: "", batch: [{ id: "", amount: "", cycletime: "", cost: "" }] }]
+                },
                 cycletimes: {
                     startedorders: "",
                     waitingorders: "",
-                    order: [{ id: "", period: "", starttime: "", finishtime: "", cycletimemin: "", cycletimefactor: "" }] },
+                    order: [{ id: "", period: "", starttime: "", finishtime: "", cycletimemin: "", cycletimefactor: "" }]
+                },
                 result: {
                     general: {
                         capacity: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         possiblecapacity: {
                             current: "",
-                            average: "", all: "" },
+                            average: "", all: ""
+                        },
                         relpossiblenormalcapacity: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         productivetime: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         effiency: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         sellwish: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         salesquantity: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         deliveryreliability: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         idletime: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         idletimecosts: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         storevalue: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         storagecosts: {
                             current: "",
                             average: "",
-                            all: "" } },
+                            all: ""
+                        }
+                    },
                     defectivegoods: {
                         quantity: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         costs: {
                             current: "",
                             average: "",
-                            all: "" } },
+                            all: ""
+                        }
+                    },
                     normalsale: {
                         salesprice: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         profit: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         profitperunit: {
                             current: "",
                             average: "",
-                            all: "" } },
+                            all: ""
+                        }
+                    },
                     directsale: {
                         profit: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         contractpenalty: {
                             current: "",
                             average: "",
-                            all: "" } },
+                            all: ""
+                        }
+                    },
                     marketplacesale: {
                         profit: {
                             current: "",
                             average: "",
-                            all: "" } },
+                            all: ""
+                        }
+                    },
                     summary: {
                         profit: {
                             current: "",
                             average: "",
-                            all: "" } } } } };
+                            all: ""
+                        }
+                    }
+                }
+            } };
         console.log('Session Service Initialized...');
         this.clear();
     }
@@ -167,27 +205,27 @@ var SessionService = (function () {
         this.setWorkstations(null);
         this.setProcessingTimes(null);
     };
-    __decorate([
-        WebStorage_1.SessionStorage(), 
-        __metadata('design:type', Object)
-    ], SessionService.prototype, "resultObj", void 0);
-    __decorate([
-        WebStorage_1.SessionStorage(), 
-        __metadata('design:type', Array)
-    ], SessionService.prototype, "parts", void 0);
-    __decorate([
-        WebStorage_1.SessionStorage(), 
-        __metadata('design:type', Array)
-    ], SessionService.prototype, "workstations", void 0);
-    __decorate([
-        WebStorage_1.SessionStorage(), 
-        __metadata('design:type', Array)
-    ], SessionService.prototype, "processingTimes", void 0);
-    SessionService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
-    ], SessionService);
     return SessionService;
 }());
+__decorate([
+    WebStorage_1.SessionStorage(),
+    __metadata("design:type", Object)
+], SessionService.prototype, "resultObj", void 0);
+__decorate([
+    WebStorage_1.SessionStorage(),
+    __metadata("design:type", Array)
+], SessionService.prototype, "parts", void 0);
+__decorate([
+    WebStorage_1.SessionStorage(),
+    __metadata("design:type", Array)
+], SessionService.prototype, "workstations", void 0);
+__decorate([
+    WebStorage_1.SessionStorage(),
+    __metadata("design:type", Array)
+], SessionService.prototype, "processingTimes", void 0);
+SessionService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.Http])
+], SessionService);
 exports.SessionService = SessionService;
 //# sourceMappingURL=session.service.js.map

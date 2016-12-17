@@ -11,11 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 11.11.2016.
  */
-var core_1 = require('@angular/core');
-var workstastion_1 = require('../../../model/workstastion');
-var workstation_service_1 = require('../../../services/workstation.service');
-var session_service_1 = require('../../../services/session.service');
-var ng2_bs3_modal_1 = require('ng2-bs3-modal/ng2-bs3-modal');
+var core_1 = require("@angular/core");
+var workstastion_1 = require("../../../model/workstastion");
+var workstation_service_1 = require("../../../services/workstation.service");
+var session_service_1 = require("../../../services/session.service");
+var ng2_bs3_modal_1 = require("ng2-bs3-modal/ng2-bs3-modal");
 var WorkstationsComponent = (function () {
     function WorkstationsComponent(workstationService, sessionService) {
         var _this = this;
@@ -105,23 +105,23 @@ var WorkstationsComponent = (function () {
     WorkstationsComponent.prototype.setWorkstation = function (ws) {
         this.workstation = ws;
     };
-    __decorate([
-        core_1.ViewChild('modalWsExists'), 
-        __metadata('design:type', ng2_bs3_modal_1.ModalComponent)
-    ], WorkstationsComponent.prototype, "modalWsExists", void 0);
-    __decorate([
-        core_1.ViewChild('modalWsEmpty'), 
-        __metadata('design:type', ng2_bs3_modal_1.ModalComponent)
-    ], WorkstationsComponent.prototype, "modalWsEmpty", void 0);
-    WorkstationsComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'workstations',
-            templateUrl: 'workstations.component.html'
-        }), 
-        __metadata('design:paramtypes', [workstation_service_1.WorkstationService, session_service_1.SessionService])
-    ], WorkstationsComponent);
     return WorkstationsComponent;
 }());
+__decorate([
+    core_1.ViewChild('modalWsExists'),
+    __metadata("design:type", ng2_bs3_modal_1.ModalComponent)
+], WorkstationsComponent.prototype, "modalWsExists", void 0);
+__decorate([
+    core_1.ViewChild('modalWsEmpty'),
+    __metadata("design:type", ng2_bs3_modal_1.ModalComponent)
+], WorkstationsComponent.prototype, "modalWsEmpty", void 0);
+WorkstationsComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'workstations',
+        templateUrl: 'workstations.component.html'
+    }),
+    __metadata("design:paramtypes", [workstation_service_1.WorkstationService, session_service_1.SessionService])
+], WorkstationsComponent);
 exports.WorkstationsComponent = WorkstationsComponent;
 //# sourceMappingURL=workstations.component.js.map

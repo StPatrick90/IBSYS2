@@ -110,6 +110,8 @@ export const LANG_EN_TRANS = {
     'setParts_exists_body': ' already exists.\n\nPlease choose another number',
     'setParts_empty': 'Part incomplete!',
     'setParts_empty_body': 'At least one textfield is still emtpy!',
+    'setParts_search': 'Search',
+    'setParts_searchEmptyText': 'Number or title',
 
 //xmlImport
     'xmlImport': 'XML Import',

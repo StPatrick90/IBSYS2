@@ -14,12 +14,12 @@ import {Workstation} from "../../../model/workstastion";
 import {ProcessingTime} from "../../../model/processingTime";
 import {SessionService} from '../../../services/session.service';
 
-
 @Component({
     moduleId: module.id,
     selector: 'parts',
     templateUrl: 'parts.component.html'
 })
+
 export class PartsComponent {
     @ViewChild('modalPartExists')
     modalPartExists: ModalComponent;
@@ -50,6 +50,8 @@ export class PartsComponent {
 
     lastId: string;
     procTimeIds: string[] = new Array<string>();
+
+    searchText: any;
 
     constructor(private partservice: PartService, private sessionService: SessionService, private window: Window) {
         if (this.sessionService.getWorkstations() != null || this.sessionService.getWorkstations() != undefined ||

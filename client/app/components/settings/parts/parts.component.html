@@ -57,6 +57,10 @@
 </div>
 
 <div class="well col-md-8" style="margin-left: 1%; margin-right: 1%;">
+    <div class="well col-md-6">
+        <label for="part_search">{{'setParts_search' | translate}}</label>
+        <input [(ngModel)]="searchText" class="form-control" placeholder="{{'setParts_searchEmptyText' | translate}}" id="part_search">
+    </div>
     <table width="100%">
         <thead>
         <tr>
@@ -70,7 +74,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let pt of parts" style="height: 40px;">
+        <tr *ngFor="let pt of parts | partPipe: searchText" style="height: 40px;">
             <td width="10%">
                 {{pt.nummer}}
             </td>

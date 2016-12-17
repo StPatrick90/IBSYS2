@@ -111,6 +111,8 @@ export const LANG_DE_TRANS = {
     'setParts_exists_body': ' bereits vorhanden.\n\nBitte wählen Sie eine neue Nummer.',
     'setParts_empty': 'Teil nicht vollständig!',
     'setParts_empty_body': 'Mindestens eines der Textfelder ist nicht ausgefüllt.',
+    'setParts_search': 'Suche',
+    'setParts_searchEmptyText': 'Nummer oder Bezeichnung',
 
 //xmlImport
     'xmlImport': 'XML Import',

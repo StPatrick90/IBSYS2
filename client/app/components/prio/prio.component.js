@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by philipp.koepfer on 10.12.16.
  */
-var core_1 = require('@angular/core');
-var session_service_1 = require('../../services/session.service');
-var part_service_1 = require('../../services/part.service');
+var core_1 = require("@angular/core");
+var session_service_1 = require("../../services/session.service");
+var part_service_1 = require("../../services/part.service");
 var PrioComponent = (function () {
     function PrioComponent(sessionService, partService) {
         this.sessionService = sessionService;
@@ -52,16 +52,16 @@ var PrioComponent = (function () {
             }
         }
     };
-    PrioComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'prio',
-            templateUrl: 'prio.component.html'
-        }), 
-        __metadata('design:paramtypes', [session_service_1.SessionService, part_service_1.PartService])
-    ], PrioComponent);
     return PrioComponent;
 }());
+PrioComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'prio',
+        templateUrl: 'prio.component.html'
+    }),
+    __metadata("design:paramtypes", [session_service_1.SessionService, part_service_1.PartService])
+], PrioComponent);
 exports.PrioComponent = PrioComponent;
 /*
     15 Arbeitsplätze
