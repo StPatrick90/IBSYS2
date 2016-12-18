@@ -26,6 +26,7 @@ import {DndModule} from 'ng2-dnd';
 import { PartsListsComponent} from './components/settings/partsLists/partsLists.component';
 import { PrioComponent } from './components/prio/prio.component';
 import {PartPipe} from './pipes/parts.pipe';
+import { MaterialPlanningEPComponent } from './components/materialPlanningEP/materialPlanningEP.component';
 
 
 const WINDOW_PROVIDER: ValueProvider = {
@@ -39,7 +40,8 @@ const WINDOW_PROVIDER: ValueProvider = {
 
     declarations: [AppComponent, TasksComponent, CapacityPlanningComponent,
         HomeComponent, TranslatePipe, XmlImportComponent, MaterialPlanningComponent,
-        PredictionComponent, WorkstationsComponent, PartsComponent, DashboardComponent, PartsListsComponent, PrioComponent, PartPipe],
+        PredictionComponent, WorkstationsComponent, PartsComponent, DashboardComponent,
+        PartsListsComponent, PrioComponent, PartPipe, MaterialPlanningEPComponent],
 
     bootstrap: [AppComponent],
     providers: [TRANSLATION_PROVIDERS, TranslateService, LocalStorageService, WINDOW_PROVIDER]

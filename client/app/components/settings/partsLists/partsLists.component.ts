@@ -3,7 +3,6 @@
  */
 import {Component} from '@angular/core';
 import {SessionService} from '../../../services/session.service';
-import {ModalComponent} from 'ng2-bs3-modal/ng2-bs3-modal';
 import {Part} from '../../../model/part';
 import {PartService} from '../../../services/part.service';
 import {

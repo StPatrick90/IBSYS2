@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label for="partsList_pparts">Produkt</label>
+    <label for="partsList_pparts">{{'setPartsList_Product' | translate}}</label>
     <ss-multiselect-dropdown [options]="productOptions" [texts]="multiSelectTexts" [settings]="productSettings"
                              [(ngModel)]="auswahl" id="partsList_pparts" (ngModelChange)="generatePartsList($event)">
 

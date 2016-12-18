@@ -68,6 +68,7 @@ exports.LANG_DE_TRANS = {
     'setWorkstations_empty': 'Arbeitsplatz nicht vollständig!',
     'setWorkstations_empty_body': 'Die Nummer und der Name des Arbeitsplatzes muss ausgefüllt sein.',
     //Settings-PartsLists
+    'setPartsList_Product': 'Produkt',
     'setPartsList_Overview': 'Mengen(übersichts)- Stückliste',
     //Settings-Parts
     'setParts_parts': 'Teile',

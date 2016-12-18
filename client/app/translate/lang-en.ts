@@ -77,6 +77,7 @@ export const LANG_EN_TRANS = {
     'setWorkstations_empty_body': 'Number and name have to be filled.',
 
 //Settings-PartsLists
+    'setPartsList_Product': 'Product',
     'setPartsList_Overview': 'Summerized bill of material',
 
 //Settings-Parts

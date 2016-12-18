@@ -36,6 +36,7 @@ var ng2_dnd_1 = require("ng2-dnd");
 var partsLists_component_1 = require("./components/settings/partsLists/partsLists.component");
 var prio_component_1 = require("./components/prio/prio.component");
 var parts_pipe_1 = require("./pipes/parts.pipe");
+var materialPlanningEP_component_1 = require("./components/materialPlanningEP/materialPlanningEP.component");
 var WINDOW_PROVIDER = {
     provide: Window,
     useValue: window
@@ -51,7 +52,8 @@ AppModule = __decorate([
             multiselect_dropdown_1.MultiselectDropdownModule, ng2_dnd_1.DndModule.forRoot()],
         declarations: [app_component_1.AppComponent, tasks_component_1.TasksComponent, capacityPlanning_component_1.CapacityPlanningComponent,
             home_component_1.HomeComponent, translate_pipe_1.TranslatePipe, xmlImport_component_1.XmlImportComponent, materialPlanning_component_1.MaterialPlanningComponent,
-            prediction_component_1.PredictionComponent, workstations_component_1.WorkstationsComponent, parts_component_1.PartsComponent, dashboard_component_1.DashboardComponent, partsLists_component_1.PartsListsComponent, prio_component_1.PrioComponent, parts_pipe_1.PartPipe],
+            prediction_component_1.PredictionComponent, workstations_component_1.WorkstationsComponent, parts_component_1.PartsComponent, dashboard_component_1.DashboardComponent,
+            partsLists_component_1.PartsListsComponent, prio_component_1.PrioComponent, parts_pipe_1.PartPipe, materialPlanningEP_component_1.MaterialPlanningEPComponent],
         bootstrap: [app_component_1.AppComponent],
         providers: [index_1.TRANSLATION_PROVIDERS, translate_service_1.TranslateService, LocalStorageEmitter_1.LocalStorageService, WINDOW_PROVIDER]
     }),

@@ -14,7 +14,7 @@ import {PartsComponent} from './components/settings/parts/parts.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {PartsListsComponent} from './components/settings/partsLists/partsLists.component';
 import { PrioComponent } from './components/prio/prio.component';
-
+import {MaterialPlanningEPComponent} from './components/materialPlanningEP/materialPlanningEP.component';
 
 @NgModule({
     imports: [
@@ -29,7 +29,8 @@ import { PrioComponent } from './components/prio/prio.component';
             { path: 'parts', component: PartsComponent},
             { path: 'dashboard', component: DashboardComponent},
             { path: 'partsLists', component: PartsListsComponent},
-            { path: 'prioritization', component: PrioComponent}
+            { path: 'prioritization', component: PrioComponent},
+            { path: 'materialPlanningEP', component: MaterialPlanningEPComponent},
         ])
     ],
     exports: [
