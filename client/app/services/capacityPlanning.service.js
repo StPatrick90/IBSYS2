@@ -11,10 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 03.11.2016.
  */
-var core_1 = require('@angular/core');
-var http_1 = require('@angular/http');
-require('rxjs/add/operator/map');
-var Rx_1 = require('rxjs/Rx');
+var core_1 = require("@angular/core");
+var http_1 = require("@angular/http");
+require("rxjs/add/operator/map");
+var Rx_1 = require("rxjs/Rx");
 var CapacityPlanningService = (function () {
     function CapacityPlanningService(http) {
         this.http = http;
@@ -37,11 +37,11 @@ var CapacityPlanningService = (function () {
     CapacityPlanningService.prototype.getTimesAndEPParts = function () {
         return Rx_1.Observable.forkJoin(this.http.get('/api/processingTimes').map(function (res) { return res.json(); }), this.http.get('/api/epparts').map(function (res) { return res.json(); }));
     };
-    CapacityPlanningService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
-    ], CapacityPlanningService);
     return CapacityPlanningService;
 }());
+CapacityPlanningService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.Http])
+], CapacityPlanningService);
 exports.CapacityPlanningService = CapacityPlanningService;
 //# sourceMappingURL=capacityPlanning.service.js.map

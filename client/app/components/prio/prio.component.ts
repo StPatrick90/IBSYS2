@@ -22,6 +22,7 @@ export class PrioComponent {
 
     selector = "";
 
+    parts: Array<Part> = [];
     epParts: Array<Part> = [];
     pParts: Array<Part> = [];
 
@@ -44,20 +45,19 @@ export class PrioComponent {
     }
 
     ngOnInit() {
-
         this.processingTimes = this.sessionService.getProcessingTimes();
 
         this.resultObj = this.sessionService.getResultObject();
-        console.log(this.resultObj);
 
         this.lager = this.resultObj.results.warehousestock.article;
         this.wartelisteMaterial = this.resultObj.results.waitingliststock;
         this.wartelisteArbeitsplatz = this.resultObj.results.waitinglistworkstations;
 
-        this.partService.getEPParts()
+        this.partService.getParts()
             .subscribe(
                 data => {
-                    this.epParts = data;
+                    this.parts = data;
+                    this.epParts = data.filter(item => item.typ == "E" || item.typ == "P");
                     this.pParts = data.filter(item => item.typ == "P");
                 },
                 err => console.error(err),
@@ -65,11 +65,8 @@ export class PrioComponent {
     }
 
     processOptimizaition() {
-        console.log("Test");
-
         for (var teil of this.defaultAblauf) {
-            var bestandteilArray =  this.isPartCapacities(teil);
-            console.log(bestandteilArray);
+            var bestandteilArray =  this.getPartCapacities(teil);
             //Kann was von np abgearbeitet werden?
 
             //Sind Teile da?
@@ -109,21 +106,15 @@ export class PrioComponent {
         //console.log(this.zeiten);
     }
 
-    isPartCapacities(searchPart){
+    getPartCapacities(searchPart){
         var bestandteilArray = [];
         for(var part of this.epParts){
             if(part.nummer === searchPart){
                 for(var bestandteil of part.bestandteile){
-                    for(var pt of this.epParts){
-                        console.log("pt");
-                        console.log(pt);
-
+                    for(var pt of this.parts){
                         if(bestandteil._id === pt._id){
                             for(var artikel of this.lager){
-                                console.log("artikel");
-                                console.log(artikel);
-
-                                if(artikel.id === pt.nummer){
+                                if(Number.parseInt(artikel.id) === pt.nummer){
                                     bestandteilArray.push({teil:pt, anzahl: bestandteil.anzahl, lagerBestand: artikel.amount})
                                 }
                             }

@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 03.11.2016.
  */
-var core_1 = require('@angular/core');
-var capacityPlanning_service_1 = require('../../services/capacityPlanning.service');
+var core_1 = require("@angular/core");
+var capacityPlanning_service_1 = require("../../services/capacityPlanning.service");
 var CapacityPlanningComponent = (function () {
     function CapacityPlanningComponent(capacityPlanningService) {
         this.capacityPlanningService = capacityPlanningService;
@@ -55,15 +55,15 @@ var CapacityPlanningComponent = (function () {
             this.artikelListe.push(prodTime);
         }
     };
-    CapacityPlanningComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'capacityPlanning',
-            templateUrl: 'capacityPlanning.component.html'
-        }), 
-        __metadata('design:paramtypes', [capacityPlanning_service_1.CapacityPlanningService])
-    ], CapacityPlanningComponent);
     return CapacityPlanningComponent;
 }());
+CapacityPlanningComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'capacityPlanning',
+        templateUrl: 'capacityPlanning.component.html'
+    }),
+    __metadata("design:paramtypes", [capacityPlanning_service_1.CapacityPlanningService])
+], CapacityPlanningComponent);
 exports.CapacityPlanningComponent = CapacityPlanningComponent;
 //# sourceMappingURL=capacityPlanning.component.js.map

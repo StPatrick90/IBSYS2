@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 17.12.2016.
  */
-var core_1 = require('@angular/core');
+var core_1 = require("@angular/core");
 // Tell Angular2 we're creating a Pipe with TypeScript decorators
 var PartPipe = (function () {
     function PartPipe() {
@@ -24,13 +24,13 @@ var PartPipe = (function () {
             return part.bezeichnung.toUpperCase().includes(args.toUpperCase()) || part.nummer === Number.parseInt(args.toUpperCase());
         });
     };
-    PartPipe = __decorate([
-        core_1.Pipe({
-            name: 'partPipe'
-        }), 
-        __metadata('design:paramtypes', [])
-    ], PartPipe);
     return PartPipe;
 }());
+PartPipe = __decorate([
+    core_1.Pipe({
+        name: 'partPipe'
+    }),
+    __metadata("design:paramtypes", [])
+], PartPipe);
 exports.PartPipe = PartPipe;
 //# sourceMappingURL=parts.pipe.js.map

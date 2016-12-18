@@ -11,10 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by philipp.koepfer on 02.11.16.
  */
-var core_1 = require('@angular/core');
-var xmlImport_service_1 = require('../../services/xmlImport.service');
-var session_service_1 = require('../../services/session.service');
-var db_service_1 = require('../../services/db.service');
+var core_1 = require("@angular/core");
+var xmlImport_service_1 = require("../../services/xmlImport.service");
+var session_service_1 = require("../../services/session.service");
+var db_service_1 = require("../../services/db.service");
 var XmlImportComponent = (function () {
     function XmlImportComponent(xmlImportService, sessionService, dbService) {
         var _this = this;
@@ -94,15 +94,15 @@ var XmlImportComponent = (function () {
             this.success = false;
         }
     };
-    XmlImportComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'xmlImport',
-            templateUrl: 'xmlImport.component.html'
-        }), 
-        __metadata('design:paramtypes', [xmlImport_service_1.XmlImportService, session_service_1.SessionService, db_service_1.DBService])
-    ], XmlImportComponent);
     return XmlImportComponent;
 }());
+XmlImportComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'xmlImport',
+        templateUrl: 'xmlImport.component.html'
+    }),
+    __metadata("design:paramtypes", [xmlImport_service_1.XmlImportService, session_service_1.SessionService, db_service_1.DBService])
+], XmlImportComponent);
 exports.XmlImportComponent = XmlImportComponent;
 //# sourceMappingURL=xmlImport.component.js.map

@@ -11,14 +11,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by philipp.koepfer on 10.12.16.
  */
-var core_1 = require('@angular/core');
-var session_service_1 = require('../../services/session.service');
-var part_service_1 = require('../../services/part.service');
+var core_1 = require("@angular/core");
+var session_service_1 = require("../../services/session.service");
+var part_service_1 = require("../../services/part.service");
 var PrioComponent = (function () {
     function PrioComponent(sessionService, partService) {
         this.sessionService = sessionService;
         this.partService = partService;
         this.selector = "";
+        this.parts = [];
         this.epParts = [];
         this.pParts = [];
         this.produzierbareAuftraege = [];
@@ -33,22 +34,20 @@ var PrioComponent = (function () {
         var _this = this;
         this.processingTimes = this.sessionService.getProcessingTimes();
         this.resultObj = this.sessionService.getResultObject();
-        console.log(this.resultObj);
         this.lager = this.resultObj.results.warehousestock.article;
         this.wartelisteMaterial = this.resultObj.results.waitingliststock;
         this.wartelisteArbeitsplatz = this.resultObj.results.waitinglistworkstations;
-        this.partService.getEPParts()
+        this.partService.getParts()
             .subscribe(function (data) {
-            _this.epParts = data;
+            _this.parts = data;
+            _this.epParts = data.filter(function (item) { return item.typ == "E" || item.typ == "P"; });
             _this.pParts = data.filter(function (item) { return item.typ == "P"; });
         }, function (err) { return console.error(err); }, function () { return _this.processOptimizaition(); });
     };
     PrioComponent.prototype.processOptimizaition = function () {
-        console.log("Test");
         for (var _i = 0, _a = this.defaultAblauf; _i < _a.length; _i++) {
             var teil = _a[_i];
-            var bestandteilArray = this.isPartCapacities(teil);
-            console.log(bestandteilArray);
+            var bestandteilArray = this.getPartCapacities(teil);
             //Kann was von np abgearbeitet werden?
             //Sind Teile da?
             //Wenn ja dann suche dir den ersten Prozessschritt zu Teil nr. x
@@ -60,23 +59,19 @@ var PrioComponent = (function () {
         }
         //console.log(this.zeiten);
     };
-    PrioComponent.prototype.isPartCapacities = function (searchPart) {
+    PrioComponent.prototype.getPartCapacities = function (searchPart) {
         var bestandteilArray = [];
         for (var _i = 0, _a = this.epParts; _i < _a.length; _i++) {
             var part = _a[_i];
             if (part.nummer === searchPart) {
                 for (var _b = 0, _c = part.bestandteile; _b < _c.length; _b++) {
                     var bestandteil = _c[_b];
-                    for (var _d = 0, _e = this.epParts; _d < _e.length; _d++) {
+                    for (var _d = 0, _e = this.parts; _d < _e.length; _d++) {
                         var pt = _e[_d];
-                        console.log("pt");
-                        console.log(pt);
                         if (bestandteil._id === pt._id) {
                             for (var _f = 0, _g = this.lager; _f < _g.length; _f++) {
                                 var artikel = _g[_f];
-                                console.log("artikel");
-                                console.log(artikel);
-                                if (artikel.id === pt.nummer) {
+                                if (Number.parseInt(artikel.id) === pt.nummer) {
                                     bestandteilArray.push({ teil: pt, anzahl: bestandteil.anzahl, lagerBestand: artikel.amount });
                                 }
                             }
@@ -87,16 +82,16 @@ var PrioComponent = (function () {
         }
         return bestandteilArray;
     };
-    PrioComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'prio',
-            templateUrl: 'prio.component.html'
-        }), 
-        __metadata('design:paramtypes', [session_service_1.SessionService, part_service_1.PartService])
-    ], PrioComponent);
     return PrioComponent;
 }());
+PrioComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'prio',
+        templateUrl: 'prio.component.html'
+    }),
+    __metadata("design:paramtypes", [session_service_1.SessionService, part_service_1.PartService])
+], PrioComponent);
 exports.PrioComponent = PrioComponent;
 /*
  15 Arbeitsplätze
