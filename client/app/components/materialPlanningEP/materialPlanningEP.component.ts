@@ -82,6 +82,9 @@ export class MaterialPlanningEPComponent {
     }
 
     generatePartsList() {
+        while (this.partsList.length > 0) {
+            this.partsList.pop();
+        }
         if (this.auswahl != undefined && this.auswahl.length == 1) {
             for (let pt of this.pParts) {
                 if (pt.nummer == this.auswahl[0]) {

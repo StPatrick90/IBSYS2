@@ -71,6 +71,9 @@ var MaterialPlanningEPComponent = (function () {
         };
     };
     MaterialPlanningEPComponent.prototype.generatePartsList = function () {
+        while (this.partsList.length > 0) {
+            this.partsList.pop();
+        }
         if (this.auswahl != undefined && this.auswahl.length == 1) {
             for (var _i = 0, _a = this.pParts; _i < _a.length; _i++) {
                 var pt = _a[_i];
