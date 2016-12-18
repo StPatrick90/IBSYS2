@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by philipp.koepfer on 19.11.16.
  */
-var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
-require("rxjs/add/operator/map");
+var core_1 = require('@angular/core');
+var http_1 = require('@angular/http');
+require('rxjs/add/operator/map');
 var DBService = (function () {
     function DBService(http) {
         this.http = http;
@@ -29,11 +29,11 @@ var DBService = (function () {
         return this.http.get('/api/results')
             .map(function (res) { return res.json(); });
     };
+    DBService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [http_1.Http])
+    ], DBService);
     return DBService;
 }());
-DBService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http])
-], DBService);
 exports.DBService = DBService;
 //# sourceMappingURL=db.service.js.map

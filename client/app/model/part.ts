@@ -10,7 +10,7 @@ export class Part {
     typ: any;
     wert: number;
     lagerMenge: number;
-    bestandteile: Part[];
+    bestandteile: any[];
     lieferfrist: number;
     abweichung: number;
     diskontmenge: number;

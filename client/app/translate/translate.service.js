@@ -14,8 +14,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 /**
  * Created by Paddy on 26.10.2016.
  */
-var core_1 = require("@angular/core");
-var translations_1 = require("./translations");
+var core_1 = require('@angular/core');
+var translations_1 = require('./translations');
 var TranslateService = (function () {
     // inject our translations
     function TranslateService(_translations) {
@@ -45,12 +45,12 @@ var TranslateService = (function () {
         // public perform translation
         return this.translate(key);
     };
+    TranslateService = __decorate([
+        core_1.Injectable(),
+        __param(0, core_1.Inject(translations_1.TRANSLATIONS)), 
+        __metadata('design:paramtypes', [Object])
+    ], TranslateService);
     return TranslateService;
 }());
-TranslateService = __decorate([
-    core_1.Injectable(),
-    __param(0, core_1.Inject(translations_1.TRANSLATIONS)),
-    __metadata("design:paramtypes", [Object])
-], TranslateService);
 exports.TranslateService = TranslateService;
 //# sourceMappingURL=translate.service.js.map

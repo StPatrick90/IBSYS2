@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by philipp.koepfer on 10.12.16.
  */
-var core_1 = require("@angular/core");
-var session_service_1 = require("../../services/session.service");
-var part_service_1 = require("../../services/part.service");
+var core_1 = require('@angular/core');
+var session_service_1 = require('../../services/session.service');
+var part_service_1 = require('../../services/part.service');
 var PrioComponent = (function () {
     function PrioComponent(sessionService, partService) {
         this.sessionService = sessionService;
@@ -25,49 +25,84 @@ var PrioComponent = (function () {
         this.nPAuftraege = [];
         this.reihenfolgen = [];
         this.processingTimes = [];
+        this.zeiten = [];
         //TODO: Replace number with part
-        this.defaultAblauf = [18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31];
+        this.defaultAblauf = [18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3];
     }
     PrioComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.partService.getEPParts()
-            .subscribe(function (data) {
-            _this.epParts = data;
-            _this.pParts = data.filter(function (item) { return item.typ == "P"; });
-        }, function (err) { return console.error(err); }, function () { return console.log(_this.pParts); });
         this.processingTimes = this.sessionService.getProcessingTimes();
         this.resultObj = this.sessionService.getResultObject();
         console.log(this.resultObj);
         this.lager = this.resultObj.results.warehousestock.article;
         this.wartelisteMaterial = this.resultObj.results.waitingliststock;
         this.wartelisteArbeitsplatz = this.resultObj.results.waitinglistworkstations;
+        this.partService.getEPParts()
+            .subscribe(function (data) {
+            _this.epParts = data;
+            _this.pParts = data.filter(function (item) { return item.typ == "P"; });
+        }, function (err) { return console.error(err); }, function () { return _this.processOptimizaition(); });
     };
     PrioComponent.prototype.processOptimizaition = function () {
+        console.log("Test");
         for (var _i = 0, _a = this.defaultAblauf; _i < _a.length; _i++) {
-            var schritt = _a[_i];
-            for (var _b = 0, _c = this.processingTimes; _b < _c.length; _b++) {
-                var prozessSchritt = _c[_b];
-                if (prozessSchritt.teil.nummer === schritt) {
+            var teil = _a[_i];
+            var bestandteilArray = this.isPartCapacities(teil);
+            console.log(bestandteilArray);
+            //Kann was von np abgearbeitet werden?
+            //Sind Teile da?
+            //Wenn ja dann suche dir den ersten Prozessschritt zu Teil nr. x
+            //Welcher Arbeitsplatz?
+            //Wann ist Zeit und wieviel?
+            //Füge ganz hinzu, teilweise oder garnicht! -> npListe
+            //Suche nächsten Arbeitsplatz Repeat ab Zeile 70;
+            var inArray = false;
+        }
+        //console.log(this.zeiten);
+    };
+    PrioComponent.prototype.isPartCapacities = function (searchPart) {
+        var bestandteilArray = [];
+        for (var _i = 0, _a = this.epParts; _i < _a.length; _i++) {
+            var part = _a[_i];
+            if (part.nummer === searchPart) {
+                for (var _b = 0, _c = part.bestandteile; _b < _c.length; _b++) {
+                    var bestandteil = _c[_b];
+                    for (var _d = 0, _e = this.epParts; _d < _e.length; _d++) {
+                        var pt = _e[_d];
+                        console.log("pt");
+                        console.log(pt);
+                        if (bestandteil._id === pt._id) {
+                            for (var _f = 0, _g = this.lager; _f < _g.length; _f++) {
+                                var artikel = _g[_f];
+                                console.log("artikel");
+                                console.log(artikel);
+                                if (artikel.id === pt.nummer) {
+                                    bestandteilArray.push({ teil: pt, anzahl: bestandteil.anzahl, lagerBestand: artikel.amount });
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
+        return bestandteilArray;
     };
+    PrioComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'prio',
+            templateUrl: 'prio.component.html'
+        }), 
+        __metadata('design:paramtypes', [session_service_1.SessionService, part_service_1.PartService])
+    ], PrioComponent);
     return PrioComponent;
 }());
-PrioComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'prio',
-        templateUrl: 'prio.component.html'
-    }),
-    __metadata("design:paramtypes", [session_service_1.SessionService, part_service_1.PartService])
-], PrioComponent);
 exports.PrioComponent = PrioComponent;
 /*
-    15 Arbeitsplätze
+ 15 Arbeitsplätze
 
-    Max: 9600 min pro Periode
-    Eine Schicht mit Überstunden sind 3600 min.
+ Max: 9600 min pro Periode
+ Eine Schicht mit Überstunden sind 3600 min.
 
  1. Schicht 2.400 Minuten
  2. Schicht 2.400 Minuten
