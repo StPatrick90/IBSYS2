@@ -28,6 +28,12 @@ var PrioComponent = (function () {
         this.processingTimes = [];
         this.zeiten = [];
         //TODO: Replace number with part
+        /*
+        Alternativ Ablauf?
+        Schaue bei Endprodukt (z.b. p1) nach ob es genug Material gibt?
+        Wenn Ja --> Produzieren
+        Wenn Nein --> Endprodukt = Endprodukt.Bestanteil x
+         */
         this.defaultAblauf = [18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3];
     }
     PrioComponent.prototype.ngOnInit = function () {
@@ -42,14 +48,29 @@ var PrioComponent = (function () {
             _this.parts = data;
             _this.epParts = data.filter(function (item) { return item.typ == "E" || item.typ == "P"; });
             _this.pParts = data.filter(function (item) { return item.typ == "P"; });
-        }, function (err) { return console.error(err); }, function () { return _this.processOptimizaition(); });
+        }, function (err) { return console.error(err); }, function () { return _this.processOptimization(); });
     };
-    PrioComponent.prototype.processOptimizaition = function () {
+    PrioComponent.prototype.processOptimization = function () {
         for (var _i = 0, _a = this.defaultAblauf; _i < _a.length; _i++) {
             var teil = _a[_i];
             var bestandteilArray = this.getPartCapacities(teil);
+            //console.log(bestandteilArray);
             //Kann was von np abgearbeitet werden?
+            var mockAuftragProTeil = 40;
             //Sind Teile da?
+            for (var _b = 0, bestandteilArray_1 = bestandteilArray; _b < bestandteilArray_1.length; _b++) {
+                var bestandteil = bestandteilArray_1[_b];
+                var verfuegbar = "";
+                if (bestandteil.lagerBestand > 0) {
+                    //JA
+                    if (bestandteil.lagerBestand >= (mockAuftragProTeil * bestandteil.lagerBestand.anzahl)) {
+                    }
+                    else {
+                    }
+                }
+                else {
+                }
+            }
             //Wenn ja dann suche dir den ersten Prozessschritt zu Teil nr. x
             //Welcher Arbeitsplatz?
             //Wann ist Zeit und wieviel?
@@ -58,6 +79,8 @@ var PrioComponent = (function () {
             var inArray = false;
         }
         //console.log(this.zeiten);
+    };
+    PrioComponent.prototype.getFreeCapacitieforWorkstation = function (workstation) {
     };
     PrioComponent.prototype.getPartCapacities = function (searchPart) {
         var bestandteilArray = [];
@@ -72,7 +95,7 @@ var PrioComponent = (function () {
                             for (var _f = 0, _g = this.lager; _f < _g.length; _f++) {
                                 var artikel = _g[_f];
                                 if (Number.parseInt(artikel.id) === pt.nummer) {
-                                    bestandteilArray.push({ teil: pt, anzahl: bestandteil.anzahl, lagerBestand: artikel.amount });
+                                    bestandteilArray.push({ teil: pt, anzahl: bestandteil.anzahl, lagerBestand: Number.parseInt(artikel.amount) });
                                 }
                             }
                         }

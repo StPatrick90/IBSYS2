@@ -71,8 +71,6 @@ export class MaterialPlanningEPComponent {
                     err => console.error(err),
                     () => this.initAll());
         }
-
-
     }
 
     initAll() {
