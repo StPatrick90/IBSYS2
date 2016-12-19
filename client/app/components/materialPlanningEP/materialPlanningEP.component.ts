@@ -107,15 +107,28 @@ export class MaterialPlanningEPComponent {
     }
 
     initArrays() {
+        while (this.auftraegeWarteschl && this.auftraegeWarteschl.length > 0) {
+            this.auftraegeWarteschl.pop();
+        }
+        while (this.auftraegeBearb && this.auftraegeBearb.length > 0) {
+            this.auftraegeBearb.pop();
+        }
+
         //Verbindliche Aufträge (Produkt 1,2,3) und Addierte Warteschlangen für Produkte 0
         for (let va of this.mockVerbindlicheAuftraege) {
-            this.auftraegeVerbindl[va.id] = va.menge;
-            this.auftraegeWarteschlAddiert[va.id] = 0;
+            if(!this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + va.id]) {
+                this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + va.id] = va.menge;
+            }
+            if(!this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + va.id]){
+                this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + va.id] = 0;
+            }
         }
 
         //Geplanter Lagerbestand Ende der Periode(Produkt 1,2,3)
         for (let la of this.mockGeplLager) {
-            this.geplLagerbestand[la.id] = la.menge;
+            if (!this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + la.id]) {
+                this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + la.id] = la.menge;
+            }
         }
 
         //Aufträge in Warteschlange
@@ -123,59 +136,63 @@ export class MaterialPlanningEPComponent {
             if (workplace.waitinglist) {
                 if (workplace.waitinglist.length !== undefined) {
                     for (let wl of workplace.waitinglist) {
-                        if (this.auftraegeWarteschl[Number.parseInt(wl.item)]) {
-                            this.auftraegeWarteschl[Number.parseInt(wl.item)] += Number.parseInt(wl.amount);
+                        if (this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)]) {
+                            this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)] += Number.parseInt(wl.amount);
                         }
                         else {
-                            this.auftraegeWarteschl[Number.parseInt(wl.item)] = Number.parseInt(wl.amount);
+                            this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)] = Number.parseInt(wl.amount);
                         }
                     }
                 }
                 else {
-                    if (this.auftraegeWarteschl[Number.parseInt(workplace.waitinglist.item)]) {
-                        this.auftraegeWarteschl[Number.parseInt(workplace.waitinglist.item)] += Number.parseInt(workplace.waitinglist.amount);
+                    if (this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)]) {
+                        this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)] += Number.parseInt(workplace.waitinglist.amount);
                     }
                     else {
-                        this.auftraegeWarteschl[Number.parseInt(workplace.waitinglist.item)] = Number.parseInt(workplace.waitinglist.amount);
+                        this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)] = Number.parseInt(workplace.waitinglist.amount);
                     }
                 }
-
             }
         }
 
         //Lagerbestand Vorperiode
         for (let article of this.lager.article) {
-            this.lagerbestandVorperiode[article.id] = article.amount;
+            if(this.isGleichTeil(article.id)){
+                this.lagerbestandVorperiode[this.part.typ + this.part.nummer + "_" + article.id] = (article.amount/3).toFixed(2);
+            }
+            else {
+                this.lagerbestandVorperiode[this.part.typ + this.part.nummer + "_" + article.id] = article.amount;
+            }
         }
 
         //Aufträge in Bearbeitung
         for (let workplace of this.bearbeitung.workplace) {
-            if (this.auftraegeBearb[Number.parseInt(workplace.item)]) {
-                this.auftraegeBearb[Number.parseInt(workplace.item)] += Number.parseInt(workplace.amount);
+            if (this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.item)]) {
+                this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.item)] += Number.parseInt(workplace.amount);
             }
             else {
-                this.auftraegeBearb[Number.parseInt(workplace.item)] = Number.parseInt(workplace.amount);
+                this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.item)] = Number.parseInt(workplace.amount);
             }
         }
 
         //Restliche Inputs mit default Werten füllen
         for (let pl of this.partsList) {
 
-            if (!this.auftraegeWarteschl[pl.child.nummer]) {
-                this.auftraegeWarteschl[pl.child.nummer] = 0;
+            if (!this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pl.child.nummer]) {
+                this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pl.child.nummer] = 0;
             }
-            if (!this.auftraegeBearb[pl.child.nummer]) {
-                this.auftraegeBearb[pl.child.nummer] = 0;
+            if (!this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + pl.child.nummer]) {
+                this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + pl.child.nummer] = 0;
             }
-            if (!this.geplLagerbestand[pl.child.nummer]) {
-                this.geplLagerbestand[pl.child.nummer] = 0;
+            if (!this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + pl.child.nummer]) {
+                this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + pl.child.nummer] = 0;
             }
 
             if (pl.parent) {
-                this.auftraegeVerbindl[pl.child.nummer] = this.prodAuftraege[pl.parent.nummer];
-                this.auftraegeWarteschlAddiert[pl.child.nummer] = this.auftraegeWarteschl[pl.parent.nummer];
+                this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + pl.child.nummer] = this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pl.parent.nummer];
+                this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" +pl.child.nummer] = this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pl.parent.nummer];
             }
-            this.updateArrays(pl.child);
+            this.updateArrays();
         }
     }
 
@@ -236,19 +253,26 @@ export class MaterialPlanningEPComponent {
 
     updateArrays() {
         for (let pt of this.partsList) {
-            this.prodAuftraege[pt.child.nummer] =   this.sumProdAuftraege(pt.child) < 0 ? 0 : this.sumProdAuftraege(pt.child);
+            this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pt.child.nummer] = this.sumProdAuftraege(pt.child) < 0 ? 0 : this.sumProdAuftraege(pt.child);
             if (pt.parent) {
-                this.auftraegeVerbindl[pt.child.nummer] = this.prodAuftraege[pt.parent.nummer];
-                this.auftraegeWarteschlAddiert[pt.child.nummer] = this.auftraegeWarteschl[pt.parent.nummer];
+                this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + pt.child.nummer] = this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pt.parent.nummer];
+                this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + pt.child.nummer] = this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pt.parent.nummer];
             }
         }
     }
 
     sumProdAuftraege(part){
-        return this.auftraegeVerbindl[part.nummer] +
-        this.auftraegeWarteschlAddiert[part.nummer] + this.geplLagerbestand[part.nummer] -
-        this.lagerbestandVorperiode[part.nummer] - this.auftraegeWarteschl[part.nummer] -
-        this.auftraegeBearb[part.nummer];
+        return this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + part.nummer] +
+                this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + part.nummer] +
+                this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + part.nummer] -
+                this.lagerbestandVorperiode[this.part.typ + this.part.nummer + "_" + part.nummer] -
+                this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + part.nummer] -
+                this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + part.nummer];
+    }
+
+    isGleichTeil(nummer){
+        var num = Number.parseInt(nummer);
+        return num === 16 || num === 17 || num === 26;
     }
 
 }
