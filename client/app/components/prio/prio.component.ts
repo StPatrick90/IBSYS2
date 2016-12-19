@@ -11,6 +11,7 @@ import {PrioTask} from '../../model/prioTask';
 import {ProcessingTime} from '../../model/processingTime';
 import {Workstation} from '../../model/workstastion';
 import {WorkingTime} from '../../model/workingTime';
+import PropertyName = ts.PropertyName;
 
 
 @Component({
@@ -39,6 +40,12 @@ export class PrioComponent {
     zeiten: Array<WorkingTime> = [];
 
     //TODO: Replace number with part
+    /*
+    Alternativ Ablauf?
+    Schaue bei Endprodukt (z.b. p1) nach ob es genug Material gibt?
+    Wenn Ja --> Produzieren
+    Wenn Nein --> Endprodukt = Endprodukt.Bestanteil x
+     */
     defaultAblauf: Array<number> = [18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3];
 
     constructor(private sessionService: SessionService, private  partService: PartService) {
@@ -61,15 +68,33 @@ export class PrioComponent {
                     this.pParts = data.filter(item => item.typ == "P");
                 },
                 err => console.error(err),
-                () => this.processOptimizaition());
+                () => this.processOptimization());
     }
 
-    processOptimizaition() {
+    processOptimization() {
         for (var teil of this.defaultAblauf) {
             var bestandteilArray =  this.getPartCapacities(teil);
+            //console.log(bestandteilArray);
             //Kann was von np abgearbeitet werden?
-
+            var mockAuftragProTeil = 40;
             //Sind Teile da?
+            for(var bestandteil of bestandteilArray){
+                var verfuegbar = "";
+                if(bestandteil.lagerBestand > 0){
+                    //JA
+                    if(bestandteil.lagerBestand >= (mockAuftragProTeil * bestandteil.lagerBestand.anzahl)){
+                        //komplett
+
+                    }else{
+                        //Nur teilweise
+
+                    }
+                }
+                else{
+                    //NEIN
+
+                }
+            }
                 //Wenn ja dann suche dir den ersten Prozessschritt zu Teil nr. x
                     //Welcher Arbeitsplatz?
 
@@ -106,6 +131,10 @@ export class PrioComponent {
         //console.log(this.zeiten);
     }
 
+    getFreeCapacitieforWorkstation(workstation){
+
+    }
+
     getPartCapacities(searchPart){
         var bestandteilArray = [];
         for(var part of this.epParts){
@@ -115,7 +144,7 @@ export class PrioComponent {
                         if(bestandteil._id === pt._id){
                             for(var artikel of this.lager){
                                 if(Number.parseInt(artikel.id) === pt.nummer){
-                                    bestandteilArray.push({teil:pt, anzahl: bestandteil.anzahl, lagerBestand: artikel.amount})
+                                    bestandteilArray.push({teil:pt, anzahl: bestandteil.anzahl, lagerBestand: Number.parseInt(artikel.amount)})
                                 }
                             }
                         }

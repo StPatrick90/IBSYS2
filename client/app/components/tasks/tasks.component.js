@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 21.10.2016.
  */
-var core_1 = require("@angular/core");
-var task_service_1 = require("../../services/task.service");
-var session_service_1 = require("../../services/session.service");
+var core_1 = require('@angular/core');
+var task_service_1 = require('../../services/task.service');
+var session_service_1 = require('../../services/session.service');
 var TasksComponent = (function () {
     function TasksComponent(taskService, sessionService) {
         var _this = this;
@@ -61,15 +61,15 @@ var TasksComponent = (function () {
             task.isDone = !task.isDone;
         });
     };
+    TasksComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'tasks',
+            templateUrl: 'tasks.component.html'
+        }), 
+        __metadata('design:paramtypes', [task_service_1.TaskService, session_service_1.SessionService])
+    ], TasksComponent);
     return TasksComponent;
 }());
-TasksComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'tasks',
-        templateUrl: 'tasks.component.html'
-    }),
-    __metadata("design:paramtypes", [task_service_1.TaskService, session_service_1.SessionService])
-], TasksComponent);
 exports.TasksComponent = TasksComponent;
 //# sourceMappingURL=tasks.component.js.map
