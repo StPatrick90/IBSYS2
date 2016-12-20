@@ -29,7 +29,7 @@ export class PrioComponent {
     resultObj: any;
     wartelisteMaterial: any;
     wartelisteArbeitsplatz: any;
-    produzierbareAuftraege: Array<PrioTask> = [];
+    produzierbareAuftraege: Array<any> = [];
     nPAuftraege: Array<PrioTask> = [];
     lager: any;
     reihenfolgen: Array<Array<PrioTask>> = [];
@@ -37,6 +37,7 @@ export class PrioComponent {
     processingTimes: Array<ProcessingTime> = [];
 
     zeiten: Array<WorkingTime> = [];
+    partOrders: Array<any> = [];
 
     //TODO: Replace number with part
     /*
@@ -67,7 +68,9 @@ export class PrioComponent {
                     this.pParts = data.filter(item => item.typ == "P");
                 },
                 err => console.error(err),
-                () => this.processOptimizaition());
+                () => {
+                    this.partOrders = this.sessionService.getPartOrders();
+                    this.processOptimizaition();});
     }
 
     processOptimizaition() {
@@ -81,10 +84,12 @@ export class PrioComponent {
                 var verfuegbar = "";
                 if(bestandteil.lagerBestand > 0){
                     //JA
-                    if(bestandteil.lagerBestand >= (mockAuftragProTeil * bestandteil.lagerBestand.anzahl)){
+                    if(bestandteil.lagerBestand >= (mockAuftragProTeil * bestandteil.anzahl)){
                         //komplett
-                        var prioTask = new PropertyName
-                        this.produzierbareAuftraege.push()
+
+                        var processTime = this.setPartToWorkplace(bestandteil, mockAuftragProTeil);
+
+                        this.produzierbareAuftraege.push({"Teil": bestandteil, "Anzahl": mockAuftragProTeil});
 
                     }else{
                         //Nur teilweise
@@ -132,8 +137,63 @@ export class PrioComponent {
         //console.log(this.zeiten);
     }
 
-    getFreeCapacitieforWorkstation(workstation){
+    setPartToWorkplace(teil: Part, auftraege: number){
 
+        // Alle Arbeitsplatz, die das Teil bearbeiten, sortiert -> Array
+        var prozessingTime;
+        for(var pt of this.processingTimes){
+            if(pt.teil == teil && pt.isStart){
+                //First prozessingTime
+                prozessingTime = pt;
+                break;
+            }
+        }
+
+        //TODO: Kaufteile werden noch nicht berücksichtigt!
+        while(auftraege > 0){
+            while(prozessingTime != null){
+
+                var letzterAuftrag = new PrioTask();
+                var neuerAuftrag = new PrioTask();
+                var gleichesTeil = false;
+
+                neuerAuftrag.teil = prozessingTime.teil;
+                neuerAuftrag._id = this.reihenfolgen[prozessingTime.arbeitsplatz].length + 1;
+                neuerAuftrag.aktuellerAp = prozessingTime.arbeitsplatz;
+                neuerAuftrag.periode = this.resultObj.result.period;
+                neuerAuftrag.losgroesse = (auftraege % 10);
+
+                for(var auftrag of this.reihenfolgen[prozessingTime.arbeitsplatz]){
+                    if(letzterAuftrag != null){
+                        if(letzterAuftrag.ende < auftrag.ende){
+                            if(letzterAuftrag.teil === auftrag.teil){
+                                gleichesTeil = true;
+                            }
+                            else {
+                                gleichesTeil = false;
+                            }
+
+                            letzterAuftrag = auftrag;
+                        }
+                    }
+                }
+                neuerAuftrag.start = letzterAuftrag.ende + 1;
+                if(gleichesTeil){
+                    neuerAuftrag.ende = letzterAuftrag.ende + ((auftraege % 10 === 0)? 10 : (auftraege % 10)) * prozessingTime.fertigungsZeit;
+                }
+                else{
+                    neuerAuftrag.ende = letzterAuftrag.ende + ((auftraege % 10 === 0)? 10 : (auftraege % 10)) * prozessingTime.fertigungsZeit + prozessingTime.ruestZeit;
+                }
+
+                this.reihenfolgen[prozessingTime.arbeitsplatz].push(neuerAuftrag);
+
+                prozessingTime = prozessingTime.nextArbeitsplatz;
+            }
+            auftraege -= (auftraege % 10 === 0)? 10 : (auftraege % 10);
+        }
+
+        console.log(this.reihenfolgen);
+        return prozessingTime;
     }
 
     getPartCapacities(searchPart){
