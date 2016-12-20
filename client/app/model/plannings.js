@@ -1,6 +1,7 @@
 "use strict";
 var Plannings = (function () {
     function Plannings() {
+        this.produkte = [];
     }
     return Plannings;
 }());

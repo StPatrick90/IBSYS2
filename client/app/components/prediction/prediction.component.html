@@ -28,26 +28,17 @@
         </tr>
         </thead>
         <tbody>
+        <span *ngFor="let r of rowtable">
         <tr>
-            <th scope="row">{{'product' | translate}} 1</th>
-            <td *ngFor="let bindingOrder of bindingOrders"><input type="text" value="{{ bindingOrder.product1 }}"
-                                                                  class="form-control"></td>
+            <td>{{r.produkt}}</td>
+            <td *ngFor="let p of r.perioden">{{p
+                }}</td>
+
         </tr>
-        <tr>
-            <th scope="row">{{'product' | translate}} 2</th>
-            <td *ngFor="let bindingOrder of bindingOrders"><input type="text" value="{{ bindingOrder.product2 }}"
-                                                                  class="form-control"></td>
-        </tr>
-        <tr>
-            <th scope="row">{{'product' | translate}} 3</th>
-            <td *ngFor="let bindingOrder of bindingOrders"><input type="text" value="{{ bindingOrder.product3 }}"
-                                                                  class="form-control"></td>
-        </tr>
-        <tr>
-            <th scope="row">{{'sum' | translate}}</th>
-            <td *ngFor="let sumBo of sumsBo">{{ sumBo }}</td>
-        </tr>
+        </span>
         </tbody>
+
+
     </table>
     <h2>{{'planned' | translate}}</h2>
     <table class="table">
@@ -63,17 +54,17 @@
         <tbody>
         <tr>
             <th scope="row">{{'product' | translate}} 1</th>
-            <td *ngFor="let planning of plannings"><input type="text" value="{{ planning.product1 }}"
+            <td *ngFor="let planning of plannings"><input type="text" value="{{ planning.produkte[0].menge }}"
                                                           class="form-control"></td>
         </tr>
         <tr>
             <th scope="row">{{'product' | translate}} 2</th>
-            <td *ngFor="let planning of plannings"><input type="text" value="{{ planning.product2 }}"
+            <td *ngFor="let planning of plannings"><input type="text" value="{{ planning.produkte[1].menge }}"
                                                           class="form-control"></td>
         </tr>
         <tr>
             <th scope="row">{{'product' | translate}} 3</th>
-            <td *ngFor="let planning of plannings"><input type="text" value="{{ planning.product3 }}"
+            <td *ngFor="let planning of plannings"><input type="text" value="{{ planning.produkte[2].menge }}"
                                                           class="form-control"></td>
         </tr>
         <tr>
