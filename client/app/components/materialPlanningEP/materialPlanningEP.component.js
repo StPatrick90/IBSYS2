@@ -229,6 +229,7 @@ var MaterialPlanningEPComponent = (function () {
                 this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + pt.child.nummer] = this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pt.parent.nummer];
             }
         }
+        this.sessionService.setPartOrders(this.prodAuftraege);
     };
     MaterialPlanningEPComponent.prototype.sumProdAuftraege = function (part) {
         return this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + part.nummer] +

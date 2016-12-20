@@ -259,6 +259,7 @@ export class MaterialPlanningEPComponent {
                 this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + pt.child.nummer] = this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pt.parent.nummer];
             }
         }
+        this.sessionService.setPartOrders(this.prodAuftraege);
     }
 
     sumProdAuftraege(part){
