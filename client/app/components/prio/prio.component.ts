@@ -11,7 +11,6 @@ import {PrioTask} from '../../model/prioTask';
 import {ProcessingTime} from '../../model/processingTime';
 import {Workstation} from '../../model/workstastion';
 import {WorkingTime} from '../../model/workingTime';
-import PropertyName = ts.PropertyName;
 
 
 @Component({
@@ -68,10 +67,10 @@ export class PrioComponent {
                     this.pParts = data.filter(item => item.typ == "P");
                 },
                 err => console.error(err),
-                () => this.processOptimization());
+                () => this.processOptimizaition());
     }
 
-    processOptimization() {
+    processOptimizaition() {
         for (var teil of this.defaultAblauf) {
             var bestandteilArray =  this.getPartCapacities(teil);
             //console.log(bestandteilArray);
@@ -84,6 +83,8 @@ export class PrioComponent {
                     //JA
                     if(bestandteil.lagerBestand >= (mockAuftragProTeil * bestandteil.lagerBestand.anzahl)){
                         //komplett
+                        var prioTask = new PropertyName
+                        this.produzierbareAuftraege.push()
 
                     }else{
                         //Nur teilweise

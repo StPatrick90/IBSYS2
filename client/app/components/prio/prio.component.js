@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by philipp.koepfer on 10.12.16.
  */
-var core_1 = require("@angular/core");
-var session_service_1 = require("../../services/session.service");
-var part_service_1 = require("../../services/part.service");
+var core_1 = require('@angular/core');
+var session_service_1 = require('../../services/session.service');
+var part_service_1 = require('../../services/part.service');
 var PrioComponent = (function () {
     function PrioComponent(sessionService, partService) {
         this.sessionService = sessionService;
@@ -48,9 +48,9 @@ var PrioComponent = (function () {
             _this.parts = data;
             _this.epParts = data.filter(function (item) { return item.typ == "E" || item.typ == "P"; });
             _this.pParts = data.filter(function (item) { return item.typ == "P"; });
-        }, function (err) { return console.error(err); }, function () { return _this.processOptimization(); });
+        }, function (err) { return console.error(err); }, function () { return _this.processOptimizaition(); });
     };
-    PrioComponent.prototype.processOptimization = function () {
+    PrioComponent.prototype.processOptimizaition = function () {
         for (var _i = 0, _a = this.defaultAblauf; _i < _a.length; _i++) {
             var teil = _a[_i];
             var bestandteilArray = this.getPartCapacities(teil);
@@ -64,6 +64,9 @@ var PrioComponent = (function () {
                 if (bestandteil.lagerBestand > 0) {
                     //JA
                     if (bestandteil.lagerBestand >= (mockAuftragProTeil * bestandteil.lagerBestand.anzahl)) {
+                        //komplett
+                        var prioTask = new PropertyName;
+                        this.produzierbareAuftraege.push();
                     }
                     else {
                     }
@@ -105,16 +108,16 @@ var PrioComponent = (function () {
         }
         return bestandteilArray;
     };
+    PrioComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'prio',
+            templateUrl: 'prio.component.html'
+        }), 
+        __metadata('design:paramtypes', [session_service_1.SessionService, part_service_1.PartService])
+    ], PrioComponent);
     return PrioComponent;
 }());
-PrioComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'prio',
-        templateUrl: 'prio.component.html'
-    }),
-    __metadata("design:paramtypes", [session_service_1.SessionService, part_service_1.PartService])
-], PrioComponent);
 exports.PrioComponent = PrioComponent;
 /*
  15 Arbeitsplätze
