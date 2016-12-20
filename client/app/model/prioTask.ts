@@ -5,7 +5,7 @@ import {Workstation} from "./workstastion";
 import {Part} from "./part";
 
 export class PrioTask{
-    constructor(id: number, start: number, ende: number, aktuellerAp: Workstation, naechsterAp: Workstation, name: string, teil: Part, losgroesse: number, periode: number) {
+    constructor(id?: number, start?: number, ende?: number, aktuellerAp?: Workstation, naechsterAp?: Workstation, name?: string, teil?: Part, losgroesse?: number, periode?: number) {
 
         this._id = id;
         this.start = start;
@@ -17,7 +17,6 @@ export class PrioTask{
         this.losgroesse = losgroesse;
         this.periode = periode;
     }
-
 
     _id: number;
     start: number;
