@@ -49,6 +49,7 @@ var PrioComponent = (function () {
             _this.epParts = data.filter(function (item) { return item.typ == "E" || item.typ == "P"; });
             _this.pParts = data.filter(function (item) { return item.typ == "P"; });
         }, function (err) { return console.error(err); }, function () { return _this.processOptimizaition(); });
+        console.log(this.sessionService.getPartOrders());
     };
     PrioComponent.prototype.processOptimizaition = function () {
         for (var _i = 0, _a = this.defaultAblauf; _i < _a.length; _i++) {

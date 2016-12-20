@@ -15,7 +15,7 @@
 <div class="form-group">
     <label for="mpEP_pparts">Produkt</label>
     <ss-multiselect-dropdown [options]="productOptions" [texts]="multiSelectTexts" [settings]="productSettings"
-                             [(ngModel)]="auswahl" id="mpEP_pparts" (ngModelChange)="generatePartsList($event)">
+                             [(ngModel)]="auswahl" id="mpEP_pparts" (ngModelChange)="filterList($event)">
 
     </ss-multiselect-dropdown>
 </div>
@@ -44,25 +44,25 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let pt of partsList">
-            <td width="4%" align="left">{{pt.child.typ + pt.child.nummer}}</td>
-            <td width="10%"><input type="number" class="form-control" [(ngModel)]="auftraegeVerbindl[part.typ + part.nummer + '_' + pt.child.nummer]" readonly></td>
+        <tr *ngFor="let pt of partsListSingle">
+            <td width="4%" align="left">{{pt.teil.child.typ + pt.teil.child.nummer}}</td>
+            <td width="10%"><input type="number" class="form-control" [(ngModel)]="auftraegeVerbindl[part.typ + part.nummer + '_' + pt.teil.child.nummer]" readonly></td>
 
-            <td *ngIf="pt.child.typ !== 'P'" width="4%" align="center">+</td>
-            <td *ngIf="pt.child.typ !== 'P'" width="10%" align="center"><input type="number" class="form-control" [(ngModel)]="auftraegeWarteschlAddiert[part.typ + part.nummer + '_' + pt.child.nummer]" readonly></td>
-            <td *ngIf="pt.child.typ !== 'P'" width="4%" align="center">+</td>
+            <td *ngIf="pt.teil.child.typ !== 'P'" width="4%" align="center">+</td>
+            <td *ngIf="pt.teil.child.typ !== 'P'" width="10%" align="center"><input type="number" class="form-control" [(ngModel)]="auftraegeWarteschlAddiert[part.typ + part.nummer + '_' + pt.teil.child.nummer]" readonly></td>
+            <td *ngIf="pt.teil.child.typ !== 'P'" width="4%" align="center">+</td>
 
-            <td *ngIf="pt.child.typ === 'P'" width="4%" colspan="3" align="center">+</td>
+            <td *ngIf="pt.teil.child.typ === 'P'" width="4%" colspan="3" align="center">+</td>
 
-            <td width="10%" align="center"><input type="number" class="form-control" min="0" [(ngModel)]="geplLagerbestand[part.typ + part.nummer + '_' + pt.child.nummer]" (ngModelChange)="updateArrays()"></td>
+            <td width="10%" align="center"><input type="number" class="form-control" min="0" [(ngModel)]="geplLagerbestand[part.typ + part.nummer + '_' + pt.teil.child.nummer]" (ngModelChange)="updateArrays(false)"></td>
             <td width="4%" align="center">-</td>
-            <td width="10%" align="center"><input type="number" class="form-control" [(ngModel)]="lagerbestandVorperiode[part.typ + part.nummer + '_' + pt.child.nummer]" readonly></td>
+            <td width="10%" align="center"><input type="number" class="form-control" [(ngModel)]="lagerbestandVorperiode[part.typ + part.nummer + '_' + pt.teil.child.nummer]" readonly></td>
             <td width="4%" align="center">-</td>
-            <td width="10%" align="center"><input type="number" class="form-control" [(ngModel)]="auftraegeWarteschl[part.typ + part.nummer + '_' + pt.child.nummer]" readonly></td>
+            <td width="10%" align="center"><input type="number" class="form-control" [(ngModel)]="auftraegeWarteschl[part.typ + part.nummer + '_' + pt.teil.child.nummer]" readonly></td>
             <td width="4%" align="center">-</td>
-            <td width="10%" align="center"><input type="number" class="form-control" [(ngModel)]="auftraegeBearb[part.typ + part.nummer + '_' + pt.child.nummer]" readonly></td>
+            <td width="10%" align="center"><input type="number" class="form-control" [(ngModel)]="auftraegeBearb[part.typ + part.nummer + '_' + pt.teil.child.nummer]" readonly></td>
             <td width="4%" align="center">=</td>
-            <td width="12%" align="center"><input type="number" class="form-control" [(ngModel)]="prodAuftraege[part.typ + part.nummer + '_' + pt.child.nummer]" readonly></td>
+            <td width="12%" align="center"><input type="number" class="form-control" [(ngModel)]="prodAuftraege[part.typ + part.nummer + '_' + pt.teil.child.nummer]" readonly></td>
             <br><br>
         </tr>
 

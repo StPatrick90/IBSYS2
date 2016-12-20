@@ -18,6 +18,7 @@ export class SessionService{
     @SessionStorage() private workstations : Workstation[];
     @SessionStorage() private processingTimes : ProcessingTime[];
     @SessionStorage() private partOrders : Array<any>;
+    @SessionStorage() private plannedWarehouseStock : Array<any>;
 
     constructor(private http:Http){
         console.log('Session Service Initialized...');
@@ -183,6 +184,13 @@ export class SessionService{
     setPartOrders(partOrders) {
         this.partOrders = partOrders;
     }
+    getPlannedWarehouseStock(){
+        return this.partOrders;
+    }
+
+    setPlannedWarehouseStock(partOrders) {
+        this.partOrders = partOrders;
+    }
 
 
     clear(){
@@ -191,6 +199,7 @@ export class SessionService{
         this.setWorkstations(null);
         this.setProcessingTimes(null);
         this.setPartOrders(null);
+        this.setPlannedWarehouseStock(null);
     }
 
 }

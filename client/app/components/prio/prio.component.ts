@@ -68,6 +68,8 @@ export class PrioComponent {
                 },
                 err => console.error(err),
                 () => this.processOptimizaition());
+
+        console.log(this.sessionService.getPartOrders());
     }
 
     processOptimizaition() {

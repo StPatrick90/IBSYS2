@@ -20,6 +20,8 @@ var MaterialPlanningEPComponent = (function () {
         this.sessionService = sessionService;
         this.columns = 14;
         this.partsList = Array();
+        this.tmp_partsList = Array();
+        this.partsListSingle = Array();
         //Model Daten für Inputs
         this.auftraegeVerbindl = Array();
         this.geplLagerbestand = Array();
@@ -47,6 +49,9 @@ var MaterialPlanningEPComponent = (function () {
             this.eParts = this.sessionService.getParts().filter(function (item) { return item.typ == "E"; });
             this.pParts = this.sessionService.getParts().filter(function (item) { return item.typ == "P"; });
             this.resultObj = this.sessionService.getResultObject();
+            if (this.sessionService.getPlannedWarehouseStock()) {
+                this.geplLagerbestand = this.sessionService.getPlannedWarehouseStock();
+            }
             this.initAll();
         }
         else {
@@ -60,6 +65,7 @@ var MaterialPlanningEPComponent = (function () {
     MaterialPlanningEPComponent.prototype.initAll = function () {
         this.initMultiSelects();
         this.initVariables();
+        this.generatePartsList();
     };
     MaterialPlanningEPComponent.prototype.initMultiSelects = function () {
         for (var _i = 0, _a = this.pParts; _i < _a.length; _i++) {
@@ -97,18 +103,22 @@ var MaterialPlanningEPComponent = (function () {
         //Verbindliche Aufträge (Produkt 1,2,3) und Addierte Warteschlangen für Produkte 0
         for (var _i = 0, _a = this.mockVerbindlicheAuftraege; _i < _a.length; _i++) {
             var va = _a[_i];
-            if (!this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + va.id]) {
-                this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + va.id] = va.menge;
-            }
-            if (!this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + va.id]) {
-                this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + va.id] = 0;
+            if (this.part.nummer === va.id) {
+                if (!this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + va.id]) {
+                    this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + va.id] = va.menge;
+                }
+                if (!this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + va.id]) {
+                    this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + va.id] = 0;
+                }
             }
         }
         //Geplanter Lagerbestand Ende der Periode(Produkt 1,2,3)
         for (var _b = 0, _c = this.mockGeplLager; _b < _c.length; _b++) {
             var la = _c[_b];
-            if (!this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + la.id]) {
-                this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + la.id] = la.menge;
+            if (this.part.nummer === la.id) {
+                if (!this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + la.id]) {
+                    this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + la.id] = la.menge;
+                }
             }
         }
         //Aufträge in Warteschlange
@@ -118,61 +128,81 @@ var MaterialPlanningEPComponent = (function () {
                 if (workplace.waitinglist.length !== undefined) {
                     for (var _f = 0, _g = workplace.waitinglist; _f < _g.length; _f++) {
                         var wl = _g[_f];
-                        if (this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)]) {
-                            this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)] += Number.parseInt(wl.amount);
-                        }
-                        else {
-                            this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)] = Number.parseInt(wl.amount);
+                        for (var _h = 0, _j = this.tmp_partsList; _h < _j.length; _h++) {
+                            var pl = _j[_h];
+                            if (pl.teil.child.nummer === Number.parseInt(wl.item)) {
+                                if (this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)]) {
+                                    this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)] += Number.parseInt(wl.amount);
+                                }
+                                else {
+                                    this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)] = Number.parseInt(wl.amount);
+                                }
+                            }
                         }
                     }
                 }
                 else {
-                    if (this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)]) {
-                        this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)] += Number.parseInt(workplace.waitinglist.amount);
-                    }
-                    else {
-                        this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)] = Number.parseInt(workplace.waitinglist.amount);
+                    for (var _k = 0, _l = this.tmp_partsList; _k < _l.length; _k++) {
+                        var pl = _l[_k];
+                        if (pl.teil.child.nummer === Number.parseInt(workplace.waitinglist.item)) {
+                            if (this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)]) {
+                                this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)] += Number.parseInt(workplace.waitinglist.amount);
+                            }
+                            else {
+                                this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)] = Number.parseInt(workplace.waitinglist.amount);
+                            }
+                        }
                     }
                 }
             }
         }
         //Lagerbestand Vorperiode
-        for (var _h = 0, _j = this.lager.article; _h < _j.length; _h++) {
-            var article = _j[_h];
-            if (this.isGleichTeil(article.id)) {
-                this.lagerbestandVorperiode[this.part.typ + this.part.nummer + "_" + article.id] = (article.amount / 3).toFixed(2);
-            }
-            else {
-                this.lagerbestandVorperiode[this.part.typ + this.part.nummer + "_" + article.id] = article.amount;
+        for (var _m = 0, _o = this.lager.article; _m < _o.length; _m++) {
+            var article = _o[_m];
+            for (var _p = 0, _q = this.tmp_partsList; _p < _q.length; _p++) {
+                var pl = _q[_p];
+                if (pl.teil.child.nummer === Number.parseInt(article.id)) {
+                    if (this.isGleichTeil(article.id)) {
+                        this.lagerbestandVorperiode[this.part.typ + this.part.nummer + "_" + article.id] = (article.amount / 3).toFixed(2);
+                    }
+                    else {
+                        this.lagerbestandVorperiode[this.part.typ + this.part.nummer + "_" + article.id] = article.amount;
+                    }
+                }
             }
         }
         //Aufträge in Bearbeitung
-        for (var _k = 0, _l = this.bearbeitung.workplace; _k < _l.length; _k++) {
-            var workplace = _l[_k];
-            if (this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.item)]) {
-                this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.item)] += Number.parseInt(workplace.amount);
-            }
-            else {
-                this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.item)] = Number.parseInt(workplace.amount);
+        for (var _r = 0, _s = this.bearbeitung.workplace; _r < _s.length; _r++) {
+            var workplace = _s[_r];
+            for (var _t = 0, _u = this.tmp_partsList; _t < _u.length; _t++) {
+                var pl = _u[_t];
+                if (pl.teil.child.nummer === Number.parseInt(workplace.item)) {
+                    if (this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.item)]) {
+                        this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.item)] += Number.parseInt(workplace.amount);
+                    }
+                    else {
+                        this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.item)] = Number.parseInt(workplace.amount);
+                    }
+                }
             }
         }
         //Restliche Inputs mit default Werten füllen
-        for (var _m = 0, _o = this.partsList; _m < _o.length; _m++) {
-            var pl = _o[_m];
-            if (!this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pl.child.nummer]) {
-                this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pl.child.nummer] = 0;
+        for (var _v = 0, _w = this.tmp_partsList; _v < _w.length; _v++) {
+            var pl = _w[_v];
+            if (!this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer]) {
+                this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer] = 0;
             }
-            if (!this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + pl.child.nummer]) {
-                this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + pl.child.nummer] = 0;
+            if (!this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer]) {
+                this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer] = 0;
             }
-            if (!this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + pl.child.nummer]) {
-                this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + pl.child.nummer] = 0;
+            if (!this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer]) {
+                this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer] = 0;
             }
             if (pl.parent) {
-                this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + pl.child.nummer] = this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pl.parent.nummer];
-                this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + pl.child.nummer] = this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pl.parent.nummer];
+                this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer] = this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pl.teil.parent.nummer];
+                this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer] = this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pl.teil.parent.nummer];
             }
-            this.updateArrays();
+            this.updateArrays(true);
         }
     };
     MaterialPlanningEPComponent.prototype.initVariables = function () {
@@ -184,30 +214,33 @@ var MaterialPlanningEPComponent = (function () {
         while (this.partsList.length > 0) {
             this.partsList.pop();
         }
-        if (this.auswahl != undefined && this.auswahl.length == 1) {
-            for (var _i = 0, _a = this.pParts; _i < _a.length; _i++) {
-                var pt = _a[_i];
-                if (pt.nummer == this.auswahl[0]) {
-                    this.part = pt;
-                }
+        for (var _i = 0, _a = this.pParts; _i < _a.length; _i++) {
+            var pt = _a[_i];
+            this.part = pt;
+            while (this.tmp_partsList && this.tmp_partsList.length > 0) {
+                this.tmp_partsList.pop();
             }
             if (this.part != null) {
-                this.partsList.push({ child: this.part, parent: null });
+                this.tmp_partsList.push({ produkt: this.part.nummer, teil: { child: this.part, parent: null } });
                 for (var _b = 0, _c = this.part.bestandteile; _b < _c.length; _b++) {
                     var best = _c[_b];
                     for (var _d = 0, _e = this.eParts; _d < _e.length; _d++) {
-                        var pt = _e[_d];
-                        if (best._id == pt._id) {
-                            this.getBestandteile(pt, this.part);
+                        var pt_1 = _e[_d];
+                        if (best._id == pt_1._id) {
+                            this.getBestandteile(pt_1, this.part);
                         }
                     }
                 }
+                this.initArrays();
+                for (var _f = 0, _g = this.tmp_partsList; _f < _g.length; _f++) {
+                    var tmp = _g[_f];
+                    this.partsList.push(tmp);
+                }
             }
         }
-        this.initArrays();
     };
     MaterialPlanningEPComponent.prototype.getBestandteile = function (child, parent) {
-        this.partsList.push({ child: child, parent: parent });
+        this.tmp_partsList.push({ produkt: this.part.nummer, teil: { child: child, parent: parent } });
         if (child.bestandteile && child.bestandteile.length > 0) {
             for (var _i = 0, _a = child.bestandteile; _i < _a.length; _i++) {
                 var best = _a[_i];
@@ -220,16 +253,24 @@ var MaterialPlanningEPComponent = (function () {
             }
         }
     };
-    MaterialPlanningEPComponent.prototype.updateArrays = function () {
-        for (var _i = 0, _a = this.partsList; _i < _a.length; _i++) {
-            var pt = _a[_i];
-            this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pt.child.nummer] = this.sumProdAuftraege(pt.child) < 0 ? 0 : this.sumProdAuftraege(pt.child);
-            if (pt.parent) {
-                this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + pt.child.nummer] = this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pt.parent.nummer];
-                this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + pt.child.nummer] = this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pt.parent.nummer];
+    MaterialPlanningEPComponent.prototype.updateArrays = function (isInitial) {
+        var parts = [];
+        if (isInitial) {
+            parts = this.tmp_partsList;
+        }
+        else {
+            parts = this.partsListSingle;
+        }
+        for (var _i = 0, parts_1 = parts; _i < parts_1.length; _i++) {
+            var pt = parts_1[_i];
+            this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pt.teil.child.nummer] = this.sumProdAuftraege(pt.teil.child) < 0 ? 0 : this.sumProdAuftraege(pt.teil.child);
+            if (pt.teil.parent) {
+                this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + pt.teil.child.nummer] = this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pt.teil.parent.nummer];
+                this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + pt.teil.child.nummer] = this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pt.teil.parent.nummer];
             }
         }
         this.sessionService.setPartOrders(this.prodAuftraege);
+        this.sessionService.setPlannedWarehouseStock(this.geplLagerbestand);
     };
     MaterialPlanningEPComponent.prototype.sumProdAuftraege = function (part) {
         return this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + part.nummer] +
@@ -242,6 +283,16 @@ var MaterialPlanningEPComponent = (function () {
     MaterialPlanningEPComponent.prototype.isGleichTeil = function (nummer) {
         var num = Number.parseInt(nummer);
         return num === 16 || num === 17 || num === 26;
+    };
+    MaterialPlanningEPComponent.prototype.filterList = function () {
+        var _this = this;
+        for (var _i = 0, _a = this.pParts; _i < _a.length; _i++) {
+            var pt = _a[_i];
+            if (pt.nummer === Number.parseInt(this.auswahl)) {
+                this.part = pt;
+            }
+        }
+        this.partsListSingle = this.partsList.filter(function (item) { return item.produkt == _this.part.nummer; });
     };
     MaterialPlanningEPComponent = __decorate([
         core_1.Component({
