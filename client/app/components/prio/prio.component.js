@@ -15,10 +15,13 @@ var core_1 = require('@angular/core');
 var session_service_1 = require('../../services/session.service');
 var part_service_1 = require('../../services/part.service');
 var prioTask_1 = require('../../model/prioTask');
+var sequence_1 = require('../../model/sequence');
+var capacityPlanning_service_1 = require('../../services/capacityPlanning.service');
 var PrioComponent = (function () {
-    function PrioComponent(sessionService, partService) {
+    function PrioComponent(sessionService, partService, capacityPlanningService) {
         this.sessionService = sessionService;
         this.partService = partService;
+        this.capacityPlanningService = capacityPlanningService;
         this.selector = "";
         this.parts = [];
         this.epParts = [];
@@ -26,6 +29,11 @@ var PrioComponent = (function () {
         this.produzierbareAuftraege = [];
         this.nPAuftraege = [];
         this.reihenfolgen = [];
+        /*
+        {
+            workStation: Workstation
+        }
+         */
         this.processingTimes = [];
         this.zeiten = [];
         this.partOrders = [];
@@ -52,7 +60,18 @@ var PrioComponent = (function () {
             _this.pParts = data.filter(function (item) { return item.typ == "P"; });
         }, function (err) { return console.error(err); }, function () {
             _this.partOrders = _this.sessionService.getPartOrders();
-            _this.processOptimizaition();
+            _this.capacityPlanningService.getWorkstations()
+                .subscribe(function (workstations) {
+                for (var _i = 0, workstations_1 = workstations; _i < workstations_1.length; _i++) {
+                    var workstation = workstations_1[_i];
+                    var sequence = new sequence_1.Sequence();
+                    sequence.workstation = workstation;
+                    sequence.prioTasks = [];
+                    _this.reihenfolgen.push(sequence);
+                }
+                ;
+                _this.processOptimizaition();
+            });
         });
     };
     PrioComponent.prototype.processOptimizaition = function () {
@@ -86,14 +105,15 @@ var PrioComponent = (function () {
             //Suche nächsten Arbeitsplatz Repeat ab Zeile 70;
             var inArray = false;
         }
+        console.log(this.reihenfolgen);
         //console.log(this.zeiten);
     };
     PrioComponent.prototype.setPartToWorkplace = function (teil, auftraege) {
         // Alle Arbeitsplatz, die das Teil bearbeiten, sortiert -> Array
-        var prozessingTime;
+        var prozessingTime = null;
         for (var _i = 0, _a = this.processingTimes; _i < _a.length; _i++) {
             var pt = _a[_i];
-            if (pt.teil == teil && pt.isStart) {
+            if ((pt.teil.nummer == teil.teil.nummer) && pt.isStart) {
                 //First prozessingTime
                 prozessingTime = pt;
                 break;
@@ -103,24 +123,30 @@ var PrioComponent = (function () {
         while (auftraege > 0) {
             while (prozessingTime != null) {
                 var letzterAuftrag = new prioTask_1.PrioTask();
+                letzterAuftrag.ende = 0;
                 var neuerAuftrag = new prioTask_1.PrioTask();
                 var gleichesTeil = false;
                 neuerAuftrag.teil = prozessingTime.teil;
-                neuerAuftrag._id = this.reihenfolgen[prozessingTime.arbeitsplatz].length + 1;
                 neuerAuftrag.aktuellerAp = prozessingTime.arbeitsplatz;
-                neuerAuftrag.periode = this.resultObj.result.period;
+                neuerAuftrag.naechsterAp = prozessingTime.nextArbeitsplatz;
+                neuerAuftrag.periode = this.resultObj.results.period;
                 neuerAuftrag.losgroesse = (auftraege % 10);
-                for (var _b = 0, _c = this.reihenfolgen[prozessingTime.arbeitsplatz]; _b < _c.length; _b++) {
-                    var auftrag = _c[_b];
-                    if (letzterAuftrag != null) {
-                        if (letzterAuftrag.ende < auftrag.ende) {
-                            if (letzterAuftrag.teil === auftrag.teil) {
-                                gleichesTeil = true;
+                for (var _b = 0, _c = this.reihenfolgen; _b < _c.length; _b++) {
+                    var sequence = _c[_b];
+                    if (sequence.workstation.nummer === prozessingTime.arbeitsplatz.nummer) {
+                        for (var _d = 0, _e = sequence.prioTasks; _d < _e.length; _d++) {
+                            var auftrag = _e[_d];
+                            if (letzterAuftrag != null) {
+                                if (letzterAuftrag.ende < auftrag.ende) {
+                                    if (letzterAuftrag.teil === auftrag.teil) {
+                                        gleichesTeil = true;
+                                    }
+                                    else {
+                                        gleichesTeil = false;
+                                    }
+                                    letzterAuftrag = auftrag;
+                                }
                             }
-                            else {
-                                gleichesTeil = false;
-                            }
-                            letzterAuftrag = auftrag;
                         }
                     }
                 }
@@ -131,12 +157,31 @@ var PrioComponent = (function () {
                 else {
                     neuerAuftrag.ende = letzterAuftrag.ende + ((auftraege % 10 === 0) ? 10 : (auftraege % 10)) * prozessingTime.fertigungsZeit + prozessingTime.ruestZeit;
                 }
-                this.reihenfolgen[prozessingTime.arbeitsplatz].push(neuerAuftrag);
-                prozessingTime = prozessingTime.nextArbeitsplatz;
+                for (var _f = 0, _g = this.reihenfolgen; _f < _g.length; _f++) {
+                    var sequence = _g[_f];
+                    if (sequence.workstation.nummer === prozessingTime.arbeitsplatz.nummer) {
+                        neuerAuftrag._id = sequence.prioTasks.length + 1;
+                        sequence.prioTasks.push(neuerAuftrag);
+                    }
+                }
+                //find next prozessingTime
+                var processingTimeOld = prozessingTime;
+                if (prozessingTime.nextArbeitsplatz) {
+                    for (var _h = 0, _j = this.processingTimes; _h < _j.length; _h++) {
+                        var pt = _j[_h];
+                        if ((pt.teil.nummer == teil.teil.nummer) && (pt.arbeitsplatz.nummer == prozessingTime.nextArbeitsplatz.nummer)) {
+                            prozessingTime = pt;
+                            break;
+                        }
+                    }
+                }
+                if (prozessingTime == processingTimeOld) {
+                    prozessingTime = null;
+                }
+                break;
             }
             auftraege -= (auftraege % 10 === 0) ? 10 : (auftraege % 10);
         }
-        console.log(this.reihenfolgen);
         return prozessingTime;
     };
     PrioComponent.prototype.getPartCapacities = function (searchPart) {
@@ -168,7 +213,7 @@ var PrioComponent = (function () {
             selector: 'prio',
             templateUrl: 'prio.component.html'
         }), 
-        __metadata('design:paramtypes', [session_service_1.SessionService, part_service_1.PartService])
+        __metadata('design:paramtypes', [session_service_1.SessionService, part_service_1.PartService, capacityPlanning_service_1.CapacityPlanningService])
     ], PrioComponent);
     return PrioComponent;
 }());

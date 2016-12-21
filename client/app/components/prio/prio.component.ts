@@ -10,7 +10,10 @@ import {Part} from '../../model/part';
 import {PrioTask} from '../../model/prioTask';
 import {ProcessingTime} from '../../model/processingTime';
 import {Workstation} from '../../model/workstastion';
+import {Sequence} from '../../model/sequence';
 import {WorkingTime} from '../../model/workingTime';
+import {CapacityPlanningService} from '../../services/capacityPlanning.service';
+
 
 
 @Component({
@@ -32,7 +35,12 @@ export class PrioComponent {
     produzierbareAuftraege: Array<any> = [];
     nPAuftraege: Array<PrioTask> = [];
     lager: any;
-    reihenfolgen: Array<Array<PrioTask>> = [];
+    reihenfolgen: Array<Sequence> = [];
+    /*
+    {
+        workStation: Workstation
+    }
+     */
 
     processingTimes: Array<ProcessingTime> = [];
 
@@ -48,7 +56,7 @@ export class PrioComponent {
      */
     defaultAblauf: Array<number> = [18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3];
 
-    constructor(private sessionService: SessionService, private  partService: PartService) {
+    constructor(private sessionService: SessionService, private  partService: PartService, private capacityPlanningService: CapacityPlanningService ) {
     }
 
     ngOnInit() {
@@ -60,6 +68,7 @@ export class PrioComponent {
         this.wartelisteMaterial = this.resultObj.results.waitingliststock;
         this.wartelisteArbeitsplatz = this.resultObj.results.waitinglistworkstations;
 
+
         this.partService.getParts()
             .subscribe(
                 data => {
@@ -70,11 +79,22 @@ export class PrioComponent {
                 err => console.error(err),
                 () => {
                     this.partOrders = this.sessionService.getPartOrders();
-                    this.processOptimizaition();});
+                    this.capacityPlanningService.getWorkstations()
+                        .subscribe(workstations => {
+                            for(var workstation of workstations){
+                                var sequence = new Sequence();
+                                sequence.workstation = workstation;
+                                sequence.prioTasks = [];
+                                this.reihenfolgen.push(sequence);
+                            };
+                            this.processOptimizaition();
+                        });
+                });
 
     }
 
     processOptimizaition() {
+
         for (var teil of this.defaultAblauf) {
             var bestandteilArray =  this.getPartCapacities(teil);
             //console.log(bestandteilArray);
@@ -135,15 +155,17 @@ export class PrioComponent {
             //Bestellung addieren
             */
         }
+        console.log(this.reihenfolgen);
         //console.log(this.zeiten);
     }
 
     setPartToWorkplace(teil: Part, auftraege: number){
 
         // Alle Arbeitsplatz, die das Teil bearbeiten, sortiert -> Array
-        var prozessingTime;
+        var prozessingTime = null;
         for(var pt of this.processingTimes){
-            if(pt.teil == teil && pt.isStart){
+            if((pt.teil.nummer == teil.teil.nummer )&& pt.isStart){
+
                 //First prozessingTime
                 prozessingTime = pt;
                 break;
@@ -155,29 +177,35 @@ export class PrioComponent {
             while(prozessingTime != null){
 
                 var letzterAuftrag = new PrioTask();
+                letzterAuftrag.ende = 0;
                 var neuerAuftrag = new PrioTask();
                 var gleichesTeil = false;
 
                 neuerAuftrag.teil = prozessingTime.teil;
-                neuerAuftrag._id = this.reihenfolgen[prozessingTime.arbeitsplatz].length + 1;
                 neuerAuftrag.aktuellerAp = prozessingTime.arbeitsplatz;
-                neuerAuftrag.periode = this.resultObj.result.period;
+                neuerAuftrag.naechsterAp = prozessingTime.nextArbeitsplatz;
+                neuerAuftrag.periode = this.resultObj.results.period;
                 neuerAuftrag.losgroesse = (auftraege % 10);
 
-                for(var auftrag of this.reihenfolgen[prozessingTime.arbeitsplatz]){
-                    if(letzterAuftrag != null){
-                        if(letzterAuftrag.ende < auftrag.ende){
-                            if(letzterAuftrag.teil === auftrag.teil){
-                                gleichesTeil = true;
-                            }
-                            else {
-                                gleichesTeil = false;
-                            }
+                for(var sequence of this.reihenfolgen){
+                    if(sequence.workstation.nummer === prozessingTime.arbeitsplatz.nummer){
+                        for(var auftrag of sequence.prioTasks){
+                            if(letzterAuftrag != null){
+                                if(letzterAuftrag.ende < auftrag.ende){
+                                    if(letzterAuftrag.teil === auftrag.teil){
+                                        gleichesTeil = true;
+                                    }
+                                    else {
+                                        gleichesTeil = false;
+                                    }
 
-                            letzterAuftrag = auftrag;
+                                    letzterAuftrag = auftrag;
+                                }
+                            }
                         }
                     }
                 }
+
                 neuerAuftrag.start = letzterAuftrag.ende + 1;
                 if(gleichesTeil){
                     neuerAuftrag.ende = letzterAuftrag.ende + ((auftraege % 10 === 0)? 10 : (auftraege % 10)) * prozessingTime.fertigungsZeit;
@@ -186,14 +214,33 @@ export class PrioComponent {
                     neuerAuftrag.ende = letzterAuftrag.ende + ((auftraege % 10 === 0)? 10 : (auftraege % 10)) * prozessingTime.fertigungsZeit + prozessingTime.ruestZeit;
                 }
 
-                this.reihenfolgen[prozessingTime.arbeitsplatz].push(neuerAuftrag);
+                for(var sequence of this.reihenfolgen){
+                    if(sequence.workstation.nummer === prozessingTime.arbeitsplatz.nummer){
+                        neuerAuftrag._id = sequence.prioTasks.length+1;
+                        sequence.prioTasks.push(neuerAuftrag);
 
-                prozessingTime = prozessingTime.nextArbeitsplatz;
+                    }
+                }
+
+                //find next prozessingTime
+                var processingTimeOld = prozessingTime;
+
+                if(prozessingTime.nextArbeitsplatz){
+                    for(var pt of this.processingTimes){
+                        if((pt.teil.nummer == teil.teil.nummer) && (pt.arbeitsplatz.nummer == prozessingTime.nextArbeitsplatz.nummer)){
+                            prozessingTime = pt;
+                            break;
+                        }
+                    }
+                }
+                if(prozessingTime == processingTimeOld){
+                    prozessingTime = null;
+                }
+                break;
             }
             auftraege -= (auftraege % 10 === 0)? 10 : (auftraege % 10);
         }
 
-        console.log(this.reihenfolgen);
         return prozessingTime;
     }
 
