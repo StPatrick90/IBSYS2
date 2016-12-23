@@ -33,6 +33,7 @@ var MaterialPlanningComponent = (function () {
     };
     ;
     MaterialPlanningComponent.prototype.setParameters = function () {
+        this.getBruttoBedarfandPeriods();
         var i = 0;
         for (var _i = 0, _a = this.purchaseParts; _i < _a.length; _i++) {
             var purchPart = _a[_i];
@@ -71,20 +72,18 @@ var MaterialPlanningComponent = (function () {
             this.matPlan.push(matPlanRow);
             i++;
         }
-        this.getBruttoBedarfandPeriods();
         this.setColspan();
+    };
+    MaterialPlanningComponent.prototype.getBruttoBedarfandPeriods = function () {
+        this.plannings = this.sessionService.getPlannings();
+        // for (let p of this.plannings) {
+        //     this.periodrow.push(p.period);
+        // }
+        console.log("plannings", this.plannings);
     };
     MaterialPlanningComponent.prototype.setColspan = function () {
         document.getElementById("Verwendung").setAttribute("colspan", String(this.verwendungRow.length));
         document.getElementById("Bruttobedarf").setAttribute("colspan", String(this.periodrow.length));
-    };
-    MaterialPlanningComponent.prototype.getBruttoBedarfandPeriods = function () {
-        this.plannings = this.sessionService.getPlannings();
-        console.log("planningss", this.plannings);
-        for (var _i = 0, _a = this.plannings; _i < _a.length; _i++) {
-            var p = _a[_i];
-            this.periodrow.push(p.period);
-        }
     };
     MaterialPlanningComponent = __decorate([
         core_1.Component({

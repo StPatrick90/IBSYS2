@@ -2,6 +2,7 @@
  * Created by Jonas on 22.11.16.
  */
 import {verwendung} from "./verwendung";
+import {Plannings} from "./plannings";
 
 export class matPlanRow {
     kpartnr: number;
@@ -11,6 +12,7 @@ export class matPlanRow {
     verwendung: verwendung[];
     diskontmenge: number;
     anfangsbestand: number;
+    // bruttobedarfnP: Plannings[];
     bruttobedarfnP: number[];
     mengeohbest: number[];
     bestellmenge: number;

@@ -82,7 +82,7 @@ export class PredictionComponent {
         this.predictionService.getPlannings()
             .subscribe(plannings => {
                 this.plannings = plannings;
-                this.sessionService.setPlannings(this.plannings);
+                this.sessionService.setPlannings(this.pla   nnings);
                 this.generateRowsRemainingStock();
             });
 

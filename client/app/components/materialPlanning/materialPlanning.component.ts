@@ -42,8 +42,8 @@ export class MaterialPlanningComponent {
     };
 
     setParameters() {
+        this.getBruttoBedarfandPeriods();
         var i = 0;
-
         for (let purchPart of this.purchaseParts) {
             var matPlanRow = {
                 kpartnr: null,
@@ -69,6 +69,12 @@ export class MaterialPlanningComponent {
             matPlanRow.summe = Number((matPlanRow.lieferfrist + matPlanRow.abweichung).toFixed(2));
             for (let vw of purchPart.verwendung) {
                 matPlanRow.verwendung.push(vw);
+
+                // for (let p of this.plannings) {
+                //     var i = 1;
+                //     matPlanRow.bruttobedarfnP[i] += p.product1 * vw.Menge;
+                //         i++;
+                // }
             }
 
             // get Verwendungen
@@ -78,27 +84,25 @@ export class MaterialPlanningComponent {
                 }
             }
 
-
             // store values finally
             this.matPlan.push(matPlanRow);
             i++;
         }
-        this.getBruttoBedarfandPeriods();
         this.setColspan();
+    }
+
+    getBruttoBedarfandPeriods() {
+        this.plannings = this.sessionService.getPlannings();
+
+        // for (let p of this.plannings) {
+        //     this.periodrow.push(p.period);
+        // }
+        console.log("plannings", this.plannings);
     }
 
     setColspan() {
         document.getElementById("Verwendung").setAttribute("colspan", String(this.verwendungRow.length));
         document.getElementById("Bruttobedarf").setAttribute("colspan", String(this.periodrow.length));
-    }
-
-    getBruttoBedarfandPeriods() {
-        this.plannings = this.sessionService.getPlannings();
-        console.log("planningss", this.plannings);
-
-        for (let p of this.plannings) {
-            this.periodrow.push(p.period);
-        }
     }
 
 }
