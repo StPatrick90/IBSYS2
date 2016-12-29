@@ -93,7 +93,7 @@ export class PrioComponent {
 
     processOptimizaition() {
         for (var partNumber of this.defaultAblauf) {
-            var auftragsMenge = 20;
+            var auftragsMenge = 0;
             for(var partOrder in this.partOrders){
                 if(partOrder.includes(partNumber.toString())){
                     auftragsMenge += Number.parseInt(this.partOrders[partOrder]);

@@ -77,7 +77,7 @@ var PrioComponent = (function () {
     PrioComponent.prototype.processOptimizaition = function () {
         for (var _i = 0, _a = this.defaultAblauf; _i < _a.length; _i++) {
             var partNumber = _a[_i];
-            var auftragsMenge = 20;
+            var auftragsMenge = 0;
             for (var partOrder in this.partOrders) {
                 if (partOrder.includes(partNumber.toString())) {
                     auftragsMenge += Number.parseInt(this.partOrders[partOrder]);
