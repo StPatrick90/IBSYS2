@@ -44,10 +44,12 @@ var PrioComponent = (function () {
         Wenn Ja --> Produzieren
         Wenn Nein --> Endprodukt = Endprodukt.Bestanteil x
          */
-        this.defaultAblauf = [18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3];
+        this.defaultAblauf = [];
+        this.displayArray = [];
     }
     PrioComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.defaultAblauf.push(18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3);
         this.processingTimes = this.sessionService.getProcessingTimes();
         this.resultObj = this.sessionService.getResultObject();
         this.lager = this.resultObj.results.warehousestock.article;
@@ -98,8 +100,11 @@ var PrioComponent = (function () {
         console.log(this.reihenfolgen);
         console.log("pAufträge:");
         console.log(this.produzierbareAuftraege);
-        //console.log(this.zeiten);
-        console.log(this.lager);
+        this.displayArray.length = 0;
+        for (var _b = 0, _c = this.produzierbareAuftraege; _b < _c.length; _b++) {
+            var auftrag = _c[_b];
+            this.displayArray.push(auftrag.Teil);
+        }
     };
     PrioComponent.prototype.processWorkflow = function (partNumber, auftraege) {
         //Alle Bestandteile des Teils
