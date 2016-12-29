@@ -54,7 +54,7 @@
 
             <td *ngIf="pt.teil.child.typ === 'P'" width="4%" colspan="3" align="center">+</td>
 
-            <td width="10%" align="center"><input type="number" class="form-control" min="0" [(ngModel)]="geplLagerbestand[part.typ + part.nummer + '_' + pt.teil.child.nummer]" (ngModelChange)="updateArrays(false)"></td>
+            <td width="10%" align="center"><input type="number" class="form-control" min="0" [(ngModel)]="geplLagerbestand[part.typ + part.nummer + '_' + pt.teil.child.nummer]" (ngModelChange)="updateArrays(false)" (focusout)="updateArrays(false)"></td>
             <td width="4%" align="center">-</td>
             <td width="10%" align="center"><input type="number" class="form-control" [(ngModel)]="lagerbestandVorperiode[part.typ + part.nummer + '_' + pt.teil.child.nummer]" readonly></td>
             <td width="4%" align="center">-</td>

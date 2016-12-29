@@ -282,18 +282,22 @@ export class MaterialPlanningEPComponent {
 
     updateArrays(isInitial) {
         var parts = [];
+        var ende = 4;
         if(isInitial){
             parts = this.tmp_partsList;
         }
         else{
             parts = this.partsListSingle;
         }
-        for (let pt of parts) {
-            this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pt.teil.child.nummer] = this.sumProdAuftraege(pt.teil.child) < 0 ? 0 : this.sumProdAuftraege(pt.teil.child);
-            if (pt.teil.parent) {
-                this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + pt.teil.child.nummer] = this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pt.teil.parent.nummer];
-                this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + pt.teil.child.nummer] = this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pt.teil.parent.nummer];
+        while(ende >= 0){
+            for (let pt of parts) {
+                this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pt.teil.child.nummer] = this.sumProdAuftraege(pt.teil.child) < 0 ? 0 : this.sumProdAuftraege(pt.teil.child);
+                if (pt.teil.parent) {
+                    this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + pt.teil.child.nummer] = this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pt.teil.parent.nummer];
+                    this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + pt.teil.child.nummer] = this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pt.teil.parent.nummer];
+                }
             }
+            ende--;
         }
         this.sessionService.setPartOrders(this.prodAuftraege);
         this.sessionService.setPlannedWarehouseStock(this.geplLagerbestand);
@@ -320,5 +324,4 @@ export class MaterialPlanningEPComponent {
         }
         this.partsListSingle = this.partsList.filter(item => item.produkt == this.part.nummer);
     }
-
 }

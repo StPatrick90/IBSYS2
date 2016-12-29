@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 18.12.2016.
  */
-var core_1 = require('@angular/core');
-var part_service_1 = require('../../services/part.service');
-var session_service_1 = require('../../services/session.service');
+var core_1 = require("@angular/core");
+var part_service_1 = require("../../services/part.service");
+var session_service_1 = require("../../services/session.service");
 var MaterialPlanningEPComponent = (function () {
     function MaterialPlanningEPComponent(partService, sessionService) {
         this.partService = partService;
@@ -255,19 +255,23 @@ var MaterialPlanningEPComponent = (function () {
     };
     MaterialPlanningEPComponent.prototype.updateArrays = function (isInitial) {
         var parts = [];
+        var ende = 4;
         if (isInitial) {
             parts = this.tmp_partsList;
         }
         else {
             parts = this.partsListSingle;
         }
-        for (var _i = 0, parts_1 = parts; _i < parts_1.length; _i++) {
-            var pt = parts_1[_i];
-            this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pt.teil.child.nummer] = this.sumProdAuftraege(pt.teil.child) < 0 ? 0 : this.sumProdAuftraege(pt.teil.child);
-            if (pt.teil.parent) {
-                this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + pt.teil.child.nummer] = this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pt.teil.parent.nummer];
-                this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + pt.teil.child.nummer] = this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pt.teil.parent.nummer];
+        while (ende >= 0) {
+            for (var _i = 0, parts_1 = parts; _i < parts_1.length; _i++) {
+                var pt = parts_1[_i];
+                this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pt.teil.child.nummer] = this.sumProdAuftraege(pt.teil.child) < 0 ? 0 : this.sumProdAuftraege(pt.teil.child);
+                if (pt.teil.parent) {
+                    this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + pt.teil.child.nummer] = this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pt.teil.parent.nummer];
+                    this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + pt.teil.child.nummer] = this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pt.teil.parent.nummer];
+                }
             }
+            ende--;
         }
         this.sessionService.setPartOrders(this.prodAuftraege);
         this.sessionService.setPlannedWarehouseStock(this.geplLagerbestand);
@@ -294,15 +298,15 @@ var MaterialPlanningEPComponent = (function () {
         }
         this.partsListSingle = this.partsList.filter(function (item) { return item.produkt == _this.part.nummer; });
     };
-    MaterialPlanningEPComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'materialPlanningEP',
-            templateUrl: 'materialPlanningEP.component.html'
-        }), 
-        __metadata('design:paramtypes', [part_service_1.PartService, session_service_1.SessionService])
-    ], MaterialPlanningEPComponent);
     return MaterialPlanningEPComponent;
 }());
+MaterialPlanningEPComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'materialPlanningEP',
+        templateUrl: 'materialPlanningEP.component.html'
+    }),
+    __metadata("design:paramtypes", [part_service_1.PartService, session_service_1.SessionService])
+], MaterialPlanningEPComponent);
 exports.MaterialPlanningEPComponent = MaterialPlanningEPComponent;
 //# sourceMappingURL=materialPlanningEP.component.js.map
