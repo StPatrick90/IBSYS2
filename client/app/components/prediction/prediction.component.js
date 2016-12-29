@@ -28,33 +28,33 @@ var PredictionComponent = (function () {
     }
     PredictionComponent.prototype.ngOnInit = function () {
         var _this = this;
-        var row = {
-            produkt: null,
-            produktkennung: "",
-            produktmengen: [],
-            perioden: []
-        };
         this.predictionService.getBindingOrders()
             .subscribe(function (bindingOrders) {
             _this.bindingOrders = bindingOrders;
-            for (var i = 0; i < _this.bindingOrders.length; i++) {
-                row.produktkennung = _this.bindingOrders[i].produkte[i].Kennung;
-                for (var k = 0; k < _this.bindingOrders.length; k++) {
-                    for (var _i = 0, _a = _this.bindingOrders[k].produkte; _i < _a.length; _i++) {
-                        var b = _a[_i];
-                        console.log(b.Kennung);
-                        console.log(b.Menge);
-                        if (b.Kennung == row.produktkennung) {
-                            row.produktmengen.push(b.Menge);
+            var produktKennung = _this.bindingOrders[0].produkte[0].Kennung;
+            for (var i = 0; i < _this.bindingOrders[0].produkte.length; i++) {
+                var row = {
+                    produkt: null,
+                    produktkennung: "",
+                    produktmengen: []
+                };
+                for (var _i = 0, _a = _this.bindingOrders; _i < _a.length; _i++) {
+                    var bindingOrder = _a[_i];
+                    for (var _b = 0, _c = bindingOrder.produkte; _b < _c.length; _b++) {
+                        var produkt = _c[_b];
+                        if (produkt.Kennung === produktKennung) {
+                            row.produktkennung = produkt.Kennung;
+                            row.produktmengen.push(produkt.Menge);
                         }
                     }
                 }
+                if (i + 1 !== _this.bindingOrders[0].produkte.length) {
+                    produktKennung = _this.bindingOrders[0].produkte[i + 1].Kennung;
+                }
                 _this.rowtable.push(row);
-                console.log(row);
             }
-            //row.perioden.push(this.bindingOrders[i].period);
         });
-        //console.log(this.rowtable);
+        //TODO: Methoden für Rechnungen umbasteln - ab hier alles unused ATM außer generatePeriods
         this.predictionService.getPlannings()
             .subscribe(function (plannings) {
             _this.plannings = plannings;
@@ -63,7 +63,6 @@ var PredictionComponent = (function () {
         this.dbService.getResults()
             .subscribe(function (results) {
             _this.results = results;
-            console.log(_this.results);
         });
     };
     PredictionComponent.prototype.sumBindingOrders = function () {

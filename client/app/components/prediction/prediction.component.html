@@ -28,14 +28,10 @@
         </tr>
         </thead>
         <tbody>
-        <span *ngFor="let r of rowtable">
-        <tr>
-            <td>{{r.produkt}}</td>
-            <td *ngFor="let p of r.perioden">{{p
-                }}</td>
-
+        <tr *ngFor="let r of rowtable">
+            <td>{{r.produktkennung}}</td>
+            <td *ngFor="let p of r.produktmengen">{{p}}</td>
         </tr>
-        </span>
         </tbody>
 
 
