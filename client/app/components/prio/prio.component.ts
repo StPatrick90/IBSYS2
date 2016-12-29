@@ -191,9 +191,7 @@ export class PrioComponent {
                 break;
             }
         }
-
-        //TODO: Kaufteile werden noch nicht berücksichtigt!
-        //TODO: Lagerbestand verringern!
+        
         //TODO: Lagerbestand mit Bestellungen anpassen!
         //TODO: Merge batch objects
         while(auftraege > 0){
