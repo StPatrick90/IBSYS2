@@ -77,7 +77,7 @@ var PrioComponent = (function () {
     PrioComponent.prototype.processOptimizaition = function () {
         for (var _i = 0, _a = this.defaultAblauf; _i < _a.length; _i++) {
             var partNumber = _a[_i];
-            var auftragsMenge = 0;
+            var auftragsMenge = 20;
             for (var partOrder in this.partOrders) {
                 if (partOrder.includes(partNumber.toString())) {
                     auftragsMenge += Number.parseInt(this.partOrders[partOrder]);
@@ -233,12 +233,13 @@ var PrioComponent = (function () {
             for (var idx in this.lager) {
                 if (Number.parseInt(this.lager[idx].id) === neuerAuftrag.teil.nummer) {
                     var lagerAmount = Number.parseInt(this.lager[idx].amount);
-                    this.lager[idx].amount = lagerAmount + bearbeiteteAuftrage.toString();
+                    this.lager[idx].amount = (lagerAmount + bearbeiteteAuftrage).toString();
                 }
                 for (var _k = 0, bestandteilArray_2 = bestandteilArray; _k < bestandteilArray_2.length; _k++) {
                     var bTeil = bestandteilArray_2[_k];
                     if (bTeil.teil.nummer == Number.parseInt(this.lager[idx].id)) {
                         var rechnung = (Number.parseInt(this.lager[idx].amount) - (bearbeiteteAuftrage * bTeil.anzahl));
+                        this.lager[idx].amount = rechnung.toString();
                     }
                 }
             }

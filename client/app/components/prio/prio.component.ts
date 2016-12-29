@@ -93,7 +93,7 @@ export class PrioComponent {
 
     processOptimizaition() {
         for (var partNumber of this.defaultAblauf) {
-            var auftragsMenge = 0;
+            var auftragsMenge = 20;
             for(var partOrder in this.partOrders){
                 if(partOrder.includes(partNumber.toString())){
                     auftragsMenge += Number.parseInt(this.partOrders[partOrder]);
@@ -264,17 +264,15 @@ export class PrioComponent {
             var bearbeiteteAuftrage = (auftraege % 10 === 0)? 10 : (auftraege % 10);
 
             //Lager anpassen
-
-
             for (var idx in this.lager) {
                 if (Number.parseInt(this.lager[idx].id) === neuerAuftrag.teil.nummer) {
                     var lagerAmount = Number.parseInt(this.lager[idx].amount);
-                    this.lager[idx].amount = lagerAmount + bearbeiteteAuftrage.toString();
+                    this.lager[idx].amount = (lagerAmount + bearbeiteteAuftrage).toString();
                 }
                 for (var bTeil of bestandteilArray) {
                     if(bTeil.teil.nummer == Number.parseInt(this.lager[idx].id)){
                         var rechnung = (Number.parseInt(this.lager[idx].amount) - (bearbeiteteAuftrage * bTeil.anzahl));
-                        //this.lager[idx] = (Number.parseInt(this.lager[idx].amount) - (bearbeiteteAuftrage * bTeil.anzahl)) + "";
+                        this.lager[idx].amount = rechnung.toString();
                     }
                 }
             }
