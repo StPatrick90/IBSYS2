@@ -168,10 +168,10 @@ var SessionService = (function () {
         this.partOrders = partOrders;
     };
     SessionService.prototype.getPlannedWarehouseStock = function () {
-        return this.partOrders;
+        return this.plannedWarehouseStock;
     };
-    SessionService.prototype.setPlannedWarehouseStock = function (partOrders) {
-        this.partOrders = partOrders;
+    SessionService.prototype.setPlannedWarehouseStock = function (plannedWarehouseStock) {
+        this.plannedWarehouseStock = plannedWarehouseStock;
     };
     SessionService.prototype.clear = function () {
         this.setResultObject(null);

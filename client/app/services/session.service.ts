@@ -185,11 +185,11 @@ export class SessionService{
         this.partOrders = partOrders;
     }
     getPlannedWarehouseStock(){
-        return this.partOrders;
+        return this.plannedWarehouseStock;
     }
 
-    setPlannedWarehouseStock(partOrders) {
-        this.partOrders = partOrders;
+    setPlannedWarehouseStock(plannedWarehouseStock) {
+        this.plannedWarehouseStock = plannedWarehouseStock;
     }
 
 

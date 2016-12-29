@@ -53,8 +53,6 @@ var PrioComponent = (function () {
         this.lager = this.resultObj.results.warehousestock.article;
         this.wartelisteMaterial = this.resultObj.results.waitingliststock;
         this.wartelisteArbeitsplatz = this.resultObj.results.waitinglistworkstations;
-        var partOrders = this.sessionService.getPlannedWarehouseStock();
-        console.log(partOrders);
         this.partService.getParts()
             .subscribe(function (data) {
             _this.parts = data;
@@ -79,7 +77,12 @@ var PrioComponent = (function () {
     PrioComponent.prototype.processOptimizaition = function () {
         for (var _i = 0, _a = this.defaultAblauf; _i < _a.length; _i++) {
             var partNumber = _a[_i];
-            var mockauftrag = 50;
+            var auftragsMenge = 0;
+            for (var partOrder in this.partOrders) {
+                if (partOrder.includes(partNumber.toString())) {
+                    auftragsMenge += Number.parseInt(this.partOrders[partOrder]);
+                }
+            }
             //Kann was von np abgearbeitet werden?
             for (var idx in this.nPAuftraege) {
                 //Schau ob jetzt etwas im Lager ist.
@@ -88,7 +91,8 @@ var PrioComponent = (function () {
                     this.processWorkflow(this.nPAuftraege[idx].Teil, this.nPAuftraege[idx].Anzahl);
                 }
             }
-            this.processWorkflow(partNumber, mockauftrag);
+            console.log(auftragsMenge);
+            this.processWorkflow(partNumber, auftragsMenge);
         }
         console.log("reihenfolge:");
         console.log(this.reihenfolgen);
@@ -131,14 +135,13 @@ var PrioComponent = (function () {
             }
         }
         if (canBeProduced === true) {
-            console.log("canBe");
             if (anzahl === auftraege) {
-                var processTime = this.setPartToWorkplace(part, auftraege);
+                var processTime = this.setPartToWorkplace(part, auftraege, bestandteilArray);
                 this.produzierbareAuftraege.push({ "Teil": part, "Anzahl": auftraege });
             }
             else {
                 //Teilweise
-                var processTime = this.setPartToWorkplace(part, anzahl);
+                var processTime = this.setPartToWorkplace(part, anzahl, bestandteilArray);
                 this.produzierbareAuftraege.push({ "Teil": part, "Anzahl": anzahl });
                 this.nPAuftraege.push({ "Teil": part, "Anzahl": auftraege - anzahl });
             }
@@ -147,32 +150,9 @@ var PrioComponent = (function () {
             this.nPAuftraege.push({ "Teil": part, "Anzahl": auftraege });
         }
         var inArray = false;
-        //Zeiten Addieren, wenn Arbeitsplatz schon bearbeitet wurde.
-        /*
-         for (var zeit of this.zeiten) {
-         if (zeit.arbeitsplatz.nummer === prozessSchritt.arbeitsplatz.nummer) {
-         zeit.ruestZeit += prozessSchritt.ruestZeit;
-         zeit.fertigungsZeit += prozessSchritt.fertigungsZeit;
-         inArray = true;
-         }
-         }
-         if (!inArray) {
-         var workTime = new WorkingTime();
-         workTime.arbeitsplatz = prozessSchritt.arbeitsplatz;
-         workTime.ruestZeit = prozessSchritt.ruestZeit;
-         workTime.fertigungsZeit = prozessSchritt.fertigungsZeit;
-
-         this.zeiten.push(workTime);
-         }
-
-         //Lager abziehen
-         //Bestellung addieren
-         */
     };
-    PrioComponent.prototype.setPartToWorkplace = function (teil, auftraege) {
+    PrioComponent.prototype.setPartToWorkplace = function (teil, auftraege, bestandteilArray) {
         // Alle Arbeitsplatz, die das Teil bearbeiten, sortiert -> Array
-        console.log("teil");
-        console.log(teil);
         var prozessingTime = null;
         var ptx = null;
         for (var _i = 0, _a = this.processingTimes; _i < _a.length; _i++) {
@@ -250,6 +230,18 @@ var PrioComponent = (function () {
             }
             var bearbeiteteAuftrage = (auftraege % 10 === 0) ? 10 : (auftraege % 10);
             //Lager anpassen
+            for (var idx in this.lager) {
+                if (Number.parseInt(this.lager[idx].id) === neuerAuftrag.teil.nummer) {
+                    var lagerAmount = Number.parseInt(this.lager[idx].amount);
+                    this.lager[idx].amount = lagerAmount + bearbeiteteAuftrage.toString();
+                }
+                for (var _k = 0, bestandteilArray_2 = bestandteilArray; _k < bestandteilArray_2.length; _k++) {
+                    var bTeil = bestandteilArray_2[_k];
+                    if (bTeil.teil.nummer == Number.parseInt(this.lager[idx].id)) {
+                        var rechnung = (Number.parseInt(this.lager[idx].amount) - (bearbeiteteAuftrage * bTeil.anzahl));
+                    }
+                }
+            }
             auftraege -= bearbeiteteAuftrage;
         }
         return ptx;
