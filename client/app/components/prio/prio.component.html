@@ -24,7 +24,31 @@
 <div *ngIf="(selector == 'automatic')" class="container">
     <h4>Voll Automatisch:</h4>
 
-    <div></div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    Endprodukte:
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group" dnd-sortable-container [sortableData]="produzierbareAuftraege">
+                        <li *ngFor="let item of produzierbareAuftraege; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">
+                            <span class="tag tag-default pull-right">{{item.Anzahl}}</span>
+                            {{item.Teil.typ}} {{item.Teil.nummer}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    My priorization:<br/>
+                    <span *ngFor="let item of produzierbareAuftraege; let i = index">{{i + 1}}) {{item.Teil.typ}} {{item.Teil.nummer}} ({{item.Teil.bezeichnung}})<br/></span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div *ngIf="(selector == 'endProduct')" class="container">
     <h4>Nach Endprodukten:</h4>

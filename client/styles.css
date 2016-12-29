@@ -53,3 +53,20 @@ footer {
 .jumptronhover:hover{
     background-color: #c1e2b3 !important;
 }
+
+.tag-default {
+    background-color: #818a91;
+}
+
+.tag {
+    display: inline-block;
+    padding: .25em .4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #ffffff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+}

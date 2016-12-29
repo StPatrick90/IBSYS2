@@ -54,12 +54,14 @@ export class PrioComponent {
     Wenn Ja --> Produzieren
     Wenn Nein --> Endprodukt = Endprodukt.Bestanteil x
      */
-    defaultAblauf: Array<number> = [18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3];
+    defaultAblauf: Array<number> = [];
+    displayArray: Array<Part> = [];
 
     constructor(private sessionService: SessionService, private  partService: PartService, private capacityPlanningService: CapacityPlanningService ) {
     }
 
     ngOnInit() {
+        this.defaultAblauf.push(18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3);
         this.processingTimes = this.sessionService.getProcessingTimes();
 
         this.resultObj = this.sessionService.getResultObject();
@@ -117,7 +119,11 @@ export class PrioComponent {
         console.log(this.reihenfolgen);
         console.log("pAufträge:");
         console.log(this.produzierbareAuftraege);
-        //console.log(this.zeiten);
+
+        this.displayArray.length = 0;
+        for(var auftrag of this.produzierbareAuftraege){
+            this.displayArray.push(auftrag.Teil);
+        }
     }
 
     processWorkflow(partNumber: number, auftraege: number){
