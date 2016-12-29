@@ -99,6 +99,7 @@ var PrioComponent = (function () {
         console.log("pAufträge:");
         console.log(this.produzierbareAuftraege);
         //console.log(this.zeiten);
+        console.log(this.lager);
     };
     PrioComponent.prototype.processWorkflow = function (partNumber, auftraege) {
         //Alle Bestandteile des Teils

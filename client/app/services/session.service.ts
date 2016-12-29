@@ -152,7 +152,7 @@ export class SessionService{
                     all:""}}}}};
 
     getResultObject(){
-        return (this.resultObj == null || this.resultObj == {})? this.dummyObj: this.resultObj;
+        return (this.resultObj == null || this.resultObj == {})? this.dummyObj: JSON.parse(JSON.stringify(this.resultObj));
     }
 
     setResultObject(Obj){

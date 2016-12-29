@@ -138,7 +138,7 @@ var SessionService = (function () {
         this.clear();
     }
     SessionService.prototype.getResultObject = function () {
-        return (this.resultObj == null || this.resultObj == {}) ? this.dummyObj : this.resultObj;
+        return (this.resultObj == null || this.resultObj == {}) ? this.dummyObj : JSON.parse(JSON.stringify(this.resultObj));
     };
     SessionService.prototype.setResultObject = function (Obj) {
         this.resultObj = Obj;
