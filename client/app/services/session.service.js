@@ -18,122 +18,203 @@ require('rxjs/add/operator/map');
 var SessionService = (function () {
     function SessionService(http) {
         this.http = http;
-        this.dummyObj = { results: {
+        this.dummyObj = {
+            results: {
                 game: "",
                 group: "",
                 period: "",
                 warehousestock: {
                     article: [{ id: "", amount: "", startamount: "", pct: "", price: "", stockvalue: "" }],
-                    totalstockvalue: "" },
+                    totalstockvalue: ""
+                },
                 inwardstockmovement: {
-                    order: [{ orderperiod: "", id: "", mode: "", article: "", amount: "", time: "", materialcosts: "", ordercosts: "", entirecosts: "", piececosts: "" }] },
+                    order: [{
+                            orderperiod: "",
+                            id: "",
+                            mode: "",
+                            article: "",
+                            amount: "",
+                            time: "",
+                            materialcosts: "",
+                            ordercosts: "",
+                            entirecosts: "",
+                            piececosts: ""
+                        }]
+                },
                 futureinwardstockmovement: {
-                    order: [{ orderperiod: "", id: "", mode: "", article: "", amount: "" }] },
+                    order: [{ orderperiod: "", id: "", mode: "", article: "", amount: "" }]
+                },
                 idletimecosts: {
-                    workplace: [{ id: "", setupevents: "", idletime: "", wageidletimecosts: "", wagecosts: "", machineidletimecosts: "" }],
-                    sum: { setupevents: "", idletime: "", wageidletimecosts: "", wagecosts: "", machineidletimecosts: "" } },
+                    workplace: [{
+                            id: "",
+                            setupevents: "",
+                            idletime: "",
+                            wageidletimecosts: "",
+                            wagecosts: "",
+                            machineidletimecosts: ""
+                        }],
+                    sum: { setupevents: "", idletime: "", wageidletimecosts: "", wagecosts: "", machineidletimecosts: "" }
+                },
                 waitinglistworkstations: {
-                    workplace: [{ id: "", timeneed: "", waitinglist: { period: "", order: "", firstbatch: "", lastbatch: "", item: "", amount: "", timeneed: "" } }] },
+                    workplace: [{
+                            id: "",
+                            timeneed: "",
+                            waitinglist: {
+                                period: "",
+                                order: "",
+                                firstbatch: "",
+                                lastbatch: "",
+                                item: "",
+                                amount: "",
+                                timeneed: ""
+                            }
+                        }]
+                },
                 waitingliststock: {
-                    missingpart: [{ id: "", waitinglist: { period: "", order: "", firstbatch: "", lastbatch: "", item: "", amount: "" } }] },
+                    missingpart: [{
+                            id: "",
+                            waitinglist: { period: "", order: "", firstbatch: "", lastbatch: "", item: "", amount: "" }
+                        }]
+                },
                 ordersinwork: {
-                    workplace: [{ id: "", period: "", order: "", batch: "", item: "", amount: "", timeneed: "" }] },
+                    workplace: [{ id: "", period: "", order: "", batch: "", item: "", amount: "", timeneed: "" }]
+                },
                 completedorders: {
-                    order: [{ period: "", id: "", item: "", quantity: "", cost: "", averageunitcosts: "", batch: [{ id: "", amount: "", cycletime: "", cost: "" }] }] },
+                    order: [{
+                            period: "",
+                            id: "",
+                            item: "",
+                            quantity: "",
+                            cost: "",
+                            averageunitcosts: "",
+                            batch: [{ id: "", amount: "", cycletime: "", cost: "" }]
+                        }]
+                },
                 cycletimes: {
                     startedorders: "",
                     waitingorders: "",
-                    order: [{ id: "", period: "", starttime: "", finishtime: "", cycletimemin: "", cycletimefactor: "" }] },
+                    order: [{ id: "", period: "", starttime: "", finishtime: "", cycletimemin: "", cycletimefactor: "" }]
+                },
                 result: {
                     general: {
                         capacity: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         possiblecapacity: {
                             current: "",
-                            average: "", all: "" },
+                            average: "", all: ""
+                        },
                         relpossiblenormalcapacity: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         productivetime: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         effiency: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         sellwish: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         salesquantity: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         deliveryreliability: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         idletime: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         idletimecosts: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         storevalue: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         storagecosts: {
                             current: "",
                             average: "",
-                            all: "" } },
+                            all: ""
+                        }
+                    },
                     defectivegoods: {
                         quantity: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         costs: {
                             current: "",
                             average: "",
-                            all: "" } },
+                            all: ""
+                        }
+                    },
                     normalsale: {
                         salesprice: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         profit: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         profitperunit: {
                             current: "",
                             average: "",
-                            all: "" } },
+                            all: ""
+                        }
+                    },
                     directsale: {
                         profit: {
                             current: "",
                             average: "",
-                            all: "" },
+                            all: ""
+                        },
                         contractpenalty: {
                             current: "",
                             average: "",
-                            all: "" } },
+                            all: ""
+                        }
+                    },
                     marketplacesale: {
                         profit: {
                             current: "",
                             average: "",
-                            all: "" } },
+                            all: ""
+                        }
+                    },
                     summary: {
                         profit: {
                             current: "",
                             average: "",
-                            all: "" } } } } };
+                            all: ""
+                        }
+                    }
+                }
+            }
+        };
         console.log('Session Service Initialized...');
         this.clear();
     }
@@ -161,8 +242,14 @@ var SessionService = (function () {
     SessionService.prototype.setProcessingTimes = function (processingTimes) {
         this.processingTimes = processingTimes;
     };
-    SessionService.prototype.setPlannings = function (plannings) {
-        this.plannings = plannings;
+    SessionService.prototype.setbindingOrders = function (rowtable1) {
+        this.bindingorders = rowtable1;
+    };
+    SessionService.prototype.getbindingOrders = function () {
+        return this.bindingorders;
+    };
+    SessionService.prototype.setPlannings = function (rowtable2) {
+        this.plannings = rowtable2;
     };
     SessionService.prototype.getPlannings = function () {
         return this.plannings;
@@ -186,7 +273,7 @@ var SessionService = (function () {
         this.setProcessingTimes(null);
         this.setPartOrders(null);
         this.setPlannedWarehouseStock(null);
-        this.setPlannings(null);
+        this.setbindingOrders(null);
     };
     __decorate([
         WebStorage_1.SessionStorage(), 
@@ -212,6 +299,10 @@ var SessionService = (function () {
         WebStorage_1.SessionStorage(), 
         __metadata('design:type', Array)
     ], SessionService.prototype, "plannedWarehouseStock", void 0);
+    __decorate([
+        WebStorage_1.SessionStorage(), 
+        __metadata('design:type', Array)
+    ], SessionService.prototype, "bindingorders", void 0);
     __decorate([
         WebStorage_1.SessionStorage(), 
         __metadata('design:type', Array)

@@ -76,7 +76,7 @@ var MaterialPlanningComponent = (function () {
     };
     MaterialPlanningComponent.prototype.getBruttoBedarfandPeriods = function () {
         this.plannings = this.sessionService.getPlannings();
-        console.log("plannings", this.plannings);
+        console.log("planningsmat", this.plannings);
     };
     MaterialPlanningComponent.prototype.setColspan = function () {
         document.getElementById("Verwendung").setAttribute("colspan", String(this.verwendungRow.length));

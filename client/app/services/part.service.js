@@ -11,10 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 13.11.2016.
  */
-var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
-require("rxjs/add/operator/map");
-var Rx_1 = require("rxjs/Rx");
+var core_1 = require('@angular/core');
+var http_1 = require('@angular/http');
+require('rxjs/add/operator/map');
+var Rx_1 = require('rxjs/Rx');
 var PartService = (function () {
     function PartService(http) {
         this.http = http;
@@ -61,11 +61,11 @@ var PartService = (function () {
         return this.http.delete('/api/part/' + id)
             .map(function (res) { return res.json(); });
     };
+    PartService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [http_1.Http])
+    ], PartService);
     return PartService;
 }());
-PartService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http])
-], PartService);
 exports.PartService = PartService;
 //# sourceMappingURL=part.service.js.map

@@ -1,7 +1,7 @@
 "use strict";
 var Plannings = (function () {
     function Plannings() {
-        this.produkte = [];
+        this.produkte = new Array();
     }
     return Plannings;
 }());

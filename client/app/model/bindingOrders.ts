@@ -1,6 +1,6 @@
 import {Product} from "./product";
 
-export class BindingOrders{
+export class BindingOrders {
     //_id: string;
     period: number;
     produkte: Product[];
