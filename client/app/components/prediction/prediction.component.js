@@ -58,7 +58,7 @@ var PredictionComponent = (function () {
         this.predictionService.getPlannings()
             .subscribe(function (plannings) {
             _this.plannings = plannings;
-            _this.sessionService.setPlannings(_this.pla, nnings);
+            _this.sessionService.setPlannings(_this.plannings);
             _this.generateRowsRemainingStock();
         });
         this.dbService.getResults()
