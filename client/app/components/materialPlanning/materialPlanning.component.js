@@ -76,9 +76,6 @@ var MaterialPlanningComponent = (function () {
     };
     MaterialPlanningComponent.prototype.getBruttoBedarfandPeriods = function () {
         this.plannings = this.sessionService.getPlannings();
-        // for (let p of this.plannings) {
-        //     this.periodrow.push(p.period);
-        // }
         console.log("plannings", this.plannings);
     };
     MaterialPlanningComponent.prototype.setColspan = function () {

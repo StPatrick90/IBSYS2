@@ -6,6 +6,7 @@ import {matPlanRow} from "../../model/matPlanRow";
 import sort = require("core-js/fn/array/sort");
 import {Plannings} from "../../model/plannings";
 import {Http} from "@angular/http";
+import {rowtype} from "../../model/rowtype";
 
 @Component({
     moduleId: module.id,
@@ -20,14 +21,14 @@ export class MaterialPlanningComponent {
     matPlan: matPlanRow[];
     verwendungRow: string[];
     periodrow: number[];
-    plannings: Plannings[];
+    plannings: rowtype[];
 
     constructor(private sessionService: SessionService, private  materialPlanningService: MaterialPlanningService, private http: Http) {
         this.resultObj = this.sessionService.getResultObject();
         this.matPlan = new Array<matPlanRow>();
         this.verwendungRow = new Array<string>();
         this.periodrow = new Array<number>();
-        this.plannings = new Array<Plannings>();
+        this.plannings = new Array<rowtype>();
         this.getKParts();
     }
 
@@ -93,10 +94,6 @@ export class MaterialPlanningComponent {
 
     getBruttoBedarfandPeriods() {
         this.plannings = this.sessionService.getPlannings();
-
-        // for (let p of this.plannings) {
-        //     this.periodrow.push(p.period);
-        // }
         console.log("plannings", this.plannings);
     }
 

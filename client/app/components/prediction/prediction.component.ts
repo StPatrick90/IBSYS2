@@ -75,6 +75,7 @@ export class PredictionComponent {
                     }
                     this.rowtable.push(row);
                 }
+                this.sessionService.setPlannings(this.rowtable);
             });
 
         //TODO: Methoden für Rechnungen umbasteln - ab hier alles unused ATM außer generatePeriods
@@ -82,8 +83,9 @@ export class PredictionComponent {
         this.predictionService.getPlannings()
             .subscribe(plannings => {
                 this.plannings = plannings;
-                this.sessionService.setPlannings(this.plannings);
                 this.generateRowsRemainingStock();
+                // this.sessionService.setPlannings(this.plannings);
+
             });
 
         this.dbService.getResults()

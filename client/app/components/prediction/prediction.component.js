@@ -53,13 +53,14 @@ var PredictionComponent = (function () {
                 }
                 _this.rowtable.push(row);
             }
+            _this.sessionService.setPlannings(_this.rowtable);
         });
         //TODO: Methoden für Rechnungen umbasteln - ab hier alles unused ATM außer generatePeriods
         this.predictionService.getPlannings()
             .subscribe(function (plannings) {
             _this.plannings = plannings;
-            _this.sessionService.setPlannings(_this.plannings);
             _this.generateRowsRemainingStock();
+            // this.sessionService.setPlannings(this.plannings);
         });
         this.dbService.getResults()
             .subscribe(function (results) {

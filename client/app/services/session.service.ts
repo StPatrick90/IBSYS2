@@ -9,6 +9,7 @@ import { Part } from '../model/part';
 import { Workstation } from '../model/workstastion';
 import { ProcessingTime } from '../model/processingTime';
 import {Plannings} from "../model/plannings";
+import {rowtype} from "../model/rowtype";
 
 
 @Injectable()
@@ -20,7 +21,7 @@ export class SessionService{
     @SessionStorage() private processingTimes : ProcessingTime[];
     @SessionStorage() private partOrders : Array<any>;
     @SessionStorage() private plannedWarehouseStock : Array<any>;
-    @SessionStorage() private plannings : Plannings[];
+    @SessionStorage() private plannings : rowtype[];
 
     constructor(private http:Http){
         console.log('Session Service Initialized...');
