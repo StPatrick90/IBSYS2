@@ -95,6 +95,8 @@ export class MaterialPlanningComponent {
     getBruttoBedarfandPeriods() {
         this.plannings = this.sessionService.getPlannings();
         console.log("planningsmat", this.plannings);
+
+
     }
 
     setColspan() {

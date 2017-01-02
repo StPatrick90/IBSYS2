@@ -273,6 +273,7 @@ var SessionService = (function () {
         this.setProcessingTimes(null);
         this.setPartOrders(null);
         this.setPlannedWarehouseStock(null);
+        this.setPlannings(null);
         this.setbindingOrders(null);
     };
     __decorate([
