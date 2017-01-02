@@ -78,7 +78,6 @@ export class PredictionComponent {
                     this.rowtable1.push(row);
                 }
                 this.sessionService.setbindingOrders(this.rowtable1);
-                console.log("rt1", this.rowtable1);
             });
 
         //TODO: Methoden für Rechnungen umbasteln - ab hier alles unused ATM außer generatePeriods
@@ -94,24 +93,35 @@ export class PredictionComponent {
                     var row2 = {
                         produkt: null,
                         produktkennung: "",
-                        produktmengen: []
+                        produktmengen: [],
+                        period: null
                     };
 
                     for (let p of this.plannings) {
+                        // console.log("P", p.period);
+                        // row2.period = p.period;
+                        // console.log("R", row2.period);
+
                         for (let produkt of p.produkte) {
                             if (produkt.Kennung === produktKennung) {
                                 row2.produktkennung = produkt.Kennung;
                                 row2.produktmengen.push(produkt.Menge);
+                                row2.produktkennung = produkt.Kennung;
+                                // row2.period = p.period;
                             }
                         }
                     }
+
+                    this.rowtable2.push(row2);
+                    console.log("rt2", row2);
+
                     if (i + 1 !== this.plannings[0].produkte.length) {
+                        //hier muss man davon ausgehen, dass die produkte in jedem datensatz gleich sortiert sind
+                        // --> backend anpassen s.o.
                         produktKennung = this.plannings[0].produkte[i + 1].Kennung;
                     }
-                    this.rowtable2.push(row2);
                 }
                 this.sessionService.setPlannings(this.rowtable2);
-                console.log("rt2", this.rowtable2);
 
                 // this.generateRowsRemainingStock();
 
@@ -124,42 +134,6 @@ export class PredictionComponent {
     }
 
     // ------------------------
-
-    sumBindingOrders() {
-        this.period = parseInt(this.resultObjs.results.period, 10);
-        this.periods.push(this.period);
-        this.periods.push(this.period + 1);
-        this.periods.push(this.period + 2);
-        this.periods.push(this.period + 3);
-
-        for (var i = 0; i < this.bindingOrders.length; i++) {
-            if (this.periods[i] == this.bindingOrders[i].period) {
-                var p1 = parseInt(this.bindingOrders[i].product1, 10);
-                var p2 = parseInt(this.bindingOrders[i].product2, 10);
-                var p3 = parseInt(this.bindingOrders[i].product3, 10);
-                var sumBo = p1 + p2 + p3;
-                this.sumsBo.push(sumBo);
-            }
-        }
-    }
-
-    sumPlannedOrders() {
-        this.period = parseInt(this.resultObjs.results.period, 10);
-        this.periods.push(this.period);
-        this.periods.push(this.period + 1);
-        this.periods.push(this.period + 2);
-        this.periods.push(this.period + 3);
-
-        for (var i = 0; i < this.plannings.length; i++) {
-            if (this.periods[i] == this.plannings[i].period) {
-                var p1 = parseInt(this.plannings[i].product1, 10);
-                var p2 = parseInt(this.plannings[i].product2, 10);
-                var p3 = parseInt(this.plannings[i].product3, 10);
-                var sumPl = p1 + p2 + p3;
-                this.sumsPl.push(sumPl);
-            }
-        }
-    }
 
     generateRowsRemainingStock() {
         for (var art of this.resultObjs.results.warehousestock.article) {

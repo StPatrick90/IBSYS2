@@ -55,7 +55,6 @@ var PredictionComponent = (function () {
                 _this.rowtable1.push(row);
             }
             _this.sessionService.setbindingOrders(_this.rowtable1);
-            console.log("rt1", _this.rowtable1);
         });
         //TODO: Methoden für Rechnungen umbasteln - ab hier alles unused ATM außer generatePeriods
         this.predictionService.getPlannings()
@@ -66,25 +65,32 @@ var PredictionComponent = (function () {
                 var row2 = {
                     produkt: null,
                     produktkennung: "",
-                    produktmengen: []
+                    produktmengen: [],
+                    period: null
                 };
                 for (var _i = 0, _a = _this.plannings; _i < _a.length; _i++) {
                     var p = _a[_i];
+                    // console.log("P", p.period);
+                    // row2.period = p.period;
+                    // console.log("R", row2.period);
                     for (var _b = 0, _c = p.produkte; _b < _c.length; _b++) {
                         var produkt = _c[_b];
                         if (produkt.Kennung === produktKennung) {
                             row2.produktkennung = produkt.Kennung;
                             row2.produktmengen.push(produkt.Menge);
+                            row2.produktkennung = produkt.Kennung;
                         }
                     }
                 }
+                _this.rowtable2.push(row2);
+                console.log("rt2", row2);
                 if (i + 1 !== _this.plannings[0].produkte.length) {
+                    //hier muss man davon ausgehen, dass die produkte in jedem datensatz gleich sortiert sind
+                    // --> backend anpassen s.o.
                     produktKennung = _this.plannings[0].produkte[i + 1].Kennung;
                 }
-                _this.rowtable2.push(row2);
             }
             _this.sessionService.setPlannings(_this.rowtable2);
-            console.log("rt2", _this.rowtable2);
             // this.generateRowsRemainingStock();
         });
         this.dbService.getResults()
@@ -93,38 +99,6 @@ var PredictionComponent = (function () {
         });
     };
     // ------------------------
-    PredictionComponent.prototype.sumBindingOrders = function () {
-        this.period = parseInt(this.resultObjs.results.period, 10);
-        this.periods.push(this.period);
-        this.periods.push(this.period + 1);
-        this.periods.push(this.period + 2);
-        this.periods.push(this.period + 3);
-        for (var i = 0; i < this.bindingOrders.length; i++) {
-            if (this.periods[i] == this.bindingOrders[i].period) {
-                var p1 = parseInt(this.bindingOrders[i].product1, 10);
-                var p2 = parseInt(this.bindingOrders[i].product2, 10);
-                var p3 = parseInt(this.bindingOrders[i].product3, 10);
-                var sumBo = p1 + p2 + p3;
-                this.sumsBo.push(sumBo);
-            }
-        }
-    };
-    PredictionComponent.prototype.sumPlannedOrders = function () {
-        this.period = parseInt(this.resultObjs.results.period, 10);
-        this.periods.push(this.period);
-        this.periods.push(this.period + 1);
-        this.periods.push(this.period + 2);
-        this.periods.push(this.period + 3);
-        for (var i = 0; i < this.plannings.length; i++) {
-            if (this.periods[i] == this.plannings[i].period) {
-                var p1 = parseInt(this.plannings[i].product1, 10);
-                var p2 = parseInt(this.plannings[i].product2, 10);
-                var p3 = parseInt(this.plannings[i].product3, 10);
-                var sumPl = p1 + p2 + p3;
-                this.sumsPl.push(sumPl);
-            }
-        }
-    };
     PredictionComponent.prototype.generateRowsRemainingStock = function () {
         for (var _i = 0, _a = this.resultObjs.results.warehousestock.article; _i < _a.length; _i++) {
             var art = _a[_i];

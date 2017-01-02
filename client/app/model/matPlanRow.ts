@@ -12,7 +12,6 @@ export class matPlanRow {
     verwendung: verwendung[];
     diskontmenge: number;
     anfangsbestand: number;
-    // bruttobedarfnP: Plannings[];
     bruttobedarfnP: number[];
     mengeohbest: number[];
     bestellmenge: number;

@@ -34,7 +34,7 @@
         <th colspan="1" class="text-center">{{'sum_without_order' | translate}}</th>
         <th colspan="1" class="text-center">{{'volume_ordered' | translate}}</th>
         <th colspan="1" class="text-center">{{'ordertype' | translate}}</th>
-        <th colspan="4" class="text-center">{{'stock_after_receipt' | translate}}</th>
+        <th colspan="1" class="text-center">{{'stock_after_receipt' | translate}}</th>
     </tr>
 
     <tr>
@@ -49,10 +49,15 @@
         <th></th>
         <th></th>
         <th></th>
-        <th>2</th>
-        <th>3</th>
-        <th>4</th>
-        <th>5</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+
+
+
     </tr>
     </thead>
 
@@ -67,8 +72,8 @@
         </td>
         <td></td>
         <td>{{m.anfangsbestand}}</td>
-        <td>
-
+        <td *ngFor="let b of m.bruttobedarfnP">
+            {{b}}
         </td>
         <td></td>
         <td></td>

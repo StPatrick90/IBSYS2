@@ -7,6 +7,7 @@ import sort = require("core-js/fn/array/sort");
 import {Plannings} from "../../model/plannings";
 import {Http} from "@angular/http";
 import {rowtype} from "../../model/rowtype";
+import {stringify} from "@angular/platform-browser/src/facade/lang";
 
 @Component({
     moduleId: module.id,
@@ -54,7 +55,7 @@ export class MaterialPlanningComponent {
                 verwendung: [],
                 diskontmenge: null,
                 anfangsbestand: null,
-                bruttobedarfnP: null,
+                bruttobedarfnP: [],
                 mengeohbest: null,
                 bestellmenge: null,
                 bestellung: null,
@@ -68,15 +69,27 @@ export class MaterialPlanningComponent {
             matPlanRow.lieferfrist = purchPart.lieferfrist;
             matPlanRow.diskontmenge = purchPart.diskontmenge;
             matPlanRow.summe = Number((matPlanRow.lieferfrist + matPlanRow.abweichung).toFixed(2));
+            var pm = 0;
             for (let vw of purchPart.verwendung) {
                 matPlanRow.verwendung.push(vw);
 
-                // for (let p of this.plannings) {
-                //     var i = 1;
-                //     matPlanRow.bruttobedarfnP[i] += p.product1 * vw.Menge;
-                //         i++;
-                // }
+                for (let p of this.plannings) {
+                    if (p.produktkennung === vw.Produkt) {
+
+                        for (var i = 0; i < p.produktmengen.length; i++) {
+                            // if (pm == 0) {
+                            matPlanRow.bruttobedarfnP[i] = p.produktmengen[pm] * vw.Menge;
+                            // } else {
+                            // matPlanRow.bruttobedarfnP[i] += p.produktmengen[pm] * vw.Menge;
+                            // }
+                            this.blang += 1;
+
+                        }
+                        pm++;
+                    }
+                }
             }
+            console.log("bbnP: ", matPlanRow.bruttobedarfnP);
 
             // get Verwendungen
             for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {
@@ -95,13 +108,11 @@ export class MaterialPlanningComponent {
     getBruttoBedarfandPeriods() {
         this.plannings = this.sessionService.getPlannings();
         console.log("planningsmat", this.plannings);
-
-
     }
 
     setColspan() {
         document.getElementById("Verwendung").setAttribute("colspan", String(this.verwendungRow.length));
-        document.getElementById("Bruttobedarf").setAttribute("colspan", String(this.periodrow.length));
+        document.getElementById("Bruttobedarf").setAttribute("colspan", String(4));
     }
 
 }

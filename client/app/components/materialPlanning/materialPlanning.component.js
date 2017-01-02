@@ -45,7 +45,7 @@ var MaterialPlanningComponent = (function () {
                 verwendung: [],
                 diskontmenge: null,
                 anfangsbestand: null,
-                bruttobedarfnP: null,
+                bruttobedarfnP: [],
                 mengeohbest: null,
                 bestellmenge: null,
                 bestellung: null,
@@ -58,10 +58,26 @@ var MaterialPlanningComponent = (function () {
             matPlanRow.lieferfrist = purchPart.lieferfrist;
             matPlanRow.diskontmenge = purchPart.diskontmenge;
             matPlanRow.summe = Number((matPlanRow.lieferfrist + matPlanRow.abweichung).toFixed(2));
+            var pm = 0;
             for (var _b = 0, _c = purchPart.verwendung; _b < _c.length; _b++) {
                 var vw = _c[_b];
                 matPlanRow.verwendung.push(vw);
+                for (var _d = 0, _e = this.plannings; _d < _e.length; _d++) {
+                    var p = _e[_d];
+                    if (p.produktkennung === vw.Produkt) {
+                        for (var i = 0; i < p.produktmengen.length; i++) {
+                            // if (pm == 0) {
+                            matPlanRow.bruttobedarfnP[i] = p.produktmengen[pm] * vw.Menge;
+                            // } else {
+                            // matPlanRow.bruttobedarfnP[i] += p.produktmengen[pm] * vw.Menge;
+                            // }
+                            this.blang += 1;
+                        }
+                        pm++;
+                    }
+                }
             }
+            console.log("bbnP: ", matPlanRow.bruttobedarfnP);
             // get Verwendungen
             for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {
                 if (!this.verwendungRow.includes(matPlanRow.verwendung[l].Produkt)) {
@@ -80,7 +96,7 @@ var MaterialPlanningComponent = (function () {
     };
     MaterialPlanningComponent.prototype.setColspan = function () {
         document.getElementById("Verwendung").setAttribute("colspan", String(this.verwendungRow.length));
-        document.getElementById("Bruttobedarf").setAttribute("colspan", String(this.periodrow.length));
+        document.getElementById("Bruttobedarf").setAttribute("colspan", String(4));
     };
     MaterialPlanningComponent = __decorate([
         core_1.Component({
