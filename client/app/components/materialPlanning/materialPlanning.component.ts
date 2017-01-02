@@ -8,6 +8,7 @@ import {Plannings} from "../../model/plannings";
 import {Http} from "@angular/http";
 import {rowtype} from "../../model/rowtype";
 import {stringify} from "@angular/platform-browser/src/facade/lang";
+import {isNumber} from "util";
 
 @Component({
     moduleId: module.id,
@@ -43,6 +44,8 @@ export class MaterialPlanningComponent {
                 () => this.setParameters())
     };
 
+
+    //TODO: Perioden von Yannik über session service holen (derzeit kommt immer nur die selbe), danach restlich tabellex
     setParameters() {
         this.getBruttoBedarfandPeriods();
         var i = 0;
@@ -69,29 +72,30 @@ export class MaterialPlanningComponent {
             matPlanRow.lieferfrist = purchPart.lieferfrist;
             matPlanRow.diskontmenge = purchPart.diskontmenge;
             matPlanRow.summe = Number((matPlanRow.lieferfrist + matPlanRow.abweichung).toFixed(2));
-            var pm = 0;
+            // get Verwendungen
             for (let vw of purchPart.verwendung) {
                 matPlanRow.verwendung.push(vw);
+            }
 
+            // get Bruttobedarf
+            matPlanRow.bruttobedarfnP.push(0);
+            for (let p of this.plannings) {
+                while (matPlanRow.bruttobedarfnP.length < p.produktmengen.length) {
+                    matPlanRow.bruttobedarfnP.push(0);
+                }
+                // später if(!this.periodrow.includes(p.period)) {...}, wenn korrekte perioden von prediction übertragen werden
+            }
+            for (let vw of purchPart.verwendung) {
                 for (let p of this.plannings) {
-                    if (p.produktkennung === vw.Produkt) {
-
-                        for (var i = 0; i < p.produktmengen.length; i++) {
-                            // if (pm == 0) {
-                            matPlanRow.bruttobedarfnP[i] = p.produktmengen[pm] * vw.Menge;
-                            // } else {
-                            // matPlanRow.bruttobedarfnP[i] += p.produktmengen[pm] * vw.Menge;
-                            // }
-                            this.blang += 1;
-
+                    if (vw.Produkt === p.produktkennung) {
+                        for (var i = 0; i < matPlanRow.bruttobedarfnP.length; i++) {
+                            matPlanRow.bruttobedarfnP[i] += vw.Menge * p.produktmengen[i];
                         }
-                        pm++;
                     }
                 }
             }
-            console.log("bbnP: ", matPlanRow.bruttobedarfnP);
 
-            // get Verwendungen
+            // get Verwendungsarten
             for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {
                 if (!this.verwendungRow.includes(matPlanRow.verwendung[l].Produkt)) {
                     this.verwendungRow.push(matPlanRow.verwendung[l].Produkt);
@@ -107,7 +111,7 @@ export class MaterialPlanningComponent {
 
     getBruttoBedarfandPeriods() {
         this.plannings = this.sessionService.getPlannings();
-        console.log("planningsmat", this.plannings);
+        console.log(this.plannings);
     }
 
     setColspan() {

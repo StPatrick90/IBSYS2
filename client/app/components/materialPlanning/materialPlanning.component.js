@@ -32,6 +32,7 @@ var MaterialPlanningComponent = (function () {
         }, function (err) { return console.error(err); }, function () { return _this.setParameters(); });
     };
     ;
+    //TODO: Perioden von Yannik über session service holen (derzeit kommt immer nur die selbe), danach restlich tabellex
     MaterialPlanningComponent.prototype.setParameters = function () {
         this.getBruttoBedarfandPeriods();
         var i = 0;
@@ -58,27 +59,31 @@ var MaterialPlanningComponent = (function () {
             matPlanRow.lieferfrist = purchPart.lieferfrist;
             matPlanRow.diskontmenge = purchPart.diskontmenge;
             matPlanRow.summe = Number((matPlanRow.lieferfrist + matPlanRow.abweichung).toFixed(2));
-            var pm = 0;
+            // get Verwendungen
             for (var _b = 0, _c = purchPart.verwendung; _b < _c.length; _b++) {
                 var vw = _c[_b];
                 matPlanRow.verwendung.push(vw);
-                for (var _d = 0, _e = this.plannings; _d < _e.length; _d++) {
-                    var p = _e[_d];
-                    if (p.produktkennung === vw.Produkt) {
-                        for (var i = 0; i < p.produktmengen.length; i++) {
-                            // if (pm == 0) {
-                            matPlanRow.bruttobedarfnP[i] = p.produktmengen[pm] * vw.Menge;
-                            // } else {
-                            // matPlanRow.bruttobedarfnP[i] += p.produktmengen[pm] * vw.Menge;
-                            // }
-                            this.blang += 1;
+            }
+            // get Bruttobedarf
+            matPlanRow.bruttobedarfnP.push(0);
+            for (var _d = 0, _e = this.plannings; _d < _e.length; _d++) {
+                var p = _e[_d];
+                while (matPlanRow.bruttobedarfnP.length < p.produktmengen.length) {
+                    matPlanRow.bruttobedarfnP.push(0);
+                }
+            }
+            for (var _f = 0, _g = purchPart.verwendung; _f < _g.length; _f++) {
+                var vw = _g[_f];
+                for (var _h = 0, _j = this.plannings; _h < _j.length; _h++) {
+                    var p = _j[_h];
+                    if (vw.Produkt === p.produktkennung) {
+                        for (var i = 0; i < matPlanRow.bruttobedarfnP.length; i++) {
+                            matPlanRow.bruttobedarfnP[i] += vw.Menge * p.produktmengen[i];
                         }
-                        pm++;
                     }
                 }
             }
-            console.log("bbnP: ", matPlanRow.bruttobedarfnP);
-            // get Verwendungen
+            // get Verwendungsarten
             for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {
                 if (!this.verwendungRow.includes(matPlanRow.verwendung[l].Produkt)) {
                     this.verwendungRow.push(matPlanRow.verwendung[l].Produkt);
@@ -92,7 +97,7 @@ var MaterialPlanningComponent = (function () {
     };
     MaterialPlanningComponent.prototype.getBruttoBedarfandPeriods = function () {
         this.plannings = this.sessionService.getPlannings();
-        console.log("planningsmat", this.plannings);
+        console.log(this.plannings);
     };
     MaterialPlanningComponent.prototype.setColspan = function () {
         document.getElementById("Verwendung").setAttribute("colspan", String(this.verwendungRow.length));

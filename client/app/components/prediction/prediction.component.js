@@ -71,7 +71,7 @@ var PredictionComponent = (function () {
                 for (var _i = 0, _a = _this.plannings; _i < _a.length; _i++) {
                     var p = _a[_i];
                     // console.log("P", p.period);
-                    // row2.period = p.period;
+                    row2.period = p.period;
                     // console.log("R", row2.period);
                     for (var _b = 0, _c = p.produkte; _b < _c.length; _b++) {
                         var produkt = _c[_b];

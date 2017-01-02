@@ -30,7 +30,8 @@
         <tbody>
         <tr *ngFor="let r of rowtable1">
             <td>{{r.produktkennung}}</td>
-            <td *ngFor="let p of r.produktmengen">{{p}}</td>
+            <td *ngFor="let p of r.produktmengen"><input type="text" value="{{ p }}"
+                                                         class="form-control"></td>
         </tr>
         </tbody>
 
