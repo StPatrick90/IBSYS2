@@ -98,9 +98,7 @@ export class PredictionComponent {
                     };
 
                     for (let p of this.plannings) {
-                        // console.log("P", p.period);
                         row2.period = p.period;
-                        // console.log("R", row2.period);
 
                         for (let produkt of p.produkte) {
                             if (produkt.Kennung === produktKennung) {

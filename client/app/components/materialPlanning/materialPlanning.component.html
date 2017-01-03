@@ -57,7 +57,6 @@
         <th></th>
 
 
-
     </tr>
     </thead>
 
@@ -70,12 +69,12 @@
         <td *ngFor="let v of m.verwendung">
             {{v.Menge}}
         </td>
-        <td></td>
+        <td>{{m.diskontmenge}}</td>
         <td>{{m.anfangsbestand}}</td>
         <td *ngFor="let b of m.bruttobedarfnP">
             {{b}}
         </td>
-        <td></td>
+        <td id="Mengeohbest" [ngClass]="{red: m.isneg}">{{m.mengeohbest}}</td>
         <td></td>
         <td></td>
         <td></td>

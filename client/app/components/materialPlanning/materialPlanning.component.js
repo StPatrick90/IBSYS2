@@ -32,10 +32,11 @@ var MaterialPlanningComponent = (function () {
         }, function (err) { return console.error(err); }, function () { return _this.setParameters(); });
     };
     ;
-    //TODO: Perioden von Yannik über session service holen (derzeit kommt immer nur die selbe), danach restlich tabellex
+    //TODO: Perioden von Yannik über session service holen (derzeit kommt immer nur die selbe), danach restliche tabelle
     MaterialPlanningComponent.prototype.setParameters = function () {
+        console.log("result: ", this.resultObj);
         this.getBruttoBedarfandPeriods();
-        var i = 0;
+        var index = 0;
         for (var _i = 0, _a = this.purchaseParts; _i < _a.length; _i++) {
             var purchPart = _a[_i];
             var matPlanRow = {
@@ -50,14 +51,17 @@ var MaterialPlanningComponent = (function () {
                 mengeohbest: null,
                 bestellmenge: null,
                 bestellung: null,
-                bestandnWe: null
+                bestandnWe: null,
+                isneg: null
             };
             // collect values
             matPlanRow.kpartnr = purchPart.nummer;
-            matPlanRow.anfangsbestand = this.resultObj.results.warehousestock.article[i].startamount; // dbwerte falsch?
+            index = matPlanRow.kpartnr - 1;
+            matPlanRow.anfangsbestand = this.resultObj.results.warehousestock.article[index].startamount;
             matPlanRow.abweichung = purchPart.abweichung;
             matPlanRow.lieferfrist = purchPart.lieferfrist;
-            matPlanRow.diskontmenge = purchPart.diskontmenge;
+            matPlanRow.diskontmenge = purchPart.diskontmenge; // werte bei diskontmenge in db und excel unterscheiden sich, auch ab überprüfen
+            console.log("PN:", purchPart.nummer, "dm", purchPart.diskontmenge);
             matPlanRow.summe = Number((matPlanRow.lieferfrist + matPlanRow.abweichung).toFixed(2));
             // get Verwendungen
             for (var _b = 0, _c = purchPart.verwendung; _b < _c.length; _b++) {
@@ -71,6 +75,9 @@ var MaterialPlanningComponent = (function () {
                 while (matPlanRow.bruttobedarfnP.length < p.produktmengen.length) {
                     matPlanRow.bruttobedarfnP.push(0);
                 }
+                if (this.periodrow.length < 4) {
+                    this.periodrow.push(p.period);
+                }
             }
             for (var _f = 0, _g = purchPart.verwendung; _f < _g.length; _f++) {
                 var vw = _g[_f];
@@ -83,6 +90,17 @@ var MaterialPlanningComponent = (function () {
                     }
                 }
             }
+            // get Menge ohne Bestellung
+            matPlanRow.mengeohbest = matPlanRow.anfangsbestand;
+            for (var i = 0; i < matPlanRow.bruttobedarfnP.length; i++) {
+                matPlanRow.mengeohbest = matPlanRow.mengeohbest - matPlanRow.bruttobedarfnP[i];
+            }
+            if (matPlanRow.mengeohbest < 0) {
+                matPlanRow.isneg = true;
+            }
+            else {
+                matPlanRow.isneg = false;
+            }
             // get Verwendungsarten
             for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {
                 if (!this.verwendungRow.includes(matPlanRow.verwendung[l].Produkt)) {
@@ -91,13 +109,14 @@ var MaterialPlanningComponent = (function () {
             }
             // store values finally
             this.matPlan.push(matPlanRow);
-            i++;
         }
         this.setColspan();
     };
     MaterialPlanningComponent.prototype.getBruttoBedarfandPeriods = function () {
         this.plannings = this.sessionService.getPlannings();
-        console.log(this.plannings);
+        if (this.plannings === null) {
+            alert("Bitte erst die Prognose durchführen.");
+        }
     };
     MaterialPlanningComponent.prototype.setColspan = function () {
         document.getElementById("Verwendung").setAttribute("colspan", String(this.verwendungRow.length));
