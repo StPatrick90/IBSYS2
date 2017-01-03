@@ -4,12 +4,8 @@ import {MaterialPlanningService} from '../../services/materialPlanning.service';
 import {Part} from '../../model/part';
 import {matPlanRow} from "../../model/matPlanRow";
 import sort = require("core-js/fn/array/sort");
-import {Plannings} from "../../model/plannings";
 import {Http} from "@angular/http";
 import {rowtype} from "../../model/rowtype";
-import {stringify} from "@angular/platform-browser/src/facade/lang";
-import {isNumber} from "util";
-
 @Component({
     moduleId: module.id,
     selector: 'materialPlanning',
@@ -74,7 +70,6 @@ export class MaterialPlanningComponent {
             matPlanRow.abweichung = purchPart.abweichung;
             matPlanRow.lieferfrist = purchPart.lieferfrist;
             matPlanRow.diskontmenge = purchPart.diskontmenge; // werte bei diskontmenge in db und excel unterscheiden sich, auch ab überprüfen
-            console.log("PN:", purchPart.nummer, "dm", purchPart.diskontmenge);
             matPlanRow.summe = Number((matPlanRow.lieferfrist + matPlanRow.abweichung).toFixed(2));
 
             // get Verwendungen
@@ -113,6 +108,20 @@ export class MaterialPlanningComponent {
             else {
                 matPlanRow.isneg = false;
             }
+
+            // set Normal-/Eilbestellung
+            if (matPlanRow.mengeohbest < 0 && matPlanRow.summe * matPlanRow.bruttobedarfnP[0] > matPlanRow.anfangsbestand) {
+                matPlanRow.bestellung = "Eil.";
+            }
+            else {
+                if (matPlanRow.mengeohbest <= 0) {
+                    matPlanRow.bestellung = "Norm.";
+                }
+                else {
+                    matPlanRow.bestellung = "---"
+                }
+            }
+
 
             // get Verwendungsarten
             for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {

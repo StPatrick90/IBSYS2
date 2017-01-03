@@ -11,11 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 13.11.2016.
  */
-var core_1 = require("@angular/core");
-var part_1 = require("../../../model/part");
-var part_service_1 = require("../../../services/part.service");
-var ng2_bs3_modal_1 = require("ng2-bs3-modal/ng2-bs3-modal");
-var session_service_1 = require("../../../services/session.service");
+var core_1 = require('@angular/core');
+var part_1 = require('../../../model/part');
+var part_service_1 = require('../../../services/part.service');
+var ng2_bs3_modal_1 = require('ng2-bs3-modal/ng2-bs3-modal');
+var session_service_1 = require('../../../services/session.service');
 var PartsComponent = (function () {
     function PartsComponent(partservice, sessionService, window) {
         var _this = this;
@@ -403,23 +403,23 @@ var PartsComponent = (function () {
                 && part.abweichung == null && part.diskontmenge == null;
         }
     };
+    __decorate([
+        core_1.ViewChild('modalPartExists'), 
+        __metadata('design:type', ng2_bs3_modal_1.ModalComponent)
+    ], PartsComponent.prototype, "modalPartExists", void 0);
+    __decorate([
+        core_1.ViewChild('modalPartEmpty'), 
+        __metadata('design:type', ng2_bs3_modal_1.ModalComponent)
+    ], PartsComponent.prototype, "modalPartEmpty", void 0);
+    PartsComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'parts',
+            templateUrl: 'parts.component.html'
+        }), 
+        __metadata('design:paramtypes', [part_service_1.PartService, session_service_1.SessionService, Window])
+    ], PartsComponent);
     return PartsComponent;
 }());
-__decorate([
-    core_1.ViewChild('modalPartExists'),
-    __metadata("design:type", ng2_bs3_modal_1.ModalComponent)
-], PartsComponent.prototype, "modalPartExists", void 0);
-__decorate([
-    core_1.ViewChild('modalPartEmpty'),
-    __metadata("design:type", ng2_bs3_modal_1.ModalComponent)
-], PartsComponent.prototype, "modalPartEmpty", void 0);
-PartsComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'parts',
-        templateUrl: 'parts.component.html'
-    }),
-    __metadata("design:paramtypes", [part_service_1.PartService, session_service_1.SessionService, Window])
-], PartsComponent);
 exports.PartsComponent = PartsComponent;
 //# sourceMappingURL=parts.component.js.map

@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 11.11.2016.
  */
-var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
-require("rxjs/add/operator/map");
+var core_1 = require('@angular/core');
+var http_1 = require('@angular/http');
+require('rxjs/add/operator/map');
 var WorkstationService = (function () {
     function WorkstationService(http) {
         this.http = http;
@@ -39,11 +39,11 @@ var WorkstationService = (function () {
         return this.http.put('/api/workstation/' + workstation._id, JSON.stringify(workstation), { headers: headers })
             .map(function (res) { return res.json(); });
     };
+    WorkstationService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [http_1.Http])
+    ], WorkstationService);
     return WorkstationService;
 }());
-WorkstationService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http])
-], WorkstationService);
 exports.WorkstationService = WorkstationService;
 //# sourceMappingURL=workstation.service.js.map

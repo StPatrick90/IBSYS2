@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var session_service_1 = require("../../services/session.service");
-var materialPlanning_service_1 = require("../../services/materialPlanning.service");
+var core_1 = require('@angular/core');
+var session_service_1 = require('../../services/session.service');
+var materialPlanning_service_1 = require('../../services/materialPlanning.service');
 var http_1 = require("@angular/http");
 var MaterialPlanningComponent = (function () {
     function MaterialPlanningComponent(sessionService, materialPlanningService, http) {
@@ -61,7 +61,6 @@ var MaterialPlanningComponent = (function () {
             matPlanRow.abweichung = purchPart.abweichung;
             matPlanRow.lieferfrist = purchPart.lieferfrist;
             matPlanRow.diskontmenge = purchPart.diskontmenge; // werte bei diskontmenge in db und excel unterscheiden sich, auch ab überprüfen
-            console.log("PN:", purchPart.nummer, "dm", purchPart.diskontmenge);
             matPlanRow.summe = Number((matPlanRow.lieferfrist + matPlanRow.abweichung).toFixed(2));
             // get Verwendungen
             for (var _b = 0, _c = purchPart.verwendung; _b < _c.length; _b++) {
@@ -101,6 +100,18 @@ var MaterialPlanningComponent = (function () {
             else {
                 matPlanRow.isneg = false;
             }
+            // set Normal-/Eilbestellung
+            if (matPlanRow.mengeohbest < 0 && matPlanRow.summe * matPlanRow.bruttobedarfnP[0] > matPlanRow.anfangsbestand) {
+                matPlanRow.bestellung = "Eil.";
+            }
+            else {
+                if (matPlanRow.mengeohbest <= 0) {
+                    matPlanRow.bestellung = "Norm.";
+                }
+                else {
+                    matPlanRow.bestellung = "---";
+                }
+            }
             // get Verwendungsarten
             for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {
                 if (!this.verwendungRow.includes(matPlanRow.verwendung[l].Produkt)) {
@@ -122,15 +133,15 @@ var MaterialPlanningComponent = (function () {
         document.getElementById("Verwendung").setAttribute("colspan", String(this.verwendungRow.length));
         document.getElementById("Bruttobedarf").setAttribute("colspan", String(4));
     };
+    MaterialPlanningComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'materialPlanning',
+            templateUrl: 'materialPlanning.component.html'
+        }), 
+        __metadata('design:paramtypes', [session_service_1.SessionService, materialPlanning_service_1.MaterialPlanningService, http_1.Http])
+    ], MaterialPlanningComponent);
     return MaterialPlanningComponent;
 }());
-MaterialPlanningComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'materialPlanning',
-        templateUrl: 'materialPlanning.component.html'
-    }),
-    __metadata("design:paramtypes", [session_service_1.SessionService, materialPlanning_service_1.MaterialPlanningService, http_1.Http])
-], MaterialPlanningComponent);
 exports.MaterialPlanningComponent = MaterialPlanningComponent;
 //# sourceMappingURL=materialPlanning.component.js.map

@@ -37,6 +37,8 @@ var partsLists_component_1 = require('./components/settings/partsLists/partsList
 var prio_component_1 = require('./components/prio/prio.component');
 var parts_pipe_1 = require('./pipes/parts.pipe');
 var materialPlanningEP_component_1 = require('./components/materialPlanningEP/materialPlanningEP.component');
+var warehousestock_component_1 = require('./components/overview/warehousestock/warehousestock.component');
+var ng2_charts_1 = require('ng2-charts/ng2-charts');
 var WINDOW_PROVIDER = {
     provide: Window,
     useValue: window
@@ -47,11 +49,12 @@ var AppModule = (function () {
     AppModule = __decorate([
         core_1.NgModule({
             imports: [platform_browser_1.BrowserModule, http_1.HttpModule, forms_1.FormsModule, app_routing_module_1.AppRoutingModule, ng2_bs3_modal_1.Ng2Bs3ModalModule,
-                multiselect_dropdown_1.MultiselectDropdownModule, ng2_dnd_1.DndModule.forRoot()],
+                multiselect_dropdown_1.MultiselectDropdownModule, ng2_dnd_1.DndModule.forRoot(), ng2_charts_1.ChartsModule],
             declarations: [app_component_1.AppComponent, tasks_component_1.TasksComponent, capacityPlanning_component_1.CapacityPlanningComponent,
                 home_component_1.HomeComponent, translate_pipe_1.TranslatePipe, xmlImport_component_1.XmlImportComponent, materialPlanning_component_1.MaterialPlanningComponent,
                 prediction_component_1.PredictionComponent, workstations_component_1.WorkstationsComponent, parts_component_1.PartsComponent, dashboard_component_1.DashboardComponent,
-                partsLists_component_1.PartsListsComponent, prio_component_1.PrioComponent, parts_pipe_1.PartPipe, materialPlanningEP_component_1.MaterialPlanningEPComponent],
+                partsLists_component_1.PartsListsComponent, prio_component_1.PrioComponent, parts_pipe_1.PartPipe, materialPlanningEP_component_1.MaterialPlanningEPComponent,
+                warehousestock_component_1.WarehousestockComponent],
             bootstrap: [app_component_1.AppComponent],
             providers: [index_1.TRANSLATION_PROVIDERS, translate_service_1.TranslateService, LocalStorageEmitter_1.LocalStorageService, WINDOW_PROVIDER]
         }), 
