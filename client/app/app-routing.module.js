@@ -11,48 +11,50 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 25.10.2016.
  */
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var tasks_component_1 = require('./components/tasks/tasks.component');
-var capacityPlanning_component_1 = require('./components/capacityPlanning/capacityPlanning.component');
-var home_component_1 = require('./components/home/home.component');
-var xmlImport_component_1 = require('./components/xmlImport/xmlImport.component');
-var materialPlanning_component_1 = require('./components/materialPlanning/materialPlanning.component');
-var prediction_component_1 = require('./components/prediction/prediction.component');
-var workstations_component_1 = require('./components/settings/workstations/workstations.component');
-var parts_component_1 = require('./components/settings/parts/parts.component');
-var dashboard_component_1 = require('./components/dashboard/dashboard.component');
-var partsLists_component_1 = require('./components/settings/partsLists/partsLists.component');
-var prio_component_1 = require('./components/prio/prio.component');
-var materialPlanningEP_component_1 = require('./components/materialPlanningEP/materialPlanningEP.component');
+var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+var tasks_component_1 = require("./components/tasks/tasks.component");
+var capacityPlanning_component_1 = require("./components/capacityPlanning/capacityPlanning.component");
+var home_component_1 = require("./components/home/home.component");
+var xmlImport_component_1 = require("./components/xmlImport/xmlImport.component");
+var materialPlanning_component_1 = require("./components/materialPlanning/materialPlanning.component");
+var prediction_component_1 = require("./components/prediction/prediction.component");
+var workstations_component_1 = require("./components/settings/workstations/workstations.component");
+var parts_component_1 = require("./components/settings/parts/parts.component");
+var dashboard_component_1 = require("./components/dashboard/dashboard.component");
+var partsLists_component_1 = require("./components/settings/partsLists/partsLists.component");
+var prio_component_1 = require("./components/prio/prio.component");
+var materialPlanningEP_component_1 = require("./components/materialPlanningEP/materialPlanningEP.component");
+var warehousestock_component_1 = require("./components/overview/warehousestock/warehousestock.component");
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
     }
-    AppRoutingModule = __decorate([
-        core_1.NgModule({
-            imports: [
-                router_1.RouterModule.forRoot([
-                    { path: 'prediction', component: prediction_component_1.PredictionComponent },
-                    { path: 'xmlImport', component: xmlImport_component_1.XmlImportComponent },
-                    { path: 'tasks', component: tasks_component_1.TasksComponent },
-                    { path: 'capacityPlanning', component: capacityPlanning_component_1.CapacityPlanningComponent },
-                    { path: '', component: home_component_1.HomeComponent },
-                    { path: 'materialPlanning', component: materialPlanning_component_1.MaterialPlanningComponent },
-                    { path: 'workstations', component: workstations_component_1.WorkstationsComponent },
-                    { path: 'parts', component: parts_component_1.PartsComponent },
-                    { path: 'dashboard', component: dashboard_component_1.DashboardComponent },
-                    { path: 'partsLists', component: partsLists_component_1.PartsListsComponent },
-                    { path: 'prioritization', component: prio_component_1.PrioComponent },
-                    { path: 'materialPlanningEP', component: materialPlanningEP_component_1.MaterialPlanningEPComponent },
-                ])
-            ],
-            exports: [
-                router_1.RouterModule
-            ]
-        }), 
-        __metadata('design:paramtypes', [])
-    ], AppRoutingModule);
     return AppRoutingModule;
 }());
+AppRoutingModule = __decorate([
+    core_1.NgModule({
+        imports: [
+            router_1.RouterModule.forRoot([
+                { path: 'prediction', component: prediction_component_1.PredictionComponent },
+                { path: 'xmlImport', component: xmlImport_component_1.XmlImportComponent },
+                { path: 'tasks', component: tasks_component_1.TasksComponent },
+                { path: 'capacityPlanning', component: capacityPlanning_component_1.CapacityPlanningComponent },
+                { path: '', component: home_component_1.HomeComponent },
+                { path: 'materialPlanning', component: materialPlanning_component_1.MaterialPlanningComponent },
+                { path: 'workstations', component: workstations_component_1.WorkstationsComponent },
+                { path: 'parts', component: parts_component_1.PartsComponent },
+                { path: 'dashboard', component: dashboard_component_1.DashboardComponent },
+                { path: 'partsLists', component: partsLists_component_1.PartsListsComponent },
+                { path: 'prioritization', component: prio_component_1.PrioComponent },
+                { path: 'materialPlanningEP', component: materialPlanningEP_component_1.MaterialPlanningEPComponent },
+                { path: 'warehousestock', component: warehousestock_component_1.WarehousestockComponent }
+            ])
+        ],
+        exports: [
+            router_1.RouterModule
+        ]
+    }),
+    __metadata("design:paramtypes", [])
+], AppRoutingModule);
 exports.AppRoutingModule = AppRoutingModule;
 //# sourceMappingURL=app-routing.module.js.map

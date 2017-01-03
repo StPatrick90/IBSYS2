@@ -27,6 +27,8 @@ import { PartsListsComponent} from './components/settings/partsLists/partsLists.
 import { PrioComponent } from './components/prio/prio.component';
 import {PartPipe} from './pipes/parts.pipe';
 import { MaterialPlanningEPComponent } from './components/materialPlanningEP/materialPlanningEP.component';
+import { WarehousestockComponent } from './components/overview/warehousestock/warehousestock.component';
+import { ChartsModule } from 'ng2-charts/ng2-charts';
 
 
 const WINDOW_PROVIDER: ValueProvider = {
@@ -36,12 +38,13 @@ const WINDOW_PROVIDER: ValueProvider = {
 
 @NgModule({
     imports: [BrowserModule, HttpModule, FormsModule, AppRoutingModule, Ng2Bs3ModalModule,
-        MultiselectDropdownModule, DndModule.forRoot()],
+        MultiselectDropdownModule, DndModule.forRoot(), ChartsModule],
 
     declarations: [AppComponent, TasksComponent, CapacityPlanningComponent,
         HomeComponent, TranslatePipe, XmlImportComponent, MaterialPlanningComponent,
         PredictionComponent, WorkstationsComponent, PartsComponent, DashboardComponent,
-        PartsListsComponent, PrioComponent, PartPipe, MaterialPlanningEPComponent],
+        PartsListsComponent, PrioComponent, PartPipe, MaterialPlanningEPComponent,
+        WarehousestockComponent],
 
     bootstrap: [AppComponent],
     providers: [TRANSLATION_PROVIDERS, TranslateService, LocalStorageService, WINDOW_PROVIDER]

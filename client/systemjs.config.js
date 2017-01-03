@@ -27,7 +27,8 @@
             'ng2-bs3-modal': 'npm:ng2-bs3-modal',
             'angular-2-dropdown-multiselect': 'npm:angular-2-dropdown-multiselect',
             'angular2-localstorage': 'npm:angular2-localstorage',
-            'ng2-dnd': 'npm:ng2-dnd'
+            'ng2-dnd': 'npm:ng2-dnd',
+            'ng2-charts': 'npm:ng2-charts'
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
@@ -55,6 +56,10 @@
             'ng2-dnd':  {
                 main: 'index.js',
                 defaultExtension: 'js'
+            },
+            "ng2-charts": {
+                main: "ng2-charts.js",
+                defaultExtension: "js"
             }
         }
     });
