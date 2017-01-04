@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 03.01.2017.
  */
-var core_1 = require('@angular/core');
-var db_service_1 = require('../../../services/db.service');
+var core_1 = require("@angular/core");
+var db_service_1 = require("../../../services/db.service");
 var WarehousestockComponent = (function () {
     function WarehousestockComponent(dbService) {
         var _this = this;
@@ -60,15 +60,15 @@ var WarehousestockComponent = (function () {
         }
         this.lineChartData = [{ data: data, label: 'Warehousestock' }];
     };
-    WarehousestockComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'warehousestock',
-            templateUrl: 'warehousestock.component.html'
-        }), 
-        __metadata('design:paramtypes', [db_service_1.DBService])
-    ], WarehousestockComponent);
     return WarehousestockComponent;
 }());
+WarehousestockComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'warehousestock',
+        templateUrl: 'warehousestock.component.html'
+    }),
+    __metadata("design:paramtypes", [db_service_1.DBService])
+], WarehousestockComponent);
 exports.WarehousestockComponent = WarehousestockComponent;
 //# sourceMappingURL=warehousestock.component.js.map

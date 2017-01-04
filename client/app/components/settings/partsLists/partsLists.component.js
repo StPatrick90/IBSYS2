@@ -11,10 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 07.12.2016.
  */
-var core_1 = require('@angular/core');
-var session_service_1 = require('../../../services/session.service');
-var part_1 = require('../../../model/part');
-var part_service_1 = require('../../../services/part.service');
+var core_1 = require("@angular/core");
+var session_service_1 = require("../../../services/session.service");
+var part_1 = require("../../../model/part");
+var part_service_1 = require("../../../services/part.service");
 var PartsListsComponent = (function () {
     function PartsListsComponent(partservice, sessionService) {
         var _this = this;
@@ -249,15 +249,15 @@ var PartsListsComponent = (function () {
         });
         this.uebersicht.unshift({ teil: this.part.typ + this.part.nummer, anzahl: 1 });
     };
-    PartsListsComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'partsLists',
-            templateUrl: 'partsLists.component.html'
-        }), 
-        __metadata('design:paramtypes', [part_service_1.PartService, session_service_1.SessionService])
-    ], PartsListsComponent);
     return PartsListsComponent;
 }());
+PartsListsComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'partsLists',
+        templateUrl: 'partsLists.component.html'
+    }),
+    __metadata("design:paramtypes", [part_service_1.PartService, session_service_1.SessionService])
+], PartsListsComponent);
 exports.PartsListsComponent = PartsListsComponent;
 //# sourceMappingURL=partsLists.component.js.map

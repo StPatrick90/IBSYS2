@@ -139,6 +139,10 @@ export const LANG_DE_TRANS = {
     'sum_without_order':'Menge oh. Best.',
     'volume_ordered':'Bestellmenge',
     'ordertype':'Bestellung E/N',
-    'stock_after_receipt':'Bestand n. gepl. WE'
+    'stock_after_receipt':'Bestand n. gepl. WE',
 
+//Settings-Parts
+    'overKPart_search': 'Suche',
+    'overKPart_searchEmptyText': 'Nummer oder Bezeichnung',
+    'overKPart_allocation': 'Wird verwendet von:',
 };

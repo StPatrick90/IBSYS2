@@ -11,10 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 21.10.2016.
  */
-var core_1 = require('@angular/core');
+var core_1 = require("@angular/core");
 var WebStorage_1 = require("angular2-localstorage/WebStorage");
-var http_1 = require('@angular/http');
-require('rxjs/add/operator/map');
+var http_1 = require("@angular/http");
+require("rxjs/add/operator/map");
 var SessionService = (function () {
     function SessionService(http) {
         this.http = http;
@@ -225,19 +225,19 @@ var SessionService = (function () {
         this.resultObj = Obj;
     };
     SessionService.prototype.getParts = function () {
-        return this.parts;
+        return JSON.parse(JSON.stringify(this.parts));
     };
     SessionService.prototype.setParts = function (parts) {
         this.parts = parts;
     };
     SessionService.prototype.getWorkstations = function () {
-        return this.workstations;
+        return JSON.parse(JSON.stringify(this.workstations));
     };
     SessionService.prototype.setWorkstations = function (workstations) {
         this.workstations = workstations;
     };
     SessionService.prototype.getProcessingTimes = function () {
-        return this.processingTimes;
+        return JSON.parse(JSON.stringify(this.processingTimes));
     };
     SessionService.prototype.setProcessingTimes = function (processingTimes) {
         this.processingTimes = processingTimes;
@@ -246,22 +246,22 @@ var SessionService = (function () {
         this.bindingorders = rowtable1;
     };
     SessionService.prototype.getbindingOrders = function () {
-        return this.bindingorders;
+        return JSON.parse(JSON.stringify(this.bindingorders));
     };
     SessionService.prototype.setPlannings = function (rowtable2) {
         this.plannings = rowtable2;
     };
     SessionService.prototype.getPlannings = function () {
-        return this.plannings;
+        return JSON.parse(JSON.stringify(this.plannings));
     };
     SessionService.prototype.getPartOrders = function () {
-        return this.partOrders;
+        return JSON.parse(JSON.stringify(this.partOrders));
     };
     SessionService.prototype.setPartOrders = function (partOrders) {
         this.partOrders = partOrders;
     };
     SessionService.prototype.getPlannedWarehouseStock = function () {
-        return this.plannedWarehouseStock;
+        return JSON.parse(JSON.stringify(this.plannedWarehouseStock));
     };
     SessionService.prototype.setPlannedWarehouseStock = function (plannedWarehouseStock) {
         this.plannedWarehouseStock = plannedWarehouseStock;
@@ -276,43 +276,43 @@ var SessionService = (function () {
         this.setPlannings(null);
         this.setbindingOrders(null);
     };
-    __decorate([
-        WebStorage_1.SessionStorage(), 
-        __metadata('design:type', Object)
-    ], SessionService.prototype, "resultObj", void 0);
-    __decorate([
-        WebStorage_1.SessionStorage(), 
-        __metadata('design:type', Array)
-    ], SessionService.prototype, "parts", void 0);
-    __decorate([
-        WebStorage_1.SessionStorage(), 
-        __metadata('design:type', Array)
-    ], SessionService.prototype, "workstations", void 0);
-    __decorate([
-        WebStorage_1.SessionStorage(), 
-        __metadata('design:type', Array)
-    ], SessionService.prototype, "processingTimes", void 0);
-    __decorate([
-        WebStorage_1.SessionStorage(), 
-        __metadata('design:type', Array)
-    ], SessionService.prototype, "partOrders", void 0);
-    __decorate([
-        WebStorage_1.SessionStorage(), 
-        __metadata('design:type', Array)
-    ], SessionService.prototype, "plannedWarehouseStock", void 0);
-    __decorate([
-        WebStorage_1.SessionStorage(), 
-        __metadata('design:type', Array)
-    ], SessionService.prototype, "bindingorders", void 0);
-    __decorate([
-        WebStorage_1.SessionStorage(), 
-        __metadata('design:type', Array)
-    ], SessionService.prototype, "plannings", void 0);
-    SessionService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
-    ], SessionService);
     return SessionService;
 }());
+__decorate([
+    WebStorage_1.SessionStorage(),
+    __metadata("design:type", Object)
+], SessionService.prototype, "resultObj", void 0);
+__decorate([
+    WebStorage_1.SessionStorage(),
+    __metadata("design:type", Array)
+], SessionService.prototype, "parts", void 0);
+__decorate([
+    WebStorage_1.SessionStorage(),
+    __metadata("design:type", Array)
+], SessionService.prototype, "workstations", void 0);
+__decorate([
+    WebStorage_1.SessionStorage(),
+    __metadata("design:type", Array)
+], SessionService.prototype, "processingTimes", void 0);
+__decorate([
+    WebStorage_1.SessionStorage(),
+    __metadata("design:type", Array)
+], SessionService.prototype, "partOrders", void 0);
+__decorate([
+    WebStorage_1.SessionStorage(),
+    __metadata("design:type", Array)
+], SessionService.prototype, "plannedWarehouseStock", void 0);
+__decorate([
+    WebStorage_1.SessionStorage(),
+    __metadata("design:type", Array)
+], SessionService.prototype, "bindingorders", void 0);
+__decorate([
+    WebStorage_1.SessionStorage(),
+    __metadata("design:type", Array)
+], SessionService.prototype, "plannings", void 0);
+SessionService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.Http])
+], SessionService);
 exports.SessionService = SessionService;
 //# sourceMappingURL=session.service.js.map

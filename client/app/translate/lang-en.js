@@ -126,6 +126,10 @@ exports.LANG_EN_TRANS = {
     'sum_without_order': 'Sum without order',
     'volume_ordered': 'Volume ordered',
     'ordertype': 'Order Type',
-    'stock_after_receipt': 'Stock after receipt'
+    'stock_after_receipt': 'Stock after receipt',
+    //Settings-Parts
+    'overKPart_search': 'Search',
+    'overKPart_searchEmptyText': 'Number or title',
+    'overKPart_allocation': 'Used by:',
 };
 //# sourceMappingURL=lang-en.js.map

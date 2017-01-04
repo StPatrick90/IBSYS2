@@ -8,7 +8,6 @@ import 'rxjs/add/operator/map';
 import {Part} from '../model/part';
 import {Workstation} from '../model/workstastion';
 import {ProcessingTime} from '../model/processingTime';
-import {Plannings} from "../model/plannings";
 import {rowtype} from "../model/rowtype";
 
 
@@ -245,7 +244,7 @@ export class SessionService {
     }
 
     getParts() {
-        return this.parts;
+        return JSON.parse(JSON.stringify(this.parts));
     }
 
     setParts(parts) {
@@ -253,7 +252,7 @@ export class SessionService {
     }
 
     getWorkstations() {
-        return this.workstations;
+        return JSON.parse(JSON.stringify(this.workstations));
     }
 
     setWorkstations(workstations) {
@@ -261,7 +260,7 @@ export class SessionService {
     }
 
     getProcessingTimes() {
-        return this.processingTimes;
+        return JSON.parse(JSON.stringify(this.processingTimes));
     }
 
     setProcessingTimes(processingTimes) {
@@ -273,7 +272,7 @@ export class SessionService {
     }
 
     getbindingOrders() {
-        return this.bindingorders;
+        return JSON.parse(JSON.stringify(this.bindingorders));
     }
 
     setPlannings(rowtable2) {
@@ -281,11 +280,11 @@ export class SessionService {
     }
 
     getPlannings() {
-        return this.plannings;
+        return JSON.parse(JSON.stringify(this.plannings));
     }
 
     getPartOrders() {
-        return this.partOrders;
+        return JSON.parse(JSON.stringify(this.partOrders));
     }
 
     setPartOrders(partOrders) {
@@ -293,7 +292,7 @@ export class SessionService {
     }
 
     getPlannedWarehouseStock() {
-        return this.plannedWarehouseStock;
+        return JSON.parse(JSON.stringify(this.plannedWarehouseStock));
     }
 
     setPlannedWarehouseStock(plannedWarehouseStock) {
