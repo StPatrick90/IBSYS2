@@ -36,24 +36,11 @@ export class PrioComponent {
     nPAuftraege: Array<any> = [];
     lager: any;
     reihenfolgen: Array<Sequence> = [];
-    /*
-    {
-        workStation: Workstation
-    }
-     */
 
     processingTimes: Array<ProcessingTime> = [];
 
     zeiten: Array<WorkingTime> = [];
     partOrders: Array<any> = [];
-
-    //TODO: Replace number with part
-    /*
-    Alternativ Ablauf?
-    Schaue bei Endprodukt (z.b. p1) nach ob es genug Material gibt?
-    Wenn Ja --> Produzieren
-    Wenn Nein --> Endprodukt = Endprodukt.Bestanteil x
-     */
     defaultAblauf: Array<number> = [];
     displayArray: Array<Part> = [];
 

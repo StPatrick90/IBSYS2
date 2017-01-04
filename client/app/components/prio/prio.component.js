@@ -29,21 +29,9 @@ var PrioComponent = (function () {
         this.produzierbareAuftraege = [];
         this.nPAuftraege = [];
         this.reihenfolgen = [];
-        /*
-        {
-            workStation: Workstation
-        }
-         */
         this.processingTimes = [];
         this.zeiten = [];
         this.partOrders = [];
-        //TODO: Replace number with part
-        /*
-        Alternativ Ablauf?
-        Schaue bei Endprodukt (z.b. p1) nach ob es genug Material gibt?
-        Wenn Ja --> Produzieren
-        Wenn Nein --> Endprodukt = Endprodukt.Bestanteil x
-         */
         this.defaultAblauf = [];
         this.displayArray = [];
     }
