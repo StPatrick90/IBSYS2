@@ -77,6 +77,7 @@ var PrioComponent = (function () {
         });
     };
     PrioComponent.prototype.processOptimizaition = function () {
+        this.updateStorage();
         for (var _i = 0, _a = this.defaultAblauf; _i < _a.length; _i++) {
             var partNumber = _a[_i];
             var auftragsMenge = 0;
@@ -93,13 +94,14 @@ var PrioComponent = (function () {
                     this.processWorkflow(this.nPAuftraege[idx].Teil, this.nPAuftraege[idx].Anzahl);
                 }
             }
-            console.log(auftragsMenge);
             this.processWorkflow(partNumber, auftragsMenge);
         }
         console.log("reihenfolge:");
         console.log(this.reihenfolgen);
         console.log("pAufträge:");
         console.log(this.produzierbareAuftraege);
+        console.log("npAufträge:");
+        console.log(this.nPAuftraege);
         this.displayArray.length = 0;
         for (var _b = 0, _c = this.produzierbareAuftraege; _b < _c.length; _b++) {
             var auftrag = _c[_b];
@@ -170,7 +172,6 @@ var PrioComponent = (function () {
                 break;
             }
         }
-        //TODO: Lagerbestand mit Bestellungen anpassen!
         //TODO: Merge batch objects
         while (auftraege > 0) {
             while (prozessingTime != null) {
@@ -281,6 +282,35 @@ var PrioComponent = (function () {
             }
         }
         return bestandteilArray;
+    };
+    PrioComponent.prototype.updateStorage = function () {
+        for (var idx in this.lager) {
+            if (this.wartelisteMaterial.missingpart) {
+                if (this.wartelisteMaterial.missingpart.length > 0) {
+                    for (var _i = 0, _a = this.wartelisteMaterial.missingpart; _i < _a.length; _i++) {
+                        var material = _a[_i];
+                        if (material.waitinglist.item == this.lager[idx].id) {
+                            if (material.waitinglist.period == this.resultObj.results.period) {
+                                var lagerMenge = Number.parseInt(this.lager[idx].amount);
+                                var bestellMenge = Number.parseInt(material.waitinglist.amount);
+                                this.lager[idx].amount = (lagerMenge + bestellMenge).toString();
+                            }
+                        }
+                    }
+                }
+                else {
+                    if (this.wartelisteMaterial.missingpart.waitinglist.item == this.lager[idx].id) {
+                        if (this.wartelisteMaterial.missingpart.waitinglist.period == this.resultObj.results.period) {
+                            var lagerMenge = Number.parseInt(this.lager[idx].amount);
+                            var bestellMenge = Number.parseInt(this.wartelisteMaterial.missingpart.waitinglist.amount);
+                            this.lager[idx].amount = (lagerMenge + bestellMenge).toString();
+                            break;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
     };
     PrioComponent = __decorate([
         core_1.Component({

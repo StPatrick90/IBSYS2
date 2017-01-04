@@ -94,6 +94,7 @@ export class PrioComponent {
     }
 
     processOptimizaition() {
+        this.updateStorage();
         for (var partNumber of this.defaultAblauf) {
             var auftragsMenge = 0;
             for(var partOrder in this.partOrders){
@@ -111,7 +112,6 @@ export class PrioComponent {
                     this.processWorkflow(this.nPAuftraege[idx].Teil, this.nPAuftraege[idx].Anzahl);
                 }
             }
-            console.log(auftragsMenge);
             this.processWorkflow(partNumber, auftragsMenge);
         }
 
@@ -119,6 +119,8 @@ export class PrioComponent {
         console.log(this.reihenfolgen);
         console.log("pAufträge:");
         console.log(this.produzierbareAuftraege);
+        console.log("npAufträge:");
+        console.log(this.nPAuftraege);
 
         this.displayArray.length = 0;
         for(var auftrag of this.produzierbareAuftraege){
@@ -134,9 +136,11 @@ export class PrioComponent {
 
         var canBeProduced = true;
         var anzahl = auftraege;
+
         //Sind Teile da?
         for(var bestandteil of bestandteilArray){
             var verfügbar = "";
+
             if((bestandteil.lagerBestand/bestandteil.anzahl) > 0){
                 //JA
                 if(bestandteil.lagerBestand >= (auftraege * bestandteil.anzahl)){
@@ -197,8 +201,7 @@ export class PrioComponent {
                 break;
             }
         }
-        
-        //TODO: Lagerbestand mit Bestellungen anpassen!
+
         //TODO: Merge batch objects
         while(auftraege > 0){
             while(prozessingTime != null){
@@ -314,6 +317,37 @@ export class PrioComponent {
             }
         }
         return bestandteilArray;
+    }
+
+    updateStorage(){
+        for(var idx in this.lager){
+            if(this.wartelisteMaterial.missingpart){
+                if(this.wartelisteMaterial.missingpart.length > 0){
+                    for(var material of this.wartelisteMaterial.missingpart){
+                        if(material.waitinglist.item == this.lager[idx].id){
+                            if(material.waitinglist.period == this.resultObj.results.period){
+                                var lagerMenge = Number.parseInt(this.lager[idx].amount);
+                                var bestellMenge = Number.parseInt(material.waitinglist.amount);
+                                this.lager[idx].amount = (lagerMenge + bestellMenge).toString();
+                            }
+                        }
+                    }
+                }
+                else{
+                    if(this.wartelisteMaterial.missingpart.waitinglist.item == this.lager[idx].id){
+                        if(this.wartelisteMaterial.missingpart.waitinglist.period == this.resultObj.results.period){
+                            var lagerMenge = Number.parseInt(this.lager[idx].amount);
+                            var bestellMenge = Number.parseInt(this.wartelisteMaterial.missingpart.waitinglist.amount);
+                            this.lager[idx].amount = (lagerMenge + bestellMenge).toString();
+                            break;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+
     }
 }
 
