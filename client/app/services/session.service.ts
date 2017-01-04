@@ -9,6 +9,7 @@ import {Part} from '../model/part';
 import {Workstation} from '../model/workstastion';
 import {ProcessingTime} from '../model/processingTime';
 import {rowtype} from "../model/rowtype";
+import {matPlanRow} from "../model/matPlanRow";
 
 
 @Injectable()
@@ -22,6 +23,7 @@ export class SessionService {
     @SessionStorage() private plannedWarehouseStock: Array<any>;
     @SessionStorage() private bindingorders: rowtype[];
     @SessionStorage() private plannings: rowtype[];
+    @SessionStorage() private matPlan: matPlanRow[];
 
     constructor(private http: Http) {
         console.log('Session Service Initialized...');
@@ -299,6 +301,14 @@ export class SessionService {
         this.plannedWarehouseStock = plannedWarehouseStock;
     }
 
+    getMatPlan() {
+        return this.matPlan;
+    }
+
+    setMatPlan(matPlan) {
+        this.matPlan = matPlan;
+    }
+
 
     clear() {
         this.setResultObject(null);
@@ -309,6 +319,7 @@ export class SessionService {
         this.setPlannedWarehouseStock(null);
         this.setPlannings(null);
         this.setbindingOrders(null);
+        this.setMatPlan(null);
     }
 
 }

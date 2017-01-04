@@ -6,6 +6,8 @@ import {matPlanRow} from "../../model/matPlanRow";
 import sort = require("core-js/fn/array/sort");
 import {Http} from "@angular/http";
 import {rowtype} from "../../model/rowtype";
+import {isNumber} from "util";
+
 @Component({
     moduleId: module.id,
     selector: 'materialPlanning',
@@ -20,6 +22,7 @@ export class MaterialPlanningComponent {
     verwendungRow: string[];
     periodrow: number[];
     plannings: rowtype[];
+    bestellarten: string[];
 
     constructor(private sessionService: SessionService, private  materialPlanningService: MaterialPlanningService, private http: Http) {
         this.resultObj = this.sessionService.getResultObject();
@@ -28,6 +31,7 @@ export class MaterialPlanningComponent {
         this.periodrow = new Array<number>();
         this.plannings = new Array<rowtype>();
         this.getKParts();
+        this.bestellarten = new Array<string>("E.", "N.", "---");
     }
 
     getKParts() {
@@ -109,13 +113,16 @@ export class MaterialPlanningComponent {
                 matPlanRow.isneg = false;
             }
 
+            //set Bestellmenge
+            matPlanRow.bestellmenge = 1000;
+
             // set Normal-/Eilbestellung
             if (matPlanRow.mengeohbest < 0 && matPlanRow.summe * matPlanRow.bruttobedarfnP[0] > matPlanRow.anfangsbestand) {
-                matPlanRow.bestellung = "Eil.";
+                matPlanRow.bestellung = "E.";
             }
             else {
                 if (matPlanRow.mengeohbest <= 0) {
-                    matPlanRow.bestellung = "Norm.";
+                    matPlanRow.bestellung = "N.";
                 }
                 else {
                     matPlanRow.bestellung = "---"
@@ -133,6 +140,7 @@ export class MaterialPlanningComponent {
             // store values finally
             this.matPlan.push(matPlanRow);
         }
+        this.sessionService.setMatPlan(this.matPlan);
         this.setColspan();
     }
 
@@ -140,6 +148,21 @@ export class MaterialPlanningComponent {
         this.plannings = this.sessionService.getPlannings();
         if (this.plannings === null) {
             alert("Bitte erst die Prognose durchführen.");
+        }
+    }
+
+    bestellartSelected(bestellart: string, i: number) {
+        this.matPlan[i].bestellung = bestellart;
+        this.sessionService.setMatPlan(this.matPlan);
+    }
+
+    bestellmengeChange(newvalue, index) {
+        if (newvalue >= 0) {
+            this.matPlan[index].bestellmenge = newvalue;
+            this.sessionService.setMatPlan(this.matPlan);
+        }
+        else {
+            alert("Bitte positiven Wert eingeben !")
         }
     }
 

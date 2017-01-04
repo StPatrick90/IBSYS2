@@ -23,6 +23,7 @@ var MaterialPlanningComponent = (function () {
         this.periodrow = new Array();
         this.plannings = new Array();
         this.getKParts();
+        this.bestellarten = new Array("E.", "N.", "---");
     }
     MaterialPlanningComponent.prototype.getKParts = function () {
         var _this = this;
@@ -100,13 +101,15 @@ var MaterialPlanningComponent = (function () {
             else {
                 matPlanRow.isneg = false;
             }
+            //set Bestellmenge
+            matPlanRow.bestellmenge = 1000;
             // set Normal-/Eilbestellung
             if (matPlanRow.mengeohbest < 0 && matPlanRow.summe * matPlanRow.bruttobedarfnP[0] > matPlanRow.anfangsbestand) {
-                matPlanRow.bestellung = "Eil.";
+                matPlanRow.bestellung = "E.";
             }
             else {
                 if (matPlanRow.mengeohbest <= 0) {
-                    matPlanRow.bestellung = "Norm.";
+                    matPlanRow.bestellung = "N.";
                 }
                 else {
                     matPlanRow.bestellung = "---";
@@ -121,12 +124,26 @@ var MaterialPlanningComponent = (function () {
             // store values finally
             this.matPlan.push(matPlanRow);
         }
+        this.sessionService.setMatPlan(this.matPlan);
         this.setColspan();
     };
     MaterialPlanningComponent.prototype.getBruttoBedarfandPeriods = function () {
         this.plannings = this.sessionService.getPlannings();
         if (this.plannings === null) {
             alert("Bitte erst die Prognose durchführen.");
+        }
+    };
+    MaterialPlanningComponent.prototype.bestellartSelected = function (bestellart, i) {
+        this.matPlan[i].bestellung = bestellart;
+        this.sessionService.setMatPlan(this.matPlan);
+    };
+    MaterialPlanningComponent.prototype.bestellmengeChange = function (newvalue, index) {
+        if (newvalue >= 0) {
+            this.matPlan[index].bestellmenge = newvalue;
+            this.sessionService.setMatPlan(this.matPlan);
+        }
+        else {
+            alert("Bitte positiven Wert eingeben !");
         }
     };
     MaterialPlanningComponent.prototype.setColspan = function () {

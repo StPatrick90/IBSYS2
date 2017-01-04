@@ -11,7 +11,37 @@
     </div>
 </div>
 
-<body>
+<script>
+    angular.module('myApp', ['ui.bootstrap'])
+        .controller('myCtrl', ['$scope',
+            function ($scope) {
+
+                $scope.rows = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+                $scope.items = [
+                    'The first choice!',
+                    'And another choice for you.',
+                    'but wait! A third!'
+                ];
+
+                $scope.status = {
+                    isopen: false
+                };
+
+                $scope.toggled = function (open) {
+                    console.log('Dropdown is now: ', open);
+                };
+
+                $scope.toggleDropdown = function ($event) {
+                    $event.preventDefault();
+                    $event.stopPropagation();
+                    $scope.status.isopen = !$scope.status.isopen;
+                };
+
+            }
+        ]);
+</script>
+<body ng-app="myApp">
 
 <table class="table-responsive table-bordered table-striped" onload="setColspan()">
     <caption width="100%" class="text-center">{{'material_Planning' | translate}}</caption>
@@ -49,29 +79,35 @@
         <th></th>
         <th></th>
         <th></th>
-
-
     </tr>
     </thead>
 
     <tbody>
-    <tr *ngFor="let m of matPlan">
-        <td>{{m.kpartnr}}</td>
-        <td>{{m.lieferfrist}}</td>
-        <td>{{m.abweichung}}</td>
-        <td>{{m.summe}}</td>
-        <td *ngFor="let v of m.verwendung">
-            {{v.Menge}}
+    <tr *ngFor="let m of matPlan; let i = index">
+        <td class="text-center">{{m.kpartnr}}</td>
+        <td class="text-center">{{m.lieferfrist}}</td>
+        <td class="text-center">{{m.abweichung}}</td>
+        <td class="text-center">{{m.summe}}</td>
+        <td class="text-center" *ngFor="let v of m.verwendung">{{v.Menge}}</td>
+        <td class="text-center">{{m.diskontmenge}}</td>
+        <td class="text-center">{{m.anfangsbestand}}</td>
+        <td class="text-center" *ngFor="let b of m.bruttobedarfnP">{{b}}</td>
+        <td class="text-center" [ngClass]="{red: m.isneg}">{{m.mengeohbest}}</td>
+        <td><input [value]="m.bestellmenge" type="number" (input)="bestellmengeChange($event.target.value, i)"></td>
+        <td>
+            <div width="50px" class="btn-group">
+                <button type="button" class="btn .btn-block .btn-primary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    {{m.bestellung}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li *ngFor="let bestellart of bestellarten" class="text-center">
+                        <a (click)="bestellartSelected(bestellart, i)">{{bestellart}}</a>
+                    </li>
+                </ul>
+            </div>
         </td>
-        <td>{{m.diskontmenge}}</td>
-        <td>{{m.anfangsbestand}}</td>
-        <td *ngFor="let b of m.bruttobedarfnP">
-            {{b}}
-        </td>
-        <td id="Mengeohbest" [ngClass]="{red: m.isneg}">{{m.mengeohbest}}</td>
-        <td></td>
-        <td>{{m.bestellung}}</td>
-        <td></td>
         <td></td>
         <td></td>
         <td></td>
@@ -80,5 +116,4 @@
     </tr>
     </tbody>
 </table>
-
 </body>
