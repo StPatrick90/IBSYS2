@@ -14,9 +14,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var session_service_1 = require('../../services/session.service');
 var part_service_1 = require('../../services/part.service');
+var part_1 = require('../../model/part');
 var prioTask_1 = require('../../model/prioTask');
 var sequence_1 = require('../../model/sequence');
 var capacityPlanning_service_1 = require('../../services/capacityPlanning.service');
+var ng2_bs3_modal_1 = require('ng2-bs3-modal/ng2-bs3-modal');
 var PrioComponent = (function () {
     function PrioComponent(sessionService, partService, capacityPlanningService) {
         this.sessionService = sessionService;
@@ -37,6 +39,9 @@ var PrioComponent = (function () {
     }
     PrioComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.splittingPart = new part_1.Part();
+        this.splittingAnzahl2 = 0;
+        this.splittingAnzahl = 0;
         this.defaultAblauf.push(18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3);
         this.processingTimes = this.sessionService.getProcessingTimes();
         this.resultObj = this.sessionService.getResultObject();
@@ -300,6 +305,33 @@ var PrioComponent = (function () {
             }
         }
     };
+    PrioComponent.prototype.setModalView = function (object, index) {
+        this.splittingAnzahl2 = object.Anzahl;
+        this.splittingPart = object.Teil;
+        this.splittingAnzahl = object.Anzahl / 2;
+        this.modalSplitting.open();
+    };
+    PrioComponent.prototype.closeModalView = function () {
+        this.modalSplitting.close();
+    };
+    PrioComponent.prototype.saveModalView = function () {
+        if (this.splittingAnzahl > 0) {
+            for (var idx in this.produzierbareAuftraege) {
+                if (this.produzierbareAuftraege[idx].Teil === this.splittingPart) {
+                    if ((this.produzierbareAuftraege[idx].Anzahl - this.splittingAnzahl) > 0) {
+                        this.produzierbareAuftraege[idx].Anzahl -= this.splittingAnzahl;
+                        this.produzierbareAuftraege.splice(Number.parseInt(idx), 0, { "Teil": this.splittingPart, "Anzahl": this.splittingAnzahl });
+                    }
+                    break;
+                }
+            }
+        }
+        this.modalSplitting.close();
+    };
+    __decorate([
+        core_1.ViewChild('splitting'), 
+        __metadata('design:type', ng2_bs3_modal_1.ModalComponent)
+    ], PrioComponent.prototype, "modalSplitting", void 0);
     PrioComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

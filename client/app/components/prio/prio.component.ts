@@ -1,7 +1,7 @@
 /**
  * Created by philipp.koepfer on 10.12.16.
  */
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 
 import {SessionService} from '../../services/session.service';
 import {PartService} from '../../services/part.service';
@@ -13,6 +13,7 @@ import {Workstation} from '../../model/workstastion';
 import {Sequence} from '../../model/sequence';
 import {WorkingTime} from '../../model/workingTime';
 import {CapacityPlanningService} from '../../services/capacityPlanning.service';
+import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 
 
@@ -44,10 +45,21 @@ export class PrioComponent {
     defaultAblauf: Array<number> = [];
     displayArray: Array<Part> = [];
 
+    @ViewChild('splitting')
+    modalSplitting: ModalComponent;
+
+    splittingPart: Part;
+    splittingAnzahl: number;
+    splittingAnzahl2: number;
+
+
     constructor(private sessionService: SessionService, private  partService: PartService, private capacityPlanningService: CapacityPlanningService ) {
     }
 
     ngOnInit() {
+        this.splittingPart = new Part();
+        this.splittingAnzahl2 = 0;
+        this.splittingAnzahl = 0;
         this.defaultAblauf.push(18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3);
         this.processingTimes = this.sessionService.getProcessingTimes();
 
@@ -333,8 +345,31 @@ export class PrioComponent {
                 }
             }
         }
+    }
+    setModalView(object, index){
+        this.splittingAnzahl2 = object.Anzahl;
+        this.splittingPart = object.Teil;
+        this.splittingAnzahl = object.Anzahl / 2;
 
+        this.modalSplitting.open();
+    }
 
+    closeModalView(){
+        this.modalSplitting.close();
+    }
+    saveModalView(){
+        if(this.splittingAnzahl > 0){
+            for(var idx in this.produzierbareAuftraege){
+                if(this.produzierbareAuftraege[idx].Teil === this.splittingPart){
+                    if((this.produzierbareAuftraege[idx].Anzahl - this.splittingAnzahl) > 0){
+                        this.produzierbareAuftraege[idx].Anzahl -= this.splittingAnzahl;
+                        this.produzierbareAuftraege.splice(Number.parseInt(idx), 0, {"Teil": this.splittingPart, "Anzahl": this.splittingAnzahl});
+                    }
+                    break;
+                }
+            }
+        }
+        this.modalSplitting.close();
     }
 }
 
