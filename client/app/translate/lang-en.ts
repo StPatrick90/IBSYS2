@@ -125,8 +125,7 @@ export const LANG_EN_TRANS = {
     'remaining_stock': 'Remaining Stock',
     'prediction_planning': 'Forecast',
 
-
-    //MaterialPlanning
+//MaterialPlanning
     'material_Planning': 'Material Planning',
     'num_purchase_part': 'Nr. Purchase Part',
     'delivery_time': 'Del.Time',
@@ -145,4 +144,7 @@ export const LANG_EN_TRANS = {
     'overKPart_search': 'Search',
     'overKPart_searchEmptyText': 'Number or title',
     'overKPart_allocation': 'Used by:',
+
+//xmlExport
+    'xmlExport': 'XML Export'
 };

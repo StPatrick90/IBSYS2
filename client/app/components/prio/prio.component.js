@@ -11,14 +11,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by philipp.koepfer on 10.12.16.
  */
-var core_1 = require("@angular/core");
-var session_service_1 = require("../../services/session.service");
-var part_service_1 = require("../../services/part.service");
-var part_1 = require("../../model/part");
-var prioTask_1 = require("../../model/prioTask");
-var sequence_1 = require("../../model/sequence");
-var capacityPlanning_service_1 = require("../../services/capacityPlanning.service");
-var ng2_bs3_modal_1 = require("ng2-bs3-modal/ng2-bs3-modal");
+var core_1 = require('@angular/core');
+var session_service_1 = require('../../services/session.service');
+var part_service_1 = require('../../services/part.service');
+var part_1 = require('../../model/part');
+var prioTask_1 = require('../../model/prioTask');
+var sequence_1 = require('../../model/sequence');
+var capacityPlanning_service_1 = require('../../services/capacityPlanning.service');
+var ng2_bs3_modal_1 = require('ng2-bs3-modal/ng2-bs3-modal');
 var PrioComponent = (function () {
     function PrioComponent(sessionService, partService, capacityPlanningService) {
         this.sessionService = sessionService;
@@ -328,20 +328,20 @@ var PrioComponent = (function () {
         }
         this.modalSplitting.close();
     };
+    __decorate([
+        core_1.ViewChild('splitting'), 
+        __metadata('design:type', ng2_bs3_modal_1.ModalComponent)
+    ], PrioComponent.prototype, "modalSplitting", void 0);
+    PrioComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'prio',
+            templateUrl: 'prio.component.html'
+        }), 
+        __metadata('design:paramtypes', [session_service_1.SessionService, part_service_1.PartService, capacityPlanning_service_1.CapacityPlanningService])
+    ], PrioComponent);
     return PrioComponent;
 }());
-__decorate([
-    core_1.ViewChild('splitting'),
-    __metadata("design:type", ng2_bs3_modal_1.ModalComponent)
-], PrioComponent.prototype, "modalSplitting", void 0);
-PrioComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'prio',
-        templateUrl: 'prio.component.html'
-    }),
-    __metadata("design:paramtypes", [session_service_1.SessionService, part_service_1.PartService, capacityPlanning_service_1.CapacityPlanningService])
-], PrioComponent);
 exports.PrioComponent = PrioComponent;
 /*
  15 Arbeitsplätze

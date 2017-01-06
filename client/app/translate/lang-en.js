@@ -131,5 +131,7 @@ exports.LANG_EN_TRANS = {
     'overKPart_search': 'Search',
     'overKPart_searchEmptyText': 'Number or title',
     'overKPart_allocation': 'Used by:',
+    //xmlExport
+    'xmlExport': 'XML Export'
 };
 //# sourceMappingURL=lang-en.js.map

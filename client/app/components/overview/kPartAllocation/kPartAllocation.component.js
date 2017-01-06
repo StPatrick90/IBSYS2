@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 04.01.2017.
  */
-var core_1 = require("@angular/core");
-var part_service_1 = require("../../../services/part.service");
-var session_service_1 = require("../../../services/session.service");
+var core_1 = require('@angular/core');
+var part_service_1 = require('../../../services/part.service');
+var session_service_1 = require('../../../services/session.service');
 var KPartAllocationComponent = (function () {
     function KPartAllocationComponent(partService, sessionService) {
         var _this = this;
@@ -50,15 +50,15 @@ var KPartAllocationComponent = (function () {
             }
         }
     };
+    KPartAllocationComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'kPartAllocation',
+            templateUrl: 'kPartAllocation.component.html'
+        }), 
+        __metadata('design:paramtypes', [part_service_1.PartService, session_service_1.SessionService])
+    ], KPartAllocationComponent);
     return KPartAllocationComponent;
 }());
-KPartAllocationComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'kPartAllocation',
-        templateUrl: 'kPartAllocation.component.html'
-    }),
-    __metadata("design:paramtypes", [part_service_1.PartService, session_service_1.SessionService])
-], KPartAllocationComponent);
 exports.KPartAllocationComponent = KPartAllocationComponent;
 //# sourceMappingURL=kPartAllocation.component.js.map
