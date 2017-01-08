@@ -35,6 +35,14 @@ var WarehousestockComponent = (function () {
                 pointBorderColor: '#19468f',
                 pointHoverBackgroundColor: '#19468f',
                 pointHoverBorderColor: 'rgba(25, 70, 143, 0.8)'
+            },
+            {
+                backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                borderColor: 'rgba(255, 0, 0, 1)',
+                pointBackgroundColor: 'rgba(255, 0, 03, 1)',
+                pointBorderColor: '#ff0000',
+                pointHoverBackgroundColor: '#ff0000',
+                pointHoverBorderColor: 'rgba(255, 0, 0, 0.8)'
             }
         ];
         this.lineChartLegend = false;
@@ -52,6 +60,7 @@ var WarehousestockComponent = (function () {
     }
     WarehousestockComponent.prototype.initAll = function () {
         var data = [];
+        var dataGrenze = [];
         for (var _i = 0, _a = this.periods; _i < _a.length; _i++) {
             var p = _a[_i];
             this.lineChartLabels.push(this.translatePipe.transform('overWH_period', null) + " " + p);
@@ -59,8 +68,10 @@ var WarehousestockComponent = (function () {
         for (var _b = 0, _c = this.allResults; _b < _c.length; _b++) {
             var r = _c[_b];
             data[r.results.period - 1] = Number.parseInt(r.results.warehousestock.totalstockvalue);
+            dataGrenze[r.results.period - 1] = 250000;
         }
-        this.lineChartData = [{ data: data, label: this.translatePipe.transform('overWH_warehousestock', null) }];
+        this.lineChartData = [{ data: data, label: this.translatePipe.transform('overWH_warehousestock', null) },
+            { data: dataGrenze, label: this.translatePipe.transform('overWH_limit', null) }];
     };
     WarehousestockComponent = __decorate([
         core_1.Component({

@@ -147,6 +147,7 @@ export const LANG_EN_TRANS = {
     'overKPart_searchEmptyText': 'Number or title',
     'overKPart_allocation': 'Used by:',
     'overWH_warehousestock': 'Warehousestock',
+    'overWH_limit': 'Limit',
     'overWH_period': 'Period',
 
 //xmlExport

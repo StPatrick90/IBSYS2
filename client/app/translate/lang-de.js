@@ -134,6 +134,7 @@ exports.LANG_DE_TRANS = {
     'overKPart_searchEmptyText': 'Nummer oder Bezeichnung',
     'overKPart_allocation': 'Wird verwendet von:',
     'overWH_warehousestock': 'Lagerbestand',
+    'overWH_limit': 'Grenze',
     'overWH_period': 'Periode',
     //xmlExport
     'xmlExport': 'XML Export',
