@@ -13,17 +13,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var core_1 = require('@angular/core');
 var db_service_1 = require('../../../services/db.service');
+var translate_pipe_1 = require('../../../translate/translate.pipe');
 var WarehousestockComponent = (function () {
-    function WarehousestockComponent(dbService) {
+    function WarehousestockComponent(dbService, translatePipe) {
         var _this = this;
         this.dbService = dbService;
+        this.translatePipe = translatePipe;
         this.periods = [];
         this.lineChartLabels = Array();
         this.lineChartData = [{ data: [], label: 'Warehousestock' }];
         this.lineChartOptions = {
             animation: false,
             responsive: true,
-            title: { display: true, text: "Lagerbestand", fontSize: 30 }
+            title: { display: true, text: this.translatePipe.transform('overWH_warehousestock', null), fontSize: 30 }
         };
         this.lineChartColors = [
             {
@@ -52,13 +54,13 @@ var WarehousestockComponent = (function () {
         var data = [];
         for (var _i = 0, _a = this.periods; _i < _a.length; _i++) {
             var p = _a[_i];
-            this.lineChartLabels.push("Period " + p);
+            this.lineChartLabels.push(this.translatePipe.transform('overWH_period', null) + " " + p);
         }
         for (var _b = 0, _c = this.allResults; _b < _c.length; _b++) {
             var r = _c[_b];
             data[r.results.period - 1] = Number.parseInt(r.results.warehousestock.totalstockvalue);
         }
-        this.lineChartData = [{ data: data, label: 'Warehousestock' }];
+        this.lineChartData = [{ data: data, label: this.translatePipe.transform('overWH_warehousestock', null) }];
     };
     WarehousestockComponent = __decorate([
         core_1.Component({
@@ -66,7 +68,7 @@ var WarehousestockComponent = (function () {
             selector: 'warehousestock',
             templateUrl: 'warehousestock.component.html'
         }), 
-        __metadata('design:paramtypes', [db_service_1.DBService])
+        __metadata('design:paramtypes', [db_service_1.DBService, translate_pipe_1.TranslatePipe])
     ], WarehousestockComponent);
     return WarehousestockComponent;
 }());

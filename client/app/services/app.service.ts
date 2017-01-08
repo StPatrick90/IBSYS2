@@ -13,5 +13,7 @@ export class AppService{
 
     toggleSidebar(toggle) {
         localStorage.setItem('toggle', toggle.toString());
+
     }
+
 }

@@ -3,6 +3,7 @@
  */
 import {Component} from '@angular/core';
 import { DBService} from '../../../services/db.service';
+import {TranslatePipe}   from '../../../translate/translate.pipe';
 
 @Component({
     moduleId: module.id,
@@ -16,7 +17,7 @@ export class WarehousestockComponent {
     lineChartLabels : Array<any> = Array<any>();
     lineChartData:Array<any> = [{data: [], label: 'Warehousestock'}];
 
-    constructor(private dbService:DBService){
+    constructor(private dbService:DBService, private translatePipe:TranslatePipe){
         dbService.getResults()
             .subscribe(
                 results =>{
@@ -36,19 +37,19 @@ export class WarehousestockComponent {
     initAll(){
         var data = [];
         for(let p of this.periods){
-            this.lineChartLabels.push("Period " + p);
+            this.lineChartLabels.push(this.translatePipe.transform('overWH_period',null) + " " + p);
         }
         for(let r of this.allResults){
             data[r.results.period-1] = Number.parseInt(r.results.warehousestock.totalstockvalue);
         }
-        this.lineChartData = [{data: data, label: 'Warehousestock'}];
+        this.lineChartData = [{data: data, label: this.translatePipe.transform('overWH_warehousestock',null)}];
     }
 
 
     public lineChartOptions:any = {
         animation: false,
         responsive: true,
-        title: {display: true, text:"Lagerbestand", fontSize:30}
+        title: {display: true, text:this.translatePipe.transform('overWH_warehousestock',null), fontSize:30}
     };
     public lineChartColors:Array<any> = [
         { // grey

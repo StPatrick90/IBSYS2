@@ -6,6 +6,7 @@ import { XmlImportService } from '../../services/xmlImport.service';
 import { WindowRef } from '../../services/window.service';
 import { SessionService } from '../../services/session.service';
 import { DBService} from '../../services/db.service';
+import { AppService} from '../../services/app.service';
 
 
 @Component({
@@ -14,7 +15,6 @@ import { DBService} from '../../services/db.service';
     templateUrl: 'xmlImport.component.html'
 })
 export class XmlImportComponent {
-
 
     xml = "";
     xmlService: any;
@@ -27,7 +27,7 @@ export class XmlImportComponent {
     success;
     errorMessage ="";
 
-    constructor(private xmlImportService: XmlImportService, sessionService: SessionService, dbService: DBService){
+    constructor(private xmlImportService: XmlImportService, sessionService: SessionService, dbService: DBService, private appService:AppService){
         this.xmlService = xmlImportService;
         this.sessionService = sessionService;
         this.dbService = dbService;

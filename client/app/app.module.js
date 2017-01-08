@@ -57,7 +57,7 @@ var AppModule = (function () {
                 partsLists_component_1.PartsListsComponent, prio_component_1.PrioComponent, parts_pipe_1.PartPipe, materialPlanningEP_component_1.MaterialPlanningEPComponent,
                 warehousestock_component_1.WarehousestockComponent, kPartAllocation_component_1.KPartAllocationComponent],
             bootstrap: [app_component_1.AppComponent],
-            providers: [index_1.TRANSLATION_PROVIDERS, translate_service_1.TranslateService, LocalStorageEmitter_1.LocalStorageService, WINDOW_PROVIDER]
+            providers: [index_1.TRANSLATION_PROVIDERS, translate_service_1.TranslateService, LocalStorageEmitter_1.LocalStorageService, WINDOW_PROVIDER, translate_pipe_1.TranslatePipe]
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);

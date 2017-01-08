@@ -23,6 +23,8 @@ exports.LANG_EN_TRANS = {
     'sidebar_partsLists': 'Parts lists',
     'sidebar_parts': 'Parts',
     'sidebar_dashboard': 'Dashboard',
+    'sideBar_MaterialPlanningEP': 'Mat. pl. (f/sf prod.)',
+    'sideBar_PartUsage': 'Part usage',
     //Headbar
     'headbar_languages': 'Languages',
     'headbar_german': 'German',
@@ -114,7 +116,7 @@ exports.LANG_EN_TRANS = {
     'remaining_stock': 'Remaining Stock',
     'prediction_planning': 'Forecast',
     //MaterialPlanning
-    'material_Planning': 'Material Planning',
+    'material_Planning': 'Material Planning (Purchased Items)',
     'num_purchase_part': 'Nr. Purchase Part',
     'delivery_time': 'Del.Time',
     'deviation': 'Deviation',
@@ -127,11 +129,22 @@ exports.LANG_EN_TRANS = {
     'volume_ordered': 'Volume ordered',
     'ordertype': 'Order Type',
     'stock_after_receipt': 'Stock after receipt',
-    //Settings-Parts
+    //Overview
     'overKPart_search': 'Search',
     'overKPart_searchEmptyText': 'Number or title',
     'overKPart_allocation': 'Used by:',
+    'overWH_warehousestock': 'Warehousestock',
+    'overWH_period': 'Period',
     //xmlExport
-    'xmlExport': 'XML Export'
+    'xmlExport': 'XML Export',
+    //MaterialPlanningEP
+    'mpEP_Product': 'Product',
+    'mpEP_MaterialPlanningEP': 'Material Planning (finished / semi finished products)',
+    'mpEP_salesOrders': 'Sales Orders',
+    'mpEP_plannedWarehouseEnd': 'Planned warehousestock at the end of the following period',
+    'mpEP_WarehouseEndPeriod': 'Warehousestock at the end of the passed period',
+    'mpEP_OrderWaitingQueue': 'Orders in the waiting queue',
+    'mpEP_WorkInProgress': 'Work in progress',
+    'mpEP_ProdOrders': 'Production orders for the following period'
 };
 //# sourceMappingURL=lang-en.js.map

@@ -1,10 +1,10 @@
 <div class="well text-center">
-    <h2 style="margin-bottom: 20px; margin-top: 0px;">{{'material_Planning' | translate}} EP</h2>
+    <h2 style="margin-bottom: 20px; margin-top: 0px;">{{'mpEP_MaterialPlanningEP' | translate}}</h2>
     <div id="bc1" class="myBreadcrumb">
         <a class="completed" routerLink="/xmlImport"><div>{{'xmlImport' | translate}}</div></a>
         <a class="completed" routerLink="/prediction"><div>{{'prediction_planning' | translate}}</div></a>
         <a class="completed" routerLink="/materialPlanning"><div>{{'material_Planning' | translate}}</div></a>
-        <a class="active" routerLink="//materialPlanningEP"><div>{{'material_Planning' | translate}} 2</div></a>
+        <a class="active" routerLink="//materialPlanningEP"><div>{{'mpEP_MaterialPlanningEP' | translate}}</div></a>
         <a class="" routerLink="/prioritization"><div>{{'sidebar_prio' | translate}}</div></a>
         <a class="" routerLink="/capacityPlanning"><div>{{'capacity_planning' | translate}}</div></a>
         <a class="" routerLink="/xmlExport"><div>{{'xmlExport' | translate}}</div></a>
@@ -12,7 +12,7 @@
 </div>
 
 <div class="form-group">
-    <label for="mpEP_pparts">Produkt</label>
+    <label for="mpEP_pparts">{{'mpEP_Product' | translate}}</label>
     <ss-multiselect-dropdown [options]="productOptions" [texts]="multiSelectTexts" [settings]="productSettings"
                              [(ngModel)]="auswahl" id="mpEP_pparts" (ngModelChange)="filterList($event)">
 
@@ -22,24 +22,21 @@
 <div class="container-fluid well" [hidden]="!(auswahl != undefined && auswahl.length == 1)">
     <table class="table-responsive">
         <thead>
-        <tr>
-            <th class="text-center" colspan="100%">Dispo Eigenfertigung</th>
-        </tr>
-        <tr>
+        <tr class="mpHeading">
             <th></th>
-            <th>Verbindliche Aufträge</th>
+            <th>{{'mpEP_salesOrders' | translate}}</th>
             <th></th>
             <th></th>
             <th></th>
-            <th>Gepl. Lager Ende Planperiode</th>
+            <th>{{'mpEP_plannedWarehouseEnd' | translate}}</th>
             <th></th>
-            <th>Lagerbestand Vorperiode</th>
+            <th>{{'mpEP_WarehouseEndPeriod' | translate}}</th>
             <th></th>
-            <th>Aufträge Warteschlange</th>
+            <th>{{'mpEP_OrderWaitingQueue' | translate}}</th>
             <th></th>
-            <th>Aufträge Bearbeitung</th>
+            <th>{{'mpEP_WorkInProgress' | translate}}</th>
             <th></th>
-            <th>Produktionsaufträge</th>
+            <th>{{'mpEP_ProdOrders' | translate}}</th>
         </tr>
         </thead>
         <tbody>

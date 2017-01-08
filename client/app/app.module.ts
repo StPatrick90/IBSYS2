@@ -48,7 +48,7 @@ const WINDOW_PROVIDER: ValueProvider = {
         WarehousestockComponent, KPartAllocationComponent],
 
     bootstrap: [AppComponent],
-    providers: [TRANSLATION_PROVIDERS, TranslateService, LocalStorageService, WINDOW_PROVIDER]
+    providers: [TRANSLATION_PROVIDERS, TranslateService, LocalStorageService, WINDOW_PROVIDER, TranslatePipe]
 
 })
 export class AppModule {

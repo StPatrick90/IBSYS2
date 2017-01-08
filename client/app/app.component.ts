@@ -12,6 +12,7 @@ import { DBService} from './services/db.service';
 import {MaterialPlanningService} from './services/materialPlanning.service';
 import {ProcessingTime} from "./model/processingTime";
 import { PredictionService } from './services/prediction.service';
+import {element} from "@angular/upgrade/src/angular_js";
 
 @Component({
     moduleId: module.id,

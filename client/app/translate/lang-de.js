@@ -23,6 +23,8 @@ exports.LANG_DE_TRANS = {
     'sidebar_partsLists': 'Stücklisten',
     'sidebar_parts': 'Teile',
     'sidebar_dashboard': 'Übersicht',
+    'sideBar_MaterialPlanningEP': 'Dispo Eigenfert.',
+    'sideBar_PartUsage': 'Teileverwendung',
     //Headbar
     'headbar_languages': 'Sprachen',
     'headbar_german': 'Deutsch',
@@ -35,6 +37,7 @@ exports.LANG_DE_TRANS = {
     'dashboard_configuration': 'Konfiguration',
     'dashboard_types': 'Arten',
     'dashboard_onoff': 'An / Aus',
+    'dashboard_20%capacity': 'Weniger als 20% im Lager!',
     'dashboard_article': 'Artikel',
     'dashboard_value': 'Menge',
     'dashboard_warehouse_crit': 'Lagerbestand ist sehr niedrig! Er liegt unter ',
@@ -126,9 +129,22 @@ exports.LANG_DE_TRANS = {
     'volume_ordered': 'Bestellmenge',
     'ordertype': 'Bestellung E/N',
     'stock_after_receipt': 'Bestand n. gepl. WE',
-    //Settings-Parts
+    //Overview
     'overKPart_search': 'Suche',
     'overKPart_searchEmptyText': 'Nummer oder Bezeichnung',
     'overKPart_allocation': 'Wird verwendet von:',
+    'overWH_warehousestock': 'Lagerbestand',
+    'overWH_period': 'Periode',
+    //xmlExport
+    'xmlExport': 'XML Export',
+    //MaterialPlanningEP
+    'mpEP_Product': 'Produkt',
+    'mpEP_MaterialPlanningEP': 'Disposition Eigenfertigung',
+    'mpEP_salesOrders': 'Verbindliche Aufträge',
+    'mpEP_plannedWarehouseEnd': 'Geplanter Lagerbestand am Ende der Planperiode',
+    'mpEP_WarehouseEndPeriod': 'Lagerbestand am Ende der Vorperiode',
+    'mpEP_OrderWaitingQueue': 'Aufträge in der Warteschlange',
+    'mpEP_WorkInProgress': 'Aufträge in Bearbeitung',
+    'mpEP_ProdOrders': 'Produktionsaufträge für die kommende Periode'
 };
 //# sourceMappingURL=lang-de.js.map
