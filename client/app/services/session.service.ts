@@ -284,7 +284,7 @@ export class SessionService {
     }
 
     getPartOrders() {
-        return JSON.parse(JSON.stringify(this.partOrders));
+        return this.partOrders;
     }
 
     setPartOrders(partOrders) {

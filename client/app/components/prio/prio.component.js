@@ -55,6 +55,7 @@ var PrioComponent = (function () {
             _this.pParts = data.filter(function (item) { return item.typ == "P"; });
         }, function (err) { return console.error(err); }, function () {
             _this.partOrders = _this.sessionService.getPartOrders();
+            console.log(_this.partOrders);
             _this.capacityPlanningService.getWorkstations()
                 .subscribe(function (workstations) {
                 for (var _i = 0, workstations_1 = workstations; _i < workstations_1.length; _i++) {

@@ -255,7 +255,7 @@ var SessionService = (function () {
         return JSON.parse(JSON.stringify(this.plannings));
     };
     SessionService.prototype.getPartOrders = function () {
-        return JSON.parse(JSON.stringify(this.partOrders));
+        return this.partOrders;
     };
     SessionService.prototype.setPartOrders = function (partOrders) {
         this.partOrders = partOrders;

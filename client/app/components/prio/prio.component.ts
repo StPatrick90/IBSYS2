@@ -78,6 +78,7 @@ export class PrioComponent {
                 err => console.error(err),
                 () => {
                     this.partOrders = this.sessionService.getPartOrders();
+                    console.log(this.partOrders);
                     this.capacityPlanningService.getWorkstations()
                         .subscribe(workstations => {
                             for(var workstation of workstations){
