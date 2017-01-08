@@ -71,7 +71,7 @@ var WarehousestockComponent = (function () {
             dataGrenze[r.results.period - 1] = 250000;
         }
         this.lineChartData = [{ data: data, label: this.translatePipe.transform('overWH_warehousestock', null) },
-            { data: dataGrenze, label: this.translatePipe.transform('overWH_limit', null) }];
+            { data: dataGrenze, label: this.translatePipe.transform('overWH_limit', null), fill: false }];
     };
     WarehousestockComponent = __decorate([
         core_1.Component({
