@@ -272,6 +272,18 @@ var SessionService = (function () {
     SessionService.prototype.setMatPlan = function (matPlan) {
         this.matPlan = matPlan;
     };
+    SessionService.prototype.getVerwendungRow = function () {
+        return this.verwendungRow;
+    };
+    SessionService.prototype.setVerwendungRow = function (verwendungRow) {
+        this.verwendungRow = verwendungRow;
+    };
+    SessionService.prototype.getPeriodRow = function () {
+        return this.periodRow;
+    };
+    SessionService.prototype.setPeriodRow = function (periodRow) {
+        this.periodRow = periodRow;
+    };
     SessionService.prototype.clear = function () {
         this.setResultObject(null);
         this.setParts(null);
@@ -319,6 +331,14 @@ var SessionService = (function () {
         WebStorage_1.SessionStorage(), 
         __metadata('design:type', Array)
     ], SessionService.prototype, "matPlan", void 0);
+    __decorate([
+        WebStorage_1.SessionStorage(), 
+        __metadata('design:type', Array)
+    ], SessionService.prototype, "verwendungRow", void 0);
+    __decorate([
+        WebStorage_1.SessionStorage(), 
+        __metadata('design:type', Array)
+    ], SessionService.prototype, "periodRow", void 0);
     SessionService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

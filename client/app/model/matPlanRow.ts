@@ -15,6 +15,7 @@ export class matPlanRow {
     bruttobedarfnP: number[];
     mengeohbest: number[];
     bestellmenge: number;
+    mengemitbest: number;
     bestellung: string;
     bestandnWe: number[];
 
