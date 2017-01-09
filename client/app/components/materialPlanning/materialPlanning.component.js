@@ -49,13 +49,12 @@ var MaterialPlanningComponent = (function () {
             for (var _i = 0, _a = this.purchaseParts; _i < _a.length; _i++) {
                 var p = _a[_i];
                 if (p.nummer == vorigeBestellung.teil) {
-                    vorigeBestellung.ankunftperiode = p.lieferfrist + p.abweichung + Number(vorigeBestellung.orderperiode);
+                    vorigeBestellung.ankunftperiode = Math.round(p.lieferfrist + p.abweichung + Number(vorigeBestellung.orderperiode));
                     this.vorigeBestellungen.push(vorigeBestellung);
                 }
             }
         }
     };
-    //TODO: Perioden von Yannik über session service holen (derzeit kommt immer nur die selbe), danach restliche tabelle
     MaterialPlanningComponent.prototype.setParameters = function () {
         // if (this.sessionService.getMatPlan() == null) {
         var aktuellePeriode = this.resultObj.results.period;
@@ -77,7 +76,7 @@ var MaterialPlanningComponent = (function () {
                 bestellmenge: null,
                 mengemitbest: null,
                 bestellung: null,
-                bestandnWe: null,
+                bestandnWe: [],
                 isneg: null,
                 isneg2: null
             };
@@ -94,7 +93,7 @@ var MaterialPlanningComponent = (function () {
                 var vw = _c[_b];
                 matPlanRow.verwendung.push(vw);
             }
-            // get Bruttobedarf
+            // get Bruttobedarf --- hier auch einfach new Array(länge) machen ?
             matPlanRow.bruttobedarfnP.push(0);
             for (var _d = 0, _e = this.plannings; _d < _e.length; _d++) {
                 var p = _e[_d];
@@ -102,6 +101,7 @@ var MaterialPlanningComponent = (function () {
                     matPlanRow.bruttobedarfnP.push(0);
                 }
             }
+            // matPlanRow.bruttobedarfnP = new Array<number>(4);
             for (var _f = 0, _g = purchPart.verwendung; _f < _g.length; _f++) {
                 var vw = _g[_f];
                 for (var _h = 0, _j = this.plannings; _h < _j.length; _h++) {
@@ -136,15 +136,32 @@ var MaterialPlanningComponent = (function () {
                 }
             }
             if (matPlanRow.mengemitbest < 0) {
-                console.log("<0", matPlanRow.mengemitbest);
                 matPlanRow.isneg2 = true;
             }
             else {
-                console.log("else", matPlanRow.mengemitbest);
                 matPlanRow.isneg2 = false;
             }
             // set Bestellmenge
             matPlanRow.bestellmenge = 1000;
+            // set Bestand n. Wareneingang
+            matPlanRow.bestandnWe = new Array(4);
+            // console.log(this.vorigeBestellungen);
+            for (var i = 0; i < matPlanRow.bestandnWe.length; i++) {
+                if (i === 0) {
+                    matPlanRow.bestandnWe[i] = matPlanRow.anfangsbestand - matPlanRow.bruttobedarfnP[i];
+                }
+                else {
+                    matPlanRow.bestandnWe[i] = matPlanRow.bestandnWe[i - 1] - matPlanRow.bruttobedarfnP[i];
+                }
+            }
+            for (var _m = 0, _o = this.vorigeBestellungen; _m < _o.length; _m++) {
+                var vb = _o[_m];
+                for (var i2 = 0; i2 < matPlanRow.bestandnWe.length; i2++) {
+                    if (matPlanRow.kpartnr == vb.teil && Math.round(vb.ankunftperiode) == Number(this.resultObj.results.period) + i2) {
+                        matPlanRow.bestandnWe[i2] += Number(vb.menge);
+                    }
+                }
+            }
             // set Normal-/Eilbestellung
             if (matPlanRow.mengeohbest < 0 && matPlanRow.summe * matPlanRow.bruttobedarfnP[0] > matPlanRow.anfangsbestand) {
                 matPlanRow.bestellung = "E.";
@@ -166,7 +183,6 @@ var MaterialPlanningComponent = (function () {
             // store values finally
             this.matPlan.push(matPlanRow);
         }
-        console.log(this.vorigeBestellungen);
         this.sessionService.setVerwendungRow(this.verwendungRow);
         this.sessionService.setPeriodRow(this.periodrow);
         this.sessionService.setMatPlan(this.matPlan);

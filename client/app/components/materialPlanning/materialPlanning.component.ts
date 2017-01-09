@@ -64,14 +64,13 @@ export class MaterialPlanningComponent {
 
             for (let p of this.purchaseParts) {
                 if (p.nummer == vorigeBestellung.teil) {
-                    vorigeBestellung.ankunftperiode = p.lieferfrist + p.abweichung + Number(vorigeBestellung.orderperiode);
+                    vorigeBestellung.ankunftperiode = Math.round(p.lieferfrist + p.abweichung + Number(vorigeBestellung.orderperiode));
                     this.vorigeBestellungen.push(vorigeBestellung);
                 }
             }
         }
     }
 
-    //TODO: Perioden von Yannik über session service holen (derzeit kommt immer nur die selbe), danach restliche tabelle
     setParameters() {
         // if (this.sessionService.getMatPlan() == null) {
         var aktuellePeriode = this.resultObj.results.period;
@@ -93,7 +92,7 @@ export class MaterialPlanningComponent {
                 bestellmenge: null,
                 mengemitbest: null,
                 bestellung: null,
-                bestandnWe: null,
+                bestandnWe: [],
                 isneg: null,
                 isneg2: null
             }
@@ -112,16 +111,14 @@ export class MaterialPlanningComponent {
                 matPlanRow.verwendung.push(vw);
             }
 
-            // get Bruttobedarf
+            // get Bruttobedarf --- hier auch einfach new Array(länge) machen ?
             matPlanRow.bruttobedarfnP.push(0);
             for (let p of this.plannings) {
                 while (matPlanRow.bruttobedarfnP.length < p.produktmengen.length) {
                     matPlanRow.bruttobedarfnP.push(0);
                 }
-                // if (this.periodrow.length < 4) { // später if(!this.periodrow.includes(p.period)) {...}, wenn korrekte perioden von prediction übertragen werden
-                //     this.periodrow.push(p.period);
-                // }
             }
+            // matPlanRow.bruttobedarfnP = new Array<number>(4);
             for (let vw of purchPart.verwendung) {
                 for (let p of this.plannings) {
                     if (vw.Produkt === p.produktkennung) {
@@ -156,16 +153,33 @@ export class MaterialPlanningComponent {
                 }
             }
             if (matPlanRow.mengemitbest < 0) {
-                console.log("<0", matPlanRow.mengemitbest);
                 matPlanRow.isneg2 = true;
             }
             else {
-                console.log("else", matPlanRow.mengemitbest);
                 matPlanRow.isneg2 = false;
             }
 
             // set Bestellmenge
             matPlanRow.bestellmenge = 1000;
+
+            // set Bestand n. Wareneingang
+            matPlanRow.bestandnWe = new Array<number>(4);
+            // console.log(this.vorigeBestellungen);
+            for (var i = 0; i < matPlanRow.bestandnWe.length; i++) {
+                if (i === 0) {
+                    matPlanRow.bestandnWe[i] = matPlanRow.anfangsbestand - matPlanRow.bruttobedarfnP[i];
+                }
+                else {
+                    matPlanRow.bestandnWe[i] = matPlanRow.bestandnWe[i - 1] - matPlanRow.bruttobedarfnP[i];
+                }
+            }
+            for (let vb of this.vorigeBestellungen) { // mit .some arbeiten ?
+                for (var i2 = 0; i2 < matPlanRow.bestandnWe.length; i2++) {
+                    if (matPlanRow.kpartnr == vb.teil && Math.round(vb.ankunftperiode) == Number(this.resultObj.results.period) + i2) {
+                        matPlanRow.bestandnWe[i2] += Number(vb.menge);
+                    }
+                }
+            }
 
             // set Normal-/Eilbestellung
             if (matPlanRow.mengeohbest < 0 && matPlanRow.summe * matPlanRow.bruttobedarfnP[0] > matPlanRow.anfangsbestand) {
@@ -190,7 +204,6 @@ export class MaterialPlanningComponent {
             // store values finally
             this.matPlan.push(matPlanRow);
         }
-        console.log(this.vorigeBestellungen);
         this.sessionService.setVerwendungRow(this.verwendungRow);
         this.sessionService.setPeriodRow(this.periodrow);
         this.sessionService.setMatPlan(this.matPlan);
