@@ -137,6 +137,7 @@ export const LANG_DE_TRANS = {
     'opening_stock':'Anfangsbestand',
     'gross_requirements_period':'Bruttobedarf n.Pp.',
     'sum_without_order':'Menge oh. Best.',
+    'sum_with_order':'Menge mit Best. Vp',
     'volume_ordered':'Bestellmenge',
     'ordertype':'Bestellung E/N',
     'stock_after_receipt':'Bestand n. gepl. WE',

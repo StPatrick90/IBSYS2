@@ -14,6 +14,7 @@ import {vorigeBestellung} from "../../model/vorigeBestellung";
     templateUrl: 'materialPlanning.component.html'
 })
 
+// TODO: Alles in Session und Bestellmenge
 export class MaterialPlanningComponent {
 
     resultObj: any;
@@ -47,9 +48,6 @@ export class MaterialPlanningComponent {
     };
 
     setvorigeBestellungen() {
-
-        var aktuellePeriode: number;
-
         for (var i = 0; i < this.resultObj.results.inwardstockmovement.order.length; i++) {
             var vorigeBestellung = {
                 teil: null,
@@ -72,150 +70,153 @@ export class MaterialPlanningComponent {
     }
 
     setParameters() {
-        // if (this.sessionService.getMatPlan() == null) {
-        var aktuellePeriode = this.resultObj.results.period;
-        this.getBruttoBedarfandPeriods();
-        this.setvorigeBestellungen();
+        console.log(this.sessionService.getActualPeriod());
+        console.log(this.resultObj.results.period);
+        if (this.sessionService.getMatPlan() == null || this.sessionService.getActualPeriod() != Number(this.resultObj.results.period)) {
+            var aktuellePeriode = this.resultObj.results.period;
+            this.getBruttoBedarfandPeriods();
+            this.setvorigeBestellungen();
 
-        var index = 0;
-        for (let purchPart of this.purchaseParts) {
-            var matPlanRow = {
-                kpartnr: null,
-                lieferfrist: null,
-                abweichung: null,
-                summe: null,
-                verwendung: [],
-                diskontmenge: null,
-                anfangsbestand: null,
-                bruttobedarfnP: [],
-                mengeohbest: null,
-                bestellmenge: null,
-                mengemitbest: null,
-                bestellung: null,
-                bestandnWe: [],
-                isneg: null,
-                isneg2: null
-            }
-
-            // collect values
-            matPlanRow.kpartnr = purchPart.nummer;
-            index = matPlanRow.kpartnr as number - 1;
-            matPlanRow.anfangsbestand = this.resultObj.results.warehousestock.article[index].startamount;
-            matPlanRow.abweichung = purchPart.abweichung;
-            matPlanRow.lieferfrist = purchPart.lieferfrist;
-            matPlanRow.diskontmenge = purchPart.diskontmenge; // werte bei diskontmenge in db und excel unterscheiden sich, auch ab überprüfen
-            matPlanRow.summe = Number((matPlanRow.lieferfrist + matPlanRow.abweichung).toFixed(2));
-
-            // get Verwendungen
-            for (let vw of purchPart.verwendung) {
-                matPlanRow.verwendung.push(vw);
-            }
-
-            // get Bruttobedarf --- hier auch einfach new Array(länge) machen ?
-            matPlanRow.bruttobedarfnP.push(0);
-            for (let p of this.plannings) {
-                while (matPlanRow.bruttobedarfnP.length < p.produktmengen.length) {
-                    matPlanRow.bruttobedarfnP.push(0);
+            var index = 0;
+            for (let purchPart of this.purchaseParts) {
+                var matPlanRow = {
+                    kpartnr: null,
+                    lieferfrist: null,
+                    abweichung: null,
+                    summe: null,
+                    verwendung: [],
+                    diskontmenge: null,
+                    anfangsbestand: null,
+                    bruttobedarfnP: [],
+                    mengeohbest: null,
+                    bestellmenge: null,
+                    mengemitbest: null,
+                    bestellung: null,
+                    bestandnWe: [],
+                    isneg: null,
+                    isneg2: null
                 }
-            }
-            // matPlanRow.bruttobedarfnP = new Array<number>(4);
-            for (let vw of purchPart.verwendung) {
+
+                // collect values
+                matPlanRow.kpartnr = purchPart.nummer;
+                index = matPlanRow.kpartnr as number - 1;
+                matPlanRow.anfangsbestand = this.resultObj.results.warehousestock.article[index].startamount;
+                matPlanRow.abweichung = purchPart.abweichung;
+                matPlanRow.lieferfrist = purchPart.lieferfrist;
+                matPlanRow.diskontmenge = purchPart.diskontmenge; // werte bei diskontmenge in db und excel unterscheiden sich, auch ab überprüfen
+                matPlanRow.summe = Number((matPlanRow.lieferfrist + matPlanRow.abweichung).toFixed(2));
+
+                // get Verwendungen
+                for (let vw of purchPart.verwendung) {
+                    matPlanRow.verwendung.push(vw);
+                }
+
+                // get Bruttobedarf --- hier auch einfach new Array(länge) machen ?
+                matPlanRow.bruttobedarfnP.push(0);
                 for (let p of this.plannings) {
-                    if (vw.Produkt === p.produktkennung) {
-                        for (var i = 0; i < matPlanRow.bruttobedarfnP.length; i++) {
-                            matPlanRow.bruttobedarfnP[i] += vw.Menge * p.produktmengen[i];
+                    while (matPlanRow.bruttobedarfnP.length < p.produktmengen.length) {
+                        matPlanRow.bruttobedarfnP.push(0);
+                    }
+                }
+                // matPlanRow.bruttobedarfnP = new Array<number>(4);
+                for (let vw of purchPart.verwendung) {
+                    for (let p of this.plannings) {
+                        if (vw.Produkt === p.produktkennung) {
+                            for (var i = 0; i < matPlanRow.bruttobedarfnP.length; i++) {
+                                matPlanRow.bruttobedarfnP[i] += vw.Menge * p.produktmengen[i];
+                            }
                         }
                     }
                 }
-            }
 
-            // get Menge ohne Bestellung
-            matPlanRow.mengeohbest = matPlanRow.anfangsbestand;
-            for (var i = 0; i < matPlanRow.bruttobedarfnP.length; i++) {
-                matPlanRow.mengeohbest = matPlanRow.mengeohbest - matPlanRow.bruttobedarfnP[i];
-                matPlanRow.mengemitbest = matPlanRow.mengeohbest;
-            }
-            if (matPlanRow.mengeohbest < 0) {
-                matPlanRow.isneg = true;
-            }
-            else {
-                matPlanRow.isneg = false;
-            }
-
-            // get Menge mit Bestellung aus Vorperiode
-            for (let vb of this.vorigeBestellungen) {
-                if (matPlanRow.kpartnr == vb.teil) {
-                    vb.ankunftperiode = purchPart.lieferfrist + purchPart.abweichung + Number(vb.orderperiode);
-
-                    if (Math.round(vb.ankunftperiode) <= aktuellePeriode) {
-                        matPlanRow.mengemitbest = Number(vb.menge) + matPlanRow.mengeohbest;
-                    }
+                // get Menge ohne Bestellung
+                matPlanRow.mengeohbest = matPlanRow.anfangsbestand;
+                for (var i = 0; i < matPlanRow.bruttobedarfnP.length; i++) {
+                    matPlanRow.mengeohbest = matPlanRow.mengeohbest - matPlanRow.bruttobedarfnP[i];
+                    matPlanRow.mengemitbest = matPlanRow.mengeohbest;
                 }
-            }
-            if (matPlanRow.mengemitbest < 0) {
-                matPlanRow.isneg2 = true;
-            }
-            else {
-                matPlanRow.isneg2 = false;
-            }
-
-            // set Bestellmenge
-            matPlanRow.bestellmenge = 1000;
-
-            // set Bestand n. Wareneingang
-            matPlanRow.bestandnWe = new Array<number>(4);
-            // console.log(this.vorigeBestellungen);
-            for (var i = 0; i < matPlanRow.bestandnWe.length; i++) {
-                if (i === 0) {
-                    matPlanRow.bestandnWe[i] = matPlanRow.anfangsbestand - matPlanRow.bruttobedarfnP[i];
+                if (matPlanRow.mengeohbest < 0) {
+                    matPlanRow.isneg = true;
                 }
                 else {
-                    matPlanRow.bestandnWe[i] = matPlanRow.bestandnWe[i - 1] - matPlanRow.bruttobedarfnP[i];
+                    matPlanRow.isneg = false;
                 }
-            }
-            for (let vb of this.vorigeBestellungen) { // mit .some arbeiten ?
-                for (var i2 = 0; i2 < matPlanRow.bestandnWe.length; i2++) {
-                    if (matPlanRow.kpartnr == vb.teil && Math.round(vb.ankunftperiode) == Number(this.resultObj.results.period) + i2) {
-                        matPlanRow.bestandnWe[i2] += Number(vb.menge);
+
+                // get Menge mit Bestellung aus Vorperiode
+                for (let vb of this.vorigeBestellungen) {
+                    if (matPlanRow.kpartnr == vb.teil) {
+                        vb.ankunftperiode = purchPart.lieferfrist + purchPart.abweichung + Number(vb.orderperiode);
+
+                        if (Math.round(vb.ankunftperiode) <= aktuellePeriode) {
+                            matPlanRow.mengemitbest = Number(vb.menge) + matPlanRow.mengeohbest;
+                        }
                     }
                 }
-            }
-
-            // set Normal-/Eilbestellung
-            if (matPlanRow.mengeohbest < 0 && matPlanRow.summe * matPlanRow.bruttobedarfnP[0] > matPlanRow.anfangsbestand) {
-                matPlanRow.bestellung = "E.";
-            }
-            else {
-                if (matPlanRow.mengeohbest <= 0) {
-                    matPlanRow.bestellung = "N.";
+                if (matPlanRow.mengemitbest < 0) {
+                    matPlanRow.isneg2 = true;
                 }
                 else {
-                    matPlanRow.bestellung = "---"
+                    matPlanRow.isneg2 = false;
                 }
-            }
 
-            // get Verwendungsarten
-            for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {
-                if (!this.verwendungRow.includes(matPlanRow.verwendung[l].Produkt)) {
-                    this.verwendungRow.push(matPlanRow.verwendung[l].Produkt);
+                // set Bestellmenge
+                matPlanRow.bestellmenge = 1000;
+
+                // set Bestand n. Wareneingang
+                matPlanRow.bestandnWe = new Array<number>(4);
+                // console.log(this.vorigeBestellungen);
+                for (var i = 0; i < matPlanRow.bestandnWe.length; i++) {
+                    if (i === 0) {
+                        matPlanRow.bestandnWe[i] = matPlanRow.anfangsbestand - matPlanRow.bruttobedarfnP[i];
+                    }
+                    else {
+                        matPlanRow.bestandnWe[i] = matPlanRow.bestandnWe[i - 1] - matPlanRow.bruttobedarfnP[i];
+                    }
                 }
-            }
+                for (let vb of this.vorigeBestellungen) { // mit .some arbeiten ?
+                    for (var i2 = 0; i2 < matPlanRow.bestandnWe.length; i2++) {
+                        if (matPlanRow.kpartnr == vb.teil && Math.round(vb.ankunftperiode) == Number(this.resultObj.results.period) + i2) {
+                            matPlanRow.bestandnWe[i2] += Number(vb.menge);
+                        }
+                    }
+                }
 
-            // store values finally
-            this.matPlan.push(matPlanRow);
+                // set Normal-/Eilbestellung
+                if (matPlanRow.mengeohbest < 0 && matPlanRow.summe * matPlanRow.bruttobedarfnP[0] > matPlanRow.anfangsbestand) {
+                    matPlanRow.bestellung = "E.";
+                }
+                else {
+                    if (matPlanRow.mengeohbest <= 0) {
+                        matPlanRow.bestellung = "N.";
+                    }
+                    else {
+                        matPlanRow.bestellung = "---"
+                    }
+                }
+
+                // get Verwendungsarten
+                for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {
+                    if (!this.verwendungRow.includes(matPlanRow.verwendung[l].Produkt)) {
+                        this.verwendungRow.push(matPlanRow.verwendung[l].Produkt);
+                    }
+                }
+
+                // store values finally
+                this.matPlan.push(matPlanRow);
+            }
+            this.sessionService.setVerwendungRow(this.verwendungRow);
+            this.sessionService.setPeriodRow(this.periodrow);
+            this.sessionService.setMatPlan(this.matPlan);
+            this.sessionService.setActualPeriod(Number(this.resultObj.results.period));
+            this.setLayout();
         }
-        this.sessionService.setVerwendungRow(this.verwendungRow);
-        this.sessionService.setPeriodRow(this.periodrow);
-        this.sessionService.setMatPlan(this.matPlan);
-        this.setLayout();
-        // }
-        // else {
-        //     console.log("Kaufteildispo bereits in Session eingebunden. - nach Änderungen auf der Datenbank bitte neue Session starten");
-        //     this.periodrow = this.sessionService.getPeriodRow();
-        //     this.verwendungRow = this.sessionService.getVerwendungRow();
-        //     this.matPlan = this.sessionService.getMatPlan();
-        //     this.setLayout();
-        // }
+        else {
+            console.log("Kaufteildispo bereits in Session eingebunden. - nach Änderungen auf der Datenbank bitte neue Session starten");
+            this.periodrow = this.sessionService.getPeriodRow();
+            this.verwendungRow = this.sessionService.getVerwendungRow();
+            this.matPlan = this.sessionService.getMatPlan();
+            this.setLayout();
+        }
     }
 
     getBruttoBedarfandPeriods() {
