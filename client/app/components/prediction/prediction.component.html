@@ -69,36 +69,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">{{'product' | translate}} 1</th>
-            <td><input type="text" value="{{ row1res}}"
-                       class="form-control"></td>
-            <td><input type="text" value="{{ row1res2 }}" class="form-control"></td>
-            <td><input type="text" value="{{ row1res3 }}" class="form-control"></td>
-            <td><input type="text" value="{{ row1res4 }}" class="form-control"></td>
-        </tr>
-        <tr>
-            <th scope="row">{{'product' | translate}} 2</th>
-            <td><input type="text" value="{{ row2res }}"
-                       class="form-control"></td>
-            <td><input type="text" value="{{ row2res2 }}" class="form-control"></td>
-            <td><input type="text" value="{{ row2res3 }}" class="form-control"></td>
-            <td><input type="text" value="{{ row2res4 }}" class="form-control"></td>
-        </tr>
-        <tr>
-            <th scope="row">{{'product' | translate}} 3</th>
-            <td><input type="text" value="{{ row3res }}"
-                       class="form-control"></td>
-            <td><input type="text" value="{{ row3res2 }}" class="form-control"></td>
-            <td><input type="text" value="{{ row3res3 }}" class="form-control"></td>
-            <td><input type="text" value="{{ row3res4 }}" class="form-control"></td>
-        </tr>
-        <tr>
-            <th scope="row">{{'sum' | translate}}</th>
-            <td>{{ row1res + row2res + row3res }}</td>
-            <td>{{ row1res2 + row2res2 + row3res2 }}</td>
-            <td>{{ row1res3 + row2res3 + row3res3 }}</td>
-            <td>{{ row1res4 + row2res4 + row3res4 }}</td>
+        <tr *ngFor="let r of rowtable3">
+            <td>{{r.produktkennung}}</td>
+            <td *ngFor="let p of r.produktmengen"><input type="text" value="{{ p }}"
+                                                         class="form-control"></td>
         </tr>
         </tbody>
     </table>

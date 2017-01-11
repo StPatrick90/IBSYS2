@@ -11,18 +11,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 require('rxjs/add/operator/map');
+var Rx_1 = require('rxjs/Rx');
 var PredictionService = (function () {
     function PredictionService(http) {
         this.http = http;
         console.log('Prediction Service Initialized...');
     }
-    PredictionService.prototype.getBindingOrders = function () {
-        return this.http.get('api/bindingOrders')
-            .map(function (res) { return res.json(); });
-    };
-    PredictionService.prototype.getPlannings = function () {
-        return this.http.get('api/plannings')
-            .map(function (res) { return res.json(); });
+    PredictionService.prototype.getBindingOrdersAndPlannings = function () {
+        return Rx_1.Observable.forkJoin(this.http.get('api/bindingOrders').map(function (res) { return res.json(); }), this.http.get('api/plannings').map(function (res) { return res.json(); }));
     };
     PredictionService = __decorate([
         core_1.Injectable(), 
