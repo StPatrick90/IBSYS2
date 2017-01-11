@@ -64,9 +64,9 @@
         <td class="text-center">{{m.diskontmenge}}</td>
         <td class="text-center">{{m.anfangsbestand}}</td>
         <td class="text-center" *ngFor="let b of m.bruttobedarfnP">{{b}}</td>
-        <td class="text-center" [ngClass]="{red: m.isneg}">{{m.mengeohbest}}</td>
-        <td class="text-center" [ngClass]="{red: m.isneg2}">{{m.mengemitbest}}</td>
-        <td><input [value]="m.bestellmenge" type="number" (input)="bestellmengeChange($event.target.value, i)"></td>
+        <td class="text-center" [ngClass]="{redlining: m.isneg}">{{m.mengeohbest}}</td>
+        <td class="text-center" [ngClass]="{redlining: m.isneg2}">{{m.mengemitbest}}</td>
+        <td><input [value]="m.bestellmenge" type="number" min = "0" (input)="bestellmengeChange($event.target.value, i)"></td>
         <td>
             <div width="50px" class="btn-group">
                 <button type="button" class="btn .btn-block .btn-primary dropdown-toggle" data-toggle="dropdown"
