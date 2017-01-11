@@ -67,7 +67,6 @@ var PredictionComponent = (function () {
                 produktKennung = this.plannings[0].produkte[i + 1].Kennung;
             }
             this.produktKennungen = this.plannings[0].produkte[i].Kennung;
-            console.log(this.produktKennungen);
         }
         this.sessionService.setPlannings(this.rowtable2);
     };

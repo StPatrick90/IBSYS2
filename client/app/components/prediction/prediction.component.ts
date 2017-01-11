@@ -88,7 +88,6 @@ export class PredictionComponent {
             }
 
             this.produktKennungen = this.plannings[0].produkte[i].Kennung;
-            console.log(this.produktKennungen);
         }
         this.sessionService.setPlannings(this.rowtable2);
     }
