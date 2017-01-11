@@ -6,6 +6,7 @@ import { TRANSLATIONS } from './translations';
 
 @Injectable()
 export class TranslateService {
+    static instance: TranslateService;
     private _currentLang: string;
 
     public get currentLang() {
@@ -15,6 +16,7 @@ export class TranslateService {
     // inject our translations
     constructor(@Inject(TRANSLATIONS) private _translations: any) {
         console.log('Translate Service Initialized...')
+        return TranslateService.instance = TranslateService.instance || this;
     }
 
     public use(lang: string): void {

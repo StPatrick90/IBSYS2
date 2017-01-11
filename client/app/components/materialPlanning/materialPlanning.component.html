@@ -1,25 +1,20 @@
-<div class="well">
-    <div class="">
-        <div class="row">
-            <h2>Kaufteildisposition</h2>
-            <ul class="breadcrumb">
-                <!--completed-->
-                <li class="completed"><a routerLink="/xmlImport" routerLinkActive="active">{{'xmlImport' |
-                    translate}}</a></li>
-                <li class="completed"><a routerLink="/prediction" routerLinkActive="active">{{'prediction_planning' |
-                    translate}}</a></li>
-                <li class="active"><a routerLink="/materialPlanning" routerLinkActive="active">{{'material_Planning' |
-                    translate}}</a></li>
-                <li class=""><a routerLink="/capacityPlanning" routerLinkActive="active">{{'capacity_planning' |
-                    translate}}</a></li>
-            </ul>
-        </div>
+<div class="well text-center">
+    <h2 style="margin-bottom: 20px; margin-top: 0px;">{{'material_Planning' | translate}}</h2>
+    <div id="bc1" class="myBreadcrumb">
+        <a class="completed" routerLink="/xmlImport"><div>{{'xmlImport' | translate}}</div></a>
+        <a class="completed" routerLink="/prediction"><div>{{'prediction_planning' | translate}}</div></a>
+        <a class="active" routerLink="/materialPlanning"><div>{{'material_Planning' | translate}}</div></a>
+        <a class="" routerLink="//materialPlanningEP"><div>{{'mpEP_MaterialPlanningEP' | translate}}</div></a>
+        <a class="" routerLink="/prioritization"><div>{{'sidebar_prio' | translate}}</div></a>
+        <a class="" routerLink="/capacityPlanning"><div>{{'capacity_planning' | translate}}</div></a>
+        <a class="" routerLink="/xmlExport"><div>{{'xmlExport' | translate}}</div></a>
     </div>
 </div>
 
-<body>
 
-<table class="table-responsive table-bordered table-striped" onload="setColspan()">
+<body ng-app="myApp">
+
+<table class="table-responsive table-bordered table-striped" onload="setLayout()">
     <caption width="100%" class="text-center">{{'material_Planning' | translate}}</caption>
     <thead>
     <tr>
@@ -32,9 +27,10 @@
         <th colspan="1" class="text-center">{{'opening_stock' | translate}}</th>
         <th id="Bruttobedarf" class="text-center">{{'gross_requirements_period' | translate}}</th>
         <th colspan="1" class="text-center">{{'sum_without_order' | translate}}</th>
+        <th colspan="1" class="text-center">{{'sum_with_order' | translate}}</th>
         <th colspan="1" class="text-center">{{'volume_ordered' | translate}}</th>
         <th colspan="1" class="text-center">{{'ordertype' | translate}}</th>
-        <th colspan="1" class="text-center">{{'stock_after_receipt' | translate}}</th>
+        <th id="Bestand" colspan="1" class="text-center">{{'stock_after_receipt' | translate}}</th>
     </tr>
 
     <tr>
@@ -50,41 +46,44 @@
         <th></th>
         <th></th>
         <th></th>
+        <th *ngFor="let p of periodrow" scope="col" class="text-center">{{p}}</th>
         <th></th>
         <th></th>
         <th></th>
         <th></th>
-        <th></th>
-
-
     </tr>
     </thead>
 
     <tbody>
-    <tr *ngFor="let m of matPlan">
-        <td>{{m.kpartnr}}</td>
-        <td>{{m.lieferfrist}}</td>
-        <td>{{m.abweichung}}</td>
-        <td>{{m.summe}}</td>
-        <td *ngFor="let v of m.verwendung">
-            {{v.Menge}}
+    <tr *ngFor="let m of matPlan; let i = index">
+        <td class="text-center">{{m.kpartnr}}</td>
+        <td class="text-center">{{m.lieferfrist}}</td>
+        <td class="text-center">{{m.abweichung}}</td>
+        <td class="text-center">{{m.summe}}</td>
+        <td class="text-center" *ngFor="let v of m.verwendung">{{v.Menge}}</td>
+        <td class="text-center">{{m.diskontmenge}}</td>
+        <td class="text-center">{{m.anfangsbestand}}</td>
+        <td class="text-center" *ngFor="let b of m.bruttobedarfnP">{{b}}</td>
+        <td class="text-center" [ngClass]="{red: m.isneg}">{{m.mengeohbest}}</td>
+        <td class="text-center" [ngClass]="{red: m.isneg2}">{{m.mengemitbest}}</td>
+        <td><input [value]="m.bestellmenge" type="number" (input)="bestellmengeChange($event.target.value, i)"></td>
+        <td>
+            <div width="50px" class="btn-group">
+                <button type="button" class="btn .btn-block .btn-primary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    {{m.bestellung}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li *ngFor="let bestellart of bestellarten" class="text-center">
+                        <a (click)="bestellartSelected(bestellart, i)">{{bestellart}}</a>
+                    </li>
+                </ul>
+            </div>
         </td>
-        <td>{{m.diskontmenge}}</td>
-        <td>{{m.anfangsbestand}}</td>
-        <td *ngFor="let b of m.bruttobedarfnP">
-            {{b}}
-        </td>
-        <td id="Mengeohbest" [ngClass]="{red: m.isneg}">{{m.mengeohbest}}</td>
-        <td></td>
-        <td>{{m.bestellung}}</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td class="text-center" *ngFor="let b of m.bestandnWe">{{b}}</td>
     </tr>
     </tbody>
 </table>
-
+<button type="button" class="btn-lg btn-primary" (click)="clearSession()"> Reset Session</button>
 </body>

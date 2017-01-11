@@ -24,6 +24,8 @@ export const LANG_DE_TRANS = {
     'sidebar_partsLists': 'Stücklisten',
     'sidebar_parts': 'Teile',
     'sidebar_dashboard': 'Übersicht',
+    'sideBar_MaterialPlanningEP': 'Dispo Eigenfert.',
+    'sideBar_PartUsage': 'Teileverwendung',
 
 //Headbar
     'headbar_languages': 'Sprachen',
@@ -38,17 +40,15 @@ export const LANG_DE_TRANS = {
     'dashboard_configuration':'Konfiguration',
     'dashboard_types':'Arten',
     'dashboard_onoff':'An / Aus',
+    'dashboard_20%capacity':'Weniger als 20% im Lager!',
     'dashboard_article':'Artikel',
     'dashboard_value': 'Menge',
 
-    'dashboard_warehouse_crit':'Lagerbestand ist sehr niedrig! Er liegt unter ',
-    'dashboard_warehouse_warn':'Lagerbestand ist niedrig! Er liegt unter ',
-    'dashboard_warehouse_good':'Lagerbestand ist über ',
-
-    'dashboard_deliveryreliabiliy_bad':'Deine Liefertreue ist unter 100%.',
-    'dashboard_deliveryreliabiliy_good':'Gute Liefertreue!',
-
-
+    'dashboard_warehouse_crit': 'Lagerbestand ist sehr niedrig! Er liegt unter ',
+    'dashboard_warehouse_warn': 'Lagerbestand ist niedrig! Er liegt unter ',
+    'dashboard_warehouse_good': 'Lagerbestand ist über ',
+    'dashboard_deliveryreliabiliy_bad': 'Deine Liefertreue ist unter 100%.',
+    'dashboard_deliveryreliabiliy_good': 'Gute Liefertreue!',
 
 //CapacityPlanning
     'capacity_workstations': 'Arbeitsplätze',
@@ -126,7 +126,7 @@ export const LANG_DE_TRANS = {
     'remaining_stock': 'Rest Bestand',
     'prediction_planning': 'Prognose',
 
-    //MaterialPlanning
+//MaterialPlanning
     'material_Planning': 'Kaufteildisposition',
     'num_purchase_part': 'Nr.Kaufteil',
     'delivery_time': 'Lieferfrist',
@@ -139,6 +139,26 @@ export const LANG_DE_TRANS = {
     'sum_without_order':'Menge oh. Best.',
     'volume_ordered':'Bestellmenge',
     'ordertype':'Bestellung E/N',
-    'stock_after_receipt':'Bestand n. gepl. WE'
+    'stock_after_receipt':'Bestand n. gepl. WE',
 
+//Overview
+    'overKPart_search': 'Suche',
+    'overKPart_searchEmptyText': 'Nummer oder Bezeichnung',
+    'overKPart_allocation': 'Wird verwendet von:',
+    'overWH_warehousestock': 'Lagerbestand',
+    'overWH_limit': 'Grenze',
+    'overWH_period': 'Periode',
+
+//xmlExport
+    'xmlExport': 'XML Export',
+
+//MaterialPlanningEP
+    'mpEP_Product': 'Produkt',
+    'mpEP_MaterialPlanningEP': 'Disposition Eigenfertigung',
+    'mpEP_salesOrders': 'Verbindliche Aufträge',
+    'mpEP_plannedWarehouseEnd': 'Geplanter Lagerbestand am Ende der Planperiode',
+    'mpEP_WarehouseEndPeriod': 'Lagerbestand am Ende der Vorperiode',
+    'mpEP_OrderWaitingQueue': 'Aufträge in der Warteschlange',
+    'mpEP_WorkInProgress': 'Aufträge in Bearbeitung',
+    'mpEP_ProdOrders': 'Produktionsaufträge für die kommende Periode'
 };

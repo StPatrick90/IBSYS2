@@ -1,0 +1,24 @@
+<div class="well">
+    <div class="row" style="padding-bottom: 20px">
+        <label for="part_search">{{'overKPart_search' | translate}}</label>
+        <input [(ngModel)]="searchText" class="form-control" placeholder="{{'overKPart_searchEmptyText' | translate}}" id="part_search">
+    </div>
+    <div class="row" *ngFor="let kpart of kparts  | partPipe: searchText">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                {{kpart.nummer + " - " + kpart.bezeichnung}}
+            </div>
+            <div class="panel-body">
+               {{'overKPart_allocation' | translate}}
+               <span *ngFor="let part of partAllocation[kpart.nummer]">
+                   <div class="panel panel-info">
+                       <div class="panel-heading">
+                            {{part.nummer + " - " + part.bezeichnung }}
+                       </div>
+                   </div>
+                </span>
+            </div>
+        </div>
+
+    </div>
+</div>

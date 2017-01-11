@@ -8,8 +8,8 @@ import 'rxjs/add/operator/map';
 import {Part} from '../model/part';
 import {Workstation} from '../model/workstastion';
 import {ProcessingTime} from '../model/processingTime';
-import {Plannings} from "../model/plannings";
 import {rowtype} from "../model/rowtype";
+import {matPlanRow} from "../model/matPlanRow";
 
 
 @Injectable()
@@ -23,6 +23,9 @@ export class SessionService {
     @SessionStorage() private plannedWarehouseStock: Array<any>;
     @SessionStorage() private bindingorders: rowtype[];
     @SessionStorage() private plannings: rowtype[];
+    @SessionStorage() private matPlan: matPlanRow[];
+    @SessionStorage() private verwendungRow: string[];
+    @SessionStorage() private periodRow: number[];
 
     constructor(private http: Http) {
         console.log('Session Service Initialized...');
@@ -245,7 +248,7 @@ export class SessionService {
     }
 
     getParts() {
-        return this.parts;
+        return JSON.parse(JSON.stringify(this.parts));
     }
 
     setParts(parts) {
@@ -253,7 +256,7 @@ export class SessionService {
     }
 
     getWorkstations() {
-        return this.workstations;
+        return JSON.parse(JSON.stringify(this.workstations));
     }
 
     setWorkstations(workstations) {
@@ -261,7 +264,7 @@ export class SessionService {
     }
 
     getProcessingTimes() {
-        return this.processingTimes;
+        return JSON.parse(JSON.stringify(this.processingTimes));
     }
 
     setProcessingTimes(processingTimes) {
@@ -273,7 +276,7 @@ export class SessionService {
     }
 
     getbindingOrders() {
-        return this.bindingorders;
+        return JSON.parse(JSON.stringify(this.bindingorders));
     }
 
     setPlannings(rowtable2) {
@@ -281,7 +284,7 @@ export class SessionService {
     }
 
     getPlannings() {
-        return this.plannings;
+        return JSON.parse(JSON.stringify(this.plannings));
     }
 
     getPartOrders() {
@@ -293,13 +296,36 @@ export class SessionService {
     }
 
     getPlannedWarehouseStock() {
-        return this.plannedWarehouseStock;
+        return JSON.parse(JSON.stringify(this.plannedWarehouseStock));
     }
 
     setPlannedWarehouseStock(plannedWarehouseStock) {
         this.plannedWarehouseStock = plannedWarehouseStock;
     }
 
+    getMatPlan() {
+        return this.matPlan;
+    }
+
+    setMatPlan(matPlan) {
+        this.matPlan = matPlan;
+    }
+
+    getVerwendungRow() {
+        return this.verwendungRow;
+    }
+
+    setVerwendungRow(verwendungRow: string[]) {
+        this.verwendungRow = verwendungRow;
+    }
+
+    getPeriodRow() {
+        return this.periodRow;
+    }
+
+    setPeriodRow(periodRow: number[]) {
+        this.periodRow = periodRow;
+    }
 
     clear() {
         this.setResultObject(null);
@@ -310,6 +336,7 @@ export class SessionService {
         this.setPlannedWarehouseStock(null);
         this.setPlannings(null);
         this.setbindingOrders(null);
+        this.setMatPlan(null);
     }
 
 }

@@ -225,19 +225,19 @@ var SessionService = (function () {
         this.resultObj = Obj;
     };
     SessionService.prototype.getParts = function () {
-        return this.parts;
+        return JSON.parse(JSON.stringify(this.parts));
     };
     SessionService.prototype.setParts = function (parts) {
         this.parts = parts;
     };
     SessionService.prototype.getWorkstations = function () {
-        return this.workstations;
+        return JSON.parse(JSON.stringify(this.workstations));
     };
     SessionService.prototype.setWorkstations = function (workstations) {
         this.workstations = workstations;
     };
     SessionService.prototype.getProcessingTimes = function () {
-        return this.processingTimes;
+        return JSON.parse(JSON.stringify(this.processingTimes));
     };
     SessionService.prototype.setProcessingTimes = function (processingTimes) {
         this.processingTimes = processingTimes;
@@ -246,13 +246,13 @@ var SessionService = (function () {
         this.bindingorders = rowtable1;
     };
     SessionService.prototype.getbindingOrders = function () {
-        return this.bindingorders;
+        return JSON.parse(JSON.stringify(this.bindingorders));
     };
     SessionService.prototype.setPlannings = function (rowtable2) {
         this.plannings = rowtable2;
     };
     SessionService.prototype.getPlannings = function () {
-        return this.plannings;
+        return JSON.parse(JSON.stringify(this.plannings));
     };
     SessionService.prototype.getPartOrders = function () {
         return this.partOrders;
@@ -261,10 +261,28 @@ var SessionService = (function () {
         this.partOrders = partOrders;
     };
     SessionService.prototype.getPlannedWarehouseStock = function () {
-        return this.plannedWarehouseStock;
+        return JSON.parse(JSON.stringify(this.plannedWarehouseStock));
     };
     SessionService.prototype.setPlannedWarehouseStock = function (plannedWarehouseStock) {
         this.plannedWarehouseStock = plannedWarehouseStock;
+    };
+    SessionService.prototype.getMatPlan = function () {
+        return this.matPlan;
+    };
+    SessionService.prototype.setMatPlan = function (matPlan) {
+        this.matPlan = matPlan;
+    };
+    SessionService.prototype.getVerwendungRow = function () {
+        return this.verwendungRow;
+    };
+    SessionService.prototype.setVerwendungRow = function (verwendungRow) {
+        this.verwendungRow = verwendungRow;
+    };
+    SessionService.prototype.getPeriodRow = function () {
+        return this.periodRow;
+    };
+    SessionService.prototype.setPeriodRow = function (periodRow) {
+        this.periodRow = periodRow;
     };
     SessionService.prototype.clear = function () {
         this.setResultObject(null);
@@ -275,6 +293,7 @@ var SessionService = (function () {
         this.setPlannedWarehouseStock(null);
         this.setPlannings(null);
         this.setbindingOrders(null);
+        this.setMatPlan(null);
     };
     __decorate([
         WebStorage_1.SessionStorage(), 
@@ -308,6 +327,18 @@ var SessionService = (function () {
         WebStorage_1.SessionStorage(), 
         __metadata('design:type', Array)
     ], SessionService.prototype, "plannings", void 0);
+    __decorate([
+        WebStorage_1.SessionStorage(), 
+        __metadata('design:type', Array)
+    ], SessionService.prototype, "matPlan", void 0);
+    __decorate([
+        WebStorage_1.SessionStorage(), 
+        __metadata('design:type', Array)
+    ], SessionService.prototype, "verwendungRow", void 0);
+    __decorate([
+        WebStorage_1.SessionStorage(), 
+        __metadata('design:type', Array)
+    ], SessionService.prototype, "periodRow", void 0);
     SessionService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

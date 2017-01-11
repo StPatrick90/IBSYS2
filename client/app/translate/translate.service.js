@@ -21,6 +21,7 @@ var TranslateService = (function () {
     function TranslateService(_translations) {
         this._translations = _translations;
         console.log('Translate Service Initialized...');
+        return TranslateService.instance = TranslateService.instance || this;
     }
     Object.defineProperty(TranslateService.prototype, "currentLang", {
         get: function () {

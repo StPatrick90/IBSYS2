@@ -24,6 +24,8 @@ export const LANG_EN_TRANS = {
     'sidebar_partsLists': 'Parts lists',
     'sidebar_parts': 'Parts',
     'sidebar_dashboard': 'Dashboard',
+    'sideBar_MaterialPlanningEP': 'Mat. pl. (f/sf prod.)',
+    'sideBar_PartUsage': 'Part usage',
 
 //Headbar
     'headbar_languages': 'Languages',
@@ -31,23 +33,23 @@ export const LANG_EN_TRANS = {
     'headbar_english': 'English',
 
 //Dashboard
-    'dashboard_danger':'Danger',
-    'dashboard_warning':'Warning',
-    'dashboard_good':'Good',
-    'dashboard_critical':'Critical',
-    'dashboard_configuration':'Configuration',
-    'dashboard_types':'Types',
-    'dashboard_onoff':'On / Off',
-    'dashboard_20%capacity':'Less than 20% in the warehouse!',
-    'dashboard_article':'Article',
-    'dashboard_value':'Value',
+    'dashboard_danger': 'Danger',
+    'dashboard_warning': 'Warning',
+    'dashboard_good': 'Good',
+    'dashboard_critical': 'Critical',
+    'dashboard_configuration': 'Configuration',
+    'dashboard_types': 'Types',
+    'dashboard_onoff': 'On / Off',
+    'dashboard_20%capacity': 'Less than 20% in the warehouse!',
+    'dashboard_article': 'Article',
+    'dashboard_value': 'Value',
 
-    'dashboard_warehouse_crit':'Warhousestock is very low! The value is under ',
-    'dashboard_warehouse_warn':'Warhousestock is low! The value is under ',
-    'dashboard_warehouse_good':'Warehousstock is full filled! Over ',
+    'dashboard_warehouse_crit': 'Warhousestock is very low! The value is under ',
+    'dashboard_warehouse_warn': 'Warhousestock is low! The value is under ',
+    'dashboard_warehouse_good': 'Warehousstock is full filled! Over ',
 
-    'dashboard_deliveryreliabiliy_bad':'Your delivery reliability is under ',
-    'dashboard_deliveryreliabiliy_good':'Delivery reliability is',
+    'dashboard_deliveryreliabiliy_bad': 'Your delivery reliability is under ',
+    'dashboard_deliveryreliabiliy_good': 'Delivery reliability is',
 
 //CapacityPlanning
     'capacity_workstations': 'Workstations',
@@ -125,9 +127,8 @@ export const LANG_EN_TRANS = {
     'remaining_stock': 'Remaining Stock',
     'prediction_planning': 'Forecast',
 
-
-    //MaterialPlanning
-    'material_Planning': 'Material Planning',
+//MaterialPlanning
+    'material_Planning': 'Material Planning (Purchased Items)',
     'num_purchase_part': 'Nr. Purchase Part',
     'delivery_time': 'Del.Time',
     'deviation': 'Deviation',
@@ -139,5 +140,26 @@ export const LANG_EN_TRANS = {
     'sum_without_order':'Sum without order',
     'volume_ordered':'Volume ordered',
     'ordertype':'Order Type',
-    'stock_after_receipt':'Stock after receipt'
+    'stock_after_receipt':'Stock after receipt',
+
+//Overview
+    'overKPart_search': 'Search',
+    'overKPart_searchEmptyText': 'Number or title',
+    'overKPart_allocation': 'Used by:',
+    'overWH_warehousestock': 'Warehousestock',
+    'overWH_limit': 'Limit',
+    'overWH_period': 'Period',
+
+//xmlExport
+    'xmlExport': 'XML Export',
+
+//MaterialPlanningEP
+    'mpEP_Product': 'Product',
+    'mpEP_MaterialPlanningEP': 'Material Planning (finished / semi finished products)',
+    'mpEP_salesOrders': 'Sales Orders',
+    'mpEP_plannedWarehouseEnd': 'Planned warehousestock at the end of the following period',
+    'mpEP_WarehouseEndPeriod': 'Warehousestock at the end of the passed period',
+    'mpEP_OrderWaitingQueue': 'Orders in the waiting queue',
+    'mpEP_WorkInProgress': 'Work in progress',
+    'mpEP_ProdOrders': 'Production orders for the following period'
 };

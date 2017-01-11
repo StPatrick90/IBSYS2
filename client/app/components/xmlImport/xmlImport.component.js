@@ -15,10 +15,12 @@ var core_1 = require('@angular/core');
 var xmlImport_service_1 = require('../../services/xmlImport.service');
 var session_service_1 = require('../../services/session.service');
 var db_service_1 = require('../../services/db.service');
+var app_service_1 = require('../../services/app.service');
 var XmlImportComponent = (function () {
-    function XmlImportComponent(xmlImportService, sessionService, dbService) {
+    function XmlImportComponent(xmlImportService, sessionService, dbService, appService) {
         var _this = this;
         this.xmlImportService = xmlImportService;
+        this.appService = appService;
         this.xml = "";
         this.periods = [];
         this.errorMessage = "";
@@ -100,7 +102,7 @@ var XmlImportComponent = (function () {
             selector: 'xmlImport',
             templateUrl: 'xmlImport.component.html'
         }), 
-        __metadata('design:paramtypes', [xmlImport_service_1.XmlImportService, session_service_1.SessionService, db_service_1.DBService])
+        __metadata('design:paramtypes', [xmlImport_service_1.XmlImportService, session_service_1.SessionService, db_service_1.DBService, app_service_1.AppService])
     ], XmlImportComponent);
     return XmlImportComponent;
 }());

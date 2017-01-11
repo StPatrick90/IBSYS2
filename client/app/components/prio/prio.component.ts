@@ -1,7 +1,7 @@
 /**
  * Created by philipp.koepfer on 10.12.16.
  */
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 
 import {SessionService} from '../../services/session.service';
 import {PartService} from '../../services/part.service';
@@ -13,6 +13,7 @@ import {Workstation} from '../../model/workstastion';
 import {Sequence} from '../../model/sequence';
 import {WorkingTime} from '../../model/workingTime';
 import {CapacityPlanningService} from '../../services/capacityPlanning.service';
+import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 
 
@@ -36,31 +37,29 @@ export class PrioComponent {
     nPAuftraege: Array<any> = [];
     lager: any;
     reihenfolgen: Array<Sequence> = [];
-    /*
-    {
-        workStation: Workstation
-    }
-     */
 
     processingTimes: Array<ProcessingTime> = [];
 
     zeiten: Array<WorkingTime> = [];
     partOrders: Array<any> = [];
-
-    //TODO: Replace number with part
-    /*
-    Alternativ Ablauf?
-    Schaue bei Endprodukt (z.b. p1) nach ob es genug Material gibt?
-    Wenn Ja --> Produzieren
-    Wenn Nein --> Endprodukt = Endprodukt.Bestanteil x
-     */
     defaultAblauf: Array<number> = [];
     displayArray: Array<Part> = [];
+
+    @ViewChild('splitting')
+    modalSplitting: ModalComponent;
+
+    splittingPart: Part;
+    splittingAnzahl: number;
+    splittingAnzahl2: number;
+
 
     constructor(private sessionService: SessionService, private  partService: PartService, private capacityPlanningService: CapacityPlanningService ) {
     }
 
     ngOnInit() {
+        this.splittingPart = new Part();
+        this.splittingAnzahl2 = 0;
+        this.splittingAnzahl = 0;
         this.defaultAblauf.push(18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3);
         this.processingTimes = this.sessionService.getProcessingTimes();
 
@@ -79,6 +78,7 @@ export class PrioComponent {
                 err => console.error(err),
                 () => {
                     this.partOrders = this.sessionService.getPartOrders();
+                    console.log(this.partOrders);
                     this.capacityPlanningService.getWorkstations()
                         .subscribe(workstations => {
                             for(var workstation of workstations){
@@ -94,6 +94,7 @@ export class PrioComponent {
     }
 
     processOptimizaition() {
+        this.updateStorage();
         for (var partNumber of this.defaultAblauf) {
             var auftragsMenge = 0;
             for(var partOrder in this.partOrders){
@@ -111,7 +112,6 @@ export class PrioComponent {
                     this.processWorkflow(this.nPAuftraege[idx].Teil, this.nPAuftraege[idx].Anzahl);
                 }
             }
-            console.log(auftragsMenge);
             this.processWorkflow(partNumber, auftragsMenge);
         }
 
@@ -119,6 +119,8 @@ export class PrioComponent {
         console.log(this.reihenfolgen);
         console.log("pAufträge:");
         console.log(this.produzierbareAuftraege);
+        console.log("npAufträge:");
+        console.log(this.nPAuftraege);
 
         this.displayArray.length = 0;
         for(var auftrag of this.produzierbareAuftraege){
@@ -134,9 +136,11 @@ export class PrioComponent {
 
         var canBeProduced = true;
         var anzahl = auftraege;
+
         //Sind Teile da?
         for(var bestandteil of bestandteilArray){
             var verfügbar = "";
+
             if((bestandteil.lagerBestand/bestandteil.anzahl) > 0){
                 //JA
                 if(bestandteil.lagerBestand >= (auftraege * bestandteil.anzahl)){
@@ -197,8 +201,7 @@ export class PrioComponent {
                 break;
             }
         }
-        
-        //TODO: Lagerbestand mit Bestellungen anpassen!
+
         //TODO: Merge batch objects
         while(auftraege > 0){
             while(prozessingTime != null){
@@ -314,6 +317,60 @@ export class PrioComponent {
             }
         }
         return bestandteilArray;
+    }
+
+    updateStorage(){
+        for(var idx in this.lager){
+            if(this.wartelisteMaterial.missingpart){
+                if(this.wartelisteMaterial.missingpart.length > 0){
+                    for(var material of this.wartelisteMaterial.missingpart){
+                        if(material.waitinglist.item == this.lager[idx].id){
+                            if(material.waitinglist.period == this.resultObj.results.period){
+                                var lagerMenge = Number.parseInt(this.lager[idx].amount);
+                                var bestellMenge = Number.parseInt(material.waitinglist.amount);
+                                this.lager[idx].amount = (lagerMenge + bestellMenge).toString();
+                            }
+                        }
+                    }
+                }
+                else{
+                    if(this.wartelisteMaterial.missingpart.waitinglist.item == this.lager[idx].id){
+                        if(this.wartelisteMaterial.missingpart.waitinglist.period == this.resultObj.results.period){
+                            var lagerMenge = Number.parseInt(this.lager[idx].amount);
+                            var bestellMenge = Number.parseInt(this.wartelisteMaterial.missingpart.waitinglist.amount);
+                            this.lager[idx].amount = (lagerMenge + bestellMenge).toString();
+                            break;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    setModalView(object, index){
+        this.splittingAnzahl2 = object.Anzahl;
+        this.splittingPart = object.Teil;
+        this.splittingAnzahl = object.Anzahl / 2;
+
+        this.modalSplitting.open();
+    }
+
+    closeModalView(){
+        this.modalSplitting.close();
+    }
+    saveModalView(){
+        if(this.splittingAnzahl > 0){
+            for(var idx in this.produzierbareAuftraege){
+                if(this.produzierbareAuftraege[idx].Teil === this.splittingPart){
+                    if((this.produzierbareAuftraege[idx].Anzahl - this.splittingAnzahl) > 0){
+                        this.produzierbareAuftraege[idx].Anzahl -= this.splittingAnzahl;
+                        this.produzierbareAuftraege.splice(Number.parseInt(idx), 0, {"Teil": this.splittingPart, "Anzahl": this.splittingAnzahl});
+                    }
+                    break;
+                }
+            }
+        }
+        this.modalSplitting.close();
     }
 }
 

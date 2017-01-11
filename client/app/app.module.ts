@@ -29,6 +29,7 @@ import {PartPipe} from './pipes/parts.pipe';
 import { MaterialPlanningEPComponent } from './components/materialPlanningEP/materialPlanningEP.component';
 import { WarehousestockComponent } from './components/overview/warehousestock/warehousestock.component';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { KPartAllocationComponent } from './components/overview/kPartAllocation/kPartAllocation.component';
 
 
 const WINDOW_PROVIDER: ValueProvider = {
@@ -44,10 +45,10 @@ const WINDOW_PROVIDER: ValueProvider = {
         HomeComponent, TranslatePipe, XmlImportComponent, MaterialPlanningComponent,
         PredictionComponent, WorkstationsComponent, PartsComponent, DashboardComponent,
         PartsListsComponent, PrioComponent, PartPipe, MaterialPlanningEPComponent,
-        WarehousestockComponent],
+        WarehousestockComponent, KPartAllocationComponent],
 
     bootstrap: [AppComponent],
-    providers: [TRANSLATION_PROVIDERS, TranslateService, LocalStorageService, WINDOW_PROVIDER]
+    providers: [TRANSLATION_PROVIDERS, TranslateService, LocalStorageService, WINDOW_PROVIDER, TranslatePipe]
 
 })
 export class AppModule {

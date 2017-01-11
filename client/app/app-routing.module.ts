@@ -16,6 +16,7 @@ import {PartsListsComponent} from './components/settings/partsLists/partsLists.c
 import { PrioComponent } from './components/prio/prio.component';
 import {MaterialPlanningEPComponent} from './components/materialPlanningEP/materialPlanningEP.component';
 import { WarehousestockComponent } from './components/overview/warehousestock/warehousestock.component';
+import { KPartAllocationComponent } from './components/overview/kPartAllocation/kPartAllocation.component';
 
 @NgModule({
     imports: [
@@ -32,7 +33,8 @@ import { WarehousestockComponent } from './components/overview/warehousestock/wa
             { path: 'partsLists', component: PartsListsComponent},
             { path: 'prioritization', component: PrioComponent},
             { path: 'materialPlanningEP', component: MaterialPlanningEPComponent},
-            { path: 'warehousestock', component: WarehousestockComponent}
+            { path: 'warehousestock', component: WarehousestockComponent},
+            { path: 'kpartAllocation', component: KPartAllocationComponent}
         ])
     ],
     exports: [

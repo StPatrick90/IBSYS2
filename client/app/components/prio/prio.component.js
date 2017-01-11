@@ -14,9 +14,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var session_service_1 = require('../../services/session.service');
 var part_service_1 = require('../../services/part.service');
+var part_1 = require('../../model/part');
 var prioTask_1 = require('../../model/prioTask');
 var sequence_1 = require('../../model/sequence');
 var capacityPlanning_service_1 = require('../../services/capacityPlanning.service');
+var ng2_bs3_modal_1 = require('ng2-bs3-modal/ng2-bs3-modal');
 var PrioComponent = (function () {
     function PrioComponent(sessionService, partService, capacityPlanningService) {
         this.sessionService = sessionService;
@@ -29,26 +31,17 @@ var PrioComponent = (function () {
         this.produzierbareAuftraege = [];
         this.nPAuftraege = [];
         this.reihenfolgen = [];
-        /*
-        {
-            workStation: Workstation
-        }
-         */
         this.processingTimes = [];
         this.zeiten = [];
         this.partOrders = [];
-        //TODO: Replace number with part
-        /*
-        Alternativ Ablauf?
-        Schaue bei Endprodukt (z.b. p1) nach ob es genug Material gibt?
-        Wenn Ja --> Produzieren
-        Wenn Nein --> Endprodukt = Endprodukt.Bestanteil x
-         */
         this.defaultAblauf = [];
         this.displayArray = [];
     }
     PrioComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.splittingPart = new part_1.Part();
+        this.splittingAnzahl2 = 0;
+        this.splittingAnzahl = 0;
         this.defaultAblauf.push(18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3);
         this.processingTimes = this.sessionService.getProcessingTimes();
         this.resultObj = this.sessionService.getResultObject();
@@ -62,6 +55,7 @@ var PrioComponent = (function () {
             _this.pParts = data.filter(function (item) { return item.typ == "P"; });
         }, function (err) { return console.error(err); }, function () {
             _this.partOrders = _this.sessionService.getPartOrders();
+            console.log(_this.partOrders);
             _this.capacityPlanningService.getWorkstations()
                 .subscribe(function (workstations) {
                 for (var _i = 0, workstations_1 = workstations; _i < workstations_1.length; _i++) {
@@ -77,6 +71,7 @@ var PrioComponent = (function () {
         });
     };
     PrioComponent.prototype.processOptimizaition = function () {
+        this.updateStorage();
         for (var _i = 0, _a = this.defaultAblauf; _i < _a.length; _i++) {
             var partNumber = _a[_i];
             var auftragsMenge = 0;
@@ -93,13 +88,14 @@ var PrioComponent = (function () {
                     this.processWorkflow(this.nPAuftraege[idx].Teil, this.nPAuftraege[idx].Anzahl);
                 }
             }
-            console.log(auftragsMenge);
             this.processWorkflow(partNumber, auftragsMenge);
         }
         console.log("reihenfolge:");
         console.log(this.reihenfolgen);
         console.log("pAufträge:");
         console.log(this.produzierbareAuftraege);
+        console.log("npAufträge:");
+        console.log(this.nPAuftraege);
         this.displayArray.length = 0;
         for (var _b = 0, _c = this.produzierbareAuftraege; _b < _c.length; _b++) {
             var auftrag = _c[_b];
@@ -170,7 +166,6 @@ var PrioComponent = (function () {
                 break;
             }
         }
-        //TODO: Lagerbestand mit Bestellungen anpassen!
         //TODO: Merge batch objects
         while (auftraege > 0) {
             while (prozessingTime != null) {
@@ -282,6 +277,62 @@ var PrioComponent = (function () {
         }
         return bestandteilArray;
     };
+    PrioComponent.prototype.updateStorage = function () {
+        for (var idx in this.lager) {
+            if (this.wartelisteMaterial.missingpart) {
+                if (this.wartelisteMaterial.missingpart.length > 0) {
+                    for (var _i = 0, _a = this.wartelisteMaterial.missingpart; _i < _a.length; _i++) {
+                        var material = _a[_i];
+                        if (material.waitinglist.item == this.lager[idx].id) {
+                            if (material.waitinglist.period == this.resultObj.results.period) {
+                                var lagerMenge = Number.parseInt(this.lager[idx].amount);
+                                var bestellMenge = Number.parseInt(material.waitinglist.amount);
+                                this.lager[idx].amount = (lagerMenge + bestellMenge).toString();
+                            }
+                        }
+                    }
+                }
+                else {
+                    if (this.wartelisteMaterial.missingpart.waitinglist.item == this.lager[idx].id) {
+                        if (this.wartelisteMaterial.missingpart.waitinglist.period == this.resultObj.results.period) {
+                            var lagerMenge = Number.parseInt(this.lager[idx].amount);
+                            var bestellMenge = Number.parseInt(this.wartelisteMaterial.missingpart.waitinglist.amount);
+                            this.lager[idx].amount = (lagerMenge + bestellMenge).toString();
+                            break;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    };
+    PrioComponent.prototype.setModalView = function (object, index) {
+        this.splittingAnzahl2 = object.Anzahl;
+        this.splittingPart = object.Teil;
+        this.splittingAnzahl = object.Anzahl / 2;
+        this.modalSplitting.open();
+    };
+    PrioComponent.prototype.closeModalView = function () {
+        this.modalSplitting.close();
+    };
+    PrioComponent.prototype.saveModalView = function () {
+        if (this.splittingAnzahl > 0) {
+            for (var idx in this.produzierbareAuftraege) {
+                if (this.produzierbareAuftraege[idx].Teil === this.splittingPart) {
+                    if ((this.produzierbareAuftraege[idx].Anzahl - this.splittingAnzahl) > 0) {
+                        this.produzierbareAuftraege[idx].Anzahl -= this.splittingAnzahl;
+                        this.produzierbareAuftraege.splice(Number.parseInt(idx), 0, { "Teil": this.splittingPart, "Anzahl": this.splittingAnzahl });
+                    }
+                    break;
+                }
+            }
+        }
+        this.modalSplitting.close();
+    };
+    __decorate([
+        core_1.ViewChild('splitting'), 
+        __metadata('design:type', ng2_bs3_modal_1.ModalComponent)
+    ], PrioComponent.prototype, "modalSplitting", void 0);
     PrioComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

@@ -1,10 +1,13 @@
-<div class="well">
-    <div class="">
-        <div class="row">
-            <span>
-                <h2>{{'sidebar_prio' | translate}}</h2>
-            </span>
-        </div>
+<div class="well text-center">
+    <h2 style="margin-bottom: 20px; margin-top: 0px;">{{'sidebar_prio' | translate}}</h2>
+    <div id="bc1" class="myBreadcrumb">
+        <a class="completed" routerLink="/xmlImport"><div>{{'xmlImport' | translate}}</div></a>
+        <a class="completed" routerLink="/prediction"><div>{{'prediction_planning' | translate}}</div></a>
+        <a class="completed" routerLink="/materialPlanning"><div>{{'material_Planning' | translate}}</div></a>
+        <a class="completed" routerLink="//materialPlanningEP"><div>{{'mpEP_MaterialPlanningEP' | translate}}</div></a>
+        <a class="active" routerLink="/prioritization"><div>{{'sidebar_prio' | translate}}</div></a>
+        <a class="" routerLink="/capacityPlanning"><div>{{'capacity_planning' | translate}}</div></a>
+        <a class="" routerLink="/xmlExport"><div>{{'xmlExport' | translate}}</div></a>
     </div>
 </div>
 
@@ -33,7 +36,7 @@
                 <div class="panel-body">
                     <ul class="list-group" dnd-sortable-container [sortableData]="produzierbareAuftraege">
                         <li *ngFor="let item of produzierbareAuftraege; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">
-                            <span class="tag tag-default pull-right">{{item.Anzahl}}</span>
+                            <span class="tag tag-default pull-right">{{item.Anzahl}}</span><button class="btn btn-xs pull-right" style="margin-right: 10" (click)="setModalView(item, i)">+</button>
                             {{item.Teil.typ}} {{item.Teil.nummer}}
                         </li>
                     </ul>
@@ -110,4 +113,22 @@
         </div>
     </div>
 </div>
+<modal #splitting>
+    <modal-header [show-close]="true">
+        <h4 class="modal-title">Splitting</h4>
+    </modal-header>
+    <modal-body>
+        <div class="well">
+            <label>Teil ID: {{splittingPart.nummer}} - Anzahl: {{splittingAnzahl2 - splittingAnzahl}}</label>
 
+            <div class="form-group">
+                <label>Anzahl des neuen Auftrags:</label>
+                <input type="text" [(ngModel)]="splittingAnzahl" name="anzahl" class="form-control" placeholder="0">
+            </div>
+        </div>
+    </modal-body>
+    <modal-footer>
+        <button type="button" class="btn btn-primary" (click)="closeModalView()">Abbrechen</button>
+        <button type="button" class="btn btn-success" (click)="saveModalView()">Save</button>
+    </modal-footer>
+</modal>

@@ -26,6 +26,7 @@ var partsLists_component_1 = require('./components/settings/partsLists/partsList
 var prio_component_1 = require('./components/prio/prio.component');
 var materialPlanningEP_component_1 = require('./components/materialPlanningEP/materialPlanningEP.component');
 var warehousestock_component_1 = require('./components/overview/warehousestock/warehousestock.component');
+var kPartAllocation_component_1 = require('./components/overview/kPartAllocation/kPartAllocation.component');
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
     }
@@ -45,7 +46,8 @@ var AppRoutingModule = (function () {
                     { path: 'partsLists', component: partsLists_component_1.PartsListsComponent },
                     { path: 'prioritization', component: prio_component_1.PrioComponent },
                     { path: 'materialPlanningEP', component: materialPlanningEP_component_1.MaterialPlanningEPComponent },
-                    { path: 'warehousestock', component: warehousestock_component_1.WarehousestockComponent }
+                    { path: 'warehousestock', component: warehousestock_component_1.WarehousestockComponent },
+                    { path: 'kpartAllocation', component: kPartAllocation_component_1.KPartAllocationComponent }
                 ])
             ],
             exports: [

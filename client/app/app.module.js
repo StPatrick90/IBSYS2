@@ -39,6 +39,7 @@ var parts_pipe_1 = require('./pipes/parts.pipe');
 var materialPlanningEP_component_1 = require('./components/materialPlanningEP/materialPlanningEP.component');
 var warehousestock_component_1 = require('./components/overview/warehousestock/warehousestock.component');
 var ng2_charts_1 = require('ng2-charts/ng2-charts');
+var kPartAllocation_component_1 = require('./components/overview/kPartAllocation/kPartAllocation.component');
 var WINDOW_PROVIDER = {
     provide: Window,
     useValue: window
@@ -54,9 +55,9 @@ var AppModule = (function () {
                 home_component_1.HomeComponent, translate_pipe_1.TranslatePipe, xmlImport_component_1.XmlImportComponent, materialPlanning_component_1.MaterialPlanningComponent,
                 prediction_component_1.PredictionComponent, workstations_component_1.WorkstationsComponent, parts_component_1.PartsComponent, dashboard_component_1.DashboardComponent,
                 partsLists_component_1.PartsListsComponent, prio_component_1.PrioComponent, parts_pipe_1.PartPipe, materialPlanningEP_component_1.MaterialPlanningEPComponent,
-                warehousestock_component_1.WarehousestockComponent],
+                warehousestock_component_1.WarehousestockComponent, kPartAllocation_component_1.KPartAllocationComponent],
             bootstrap: [app_component_1.AppComponent],
-            providers: [index_1.TRANSLATION_PROVIDERS, translate_service_1.TranslateService, LocalStorageEmitter_1.LocalStorageService, WINDOW_PROVIDER]
+            providers: [index_1.TRANSLATION_PROVIDERS, translate_service_1.TranslateService, LocalStorageEmitter_1.LocalStorageService, WINDOW_PROVIDER, translate_pipe_1.TranslatePipe]
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);
