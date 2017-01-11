@@ -45,7 +45,6 @@ export class PredictionComponent {
             .subscribe(results => {
                 this.results = results;
             });
-
         this.getBindingOrdersAndPlannings();
     }
 
@@ -57,9 +56,9 @@ export class PredictionComponent {
                 },
                 err => console.error(err),
                 () => this.generatePlanningsTable(),
-                () => this.generateBindingOrdersTable()),
-                () => this.generateTableRemainingStock()
-    };
+                () => this.generateBindingOrdersTable(),
+                () => this.generateTableRemainingStock());
+    }
 
     generatePlanningsTable(){
         var produktKennung = this.plannings[0].produkte[0].Kennung;

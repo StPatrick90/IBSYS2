@@ -41,10 +41,8 @@ var PredictionComponent = (function () {
             .subscribe(function (data) {
             _this.bindingOrders = data[0];
             _this.plannings = data[1];
-        }, function (err) { return console.error(err); }, function () { return _this.generatePlanningsTable(); }, function () { return _this.generateBindingOrdersTable(); }),
-            function () { return _this.generateTableRemainingStock(); };
+        }, function (err) { return console.error(err); }, function () { return _this.generatePlanningsTable(); }, function () { return _this.generateBindingOrdersTable(); }, function () { return _this.generateTableRemainingStock(); });
     };
-    ;
     PredictionComponent.prototype.generatePlanningsTable = function () {
         var produktKennung = this.plannings[0].produkte[0].Kennung;
         for (var i = 0; i < this.plannings[0].produkte.length; i++) {
