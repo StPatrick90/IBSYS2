@@ -62,10 +62,7 @@ export class PrioComponent {
         this.splittingAnzahl = 0;
         this.defaultAblauf.push(18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3);
         this.processingTimes = this.sessionService.getProcessingTimes();
-
         this.resultObj = this.sessionService.getResultObject();
-
-        this.lager = this.resultObj.results.warehousestock.article;
         this.wartelisteMaterial = this.resultObj.results.waitingliststock;
         this.wartelisteArbeitsplatz = this.resultObj.results.waitinglistworkstations;
         this.partService.getParts()
@@ -94,6 +91,8 @@ export class PrioComponent {
     }
 
     processOptimizaition() {
+        this.lager = this.resultObj.results.warehousestock.article;
+        console.log(this.lager);
         this.updateStorage();
         for (var partNumber of this.defaultAblauf) {
             var auftragsMenge = 0;
@@ -183,8 +182,6 @@ export class PrioComponent {
         else{
             this.nPAuftraege.push({"Teil": part, "Anzahl": auftraege});
         }
-
-        var inArray = false;
     }
 
     setPartToWorkplace(teil: Part, auftraege: number, bestandteilArray: any){
@@ -201,9 +198,9 @@ export class PrioComponent {
                 break;
             }
         }
-
-        //TODO: Merge batch objects
+    // 16  56 11 8 31 6 12 9 20
         while(auftraege > 0){
+            prozessingTime = ptx;
             while(prozessingTime != null){
 
                 var letzterAuftrag = new PrioTask();
@@ -237,6 +234,16 @@ export class PrioComponent {
                 }
 
                 neuerAuftrag.start = letzterAuftrag.ende + 1;
+                for(var sequence of this.reihenfolgen){
+                    if(sequence.workstation.nummer === neuerAuftrag.aktuellerAp.nummer){
+                        if(sequence.prioTasks[sequence.prioTasks.length - 1]){
+                            if(sequence.prioTasks[sequence.prioTasks.length - 1].ende > neuerAuftrag.start){
+                                neuerAuftrag.start = sequence.prioTasks[sequence.prioTasks.length - 1].ende + 1;
+                            }
+                        }
+                    }
+                }
+
                 if(gleichesTeil){
                     neuerAuftrag.ende = letzterAuftrag.ende + ((auftraege % 10 === 0)? 10 : (auftraege % 10)) * prozessingTime.fertigungsZeit;
                 }

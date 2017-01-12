@@ -45,7 +45,6 @@ var PrioComponent = (function () {
         this.defaultAblauf.push(18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3);
         this.processingTimes = this.sessionService.getProcessingTimes();
         this.resultObj = this.sessionService.getResultObject();
-        this.lager = this.resultObj.results.warehousestock.article;
         this.wartelisteMaterial = this.resultObj.results.waitingliststock;
         this.wartelisteArbeitsplatz = this.resultObj.results.waitinglistworkstations;
         this.partService.getParts()
@@ -71,6 +70,8 @@ var PrioComponent = (function () {
         });
     };
     PrioComponent.prototype.processOptimizaition = function () {
+        this.lager = this.resultObj.results.warehousestock.article;
+        console.log(this.lager);
         this.updateStorage();
         for (var _i = 0, _a = this.defaultAblauf; _i < _a.length; _i++) {
             var partNumber = _a[_i];
@@ -151,7 +152,6 @@ var PrioComponent = (function () {
         else {
             this.nPAuftraege.push({ "Teil": part, "Anzahl": auftraege });
         }
-        var inArray = false;
     };
     PrioComponent.prototype.setPartToWorkplace = function (teil, auftraege, bestandteilArray) {
         // Alle Arbeitsplatz, die das Teil bearbeiten, sortiert -> Array
@@ -166,8 +166,9 @@ var PrioComponent = (function () {
                 break;
             }
         }
-        //TODO: Merge batch objects
+        // 16  56 11 8 31 6 12 9 20
         while (auftraege > 0) {
+            prozessingTime = ptx;
             while (prozessingTime != null) {
                 var letzterAuftrag = new prioTask_1.PrioTask();
                 letzterAuftrag.ende = 0;
@@ -198,14 +199,24 @@ var PrioComponent = (function () {
                     }
                 }
                 neuerAuftrag.start = letzterAuftrag.ende + 1;
+                for (var _f = 0, _g = this.reihenfolgen; _f < _g.length; _f++) {
+                    var sequence = _g[_f];
+                    if (sequence.workstation.nummer === neuerAuftrag.aktuellerAp.nummer) {
+                        if (sequence.prioTasks[sequence.prioTasks.length - 1]) {
+                            if (sequence.prioTasks[sequence.prioTasks.length - 1].ende > neuerAuftrag.start) {
+                                neuerAuftrag.start = sequence.prioTasks[sequence.prioTasks.length - 1].ende + 1;
+                            }
+                        }
+                    }
+                }
                 if (gleichesTeil) {
                     neuerAuftrag.ende = letzterAuftrag.ende + ((auftraege % 10 === 0) ? 10 : (auftraege % 10)) * prozessingTime.fertigungsZeit;
                 }
                 else {
                     neuerAuftrag.ende = letzterAuftrag.ende + ((auftraege % 10 === 0) ? 10 : (auftraege % 10)) * prozessingTime.fertigungsZeit + prozessingTime.ruestZeit;
                 }
-                for (var _f = 0, _g = this.reihenfolgen; _f < _g.length; _f++) {
-                    var sequence = _g[_f];
+                for (var _h = 0, _j = this.reihenfolgen; _h < _j.length; _h++) {
+                    var sequence = _j[_h];
                     if (sequence.workstation.nummer === prozessingTime.arbeitsplatz.nummer) {
                         neuerAuftrag._id = sequence.prioTasks.length + 1;
                         sequence.prioTasks.push(neuerAuftrag);
@@ -214,8 +225,8 @@ var PrioComponent = (function () {
                 //find next prozessingTime
                 var processingTimeOld = prozessingTime;
                 if (prozessingTime.nextArbeitsplatz) {
-                    for (var _h = 0, _j = this.processingTimes; _h < _j.length; _h++) {
-                        var pt = _j[_h];
+                    for (var _k = 0, _l = this.processingTimes; _k < _l.length; _k++) {
+                        var pt = _l[_k];
                         if ((pt.teil.nummer == teil.nummer) && (pt.arbeitsplatz.nummer == prozessingTime.nextArbeitsplatz.nummer)) {
                             prozessingTime = pt;
                             break;
@@ -234,8 +245,8 @@ var PrioComponent = (function () {
                     var lagerAmount = Number.parseInt(this.lager[idx].amount);
                     this.lager[idx].amount = (lagerAmount + bearbeiteteAuftrage).toString();
                 }
-                for (var _k = 0, bestandteilArray_2 = bestandteilArray; _k < bestandteilArray_2.length; _k++) {
-                    var bTeil = bestandteilArray_2[_k];
+                for (var _m = 0, bestandteilArray_2 = bestandteilArray; _m < bestandteilArray_2.length; _m++) {
+                    var bTeil = bestandteilArray_2[_m];
                     if (bTeil.teil.nummer == Number.parseInt(this.lager[idx].id)) {
                         var rechnung = (Number.parseInt(this.lager[idx].amount) - (bearbeiteteAuftrage * bTeil.anzahl));
                         this.lager[idx].amount = rechnung.toString();
