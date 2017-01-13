@@ -138,6 +138,7 @@ export const LANG_EN_TRANS = {
     'opening_stock':'Opening Stock',
     'gross_requirements_period':'Gross Req. Per.',
     'sum_without_order':'Sum without order',
+    'sum_with_order':'Sum with order pP',
     'volume_ordered':'Volume ordered',
     'ordertype':'Order Type',
     'stock_after_receipt':'Stock after receipt',

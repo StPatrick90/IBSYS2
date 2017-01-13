@@ -27,6 +27,8 @@ export class SessionService {
     @SessionStorage() private verwendungRow: string[];
     @SessionStorage() private periodRow: number[];
     @SessionStorage() private forecast: Array<any>;
+    @SessionStorage() private actualPeriod: number;
+
 
     constructor(private http: Http) {
         console.log('Session Service Initialized...');
@@ -336,6 +338,15 @@ export class SessionService {
         this.forecast = forecast;
     }
 
+    setActualPeriod(period) {
+        this.actualPeriod = period;
+    }
+
+    getActualPeriod() {
+        return this.actualPeriod;
+
+    }
+
     clear() {
         this.setResultObject(null);
         this.setParts(null);
@@ -346,6 +357,7 @@ export class SessionService {
         this.setPlannings(null);
         this.setbindingOrders(null);
         this.setMatPlan(null);
+        this.setActualPeriod(null);
     }
 
 }
