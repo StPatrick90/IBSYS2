@@ -190,14 +190,39 @@ var MaterialPlanningComponent = (function () {
             }
             // set Bestellmenge
             matPlanRow.bestellmenge = 0;
-            for (var i = 0; i < matPlanRow.bestandnWe.length; i++) {
-                if (matPlanRow.bestandnWe[i] < 0) {
-                    matPlanRow.summe = this.roundAt0point6(matPlanRow.summe);
-                    if (i <= matPlanRow.summe) {
+            matPlanRow.bestellung = "---";
+            var bereitseilbestellt = false;
+            var max_relperiod_ind;
+            var vorigemengen = 0;
+            max_relperiod_ind = this.roundAt0point6(matPlanRow.summe); // schliesst alle perioden aus, die man in der nächsten Periode noch normal bestellen kann
+            // --> gibt also den index der spätesten relevanten perioe
+            var warteperioden = this.roundAt0point6(matPlanRow.summe); // nur zum Verständnis, eig unnötig siehe max_relperiod_ind
+            for (var i = 0; i <= max_relperiod_ind; i++) {
+                vorigemengen += matPlanRow.bestandnWe[i];
+            }
+            for (var i = 0; i <= max_relperiod_ind; i++) {
+                if ((matPlanRow.bestandnWe[i] + matPlanRow.mengemitbest + vorigemengen) < 0) {
+                    if (i < warteperioden) {
+                        matPlanRow.bestellmenge = matPlanRow.bestandnWe[i] * -1 + matPlanRow.mengemitbest * -1;
+                        matPlanRow.bestellung = "E.";
+                        // diskont aufrechnen, wenn nur 20% fehlen würden
+                        if (matPlanRow.bestellmenge > 0.8 * matPlanRow.diskontmenge && matPlanRow <= matPlanRow.diskontmenge) {
+                            matPlanRow.bestellmenge = matPlanRow.diskontmenge;
+                        }
+                        bereitseilbestellt = true;
+                    }
+                    else if (bereitseilbestellt) {
+                        matPlanRow.bestellmenge += matPlanRow.bestandnWe[i] * -1;
+                        matPlanRow.bestellung = "E.";
                     }
                     else {
+                        matPlanRow.bestellmenge = matPlanRow.bestandnWe[i] * -1 + matPlanRow.mengemitbest * -1;
+                        matPlanRow.bestellung = "N.";
+                        // diskont aufrechnen,  wenn nur 20% fehlen würden
+                        if (matPlanRow.bestellmenge > 0.8 * matPlanRow.diskontmenge && matPlanRow <= matPlanRow.diskontmenge) {
+                            matPlanRow.bestellmenge = matPlanRow.diskontmenge;
+                        }
                     }
-                    matPlanRow.bestellmenge = 1000; // an dispo orientieren od
                 }
             }
             // get Verwendungsarten
@@ -209,11 +234,32 @@ var MaterialPlanningComponent = (function () {
             // store values finally
             this.matPlan.push(matPlanRow);
         }
-        this.sessionService.setVerwendungRow(this.verwendungRow);
-        this.sessionService.setPeriodRow(this.periodrow);
-        this.sessionService.setMatPlan(this.matPlan);
-        this.sessionService.setActualPeriod(Number(this.resultObj.results.period));
-        this.setLayout();
+        this
+            .sessionService
+            .setVerwendungRow(this
+            .
+                verwendungRow);
+        this
+            .sessionService
+            .setPeriodRow(this
+            .
+                periodrow);
+        this
+            .sessionService
+            .setMatPlan(this
+            .
+                matPlan);
+        this
+            .sessionService
+            .setActualPeriod(Number(this
+            .
+                resultObj
+            .
+                results
+            .
+                period));
+        this
+            .setLayout();
     };
     // else {
     //     console.log("Kaufteildispo bereits in Session eingebunden. - nach Änderungen auf der Datenbank bitte neue Session starten");
