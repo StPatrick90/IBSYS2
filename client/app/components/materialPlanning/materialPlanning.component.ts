@@ -13,7 +13,7 @@ import {vorigeBestellung} from "../../model/vorigeBestellung";
     selector: 'materialPlanning',
     templateUrl: 'materialPlanning.component.html'
 })
-// TODO : Jonas: 1. ab .,6 aufrunden 2. Modus berücksichtigen 3. Eilbestellung erweitern 4. evtl Lernen 10% vom durchschnittlichen Bedarf wenns normalerweise noch langen würde aber trotzdem Eil 5. update event / NgModel nach input bestellmenge
+// TODO : Jonas: 1)ab 0,6 aufrunden -- erledigt 2)Modus berücksichtigen -- erledigt 3)um autom. Eilbestellung erweitern Zeile 213--erledigt 4)Bestellmenge Zeile 204 5)update event / NgModel nach input bestellmenge 6)evtl Lernen 10% vom durchschnittlichen Bedarf wenns normalerweise noch langen würde aber trotzdem Eil
 export class MaterialPlanningComponent {
 
     resultObj: any;
@@ -46,7 +46,7 @@ export class MaterialPlanningComponent {
                 () => this.setParameters())
     };
 
-    setvorigeBestellungen() { // 5 ist normal, 4 ist eil !!
+    setvorigeBestellungen() { // 5 ist normal, 4 ist eil !!eil ist ohne abweichung die hälfte
         for (var i = 0; i < this.resultObj.results.inwardstockmovement.order.length; i++) {
             var vorigeBestellung = {
                 teil: null,
@@ -62,12 +62,21 @@ export class MaterialPlanningComponent {
             vorigeBestellung.mode = this.resultObj.results.inwardstockmovement.order[i].mode;
 
             for (let p of this.purchaseParts) {
+                var ankunftperiode: number;
                 if (p.nummer == vorigeBestellung.teil) {
-                    vorigeBestellung.ankunftperiode = Math.round(p.lieferfrist + p.abweichung + Number(vorigeBestellung.orderperiode));
 
+                    // Eil oder Normalbestellung
                     if (vorigeBestellung.mode == 4) {
-                        vorigeBestellung.ankunftperiode /= 2;
+                        ankunftperiode = p.lieferfrist + Number(vorigeBestellung.orderperiode);
                     }
+                    else {
+                        ankunftperiode = p.lieferfrist + p.abweichung + Number(vorigeBestellung.orderperiode);
+                    }
+
+                    // bei größer 0,6 runde auf, sonst runde ab
+                    ankunftperiode = this.roundAt0point6(ankunftperiode);
+
+                    vorigeBestellung.ankunftperiode = ankunftperiode
                     this.vorigeBestellungen.push(vorigeBestellung);
                 }
             }
@@ -148,9 +157,10 @@ export class MaterialPlanningComponent {
             // get Menge mit Bestellung aus Vorperiode
             for (let vb of this.vorigeBestellungen) {
                 if (matPlanRow.kpartnr == vb.teil) {
-                    vb.ankunftperiode = purchPart.lieferfrist + purchPart.abweichung + Number(vb.orderperiode);
+                    // vb.ankunftperiode = purchPart.lieferfrist + purchPart.abweichung + Number(vb.orderperiode); // ist in setvorigebesetellungen() schon geregelt oder ?
 
-                    if (Math.round(vb.ankunftperiode) <= aktuellePeriode) {
+                    // if (Math.round(vb.ankunftperiode) <= aktuellePeriode) {  // ist in setvorigebesetellungen() schon geregelt oder ?
+                    if (vb.ankunftperiode <= aktuellePeriode) {
                         matPlanRow.mengemitbest = Number(vb.menge) + matPlanRow.mengeohbest;
                     }
                 }
@@ -173,39 +183,45 @@ export class MaterialPlanningComponent {
                 }
             }
             for (let vb of this.vorigeBestellungen) { // mit .some arbeiten ?
-                for (var i2 = 0; i2 < matPlanRow.bestandnWe.length; i2++) { // evtl. bei ,6 erst aufrunden
-                    if (matPlanRow.kpartnr == vb.teil && Math.round(vb.ankunftperiode) == Number(this.resultObj.results.period) + i2) {
+                for (var i2 = 0; i2 < matPlanRow.bestandnWe.length; i2++) {
+                    // if (matPlanRow.kpartnr == vb.teil && Math.round(vb.ankunftperiode) == Number(this.resultObj.results.period) + i2) {  //ist in setvorigebesetellungen() schon geregelt oder ?
+                    if (matPlanRow.kpartnr == vb.teil && vb.ankunftperiode == Number(this.resultObj.results.period) + i2) {
                         matPlanRow.bestandnWe[i2] += Number(vb.menge);
                     }
                 }
             }
 
-            // set Bestellmenge
-            matPlanRow.bestellmenge = 0;
-            for (var i = 0; i < matPlanRow.bestandnWe.length; i++) {
-                // nur wenns negativ wird bestellen
-                if (matPlanRow.bestandnWe[i] < 0) {
-                    // so spät wie möglich bestellen
-                    if (i <= Math.round(matPlanRow.summe)) {
-                        //  mache Eilbestellung in höhe des negativen Betrages (weil geht leer bevor Bestellung kommt)
-                    }
-                    else {
-
-                    }
-                    matPlanRow.bestellmenge = 1000;
-                }
-            }
-
-            // set Normal-/Eilbestellung  wenns bis es kommt negativ wird dann ach auch eil
+            // set Normal-/Eilbestellung
             if (matPlanRow.mengeohbest < 0 && matPlanRow.summe * matPlanRow.bruttobedarfnP[0] > matPlanRow.anfangsbestand) {
                 matPlanRow.bestellung = "E.";
             }
+            else if (matPlanRow.mengeohbest <= 0 && matPlanRow.bestellmenge != 0) {
+                matPlanRow.bestellung = "N.";
+            }
+            else if (this.eilBestellungifNegativ(matPlanRow, this.vorigeBestellungen)) { // wenns bestand bis es kommt negativ wird dann auch auch eilbestellung
+                matPlanRow.bestellung = "E.";
+            }
+            else if (matPlanRow.bestellmenge == 0) {
+                matPlanRow.bestellung = "---";
+            }
             else {
-                if (matPlanRow.mengeohbest <= 0) {
-                    matPlanRow.bestellung = "N.";
-                }
-                else {
-                    matPlanRow.bestellung = "---"
+                matPlanRow.bestellung = "---"
+            }
+
+            // set Bestellmenge
+            matPlanRow.bestellmenge = 0;
+            for (var i = 0; i < matPlanRow.bestandnWe.length; i++) {
+                if (matPlanRow.bestandnWe[i] < 0) {           // nur wenns negativ wird bestellen
+                    matPlanRow.summe = this.roundAt0point6(matPlanRow.summe);
+
+                    if (i <= matPlanRow.summe) { // so spät wie möglich bestellen ----:nicht i+1 oder i -1 ?
+
+                    }
+                    else { //  mache Eilbestellung in höhe des negativen Betrages (weil geht leer bevor Bestellung kommt)
+
+
+                    }
+                    matPlanRow.bestellmenge = 1000; // an dispo orientieren od
                 }
             }
 
@@ -234,6 +250,46 @@ export class MaterialPlanningComponent {
     //     this.setLayout();
     // }
 // }
+
+    eilBestellungifNegativ(matPlanRow: matPlanRow, vorigeBestellungen: any) {
+        var MatPlan = new Array<matPlanRow>();
+        var negativperiode: number; //periode in der bestandnWe negativ wird
+        var negativ: boolean;
+        MatPlan.push(matPlanRow);
+        negativ = false;
+
+        for (var i = 0; i < MatPlan.length; i++) {
+            for (var i2 = 0; i2 < MatPlan[0].bestandnWe.length; i2++) {
+                // MatPlan[i].bestandnWe[i2] = -10; // später muss das raus
+                if (MatPlan[i].bestandnWe[i2] < 0) {
+                    negativperiode = Number(this.resultObj.results.period) + i2;
+                    for (let vb of vorigeBestellungen) {
+                        if (vb.teil == MatPlan[i].kpartnr) {
+                            if (negativperiode < vb.ankunftperiode) {
+                                console.log("zuper");
+                                negativ = true;
+                            }
+                            else {
+                                console.log("zuper2");
+                                negativ = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return negativ;
+    }
+
+    roundAt0point6(zahl: number) {
+        if (zahl % 1 >= 0.6) {
+            zahl = Math.ceil(zahl);
+        }
+        else {
+            zahl = Math.floor(zahl);
+        }
+        return zahl;
+    }
 
     getBruttoBedarfandPeriods() {
         this.plannings = this.sessionService.getPlannings();

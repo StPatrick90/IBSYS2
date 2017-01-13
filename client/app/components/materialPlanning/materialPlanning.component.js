@@ -49,11 +49,18 @@ var MaterialPlanningComponent = (function () {
             vorigeBestellung.mode = this.resultObj.results.inwardstockmovement.order[i].mode;
             for (var _i = 0, _a = this.purchaseParts; _i < _a.length; _i++) {
                 var p = _a[_i];
+                var ankunftperiode;
                 if (p.nummer == vorigeBestellung.teil) {
-                    vorigeBestellung.ankunftperiode = Math.round(p.lieferfrist + p.abweichung + Number(vorigeBestellung.orderperiode));
+                    // Eil oder Normalbestellung
                     if (vorigeBestellung.mode == 4) {
-                        vorigeBestellung.ankunftperiode /= 2;
+                        ankunftperiode = p.lieferfrist + Number(vorigeBestellung.orderperiode);
                     }
+                    else {
+                        ankunftperiode = p.lieferfrist + p.abweichung + Number(vorigeBestellung.orderperiode);
+                    }
+                    // bei größer 0,6 runde auf, sonst runde ab
+                    ankunftperiode = this.roundAt0point6(ankunftperiode);
+                    vorigeBestellung.ankunftperiode = ankunftperiode;
                     this.vorigeBestellungen.push(vorigeBestellung);
                 }
             }
@@ -133,8 +140,9 @@ var MaterialPlanningComponent = (function () {
             for (var _k = 0, _l = this.vorigeBestellungen; _k < _l.length; _k++) {
                 var vb = _l[_k];
                 if (matPlanRow.kpartnr == vb.teil) {
-                    vb.ankunftperiode = purchPart.lieferfrist + purchPart.abweichung + Number(vb.orderperiode);
-                    if (Math.round(vb.ankunftperiode) <= aktuellePeriode) {
+                    // vb.ankunftperiode = purchPart.lieferfrist + purchPart.abweichung + Number(vb.orderperiode); // ist in setvorigebesetellungen() schon geregelt oder ?
+                    // if (Math.round(vb.ankunftperiode) <= aktuellePeriode) {  // ist in setvorigebesetellungen() schon geregelt oder ?
+                    if (vb.ankunftperiode <= aktuellePeriode) {
                         matPlanRow.mengemitbest = Number(vb.menge) + matPlanRow.mengeohbest;
                     }
                 }
@@ -158,34 +166,38 @@ var MaterialPlanningComponent = (function () {
             for (var _m = 0, _o = this.vorigeBestellungen; _m < _o.length; _m++) {
                 var vb = _o[_m];
                 for (var i2 = 0; i2 < matPlanRow.bestandnWe.length; i2++) {
-                    if (matPlanRow.kpartnr == vb.teil && Math.round(vb.ankunftperiode) == Number(this.resultObj.results.period) + i2) {
+                    // if (matPlanRow.kpartnr == vb.teil && Math.round(vb.ankunftperiode) == Number(this.resultObj.results.period) + i2) {  //ist in setvorigebesetellungen() schon geregelt oder ?
+                    if (matPlanRow.kpartnr == vb.teil && vb.ankunftperiode == Number(this.resultObj.results.period) + i2) {
                         matPlanRow.bestandnWe[i2] += Number(vb.menge);
                     }
                 }
             }
-            // set Bestellmenge
-            matPlanRow.bestellmenge = 0;
-            for (var i = 0; i < matPlanRow.bestandnWe.length; i++) {
-                // nur wenns negativ wird bestellen
-                if (matPlanRow.bestandnWe[i] < 0) {
-                    // so spät wie möglich bestellen
-                    if (i <= Math.round(matPlanRow.summe)) {
-                    }
-                    else {
-                    }
-                    matPlanRow.bestellmenge = 1000;
-                }
-            }
-            // set Normal-/Eilbestellung  wenns bis es kommt negativ wird dann ach auch eil
+            // set Normal-/Eilbestellung
             if (matPlanRow.mengeohbest < 0 && matPlanRow.summe * matPlanRow.bruttobedarfnP[0] > matPlanRow.anfangsbestand) {
                 matPlanRow.bestellung = "E.";
             }
+            else if (matPlanRow.mengeohbest <= 0 && matPlanRow.bestellmenge != 0) {
+                matPlanRow.bestellung = "N.";
+            }
+            else if (this.eilBestellungifNegativ(matPlanRow, this.vorigeBestellungen)) {
+                matPlanRow.bestellung = "E.";
+            }
+            else if (matPlanRow.bestellmenge == 0) {
+                matPlanRow.bestellung = "---";
+            }
             else {
-                if (matPlanRow.mengeohbest <= 0) {
-                    matPlanRow.bestellung = "N.";
-                }
-                else {
-                    matPlanRow.bestellung = "---";
+                matPlanRow.bestellung = "---";
+            }
+            // set Bestellmenge
+            matPlanRow.bestellmenge = 0;
+            for (var i = 0; i < matPlanRow.bestandnWe.length; i++) {
+                if (matPlanRow.bestandnWe[i] < 0) {
+                    matPlanRow.summe = this.roundAt0point6(matPlanRow.summe);
+                    if (i <= matPlanRow.summe) {
+                    }
+                    else {
+                    }
+                    matPlanRow.bestellmenge = 1000; // an dispo orientieren od
                 }
             }
             // get Verwendungsarten
@@ -211,6 +223,44 @@ var MaterialPlanningComponent = (function () {
     //     this.setLayout();
     // }
     // }
+    MaterialPlanningComponent.prototype.eilBestellungifNegativ = function (matPlanRow, vorigeBestellungen) {
+        var MatPlan = new Array();
+        var negativperiode; //periode in der bestandnWe negativ wird
+        var negativ;
+        MatPlan.push(matPlanRow);
+        negativ = false;
+        for (var i = 0; i < MatPlan.length; i++) {
+            for (var i2 = 0; i2 < MatPlan[0].bestandnWe.length; i2++) {
+                // MatPlan[i].bestandnWe[i2] = -10; // später muss das raus
+                if (MatPlan[i].bestandnWe[i2] < 0) {
+                    negativperiode = Number(this.resultObj.results.period) + i2;
+                    for (var _i = 0, vorigeBestellungen_1 = vorigeBestellungen; _i < vorigeBestellungen_1.length; _i++) {
+                        var vb = vorigeBestellungen_1[_i];
+                        if (vb.teil == MatPlan[i].kpartnr) {
+                            if (negativperiode < vb.ankunftperiode) {
+                                console.log("zuper");
+                                negativ = true;
+                            }
+                            else {
+                                console.log("zuper2");
+                                negativ = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return negativ;
+    };
+    MaterialPlanningComponent.prototype.roundAt0point6 = function (zahl) {
+        if (zahl % 1 >= 0.6) {
+            zahl = Math.ceil(zahl);
+        }
+        else {
+            zahl = Math.floor(zahl);
+        }
+        return zahl;
+    };
     MaterialPlanningComponent.prototype.getBruttoBedarfandPeriods = function () {
         this.plannings = this.sessionService.getPlannings();
         if (this.plannings === null) {
