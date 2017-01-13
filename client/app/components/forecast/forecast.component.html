@@ -1,0 +1,116 @@
+<div class="well text-center">
+    <h2 style="margin-bottom: 20px; margin-top: 0px;">{{'prediction_planning' | translate}}</h2>
+    <div id="bc1" class="myBreadcrumb">
+        <a class="completed" routerLink="/xmlImport"><div>{{'xmlImport' | translate}}</div></a>
+        <a class="active" routerLink="/forecast"><div>{{'prediction_planning' | translate}}</div></a>
+        <a class="" routerLink="/materialPlanning"><div>{{'material_Planning' | translate}}</div></a>
+        <a class="" routerLink="//materialPlanningEP"><div>{{'mpEP_MaterialPlanningEP' | translate}}</div></a>
+        <a class="" routerLink="/prioritization"><div>{{'sidebar_prio' | translate}}</div></a>
+        <a class="" routerLink="/capacityPlanning"><div>{{'capacity_planning' | translate}}</div></a>
+        <a class="" routerLink="/xmlExport"><div>{{'xmlExport' | translate}}</div></a>
+    </div>
+</div>
+<div class="col-md-7">
+    <div class="well">
+        <table width="100%">
+            <thead>
+            <tr>
+                <th class="text-center" colspan="100%">
+                    Verbindliche Aufträge
+                </th>
+            </tr>
+            <tr>
+                <th> Teil </th>
+                <th *ngFor="let period of periods">
+                    Periode {{period}}
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let part of pParts">
+                <td>{{part.bezeichnung}}</td>
+                <td *ngFor="let period of periods">
+                    <input type="number" min="0" class="form-control" [(ngModel)]="verbdindlAuftr['P_' + part.nummer + '_' + period]" (ngModelChange)="updateArrays(part.nummer,period)">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="well">
+        <table width="100%">
+            <thead>
+            <tr>
+                <th class="text-center" colspan="100%">
+                    Geplante Produktion
+                </th>
+            </tr>
+            <tr>
+                <th> Teil </th>
+                <th *ngFor="let period of periods">
+                    Periode {{period}}
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let part of pParts">
+                <td>{{part.bezeichnung}}</td>
+                <td *ngFor="let period of periods">
+                    <input type="number" min="0" class="form-control" [(ngModel)]="geplProd['P_' + part.nummer + '_' + period]" (ngModelChange)="updateArrays(part.nummer,period)">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="well">
+        <table width="100%">
+            <thead>
+            <tr>
+                <th class="text-center" colspan="100%">
+                    Voraussichtlicher Restbestand
+                </th>
+            </tr>
+            <tr>
+                <th> Teil </th>
+                <th *ngFor="let period of periods">
+                    Periode {{period}}
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let part of pParts">
+                <td>{{part.bezeichnung}}</td>
+                <td *ngFor="let period of periods">
+                    <input type="number" min="0" class="form-control" readonly [(ngModel)]="vorausBestand['P_' + part.nummer + '_' + period]">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="col-md-5">
+    <div class="well">
+        <table width="100%">
+            <thead>
+            <tr>
+                <th class="text-center" colspan="100%">
+                    Direktverkauf
+                </th>
+            </tr>
+            <tr>
+                <th> Teil </th>
+                <th> Menge </th>
+                <th> Preis </th>
+                <th> Konventionalstafe </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let part of pParts">
+                <td>{{part.bezeichnung}}</td>
+                <th> <input type="number" min="0" class="form-control" [(ngModel)]="menge['P_' + part.nummer]" (ngModelChange)="saveForecast()"> </th>
+                <th> <input type="number" min="0" class="form-control" [(ngModel)]="preis['P_' + part.nummer]" (ngModelChange)="saveForecast()"> </th>
+                <th> <input type="number" min="0" class="form-control" [(ngModel)]="strafe['P_' + part.nummer]" (ngModelChange)="saveForecast()"> </th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

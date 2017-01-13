@@ -284,6 +284,12 @@ var SessionService = (function () {
     SessionService.prototype.setPeriodRow = function (periodRow) {
         this.periodRow = periodRow;
     };
+    SessionService.prototype.getForecast = function () {
+        return this.forecast;
+    };
+    SessionService.prototype.setForecast = function (forecast) {
+        this.forecast = forecast;
+    };
     SessionService.prototype.clear = function () {
         this.setResultObject(null);
         this.setParts(null);
@@ -339,6 +345,10 @@ var SessionService = (function () {
         WebStorage_1.SessionStorage(), 
         __metadata('design:type', Array)
     ], SessionService.prototype, "periodRow", void 0);
+    __decorate([
+        WebStorage_1.SessionStorage(), 
+        __metadata('design:type', Array)
+    ], SessionService.prototype, "forecast", void 0);
     SessionService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

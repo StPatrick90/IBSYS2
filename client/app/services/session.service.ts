@@ -26,6 +26,7 @@ export class SessionService {
     @SessionStorage() private matPlan: matPlanRow[];
     @SessionStorage() private verwendungRow: string[];
     @SessionStorage() private periodRow: number[];
+    @SessionStorage() private forecast: Array<any>;
 
     constructor(private http: Http) {
         console.log('Session Service Initialized...');
@@ -325,6 +326,14 @@ export class SessionService {
 
     setPeriodRow(periodRow: number[]) {
         this.periodRow = periodRow;
+    }
+
+    getForecast() {
+        return this.forecast;
+    }
+
+    setForecast(forecast) {
+        this.forecast = forecast;
     }
 
     clear() {

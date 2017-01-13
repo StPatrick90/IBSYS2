@@ -2,7 +2,7 @@
     <h2 style="margin-bottom: 20px; margin-top: 0px;">{{'xmlImport' | translate}}</h2>
     <div id="bc1" class="myBreadcrumb">
         <a class="active" routerLink="/xmlImport"><div>{{'xmlImport' | translate}}</div></a>
-        <a class="" routerLink="/prediction"><div>{{'prediction_planning' | translate}}</div></a>
+        <a class="" routerLink="/forecast"><div>{{'prediction_planning' | translate}}</div></a>
         <a class="" routerLink="/materialPlanning"><div>{{'material_Planning' | translate}}</div></a>
         <a class="" routerLink="//materialPlanningEP"><div>{{'mpEP_MaterialPlanningEP' | translate}}</div></a>
         <a class="" routerLink="/prioritization"><div>{{'sidebar_prio' | translate}}</div></a>
@@ -44,7 +44,7 @@
                 <span class="text-center">
                     Periode {{(selectedPeriod)? selectedPeriod.period : "X"}} erfolgreich eingebunden!
                 </span>
-                <a routerLink="/prediction" routerLinkActive="active">
+                <a routerLink="/forecast" routerLinkActive="active">
                     <button class="btn pull-right btn-success">
                         Fortfahren
                     </button>
