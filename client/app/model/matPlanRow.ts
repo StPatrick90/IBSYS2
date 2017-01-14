@@ -21,6 +21,7 @@ export class matPlanRow {
 
     constructor() {
         this.verwendung = [];
+        this.bruttobedarfnP = new Array<number>();
     }
 
 }

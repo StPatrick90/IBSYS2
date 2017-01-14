@@ -2,6 +2,7 @@
 var matPlanRow = (function () {
     function matPlanRow() {
         this.verwendung = [];
+        this.bruttobedarfnP = new Array();
     }
     return matPlanRow;
 }());

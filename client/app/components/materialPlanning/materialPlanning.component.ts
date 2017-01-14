@@ -7,8 +7,6 @@ import sort = require("core-js/fn/array/sort");
 import {Http} from "@angular/http";
 import {rowtype} from "../../model/rowtype";
 import {vorigeBestellung} from "../../model/vorigeBestellung";
-import {Forecast} from '../../model/forecast';
-
 
 @Component({
     moduleId: module.id,
@@ -189,6 +187,7 @@ export class MaterialPlanningComponent {
                     }
                 }
             }
+            matPlanRow.bestand = matPlanRow.bestandnWe;
 
             // set Bestellmenge (Bestand n gepl.WE zeigt Bestand am ENDE einer Periode, desw auch max_relperiod -1)
             // TODO: max_relperiod_ind un warteperioden klären wann das jetzt tatsächlich ankommt bzw obs so richtig ist ausgehend kommmentar Zeile 194
@@ -247,6 +246,7 @@ export class MaterialPlanningComponent {
             // store values finally
             this.matPlan.push(matPlanRow);
         }
+        console.log(this.matPlan);
 
         this.sessionService.setVerwendungRow(this.verwendungRow);
         this.sessionService.setPeriodRow(this.periodrow);
@@ -262,37 +262,7 @@ export class MaterialPlanningComponent {
 //     this.matPlan = this.sessionService.getMatPlan();
 //     this.setLayout();
 // }
-// }
-//
-//     eilBestellungifNegativ(matPlanRow: matPlanRow, vorigeBestellungen: any) {
-//         var MatPlan = new Array<matPlanRow>();
-//         var negativperiode: number; //periode in der bestandnWe negativ wird
-//         var negativ: boolean;
-//         MatPlan.push(matPlanRow);
-//         negativ = false;
-//
-//         for (var i = 0; i < MatPlan.length; i++) {
-//             for (var i2 = 0; i2 < MatPlan[0].bestandnWe.length; i2++) {
-//                 // MatPlan[i].bestandnWe[i2] = -10; // später muss das raus
-//                 if (MatPlan[i].bestandnWe[i2] < 0) {
-//                     negativperiode = Number(this.resultObj.results.period) + i2;
-//                     for (let vb of vorigeBestellungen) {
-//                         if (vb.teil == MatPlan[i].kpartnr) {
-//                             if (negativperiode < vb.ankunftperiode) {
-//                                 console.log("zuper");
-//                                 negativ = true;
-//                             }
-//                             else {
-//                                 console.log("zuper2");
-//                                 negativ = false;
-//                             }
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-//         return negativ;
-//     }
+
 
     roundAt0point6(zahl: number) {
         if (zahl % 1 >= 0.6) {
@@ -302,6 +272,15 @@ export class MaterialPlanningComponent {
             zahl = Math.floor(zahl);
         }
         return zahl;
+    }
+
+    bestellmengechange(matPlan: matPlanRow, index: number) {
+        var mp = new matPlanRow();
+        mp = matPlan;
+        for (var x = 0; x < 4; x++) {
+            // this.matPlan.bruttobedarfnP[x] += matPlan.bestellmenge;
+            console.log("hallo");
+        }
     }
 
     getBruttoBedarfandPeriods() {
@@ -328,16 +307,6 @@ export class MaterialPlanningComponent {
     bestellartSelected(bestellart: string, i: number) {
         this.matPlan[i].bestellung = bestellart;
         this.sessionService.setMatPlan(this.matPlan);
-    }
-
-    bestellmengeChange(newvalue, index) {
-        if (newvalue >= 0) {
-            this.matPlan[index].bestellmenge = newvalue;
-            this.sessionService.setMatPlan(this.matPlan);
-        }
-        else {
-            alert("Bitte positiven Wert eingeben !")
-        }
     }
 
     setLayout() {
