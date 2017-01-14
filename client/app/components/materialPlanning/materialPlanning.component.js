@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var session_service_1 = require('../../services/session.service');
 var materialPlanning_service_1 = require('../../services/materialPlanning.service');
+var matPlanRow_1 = require("../../model/matPlanRow");
 var http_1 = require("@angular/http");
 var rowtype_1 = require("../../model/rowtype");
 var MaterialPlanningComponent = (function () {
@@ -171,6 +172,7 @@ var MaterialPlanningComponent = (function () {
                     }
                 }
             }
+            matPlanRow.bestand = matPlanRow.bestandnWe;
             // set Bestellmenge (Bestand n gepl.WE zeigt Bestand am ENDE einer Periode, desw auch max_relperiod -1)
             // TODO: max_relperiod_ind un warteperioden klären wann das jetzt tatsächlich ankommt bzw obs so richtig ist ausgehend kommmentar Zeile 194
             matPlanRow.bestellmenge = 0;
@@ -218,6 +220,7 @@ var MaterialPlanningComponent = (function () {
             // store values finally
             this.matPlan.push(matPlanRow);
         }
+        console.log(this.matPlan);
         this.sessionService.setVerwendungRow(this.verwendungRow);
         this.sessionService.setPeriodRow(this.periodrow);
         this.sessionService.setMatPlan(this.matPlan);
@@ -231,37 +234,6 @@ var MaterialPlanningComponent = (function () {
     //     this.matPlan = this.sessionService.getMatPlan();
     //     this.setLayout();
     // }
-    // }
-    //
-    //     eilBestellungifNegativ(matPlanRow: matPlanRow, vorigeBestellungen: any) {
-    //         var MatPlan = new Array<matPlanRow>();
-    //         var negativperiode: number; //periode in der bestandnWe negativ wird
-    //         var negativ: boolean;
-    //         MatPlan.push(matPlanRow);
-    //         negativ = false;
-    //
-    //         for (var i = 0; i < MatPlan.length; i++) {
-    //             for (var i2 = 0; i2 < MatPlan[0].bestandnWe.length; i2++) {
-    //                 // MatPlan[i].bestandnWe[i2] = -10; // später muss das raus
-    //                 if (MatPlan[i].bestandnWe[i2] < 0) {
-    //                     negativperiode = Number(this.resultObj.results.period) + i2;
-    //                     for (let vb of vorigeBestellungen) {
-    //                         if (vb.teil == MatPlan[i].kpartnr) {
-    //                             if (negativperiode < vb.ankunftperiode) {
-    //                                 console.log("zuper");
-    //                                 negativ = true;
-    //                             }
-    //                             else {
-    //                                 console.log("zuper2");
-    //                                 negativ = false;
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //         return negativ;
-    //     }
     MaterialPlanningComponent.prototype.roundAt0point6 = function (zahl) {
         if (zahl % 1 >= 0.6) {
             zahl = Math.ceil(zahl);
@@ -270,6 +242,14 @@ var MaterialPlanningComponent = (function () {
             zahl = Math.floor(zahl);
         }
         return zahl;
+    };
+    MaterialPlanningComponent.prototype.bestellmengechange = function (matPlan, index) {
+        var mp = new matPlanRow_1.matPlanRow();
+        mp = matPlan;
+        for (var x = 0; x < 4; x++) {
+            // this.matPlan.bruttobedarfnP[x] += matPlan.bestellmenge;
+            console.log("hallo");
+        }
     };
     MaterialPlanningComponent.prototype.getBruttoBedarfandPeriods = function () {
         if (this.sessionService.getForecast() === null) {
@@ -293,15 +273,6 @@ var MaterialPlanningComponent = (function () {
     MaterialPlanningComponent.prototype.bestellartSelected = function (bestellart, i) {
         this.matPlan[i].bestellung = bestellart;
         this.sessionService.setMatPlan(this.matPlan);
-    };
-    MaterialPlanningComponent.prototype.bestellmengeChange = function (newvalue, index) {
-        if (newvalue >= 0) {
-            this.matPlan[index].bestellmenge = newvalue;
-            this.sessionService.setMatPlan(this.matPlan);
-        }
-        else {
-            alert("Bitte positiven Wert eingeben !");
-        }
     };
     MaterialPlanningComponent.prototype.setLayout = function () {
         var period = Number(this.resultObj.results.period);
