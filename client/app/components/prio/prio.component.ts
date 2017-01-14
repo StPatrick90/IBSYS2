@@ -57,10 +57,10 @@ export class PrioComponent {
     }
 
     ngOnInit() {
+        this.defaultAblauf.push(18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3);
         this.splittingPart = new Part();
         this.splittingAnzahl2 = 0;
         this.splittingAnzahl = 0;
-        this.defaultAblauf.push(18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3);
         this.processingTimes = this.sessionService.getProcessingTimes();
         this.resultObj = this.sessionService.getResultObject();
         this.wartelisteMaterial = this.resultObj.results.waitingliststock;
@@ -84,15 +84,42 @@ export class PrioComponent {
                                 sequence.prioTasks = [];
                                 this.reihenfolgen.push(sequence);
                             };
-                            this.processOptimizaition();
                         });
                 });
 
     }
 
+    onClickJumptron(area: string){
+        this.produzierbareAuftraege.length = 0;
+        this.nPAuftraege.length = 0;
+        this.displayArray.length = 0;
+
+        if(area === 'automatic') {
+            this.defaultAblauf.length = 0;
+            this.defaultAblauf.push(18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3);
+        }
+        if(area === 'endProduct'){
+
+        }
+
+        if(area === 'manual') {
+            this.defaultAblauf.length = 0;
+            for(var eTeilNummer of this.epParts){
+                this.defaultAblauf.push(eTeilNummer.nummer);
+            }
+        }
+        console.log("defautAblauf: ", this.defaultAblauf);
+        this.processOptimizaition();
+        this.selector = area;
+    }
+
     processOptimizaition() {
-        this.lager = this.resultObj.results.warehousestock.article;
-        console.log(this.lager);
+        this.lager = JSON.parse(JSON.stringify(this.resultObj.results.warehousestock.article));
+        console.log("----------lager");
+        for(var ob of this.lager){
+            //console.log("ID: "+ ob.id + "  Amount: " +ob.amount);
+        }
+        console.log("----------ende");
         this.updateStorage();
         for (var partNumber of this.defaultAblauf) {
             var auftragsMenge = 0;
@@ -112,6 +139,9 @@ export class PrioComponent {
                 }
             }
             this.processWorkflow(partNumber, auftragsMenge);
+        }
+        for(var at of this.nPAuftraege){
+            this.produzierbareAuftraege.push(at);
         }
 
         console.log("reihenfolge:");
@@ -315,6 +345,8 @@ export class PrioComponent {
                         if(bestandteil._id === pt._id){
                             for(var artikel of this.lager){
                                 if(Number.parseInt(artikel.id) === pt.nummer){
+
+                                    console.log(pt.nummer, Number.parseInt(artikel.amount));
                                     bestandteilArray.push({teil:pt, anzahl: bestandteil.anzahl, lagerBestand: Number.parseInt(artikel.amount)})
                                 }
                             }
@@ -354,6 +386,30 @@ export class PrioComponent {
             }
         }
     }
+
+    reloadProcess(){
+        if(this.selectedType === 'Yes'){
+            this.nPAuftraege.length = 0;
+            this.displayArray.length = 0;
+            this.defaultAblauf.length = 0;
+            for(var pAuftrag of this.produzierbareAuftraege){
+                var nr = pAuftrag.Teil.nummer;
+                var isInArray = false;
+                for(var defNr of this.defaultAblauf){
+                    if(nr === defNr){
+                        isInArray = true;
+                    }
+                }
+                if(!isInArray)
+                    this.defaultAblauf.push(nr);
+            }
+            this.produzierbareAuftraege.length = 0;
+            this.processOptimizaition();
+        }
+    }
+
+
+    //Splitting
     setModalView(object, index){
         this.splittingAnzahl2 = object.Anzahl;
         this.splittingPart = object.Teil;
@@ -378,6 +434,20 @@ export class PrioComponent {
             }
         }
         this.modalSplitting.close();
+    }
+
+    selectedType = "No";
+
+
+    clickRadio(type){
+        this.selectedType = type;
+    }
+
+    isSelected(type){
+        if(type === this.selectedType){
+            return true;
+        }
+        return false;
     }
 }
 

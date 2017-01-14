@@ -36,13 +36,14 @@ var PrioComponent = (function () {
         this.partOrders = [];
         this.defaultAblauf = [];
         this.displayArray = [];
+        this.selectedType = "No";
     }
     PrioComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.defaultAblauf.push(18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3);
         this.splittingPart = new part_1.Part();
         this.splittingAnzahl2 = 0;
         this.splittingAnzahl = 0;
-        this.defaultAblauf.push(18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3);
         this.processingTimes = this.sessionService.getProcessingTimes();
         this.resultObj = this.sessionService.getResultObject();
         this.wartelisteMaterial = this.resultObj.results.waitingliststock;
@@ -65,16 +66,40 @@ var PrioComponent = (function () {
                     _this.reihenfolgen.push(sequence);
                 }
                 ;
-                _this.processOptimizaition();
             });
         });
     };
+    PrioComponent.prototype.onClickJumptron = function (area) {
+        this.produzierbareAuftraege.length = 0;
+        this.nPAuftraege.length = 0;
+        this.displayArray.length = 0;
+        if (area === 'automatic') {
+            this.defaultAblauf.length = 0;
+            this.defaultAblauf.push(18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3);
+        }
+        if (area === 'endProduct') {
+        }
+        if (area === 'manual') {
+            this.defaultAblauf.length = 0;
+            for (var _i = 0, _a = this.epParts; _i < _a.length; _i++) {
+                var eTeilNummer = _a[_i];
+                this.defaultAblauf.push(eTeilNummer.nummer);
+            }
+        }
+        console.log("defautAblauf: ", this.defaultAblauf);
+        this.processOptimizaition();
+        this.selector = area;
+    };
     PrioComponent.prototype.processOptimizaition = function () {
-        this.lager = this.resultObj.results.warehousestock.article;
-        console.log(this.lager);
+        this.lager = JSON.parse(JSON.stringify(this.resultObj.results.warehousestock.article));
+        console.log("----------lager");
+        for (var _i = 0, _a = this.lager; _i < _a.length; _i++) {
+            var ob = _a[_i];
+        }
+        console.log("----------ende");
         this.updateStorage();
-        for (var _i = 0, _a = this.defaultAblauf; _i < _a.length; _i++) {
-            var partNumber = _a[_i];
+        for (var _b = 0, _c = this.defaultAblauf; _b < _c.length; _b++) {
+            var partNumber = _c[_b];
             var auftragsMenge = 0;
             for (var partOrder in this.partOrders) {
                 if (partOrder.includes(partNumber.toString())) {
@@ -91,6 +116,10 @@ var PrioComponent = (function () {
             }
             this.processWorkflow(partNumber, auftragsMenge);
         }
+        for (var _d = 0, _e = this.nPAuftraege; _d < _e.length; _d++) {
+            var at = _e[_d];
+            this.produzierbareAuftraege.push(at);
+        }
         console.log("reihenfolge:");
         console.log(this.reihenfolgen);
         console.log("pAufträge:");
@@ -98,8 +127,8 @@ var PrioComponent = (function () {
         console.log("npAufträge:");
         console.log(this.nPAuftraege);
         this.displayArray.length = 0;
-        for (var _b = 0, _c = this.produzierbareAuftraege; _b < _c.length; _b++) {
-            var auftrag = _c[_b];
+        for (var _f = 0, _g = this.produzierbareAuftraege; _f < _g.length; _f++) {
+            var auftrag = _g[_f];
             this.displayArray.push(auftrag.Teil);
         }
     };
@@ -278,6 +307,7 @@ var PrioComponent = (function () {
                             for (var _f = 0, _g = this.lager; _f < _g.length; _f++) {
                                 var artikel = _g[_f];
                                 if (Number.parseInt(artikel.id) === pt.nummer) {
+                                    console.log(pt.nummer, Number.parseInt(artikel.amount));
                                     bestandteilArray.push({ teil: pt, anzahl: bestandteil.anzahl, lagerBestand: Number.parseInt(artikel.amount) });
                                 }
                             }
@@ -317,6 +347,29 @@ var PrioComponent = (function () {
             }
         }
     };
+    PrioComponent.prototype.reloadProcess = function () {
+        if (this.selectedType === 'Yes') {
+            this.nPAuftraege.length = 0;
+            this.displayArray.length = 0;
+            this.defaultAblauf.length = 0;
+            for (var _i = 0, _a = this.produzierbareAuftraege; _i < _a.length; _i++) {
+                var pAuftrag = _a[_i];
+                var nr = pAuftrag.Teil.nummer;
+                var isInArray = false;
+                for (var _b = 0, _c = this.defaultAblauf; _b < _c.length; _b++) {
+                    var defNr = _c[_b];
+                    if (nr === defNr) {
+                        isInArray = true;
+                    }
+                }
+                if (!isInArray)
+                    this.defaultAblauf.push(nr);
+            }
+            this.produzierbareAuftraege.length = 0;
+            this.processOptimizaition();
+        }
+    };
+    //Splitting
     PrioComponent.prototype.setModalView = function (object, index) {
         this.splittingAnzahl2 = object.Anzahl;
         this.splittingPart = object.Teil;
@@ -339,6 +392,15 @@ var PrioComponent = (function () {
             }
         }
         this.modalSplitting.close();
+    };
+    PrioComponent.prototype.clickRadio = function (type) {
+        this.selectedType = type;
+    };
+    PrioComponent.prototype.isSelected = function (type) {
+        if (type === this.selectedType) {
+            return true;
+        }
+        return false;
     };
     __decorate([
         core_1.ViewChild('splitting'), 

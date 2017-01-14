@@ -14,15 +14,21 @@
 <div class="container">
     <h4>Welche Priorisierung möchten Sie vornehmen?</h4>
 
-    <div class="col-sm-3 jumbotron jumptronhover" (click)="selector = 'automatic'" style="margin-left: 10px">
+    <div class="col-sm-3 jumbotron jumptronhover" (click)="onClickJumptron('automatic')" style="margin-left: 10px">
         <h5>Voll Automatisch</h5>
     </div>
-    <div class="col-sm-3 jumbotron jumptronhover" (click)="selector = 'endProduct'" style="margin-left: 10px">
+    <div class="col-sm-3 jumbotron jumptronhover" (click)="onClickJumptron('endProduct')" style="margin-left: 10px">
         <h5>Nach Endprodukten</h5>
     </div>
-    <div class="col-sm-3 jumbotron jumptronhover" (click)="selector = 'manual'" style="margin-left: 10px">
+    <div class="col-sm-3 jumbotron jumptronhover" (click)="onClickJumptron('manual')" style="margin-left: 10px">
         <h5>Alles Manuell</h5>
     </div>
+</div>
+<div class="container" *ngIf="(selector != '')">
+    <label style="margin-right: 10px">Refresh after drag?</label>
+    No:<input type="radio" [checked]="isSelected('No')" (click)="clickRadio('No')" style="margin-right: 10px">
+    Yes: <input type="radio" [checked]="isSelected('Yes')" (click)="clickRadio('Yes')">
+
 </div>
 <div *ngIf="(selector == 'automatic')" class="container">
     <h4>Voll Automatisch:</h4>
@@ -35,7 +41,7 @@
                 </div>
                 <div class="panel-body">
                     <ul class="list-group" dnd-sortable-container [sortableData]="produzierbareAuftraege">
-                        <li *ngFor="let item of produzierbareAuftraege; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">
+                        <li *ngFor="let item of produzierbareAuftraege; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i" (dragend)="reloadProcess()">
                             <span class="tag tag-default pull-right">{{item.Anzahl}}</span><button class="btn btn-xs pull-right" style="margin-right: 10" (click)="setModalView(item, i)">+</button>
                             {{item.Teil.typ}} {{item.Teil.nummer}}
                         </li>
@@ -55,7 +61,7 @@
 </div>
 <div *ngIf="(selector == 'endProduct')" class="container">
     <h4>Nach Endprodukten:</h4>
-
+    <button class="btn btn-success">start process</button>
     <div class="row">
         <div class="col-sm-3">
             <div class="panel panel-success">
@@ -89,7 +95,7 @@
 </div>
 <div *ngIf="(selector == 'manual')" class="container">
     <h4>Alles Manuell:</h4>
-
+    <button class="btn btn-success">start process</button>
     <div class="row">
         <div class="col-sm-3">
             <div class="panel panel-success">
