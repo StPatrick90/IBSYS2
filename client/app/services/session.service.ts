@@ -10,6 +10,7 @@ import {Workstation} from '../model/workstastion';
 import {ProcessingTime} from '../model/processingTime';
 import {rowtype} from "../model/rowtype";
 import {matPlanRow} from "../model/matPlanRow";
+import {Forecast} from "../model/forecast";
 
 
 @Injectable()
@@ -26,7 +27,7 @@ export class SessionService {
     @SessionStorage() private matPlan: matPlanRow[];
     @SessionStorage() private verwendungRow: string[];
     @SessionStorage() private periodRow: number[];
-    @SessionStorage() private forecast: Array<any>;
+    @SessionStorage() private forecast: Forecast;
     @SessionStorage() private actualPeriod: number;
 
 

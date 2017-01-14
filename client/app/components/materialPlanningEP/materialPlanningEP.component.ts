@@ -10,6 +10,7 @@ import {
     IMultiSelectSettings,
     IMultiSelectTexts
 } from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
+import {Forecast} from '../../model/forecast';
 
 @Component({
     moduleId: module.id,
@@ -47,25 +48,47 @@ export class MaterialPlanningEPComponent {
     private productSettings: IMultiSelectSettings;
     private multiSelectTexts: IMultiSelectTexts;
 
+    forecast: Forecast;
+    period: number = 0;
 
-    //MOCK DATA
-    mockVerbindlicheAuftraege: Array<any> = [{id: 1, menge: 100}, {id: 2, menge: 200}, {id: 3, menge: 150}];
-    mockGeplLager: Array<any> = [{id: 1, menge: 50}, {id: 2, menge: 60}, {id: 3, menge: 70}];
+    //Forecast Data
+    forecastVerbindlicheAuftraege: Array<any> = new Array<any>();
+    forecastGeplLager: Array<any> = new Array<any>();
 
     constructor(private partService: PartService, private sessionService: SessionService) {
-
     }
 
     ngOnInit() {
-        if (this.sessionService.getParts() != null || this.sessionService.getParts() != undefined ||
-            this.sessionService.getResultObject() != null || this.sessionService.getResultObject() != undefined) {
+        if (this.sessionService.getResultObject()) {
+            this.period = Number.parseInt(this.sessionService.getResultObject().results.period);
+        }
+        if (this.sessionService.getForecast()) {
+            this.forecast = this.sessionService.getForecast();
+
+            if (this.forecast.period === this.period) {
+                for (let article of this.forecast.article) {
+                    for (let vA of article.verbdindlicheAuftraege) {
+                        if (vA.periode === this.period) {
+                            this.forecastVerbindlicheAuftraege.push({id: article.partNr, menge: vA.anzahl});
+                        }
+                    }
+                    for (let vB of article.voraussichtlicherBestand) {
+                        if (vB.periode === this.period) {
+                            this.forecastGeplLager.push({id: article.partNr, menge: vB.anzahl});
+                        }
+                    }
+                }
+            }
+
+        }
+
+        if (this.sessionService.getParts() || this.sessionService.getResultObject()) {
             this.eParts = this.sessionService.getParts().filter(item => item.typ == "E");
             this.pParts = this.sessionService.getParts().filter(item => item.typ == "P");
             this.resultObj = this.sessionService.getResultObject();
-            if(this.sessionService.getPlannedWarehouseStock()){
+            if (this.sessionService.getPlannedWarehouseStock()) {
                 this.geplLagerbestand = this.sessionService.getPlannedWarehouseStock();
             }
-
             this.initAll();
         }
         else {
@@ -122,8 +145,8 @@ export class MaterialPlanningEPComponent {
         }
 
         //Verbindliche Aufträge (Produkt 1,2,3) und Addierte Warteschlangen für Produkte 0
-        for (let va of this.mockVerbindlicheAuftraege) {
-            if(this.part.nummer === va.id) {
+        for (let va of this.forecastVerbindlicheAuftraege) {
+            if (this.part.nummer === va.id) {
                 if (!this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + va.id]) {
                     this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + va.id] = va.menge;
                 }
@@ -134,8 +157,8 @@ export class MaterialPlanningEPComponent {
         }
 
         //Geplanter Lagerbestand Ende der Periode(Produkt 1,2,3)
-        for (let la of this.mockGeplLager) {
-            if(this.part.nummer === la.id) {
+        for (let la of this.forecastGeplLager) {
+            if (this.part.nummer === la.id) {
                 if (!this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + la.id]) {
                     this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + la.id] = la.menge;
                 }
@@ -177,7 +200,7 @@ export class MaterialPlanningEPComponent {
         //Lagerbestand Vorperiode
         for (let article of this.lager.article) {
             for (let pl of this.tmp_partsList) {
-                if(pl.teil.child.nummer === Number.parseInt(article.id)) {
+                if (pl.teil.child.nummer === Number.parseInt(article.id)) {
                     if (this.isGleichTeil(article.id)) {
                         this.lagerbestandVorperiode[this.part.typ + this.part.nummer + "_" + article.id] = (article.amount / 3).toFixed(2);
                     }
@@ -216,7 +239,7 @@ export class MaterialPlanningEPComponent {
 
             if (pl.parent) {
                 this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer] = this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pl.teil.parent.nummer];
-                this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" +pl.teil.child.nummer] = this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pl.teil.parent.nummer];
+                this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer] = this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pl.teil.parent.nummer];
             }
             this.updateArrays(true);
         }
@@ -239,7 +262,7 @@ export class MaterialPlanningEPComponent {
                 this.tmp_partsList.pop();
             }
             if (this.part != null) {
-                this.tmp_partsList.push({produkt: this.part.nummer, teil:{child: this.part, parent: null}});
+                this.tmp_partsList.push({produkt: this.part.nummer, teil: {child: this.part, parent: null}});
 
                 for (let best of this.part.bestandteile) {
                     for (let pt of this.eParts) {
@@ -249,7 +272,7 @@ export class MaterialPlanningEPComponent {
                     }
                 }
                 this.initArrays();
-                for(let tmp of this.tmp_partsList){
+                for (let tmp of this.tmp_partsList) {
                     this.partsList.push(tmp);
                 }
             }
@@ -258,7 +281,7 @@ export class MaterialPlanningEPComponent {
     }
 
     getBestandteile(child, parent) {
-        this.tmp_partsList.push({produkt: this.part.nummer, teil:{child: child, parent: parent}});
+        this.tmp_partsList.push({produkt: this.part.nummer, teil: {child: child, parent: parent}});
         if (child.bestandteile && child.bestandteile.length > 0) {
             for (let best of child.bestandteile) {
                 for (let pt of this.eParts) {
@@ -283,13 +306,13 @@ export class MaterialPlanningEPComponent {
     updateArrays(isInitial) {
         var parts = [];
         var ende = 4;
-        if(isInitial){
+        if (isInitial) {
             parts = this.tmp_partsList;
         }
-        else{
+        else {
             parts = this.partsListSingle;
         }
-        while(ende >= 0){
+        while (ende >= 0) {
             for (let pt of parts) {
                 this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pt.teil.child.nummer] = this.sumProdAuftraege(pt.teil.child) < 0 ? 0 : this.sumProdAuftraege(pt.teil.child);
                 if (pt.teil.parent) {
@@ -303,22 +326,23 @@ export class MaterialPlanningEPComponent {
         this.sessionService.setPlannedWarehouseStock(this.geplLagerbestand);
     }
 
-    sumProdAuftraege(part){
+    sumProdAuftraege(part) {
         return this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + part.nummer] +
-                this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + part.nummer] +
-                this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + part.nummer] -
-                this.lagerbestandVorperiode[this.part.typ + this.part.nummer + "_" + part.nummer] -
-                this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + part.nummer] -
-                this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + part.nummer];
+            this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + part.nummer] +
+            this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + part.nummer] -
+            this.lagerbestandVorperiode[this.part.typ + this.part.nummer + "_" + part.nummer] -
+            this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + part.nummer] -
+            this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + part.nummer];
     }
 
-    isGleichTeil(nummer){
+    isGleichTeil(nummer) {
         var num = Number.parseInt(nummer);
         return num === 16 || num === 17 || num === 26;
     }
-    filterList(){
-        for(let pt of this.pParts){
-            if(pt.nummer === Number.parseInt(this.auswahl)){
+
+    filterList() {
+        for (let pt of this.pParts) {
+            if (pt.nummer === Number.parseInt(this.auswahl)) {
                 this.part = pt;
             }
         }

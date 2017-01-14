@@ -64,6 +64,7 @@ export class ForecastComponent {
                 }
             }
         }
+        this.saveForecast();
     }
 
     updateArrays(part, period) {

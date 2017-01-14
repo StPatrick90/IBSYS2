@@ -15,6 +15,7 @@ var core_1 = require('@angular/core');
 var WebStorage_1 = require("angular2-localstorage/WebStorage");
 var http_1 = require('@angular/http');
 require('rxjs/add/operator/map');
+var forecast_1 = require("../model/forecast");
 var SessionService = (function () {
     function SessionService(http) {
         this.http = http;
@@ -355,7 +356,7 @@ var SessionService = (function () {
     ], SessionService.prototype, "periodRow", void 0);
     __decorate([
         WebStorage_1.SessionStorage(), 
-        __metadata('design:type', Array)
+        __metadata('design:type', forecast_1.Forecast)
     ], SessionService.prototype, "forecast", void 0);
     __decorate([
         WebStorage_1.SessionStorage(), 

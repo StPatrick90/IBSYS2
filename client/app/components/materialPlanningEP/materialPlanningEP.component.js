@@ -31,9 +31,10 @@ var MaterialPlanningEPComponent = (function () {
         this.auftraegeBearb = Array();
         this.prodAuftraege = Array();
         this.productOptions = Array();
-        //MOCK DATA
-        this.mockVerbindlicheAuftraege = [{ id: 1, menge: 100 }, { id: 2, menge: 200 }, { id: 3, menge: 150 }];
-        this.mockGeplLager = [{ id: 1, menge: 50 }, { id: 2, menge: 60 }, { id: 3, menge: 70 }];
+        this.period = 0;
+        //Forecast Data
+        this.forecastVerbindlicheAuftraege = new Array();
+        this.forecastGeplLager = new Array();
         this.getNumber = function (num) {
             var array = Array();
             for (var i = 1; i <= num; i++) {
@@ -44,8 +45,30 @@ var MaterialPlanningEPComponent = (function () {
     }
     MaterialPlanningEPComponent.prototype.ngOnInit = function () {
         var _this = this;
-        if (this.sessionService.getParts() != null || this.sessionService.getParts() != undefined ||
-            this.sessionService.getResultObject() != null || this.sessionService.getResultObject() != undefined) {
+        if (this.sessionService.getResultObject()) {
+            this.period = Number.parseInt(this.sessionService.getResultObject().results.period);
+        }
+        if (this.sessionService.getForecast()) {
+            this.forecast = this.sessionService.getForecast();
+            if (this.forecast.period === this.period) {
+                for (var _i = 0, _a = this.forecast.article; _i < _a.length; _i++) {
+                    var article = _a[_i];
+                    for (var _b = 0, _c = article.verbdindlicheAuftraege; _b < _c.length; _b++) {
+                        var vA = _c[_b];
+                        if (vA.periode === this.period) {
+                            this.forecastVerbindlicheAuftraege.push({ id: article.partNr, menge: vA.anzahl });
+                        }
+                    }
+                    for (var _d = 0, _e = article.voraussichtlicherBestand; _d < _e.length; _d++) {
+                        var vB = _e[_d];
+                        if (vB.periode === this.period) {
+                            this.forecastGeplLager.push({ id: article.partNr, menge: vB.anzahl });
+                        }
+                    }
+                }
+            }
+        }
+        if (this.sessionService.getParts() || this.sessionService.getResultObject()) {
             this.eParts = this.sessionService.getParts().filter(function (item) { return item.typ == "E"; });
             this.pParts = this.sessionService.getParts().filter(function (item) { return item.typ == "P"; });
             this.resultObj = this.sessionService.getResultObject();
@@ -101,7 +124,7 @@ var MaterialPlanningEPComponent = (function () {
             this.auftraegeBearb.pop();
         }
         //Verbindliche Aufträge (Produkt 1,2,3) und Addierte Warteschlangen für Produkte 0
-        for (var _i = 0, _a = this.mockVerbindlicheAuftraege; _i < _a.length; _i++) {
+        for (var _i = 0, _a = this.forecastVerbindlicheAuftraege; _i < _a.length; _i++) {
             var va = _a[_i];
             if (this.part.nummer === va.id) {
                 if (!this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + va.id]) {
@@ -113,7 +136,7 @@ var MaterialPlanningEPComponent = (function () {
             }
         }
         //Geplanter Lagerbestand Ende der Periode(Produkt 1,2,3)
-        for (var _b = 0, _c = this.mockGeplLager; _b < _c.length; _b++) {
+        for (var _b = 0, _c = this.forecastGeplLager; _b < _c.length; _b++) {
             var la = _c[_b];
             if (this.part.nummer === la.id) {
                 if (!this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + la.id]) {
