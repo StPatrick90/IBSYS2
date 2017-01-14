@@ -299,7 +299,7 @@ export class SessionService {
     }
 
     getPlannedWarehouseStock() {
-        return JSON.parse(JSON.stringify(this.plannedWarehouseStock));
+        return this.plannedWarehouseStock;
     }
 
     setPlannedWarehouseStock(plannedWarehouseStock) {

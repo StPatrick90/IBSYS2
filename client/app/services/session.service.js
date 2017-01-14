@@ -261,7 +261,7 @@ var SessionService = (function () {
         this.partOrders = partOrders;
     };
     SessionService.prototype.getPlannedWarehouseStock = function () {
-        return JSON.parse(JSON.stringify(this.plannedWarehouseStock));
+        return this.plannedWarehouseStock;
     };
     SessionService.prototype.setPlannedWarehouseStock = function (plannedWarehouseStock) {
         this.plannedWarehouseStock = plannedWarehouseStock;
