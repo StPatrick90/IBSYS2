@@ -147,6 +147,16 @@ exports.LANG_EN_TRANS = {
     'mpEP_WarehouseEndPeriod': 'Warehousestock at the end of the passed period',
     'mpEP_OrderWaitingQueue': 'Orders in the waiting queue',
     'mpEP_WorkInProgress': 'Work in progress',
-    'mpEP_ProdOrders': 'Production orders for the following period'
+    'mpEP_ProdOrders': 'Production orders for the following period',
+    //Forecast
+    'forecast_sales': 'Sales',
+    'forecast_product': 'Product',
+    'forecast_period': 'Period',
+    'forecast_plProd': 'Planned production',
+    'forecast_plRemStock': 'Expected remaining stock',
+    'forecast_directSales': 'Direct sales',
+    'forecast_quantity': 'Quantity',
+    'forecast_price': 'Price',
+    'forecast_conPenalty': 'Contract penalty'
 };
 //# sourceMappingURL=lang-en.js.map

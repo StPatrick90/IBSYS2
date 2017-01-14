@@ -161,5 +161,16 @@ export const LANG_DE_TRANS = {
     'mpEP_WarehouseEndPeriod': 'Lagerbestand am Ende der Vorperiode',
     'mpEP_OrderWaitingQueue': 'Aufträge in der Warteschlange',
     'mpEP_WorkInProgress': 'Aufträge in Bearbeitung',
-    'mpEP_ProdOrders': 'Produktionsaufträge für die kommende Periode'
+    'mpEP_ProdOrders': 'Produktionsaufträge für die kommende Periode',
+
+//Forecast
+    'forecast_sales': 'Verbindliche Aufträge',
+    'forecast_product': 'Produkt',
+    'forecast_period': 'Periode',
+    'forecast_plProd': 'Geplante Produktion',
+    'forecast_plRemStock': 'Voraussichtler Restbestand',
+    'forecast_directSales': 'Direktverkauf',
+    'forecast_quantity': 'Menge',
+    'forecast_price': 'Preis',
+    'forecast_conPenalty': 'Konventionalstrafe'
 };

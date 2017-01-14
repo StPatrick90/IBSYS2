@@ -9,15 +9,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var part_service_1 = require('../../services/part.service');
+var forecast_service_1 = require('../../services/forecast.service');
 var session_service_1 = require('../../services/session.service');
 var forecast_1 = require('../../model/forecast');
 var ForecastComponent = (function () {
-    function ForecastComponent(partService, sessionService) {
+    function ForecastComponent(forecastService, sessionService) {
         var _this = this;
-        this.partService = partService;
+        this.forecastService = forecastService;
         this.sessionService = sessionService;
         this.periods = new Array();
+        this.period = 0;
         this.verbdindlAuftr = new Array();
         this.geplProd = new Array();
         this.vorausBestand = new Array();
@@ -32,12 +33,38 @@ var ForecastComponent = (function () {
                 this.periods.push(i);
             }
         }
-        this.partService.getParts()
-            .subscribe(function (parts) {
-            _this.pParts = parts.filter(function (item) { return item.typ == "P"; });
+        this.forecastService.getForecastAndParts()
+            .subscribe(function (data) {
+            _this.forecasts = data[0];
+            _this.pParts = data[1].filter(function (item) { return item.typ == "P"; });
         }, function (err) { return console.error(err); }, function () { return _this.initAll(); });
     }
     ForecastComponent.prototype.initAll = function () {
+        if (this.forecasts) {
+            for (var _i = 0, _a = this.forecasts; _i < _a.length; _i++) {
+                var fc = _a[_i];
+                if (fc.period === this.period) {
+                    for (var _b = 0, _c = fc.article; _b < _c.length; _b++) {
+                        var article = _c[_b];
+                        for (var _d = 0, _e = article.verbdindlicheAuftraege; _d < _e.length; _d++) {
+                            var vA = _e[_d];
+                            this.verbdindlAuftr["P_" + article.partNr + "_" + vA.periode] = vA.anzahl;
+                        }
+                        for (var _f = 0, _g = article.geplanteProduktion; _f < _g.length; _f++) {
+                            var gP = _g[_f];
+                            this.geplProd["P_" + article.partNr + "_" + gP.periode] = gP.anzahl;
+                        }
+                        for (var _h = 0, _j = article.voraussichtlicherBestand; _h < _j.length; _h++) {
+                            var vB = _j[_h];
+                            this.vorausBestand["P_" + article.partNr + "_" + vB.periode] = vB.anzahl;
+                        }
+                        this.menge["P_" + article.partNr] = article.direktVerkauf.menge;
+                        this.preis["P_" + article.partNr] = article.direktVerkauf.preis;
+                        this.strafe["P_" + article.partNr] = article.direktVerkauf.strafe;
+                    }
+                }
+            }
+        }
     };
     ForecastComponent.prototype.updateArrays = function (part, period) {
         if (period !== this.period + 3) {
@@ -127,7 +154,7 @@ var ForecastComponent = (function () {
             selector: 'forecast',
             templateUrl: 'forecast.component.html'
         }), 
-        __metadata('design:paramtypes', [part_service_1.PartService, session_service_1.SessionService])
+        __metadata('design:paramtypes', [forecast_service_1.ForecastService, session_service_1.SessionService])
     ], ForecastComponent);
     return ForecastComponent;
 }());

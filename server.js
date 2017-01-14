@@ -16,6 +16,7 @@ var results = require('./routes/results');
 var kparts = require('./routes/kparts');
 var bindingOrders = require('./routes/bindingOrders');
 var plannings = require('./routes/plannings');
+var forecasts = require('./routes/forecasts');
 
 
 
@@ -46,6 +47,7 @@ app.use('/api', results);
 app.use('/api', kparts);
 app.use('/api', bindingOrders);
 app.use('/api', plannings);
+app.use('/api', forecasts);
 
 
 app.listen(port, function(){

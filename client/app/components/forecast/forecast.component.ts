@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {PartService} from '../../services/part.service'
+import {ForecastService} from '../../services/forecast.service'
 import {SessionService} from '../../services/session.service'
 import {Part} from '../../model/part';
 import {Forecast} from '../../model/forecast';
@@ -13,17 +13,18 @@ export class ForecastComponent {
     pParts: Array<Part>;
     result: any;
     periods: Array<number> = new Array<number>();
-    period: number;
+    period: number = 0;
     lager: any;
     verbdindlAuftr: Array<number> = new Array<number>();
     geplProd: Array<number> = new Array<number>();
     vorausBestand: Array<number> = new Array<number>();
+    forecasts: Array<Forecast>;
 
     menge: Array<number> = new Array<number>();
     preis: Array<number> = new Array<number>();
     strafe: Array<number> = new Array<number>();
 
-    constructor(private partService: PartService, private sessionService: SessionService) {
+    constructor(private forecastService: ForecastService, private sessionService: SessionService) {
         if (this.sessionService.getResultObject()) {
             this.result = this.sessionService.getResultObject();
             this.period = Number.parseInt(this.result.results.period);
@@ -33,16 +34,36 @@ export class ForecastComponent {
                 this.periods.push(i);
             }
         }
-        this.partService.getParts()
-            .subscribe(parts => {
-                    this.pParts = parts.filter(item => item.typ == "P")
+        this.forecastService.getForecastAndParts()
+            .subscribe(data => {
+                    this.forecasts = data[0];
+                    this.pParts = data[1].filter(item => item.typ == "P")
                 },
                 err => console.error(err),
                 () => this.initAll());
     }
 
     initAll() {
-
+        if(this.forecasts){
+            for(let fc of this.forecasts){
+                if(fc.period === this.period){
+                    for(let article of fc.article){
+                        for(let vA of article.verbdindlicheAuftraege){
+                            this.verbdindlAuftr["P_" + article.partNr + "_" + vA.periode] = vA.anzahl;
+                        }
+                        for(let gP of article.geplanteProduktion){
+                            this.geplProd["P_" + article.partNr + "_" + gP.periode] = gP.anzahl;
+                        }
+                        for(let vB of article.voraussichtlicherBestand){
+                            this.vorausBestand["P_" + article.partNr + "_" + vB.periode] = vB.anzahl;
+                        }
+                        this.menge["P_" + article.partNr] = article.direktVerkauf.menge;
+                        this.preis["P_" + article.partNr] = article.direktVerkauf.preis;
+                        this.strafe["P_" + article.partNr] = article.direktVerkauf.strafe;
+                    }
+                }
+            }
+        }
     }
 
     updateArrays(part, period) {

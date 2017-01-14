@@ -13,6 +13,7 @@ import {MaterialPlanningService} from './services/materialPlanning.service';
 import {ProcessingTime} from "./model/processingTime";
 import { PredictionService } from './services/prediction.service';
 import {element} from "@angular/upgrade/src/angular_js";
+import { ForecastService } from './services/forecast.service';
 
 @Component({
     moduleId: module.id,
@@ -20,7 +21,8 @@ import {element} from "@angular/upgrade/src/angular_js";
     templateUrl: 'app.component.html',
 
     providers: [TaskService,CapacityPlanningService, AppService, TranslateService,
-        XmlImportService, WindowRef, WorkstationService, PartService, SessionService, DBService, MaterialPlanningService, PredictionService]
+        XmlImportService, WindowRef, WorkstationService, PartService, SessionService, DBService, MaterialPlanningService,
+        PredictionService, ForecastService]
 })
 export class AppComponent {
     mobileView:number = 992;
