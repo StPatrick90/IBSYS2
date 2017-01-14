@@ -35,7 +35,7 @@ var PrioComponent = (function () {
         this.zeiten = [];
         this.partOrders = [];
         this.defaultAblauf = [];
-        this.displayArray = [];
+        this.outPutArray = [];
         this.selectedType = "No";
     }
     PrioComponent.prototype.ngOnInit = function () {
@@ -72,17 +72,38 @@ var PrioComponent = (function () {
     PrioComponent.prototype.onClickJumptron = function (area) {
         this.produzierbareAuftraege.length = 0;
         this.nPAuftraege.length = 0;
-        this.displayArray.length = 0;
+        this.outPutArray.length = 0;
         if (area === 'automatic') {
             this.defaultAblauf.length = 0;
             this.defaultAblauf.push(18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3);
         }
         if (area === 'endProduct') {
+            this.defaultAblauf.length = 0;
+            var counter = 0;
+            for (var _i = 0, _a = this.pParts; _i < _a.length; _i++) {
+                var pPart = _a[_i];
+                if (pPart.nummer === 1)
+                    if (counter === 0)
+                        this.defaultAblauf.push(18, 13, 7, 49, 10, 4, 50, 17, 16, 51, 26, 1);
+                    else
+                        this.defaultAblauf.push(18, 13, 7, 49, 10, 4, 50, 51, 1);
+                if (pPart.nummer === 2)
+                    if (counter === 0)
+                        this.defaultAblauf.push(19, 14, 8, 54, 11, 5, 55, 17, 16, 56, 26, 2);
+                    else
+                        this.defaultAblauf.push(19, 14, 8, 54, 11, 5, 55, 56, 2);
+                if (pPart.nummer === 3)
+                    if (counter === 0)
+                        this.defaultAblauf.push(20, 15, 9, 29, 12, 6, 30, 17, 16, 31, 26, 3);
+                    else
+                        this.defaultAblauf.push(20, 15, 9, 29, 12, 6, 30, 31, 3);
+                counter += 1;
+            }
         }
         if (area === 'manual') {
             this.defaultAblauf.length = 0;
-            for (var _i = 0, _a = this.epParts; _i < _a.length; _i++) {
-                var eTeilNummer = _a[_i];
+            for (var _b = 0, _c = this.epParts; _b < _c.length; _b++) {
+                var eTeilNummer = _c[_b];
                 this.defaultAblauf.push(eTeilNummer.nummer);
             }
         }
@@ -116,20 +137,20 @@ var PrioComponent = (function () {
             }
             this.processWorkflow(partNumber, auftragsMenge);
         }
-        for (var _d = 0, _e = this.nPAuftraege; _d < _e.length; _d++) {
-            var at = _e[_d];
-            this.produzierbareAuftraege.push(at);
-        }
         console.log("reihenfolge:");
         console.log(this.reihenfolgen);
         console.log("pAufträge:");
         console.log(this.produzierbareAuftraege);
         console.log("npAufträge:");
         console.log(this.nPAuftraege);
-        this.displayArray.length = 0;
-        for (var _f = 0, _g = this.produzierbareAuftraege; _f < _g.length; _f++) {
+        this.outPutArray.length = 0;
+        for (var _d = 0, _e = this.produzierbareAuftraege; _d < _e.length; _d++) {
+            var auftrag = _e[_d];
+            this.outPutArray.push(auftrag);
+        }
+        for (var _f = 0, _g = this.nPAuftraege; _f < _g.length; _f++) {
             var auftrag = _g[_f];
-            this.displayArray.push(auftrag.Teil);
+            this.outPutArray.push(auftrag);
         }
     };
     PrioComponent.prototype.processWorkflow = function (partNumber, auftraege) {
@@ -142,7 +163,7 @@ var PrioComponent = (function () {
         for (var _i = 0, bestandteilArray_1 = bestandteilArray; _i < bestandteilArray_1.length; _i++) {
             var bestandteil = bestandteilArray_1[_i];
             var verfügbar = "";
-            if ((bestandteil.lagerBestand / bestandteil.anzahl) > 0) {
+            if ((bestandteil.lagerBestand / bestandteil.anzahl) > 0 || auftraege === 0) {
                 //JA
                 if (bestandteil.lagerBestand >= (auftraege * bestandteil.anzahl)) {
                     verfügbar = "ja";
@@ -349,8 +370,12 @@ var PrioComponent = (function () {
     };
     PrioComponent.prototype.reloadProcess = function () {
         if (this.selectedType === 'Yes') {
+            if (this.selector === 'endProduct') {
+                this.onClickJumptron('endProduct');
+                return;
+            }
             this.nPAuftraege.length = 0;
-            this.displayArray.length = 0;
+            this.outPutArray.length = 0;
             this.defaultAblauf.length = 0;
             for (var _i = 0, _a = this.produzierbareAuftraege; _i < _a.length; _i++) {
                 var pAuftrag = _a[_i];

@@ -43,7 +43,7 @@ export class PrioComponent {
     zeiten: Array<WorkingTime> = [];
     partOrders: Array<any> = [];
     defaultAblauf: Array<number> = [];
-    displayArray: Array<Part> = [];
+    outPutArray: Array<Part> = [];
 
     @ViewChild('splitting')
     modalSplitting: ModalComponent;
@@ -92,14 +92,33 @@ export class PrioComponent {
     onClickJumptron(area: string){
         this.produzierbareAuftraege.length = 0;
         this.nPAuftraege.length = 0;
-        this.displayArray.length = 0;
+        this.outPutArray.length = 0;
 
         if(area === 'automatic') {
             this.defaultAblauf.length = 0;
             this.defaultAblauf.push(18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3);
         }
         if(area === 'endProduct'){
-
+            this.defaultAblauf.length = 0;
+            var counter = 0;
+            for(var pPart of this.pParts){
+                if(pPart.nummer === 1)
+                    if(counter === 0)
+                        this.defaultAblauf.push(18, 13, 7, 49, 10, 4, 50, 17, 16, 51, 26, 1);
+                    else
+                        this.defaultAblauf.push(18, 13, 7, 49, 10, 4, 50, 51, 1);
+                if(pPart.nummer === 2)
+                    if(counter === 0)
+                        this.defaultAblauf.push(19, 14, 8, 54, 11, 5, 55 , 17, 16, 56, 26, 2);
+                    else
+                        this.defaultAblauf.push(19, 14, 8, 54, 11, 5, 55, 56, 2);
+                if(pPart.nummer === 3)
+                    if(counter === 0)
+                        this.defaultAblauf.push(20, 15, 9, 29, 12, 6, 30, 17, 16, 31, 26, 3);
+                    else
+                        this.defaultAblauf.push(20, 15, 9, 29, 12, 6, 30, 31, 3);
+                counter += 1;
+            }
         }
 
         if(area === 'manual') {
@@ -140,9 +159,6 @@ export class PrioComponent {
             }
             this.processWorkflow(partNumber, auftragsMenge);
         }
-        for(var at of this.nPAuftraege){
-            this.produzierbareAuftraege.push(at);
-        }
 
         console.log("reihenfolge:");
         console.log(this.reihenfolgen);
@@ -151,9 +167,12 @@ export class PrioComponent {
         console.log("npAufträge:");
         console.log(this.nPAuftraege);
 
-        this.displayArray.length = 0;
+        this.outPutArray.length = 0;
         for(var auftrag of this.produzierbareAuftraege){
-            this.displayArray.push(auftrag.Teil);
+            this.outPutArray.push(auftrag);
+        }
+        for(var auftrag of this.nPAuftraege){
+            this.outPutArray.push(auftrag);
         }
     }
 
@@ -170,7 +189,7 @@ export class PrioComponent {
         for(var bestandteil of bestandteilArray){
             var verfügbar = "";
 
-            if((bestandteil.lagerBestand/bestandteil.anzahl) > 0){
+            if((bestandteil.lagerBestand/bestandteil.anzahl) > 0 || auftraege === 0){
                 //JA
                 if(bestandteil.lagerBestand >= (auftraege * bestandteil.anzahl)){
                     verfügbar = "ja";
@@ -389,8 +408,12 @@ export class PrioComponent {
 
     reloadProcess(){
         if(this.selectedType === 'Yes'){
+            if(this.selector === 'endProduct'){
+                this.onClickJumptron('endProduct');
+                return;
+            }
             this.nPAuftraege.length = 0;
-            this.displayArray.length = 0;
+            this.outPutArray.length = 0;
             this.defaultAblauf.length = 0;
             for(var pAuftrag of this.produzierbareAuftraege){
                 var nr = pAuftrag.Teil.nummer;
