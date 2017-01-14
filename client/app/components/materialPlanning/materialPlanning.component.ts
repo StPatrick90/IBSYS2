@@ -311,7 +311,6 @@ export class MaterialPlanningComponent {
         else {
             var forecast = new Array<any>();
             forecast.push(this.sessionService.getForecast());
-            var planning: rowtype;
 
             for (var i = 0; i < forecast[0].article.length; i++) {
                 var planning = new rowtype();

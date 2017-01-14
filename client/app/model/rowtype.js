@@ -1,7 +1,7 @@
 "use strict";
 var rowtype = (function () {
     function rowtype() {
-        this.perioden = new Array();
+        this.produktmengen = new Array();
     }
     return rowtype;
 }());

@@ -278,7 +278,6 @@ var MaterialPlanningComponent = (function () {
         else {
             var forecast = new Array();
             forecast.push(this.sessionService.getForecast());
-            var planning;
             for (var i = 0; i < forecast[0].article.length; i++) {
                 var planning = new rowtype_1.rowtype();
                 planning.produktkennung = forecast[0].article[i].produktkennung;
