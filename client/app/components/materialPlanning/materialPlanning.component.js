@@ -12,6 +12,7 @@ var core_1 = require('@angular/core');
 var session_service_1 = require('../../services/session.service');
 var materialPlanning_service_1 = require('../../services/materialPlanning.service');
 var http_1 = require("@angular/http");
+var rowtype_1 = require("../../model/rowtype");
 var MaterialPlanningComponent = (function () {
     function MaterialPlanningComponent(sessionService, materialPlanningService, http) {
         this.sessionService = sessionService;
@@ -22,6 +23,7 @@ var MaterialPlanningComponent = (function () {
         this.verwendungRow = new Array();
         this.periodrow = new Array();
         this.plannings = new Array();
+        this.planning = new rowtype_1.rowtype();
         this.getKParts();
         this.bestellarten = new Array("E.", "N.", "---");
         this.vorigeBestellungen = new Array();
@@ -97,7 +99,7 @@ var MaterialPlanningComponent = (function () {
             matPlanRow.anfangsbestand = this.resultObj.results.warehousestock.article[index].amount;
             matPlanRow.abweichung = purchPart.abweichung;
             matPlanRow.lieferfrist = purchPart.lieferfrist;
-            matPlanRow.diskontmenge = purchPart.diskontmenge; // werte bei diskontmenge in db und excel unterscheiden sich, auch ab überprüfen
+            matPlanRow.diskontmenge = purchPart.diskontmenge;
             matPlanRow.summe = Number((matPlanRow.lieferfrist + matPlanRow.abweichung).toFixed(2));
             // get Verwendungen
             for (var _b = 0, _c = purchPart.verwendung; _b < _c.length; _b++) {
@@ -140,8 +142,6 @@ var MaterialPlanningComponent = (function () {
             for (var _k = 0, _l = this.vorigeBestellungen; _k < _l.length; _k++) {
                 var vb = _l[_k];
                 if (matPlanRow.kpartnr == vb.teil) {
-                    // vb.ankunftperiode = purchPart.lieferfrist + purchPart.abweichung + Number(vb.orderperiode); // ist in setvorigebesetellungen() schon geregelt oder ?
-                    // if (Math.round(vb.ankunftperiode) <= aktuellePeriode) {  // ist in setvorigebesetellungen() schon geregelt oder ?
                     if (vb.ankunftperiode <= aktuellePeriode) {
                         matPlanRow.mengemitbest = Number(vb.menge) + matPlanRow.mengeohbest;
                     }
@@ -166,37 +166,21 @@ var MaterialPlanningComponent = (function () {
             for (var _m = 0, _o = this.vorigeBestellungen; _m < _o.length; _m++) {
                 var vb = _o[_m];
                 for (var i2 = 0; i2 < matPlanRow.bestandnWe.length; i2++) {
-                    // if (matPlanRow.kpartnr == vb.teil && Math.round(vb.ankunftperiode) == Number(this.resultObj.results.period) + i2) {  //ist in setvorigebesetellungen() schon geregelt oder ?
                     if (matPlanRow.kpartnr == vb.teil && vb.ankunftperiode == Number(this.resultObj.results.period) + i2) {
                         matPlanRow.bestandnWe[i2] += Number(vb.menge);
                     }
                 }
             }
-            // set Normal-/Eilbestellung
-            if (matPlanRow.mengeohbest < 0 && matPlanRow.summe * matPlanRow.bruttobedarfnP[0] > matPlanRow.anfangsbestand) {
-                matPlanRow.bestellung = "E.";
-            }
-            else if (matPlanRow.mengeohbest <= 0 && matPlanRow.bestellmenge != 0) {
-                matPlanRow.bestellung = "N.";
-            }
-            else if (this.eilBestellungifNegativ(matPlanRow, this.vorigeBestellungen)) {
-                matPlanRow.bestellung = "E.";
-            }
-            else if (matPlanRow.bestellmenge == 0) {
-                matPlanRow.bestellung = "---";
-            }
-            else {
-                matPlanRow.bestellung = "---";
-            }
-            // set Bestellmenge
+            // set Bestellmenge (Bestand n gepl.WE zeigt Bestand am ENDE einer Periode, desw auch max_relperiod -1)
+            // TODO: max_relperiod_ind un warteperioden klären wann das jetzt tatsächlich ankommt bzw obs so richtig ist ausgehend kommmentar Zeile 194
             matPlanRow.bestellmenge = 0;
             matPlanRow.bestellung = "---";
             var bereitseilbestellt = false;
             var max_relperiod_ind;
             var vorigemengen = 0;
-            max_relperiod_ind = this.roundAt0point6(matPlanRow.summe); // schliesst alle perioden aus, die man in der nächsten Periode noch normal bestellen kann
+            max_relperiod_ind = this.roundAt0point6(matPlanRow.summe) - 1; // schliesst alle perioden aus, die man in der nächsten Periode noch normal bestellen kann
             // --> gibt also den index der spätesten relevanten perioe
-            var warteperioden = this.roundAt0point6(matPlanRow.summe); // nur zum Verständnis, eig unnötig siehe max_relperiod_ind
+            var warteperioden = this.roundAt0point6(matPlanRow.summe) - 1; // nur zum Verständnis, eig unnötig siehe max_relperiod_ind
             for (var i = 0; i <= max_relperiod_ind; i++) {
                 vorigemengen += matPlanRow.bestandnWe[i];
             }
@@ -206,7 +190,7 @@ var MaterialPlanningComponent = (function () {
                         matPlanRow.bestellmenge = matPlanRow.bestandnWe[i] * -1 + matPlanRow.mengemitbest * -1;
                         matPlanRow.bestellung = "E.";
                         // diskont aufrechnen, wenn nur 20% fehlen würden
-                        if (matPlanRow.bestellmenge > 0.8 * matPlanRow.diskontmenge && matPlanRow <= matPlanRow.diskontmenge) {
+                        if (matPlanRow.bestellmenge > 0.8 * matPlanRow.diskontmenge && matPlanRow.bestellmenge <= matPlanRow.diskontmenge) {
                             matPlanRow.bestellmenge = matPlanRow.diskontmenge;
                         }
                         bereitseilbestellt = true;
@@ -219,7 +203,7 @@ var MaterialPlanningComponent = (function () {
                         matPlanRow.bestellmenge = matPlanRow.bestandnWe[i] * -1 + matPlanRow.mengemitbest * -1;
                         matPlanRow.bestellung = "N.";
                         // diskont aufrechnen,  wenn nur 20% fehlen würden
-                        if (matPlanRow.bestellmenge > 0.8 * matPlanRow.diskontmenge && matPlanRow <= matPlanRow.diskontmenge) {
+                        if (matPlanRow.bestellmenge > 0.8 * matPlanRow.diskontmenge && matPlanRow.bestellmenge <= matPlanRow.diskontmenge) {
                             matPlanRow.bestellmenge = matPlanRow.diskontmenge;
                         }
                     }
@@ -234,32 +218,11 @@ var MaterialPlanningComponent = (function () {
             // store values finally
             this.matPlan.push(matPlanRow);
         }
-        this
-            .sessionService
-            .setVerwendungRow(this
-            .
-                verwendungRow);
-        this
-            .sessionService
-            .setPeriodRow(this
-            .
-                periodrow);
-        this
-            .sessionService
-            .setMatPlan(this
-            .
-                matPlan);
-        this
-            .sessionService
-            .setActualPeriod(Number(this
-            .
-                resultObj
-            .
-                results
-            .
-                period));
-        this
-            .setLayout();
+        this.sessionService.setVerwendungRow(this.verwendungRow);
+        this.sessionService.setPeriodRow(this.periodrow);
+        this.sessionService.setMatPlan(this.matPlan);
+        this.sessionService.setActualPeriod(Number(this.resultObj.results.period));
+        this.setLayout();
     };
     // else {
     //     console.log("Kaufteildispo bereits in Session eingebunden. - nach Änderungen auf der Datenbank bitte neue Session starten");
@@ -269,35 +232,36 @@ var MaterialPlanningComponent = (function () {
     //     this.setLayout();
     // }
     // }
-    MaterialPlanningComponent.prototype.eilBestellungifNegativ = function (matPlanRow, vorigeBestellungen) {
-        var MatPlan = new Array();
-        var negativperiode; //periode in der bestandnWe negativ wird
-        var negativ;
-        MatPlan.push(matPlanRow);
-        negativ = false;
-        for (var i = 0; i < MatPlan.length; i++) {
-            for (var i2 = 0; i2 < MatPlan[0].bestandnWe.length; i2++) {
-                // MatPlan[i].bestandnWe[i2] = -10; // später muss das raus
-                if (MatPlan[i].bestandnWe[i2] < 0) {
-                    negativperiode = Number(this.resultObj.results.period) + i2;
-                    for (var _i = 0, vorigeBestellungen_1 = vorigeBestellungen; _i < vorigeBestellungen_1.length; _i++) {
-                        var vb = vorigeBestellungen_1[_i];
-                        if (vb.teil == MatPlan[i].kpartnr) {
-                            if (negativperiode < vb.ankunftperiode) {
-                                console.log("zuper");
-                                negativ = true;
-                            }
-                            else {
-                                console.log("zuper2");
-                                negativ = false;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return negativ;
-    };
+    //
+    //     eilBestellungifNegativ(matPlanRow: matPlanRow, vorigeBestellungen: any) {
+    //         var MatPlan = new Array<matPlanRow>();
+    //         var negativperiode: number; //periode in der bestandnWe negativ wird
+    //         var negativ: boolean;
+    //         MatPlan.push(matPlanRow);
+    //         negativ = false;
+    //
+    //         for (var i = 0; i < MatPlan.length; i++) {
+    //             for (var i2 = 0; i2 < MatPlan[0].bestandnWe.length; i2++) {
+    //                 // MatPlan[i].bestandnWe[i2] = -10; // später muss das raus
+    //                 if (MatPlan[i].bestandnWe[i2] < 0) {
+    //                     negativperiode = Number(this.resultObj.results.period) + i2;
+    //                     for (let vb of vorigeBestellungen) {
+    //                         if (vb.teil == MatPlan[i].kpartnr) {
+    //                             if (negativperiode < vb.ankunftperiode) {
+    //                                 console.log("zuper");
+    //                                 negativ = true;
+    //                             }
+    //                             else {
+    //                                 console.log("zuper2");
+    //                                 negativ = false;
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //         return negativ;
+    //     }
     MaterialPlanningComponent.prototype.roundAt0point6 = function (zahl) {
         if (zahl % 1 >= 0.6) {
             zahl = Math.ceil(zahl);
@@ -308,9 +272,23 @@ var MaterialPlanningComponent = (function () {
         return zahl;
     };
     MaterialPlanningComponent.prototype.getBruttoBedarfandPeriods = function () {
-        this.plannings = this.sessionService.getPlannings();
-        if (this.plannings === null) {
+        if (this.sessionService.getForecast() === null) {
             alert("Bitte erst die Prognose durchführen.");
+        }
+        else {
+            var forecast = new Array();
+            forecast.push(this.sessionService.getForecast());
+            var planning;
+            for (var i = 0; i < forecast[0].article.length; i++) {
+                var planning = new rowtype_1.rowtype();
+                planning.produktkennung = forecast[0].article[i].produktkennung;
+                for (var i2 = 0; i2 < forecast[0].article[i].geplanteProduktion.length; i2++) {
+                    planning.produktmengen.push(forecast[0].article[i].geplanteProduktion[i2].anzahl);
+                }
+                this.plannings.push(planning);
+            }
+            console.log(forecast);
+            console.log(this.plannings);
         }
     };
     MaterialPlanningComponent.prototype.bestellartSelected = function (bestellart, i) {

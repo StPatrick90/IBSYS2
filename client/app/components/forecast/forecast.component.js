@@ -115,7 +115,8 @@ var ForecastComponent = (function () {
                 verbdindlicheAuftraege: verbdindlAuftr,
                 geplanteProduktion: geplProd,
                 voraussichtlicherBestand: vorausBestand,
-                direktVerkauf: direktVerkauf
+                direktVerkauf: direktVerkauf,
+                produktkennung: pPart.bezeichnung.charAt(0)
             });
         }
         this.sessionService.setForecast(forecast);

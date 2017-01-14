@@ -1,13 +1,27 @@
 <div class="well text-center">
     <h2 style="margin-bottom: 20px; margin-top: 0px;">{{'material_Planning' | translate}}</h2>
     <div id="bc1" class="myBreadcrumb">
-        <a class="completed" routerLink="/xmlImport"><div>{{'xmlImport' | translate}}</div></a>
-        <a class="completed" routerLink="/forecast"><div>{{'prediction_planning' | translate}}</div></a>
-        <a class="active" routerLink="/materialPlanning"><div>{{'material_Planning' | translate}}</div></a>
-        <a class="" routerLink="//materialPlanningEP"><div>{{'mpEP_MaterialPlanningEP' | translate}}</div></a>
-        <a class="" routerLink="/prioritization"><div>{{'sidebar_prio' | translate}}</div></a>
-        <a class="" routerLink="/capacityPlanning"><div>{{'capacity_planning' | translate}}</div></a>
-        <a class="" routerLink="/xmlExport"><div>{{'xmlExport' | translate}}</div></a>
+        <a class="completed" routerLink="/xmlImport">
+            <div>{{'xmlImport' | translate}}</div>
+        </a>
+        <a class="completed" routerLink="/forecast">
+            <div>{{'prediction_planning' | translate}}</div>
+        </a>
+        <a class="active" routerLink="/materialPlanning">
+            <div>{{'material_Planning' | translate}}</div>
+        </a>
+        <a class="" routerLink="//materialPlanningEP">
+            <div>{{'mpEP_MaterialPlanningEP' | translate}}</div>
+        </a>
+        <a class="" routerLink="/prioritization">
+            <div>{{'sidebar_prio' | translate}}</div>
+        </a>
+        <a class="" routerLink="/capacityPlanning">
+            <div>{{'capacity_planning' | translate}}</div>
+        </a>
+        <a class="" routerLink="/xmlExport">
+            <div>{{'xmlExport' | translate}}</div>
+        </a>
     </div>
 </div>
 
@@ -66,7 +80,7 @@
         <td class="text-center" *ngFor="let b of m.bruttobedarfnP">{{b}}</td>
         <td class="text-center" [ngClass]="{redlining: m.isneg}">{{m.mengeohbest}}</td>
         <td class="text-center" [ngClass]="{redlining: m.isneg2}">{{m.mengemitbest}}</td>
-        <td><input width="100%" [value]="m.bestellmenge" type="number" min = "0" (input)="bestellmengeChange($event.target.value, i)"></td>
+        <td><input class="form-control" [value]="m.bestellmenge" type="number" min="0" (input)="bestellmengeChange($event.target.value, i)"></td>
         <td>
             <div width="100%" class="btn-group">
                 <button type="button" class="btn .btn-block .btn-primary dropdown-toggle" data-toggle="dropdown"

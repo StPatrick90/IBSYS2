@@ -3,6 +3,6 @@
  */
 export class Forecast {
     _id?: string;
-   article: any;
-   period: number;
+    article: any;
+    period: number;
 }

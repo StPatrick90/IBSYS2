@@ -6,6 +6,6 @@ export class rowtype{
     produktmengen: number[];
 
     constructor() {
-        this.perioden = new Array<number>();
+        this.produktmengen = new Array<number>();
     }
 }

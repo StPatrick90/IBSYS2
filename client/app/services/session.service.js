@@ -307,6 +307,7 @@ var SessionService = (function () {
         this.setbindingOrders(null);
         this.setMatPlan(null);
         this.setActualPeriod(null);
+        this.setForecast(null);
     };
     __decorate([
         WebStorage_1.SessionStorage(), 

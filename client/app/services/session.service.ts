@@ -358,6 +358,7 @@ export class SessionService {
         this.setbindingOrders(null);
         this.setMatPlan(null);
         this.setActualPeriod(null);
+        this.setForecast(null);
     }
 
 }
