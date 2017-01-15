@@ -406,14 +406,17 @@ var PrioComponent = (function () {
     PrioComponent.prototype.setModalView = function (object, index) {
         this.splittingAnzahl2 = object.Anzahl;
         this.splittingPart = object.Teil;
-        this.splittingAnzahl = object.Anzahl / 2;
+        this.splittingAnzahl = Math.round(object.Anzahl / 2);
         this.modalSplitting.open();
     };
     PrioComponent.prototype.closeModalView = function () {
         this.modalSplitting.close();
     };
     PrioComponent.prototype.saveModalView = function () {
+        if (typeof this.splittingAnzahl !== 'number')
+            return;
         if (this.splittingAnzahl > 0) {
+            this.splittingAnzahl = Math.round(this.splittingAnzahl);
             for (var idx in this.produzierbareAuftraege) {
                 if (this.produzierbareAuftraege[idx].Teil === this.splittingPart) {
                     if ((this.produzierbareAuftraege[idx].Anzahl - this.splittingAnzahl) > 0) {
@@ -425,6 +428,9 @@ var PrioComponent = (function () {
             }
         }
         this.modalSplitting.close();
+    };
+    PrioComponent.prototype.round = function (anzahl) {
+        return Math.round(anzahl);
     };
     PrioComponent.prototype.clickRadio = function (type) {
         this.selectedType = type;

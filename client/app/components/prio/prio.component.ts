@@ -446,7 +446,7 @@ export class PrioComponent {
     setModalView(object, index){
         this.splittingAnzahl2 = object.Anzahl;
         this.splittingPart = object.Teil;
-        this.splittingAnzahl = object.Anzahl / 2;
+        this.splittingAnzahl = Math.round(object.Anzahl / 2);
 
         this.modalSplitting.open();
     }
@@ -455,7 +455,11 @@ export class PrioComponent {
         this.modalSplitting.close();
     }
     saveModalView(){
+        if(typeof this.splittingAnzahl !== 'number')
+            return;
+
         if(this.splittingAnzahl > 0){
+            this.splittingAnzahl = Math.round(this.splittingAnzahl);
             for(var idx in this.produzierbareAuftraege){
                 if(this.produzierbareAuftraege[idx].Teil === this.splittingPart){
                     if((this.produzierbareAuftraege[idx].Anzahl - this.splittingAnzahl) > 0){
@@ -467,6 +471,9 @@ export class PrioComponent {
             }
         }
         this.modalSplitting.close();
+    }
+    round(anzahl: number){
+        return Math.round(anzahl);
     }
 
     selectedType = "No";
