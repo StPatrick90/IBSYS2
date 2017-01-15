@@ -4,4 +4,5 @@
 export class ProdTime{
     part:number;
     zuweisung:Array<Array<number>>;
+    menge:number;
 }

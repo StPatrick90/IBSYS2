@@ -34,40 +34,82 @@
 
         <tr *ngFor="let al of artikelListe">
             <td width="5%">{{al.part}}</td>
-            <td width="5%"></td>
+            <td width="5%">{{al.menge}}</td>
             <td *ngFor="let ws of workstations" align="center">
                 <span *ngFor="let zw of al.zuweisung">
-                    <span *ngIf="zw[0] === ws.nummer">{{zw[1]}}</span>
+                    <span *ngIf="zw[0] === ws.nummer">{{zw[1] * al.menge}}</span>
                 </span>
             </td>
         </tr>
         <tr>
             <td width="5%" colspan="2">{{'capacity_requirements' | translate}}</td>
-            <td *ngFor="let ws of workstations" align="center">0</td>
+            <td *ngFor="let ws of workstations" align="center">
+                <span *ngFor="let cap of capacities">
+                    <span *ngIf="cap.workstationNumber === ws.nummer">{{cap.capacity}}</span>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td width="5%" colspan="2">Leerzeiten</td>
+            <td *ngFor="let ws of workstations" align="center">
+                <span *ngFor="let cap of capacities">
+                    <span *ngIf="cap.workstationNumber === ws.nummer">{{cap.leerzeit}}</span>
+                </span>
+            </td>
         </tr>
         <tr>
             <td width="5%" colspan="2">{{'capacity_setupTime' | translate}}</td>
-            <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
+            <td *ngFor="let ws of workstations" align="center">
+                <span *ngFor="let cap of capacities">
+                    <span *ngIf="cap.workstationNumber === ws.nummer">{{cap.ruestzeit}}</span>
+                </span>
+            </td>
         </tr>
         <tr>
             <td width="5%" colspan="2">{{'capacity_capacityBacklog' | translate}}</td>
-            <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
+            <td *ngFor="let ws of workstations" align="center">
+                <span *ngFor="let cap of capacities">
+                    <span *ngIf="cap.workstationNumber === ws.nummer">{{cap.capacityWait}}</span>
+                </span>
+            </td>
         </tr>
         <tr>
             <td width="5%" colspan="2">{{'capacity_setupTimeBacklog' | translate}}</td>
-            <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
+            <td *ngFor="let ws of workstations" align="center">
+                <span *ngFor="let cap of capacities">
+                    <span *ngIf="cap.workstationNumber === ws.nummer">{{cap.ruestWait}}</span>
+                </span>
+            </td>
         </tr>
         <tr>
             <td width="5%" colspan="2">{{'capacity_totalCapacity' | translate}}</td>
-            <td *ngFor="let ws of workstations" align="center">0</td>
+            <td *ngFor="let ws of workstations" align="center">
+                <span *ngFor="let cap of capacities">
+                    <span *ngIf="cap.workstationNumber === ws.nummer" [ngClass]="{redlining: cap.gesamt > 7200}">{{cap.gesamt}}</span>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td width="5%" colspan="2">Puffer</td>
+            <td *ngFor="let ws of workstations" align="center">
+                <input type="number" class="form-control" [(ngModel)]="puffer[ws.nummer]" (ngModelChange)="updateShifts(ws.nummer)">
+            </td>
         </tr>
         <tr>
             <td width="5%" colspan="2">{{'capacity_shifts' | translate}}</td>
-            <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
+            <td *ngFor="let ws of workstations" align="center">
+                <span *ngFor="let cap of capacities">
+                    <span *ngIf="cap.workstationNumber === ws.nummer">{{cap.schichten}}</span>
+                </span>
+            </td>
         </tr>
         <tr>
             <td width="5%" colspan="2">{{'capacity_overtime' | translate}}</td>
-            <td *ngFor="let ws of workstations" align="center"><input type="text" class="form-control"></td>
+            <td *ngFor="let ws of workstations" align="center">
+                <span *ngFor="let cap of capacities">
+                    <span *ngIf="cap.workstationNumber === ws.nummer">{{cap.ueberstunden}}</span>
+                </span>
+            </td>
         </tr>
         </tbody>
     </table>
