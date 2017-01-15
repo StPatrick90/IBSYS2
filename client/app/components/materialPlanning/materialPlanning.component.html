@@ -81,7 +81,8 @@
         <td class="text-center" [ngClass]="{redlining: m.isneg}">{{m.mengeohbest}}</td>
         <td class="text-center" [ngClass]="{redlining: m.isneg2}">{{m.mengemitbest}}</td>
         <td><input type="number" min="0" class="form-control" [(ngModel)]="m.bestellmenge"
-                   (ngModelChange)="bestellmengechange(matPlan, i)"></td>
+                   (ngModelChange)="bestellmengechange(matPlan, i, m.bestellmenge, m.bestandnWe, $event)"></td>
+
         <td>
             <div width="100%" class="btn-group">
                 <button type="button" class="btn .btn-block .btn-primary dropdown-toggle" data-toggle="dropdown"
