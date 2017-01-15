@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var session_service_1 = require('../../services/session.service');
 var materialPlanning_service_1 = require('../../services/materialPlanning.service');
-var matPlanRow_1 = require("../../model/matPlanRow");
 var http_1 = require("@angular/http");
 var rowtype_1 = require("../../model/rowtype");
 var MaterialPlanningComponent = (function () {
@@ -28,6 +27,8 @@ var MaterialPlanningComponent = (function () {
         this.getKParts();
         this.bestellarten = new Array("E.", "N.", "---");
         this.vorigeBestellungen = new Array();
+        this.changed = false;
+        this.differenz = 0;
     }
     MaterialPlanningComponent.prototype.getKParts = function () {
         var _this = this;
@@ -172,7 +173,6 @@ var MaterialPlanningComponent = (function () {
                     }
                 }
             }
-            matPlanRow.bestand = matPlanRow.bestandnWe;
             // set Bestellmenge (Bestand n gepl.WE zeigt Bestand am ENDE einer Periode, desw auch max_relperiod -1)
             // TODO: max_relperiod_ind un warteperioden klären wann das jetzt tatsächlich ankommt bzw obs so richtig ist ausgehend kommmentar Zeile 194
             matPlanRow.bestellmenge = 0;
@@ -220,7 +220,7 @@ var MaterialPlanningComponent = (function () {
             // store values finally
             this.matPlan.push(matPlanRow);
         }
-        console.log(this.matPlan);
+        console.log("matplan", this.matPlan);
         this.sessionService.setVerwendungRow(this.verwendungRow);
         this.sessionService.setPeriodRow(this.periodrow);
         this.sessionService.setMatPlan(this.matPlan);
@@ -243,12 +243,20 @@ var MaterialPlanningComponent = (function () {
         }
         return zahl;
     };
-    MaterialPlanningComponent.prototype.bestellmengechange = function (matPlan, index) {
-        var mp = new matPlanRow_1.matPlanRow();
-        mp = matPlan;
-        for (var x = 0; x < 4; x++) {
-            // this.matPlan.bruttobedarfnP[x] += matPlan.bestellmenge;
-            console.log("hallo");
+    MaterialPlanningComponent.prototype.bestellmengechange = function (matPlan, index, bestellmenge, bestandnWe, event) {
+        // console.log(event);
+        console.log(bestandnWe);
+        if (!this.changed) {
+            for (var x = 0; x < this.matPlan[index].bestandnWe.length; x++) {
+                this.matPlan[index].bestandnWe[x] = this.matPlan[index].bestandnWe[x] + this.differenz;
+                this.changed = true;
+            }
+        }
+        else {
+            for (var x = 0; x < this.matPlan[index].bestandnWe.length; x++) {
+                this.matPlan[index].bestandnWe[x] = this.matPlan[index].bestandnWe[x] + this.differenz; // - menge;
+                this.changed = true;
+            }
         }
     };
     MaterialPlanningComponent.prototype.getBruttoBedarfandPeriods = function () {
@@ -266,8 +274,8 @@ var MaterialPlanningComponent = (function () {
                 }
                 this.plannings.push(planning);
             }
-            console.log(forecast);
-            console.log(this.plannings);
+            console.log("forecast", forecast);
+            console.log("plannings", this.plannings);
         }
     };
     MaterialPlanningComponent.prototype.bestellartSelected = function (bestellart, i) {

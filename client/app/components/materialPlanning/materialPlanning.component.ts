@@ -25,6 +25,8 @@ export class MaterialPlanningComponent {
     planning: rowtype;
     bestellarten: string[];
     vorigeBestellungen: vorigeBestellung[];
+    changed: boolean;
+    differenz: number;
 
     constructor(private sessionService: SessionService, private  materialPlanningService: MaterialPlanningService, private http: Http) {
         this.resultObj = this.sessionService.getResultObject();
@@ -36,6 +38,8 @@ export class MaterialPlanningComponent {
         this.getKParts();
         this.bestellarten = new Array<string>("E.", "N.", "---");
         this.vorigeBestellungen = new Array<vorigeBestellung>();
+        this.changed = false;
+        this.differenz = 0;
     }
 
     getKParts() {
@@ -187,7 +191,6 @@ export class MaterialPlanningComponent {
                     }
                 }
             }
-            matPlanRow.bestand = matPlanRow.bestandnWe;
 
             // set Bestellmenge (Bestand n gepl.WE zeigt Bestand am ENDE einer Periode, desw auch max_relperiod -1)
             // TODO: max_relperiod_ind un warteperioden klären wann das jetzt tatsächlich ankommt bzw obs so richtig ist ausgehend kommmentar Zeile 194
@@ -246,7 +249,7 @@ export class MaterialPlanningComponent {
             // store values finally
             this.matPlan.push(matPlanRow);
         }
-        console.log(this.matPlan);
+        console.log("matplan", this.matPlan);
 
         this.sessionService.setVerwendungRow(this.verwendungRow);
         this.sessionService.setPeriodRow(this.periodrow);
@@ -274,13 +277,22 @@ export class MaterialPlanningComponent {
         return zahl;
     }
 
-    bestellmengechange(matPlan: matPlanRow, index: number) {
-        var mp = new matPlanRow();
-        mp = matPlan;
-        for (var x = 0; x < 4; x++) {
-            // this.matPlan.bruttobedarfnP[x] += matPlan.bestellmenge;
-            console.log("hallo");
+    bestellmengechange(matPlan: matPlanRow, index: number, bestellmenge: number, bestandnWe: number[], event) {
+        // console.log(event);
+        console.log(bestandnWe);
+        if (!this.changed) {
+            for (var x = 0; x < this.matPlan[index].bestandnWe.length; x++) {
+                this.matPlan[index].bestandnWe[x] = this.matPlan[index].bestandnWe[x] + this.differenz;
+                this.changed = true;
+            }
         }
+        else {
+            for (var x = 0; x < this.matPlan[index].bestandnWe.length; x++) {
+                this.matPlan[index].bestandnWe[x] = this.matPlan[index].bestandnWe[x] + this.differenz; // - menge;
+                this.changed = true;
+            }
+        }
+
     }
 
     getBruttoBedarfandPeriods() {
@@ -299,8 +311,8 @@ export class MaterialPlanningComponent {
                 }
                 this.plannings.push(planning);
             }
-            console.log(forecast);
-            console.log(this.plannings)
+            console.log("forecast", forecast);
+            console.log("plannings", this.plannings);
         }
     }
 

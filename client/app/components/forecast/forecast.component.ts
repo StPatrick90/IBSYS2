@@ -44,17 +44,17 @@ export class ForecastComponent {
     }
 
     initAll() {
-        if(this.forecasts){
-            for(let fc of this.forecasts){
-                if(fc.period === this.period){
-                    for(let article of fc.article){
-                        for(let vA of article.verbdindlicheAuftraege){
+        if (this.forecasts) {
+            for (let fc of this.forecasts) {
+                if (fc.period === this.period) {
+                    for (let article of fc.article) {
+                        for (let vA of article.verbdindlicheAuftraege) {
                             this.verbdindlAuftr["P_" + article.partNr + "_" + vA.periode] = vA.anzahl;
                         }
-                        for(let gP of article.geplanteProduktion){
+                        for (let gP of article.geplanteProduktion) {
                             this.geplProd["P_" + article.partNr + "_" + gP.periode] = gP.anzahl;
                         }
-                        for(let vB of article.voraussichtlicherBestand){
+                        for (let vB of article.voraussichtlicherBestand) {
                             this.vorausBestand["P_" + article.partNr + "_" + vB.periode] = vB.anzahl;
                         }
                         this.menge["P_" + article.partNr] = article.direktVerkauf.menge;
@@ -154,6 +154,7 @@ export class ForecastComponent {
             });
         }
         this.sessionService.setForecast(forecast);
+        console.log("patrickfc", forecast);
     }
 }
 
