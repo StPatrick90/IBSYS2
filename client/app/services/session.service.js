@@ -19,6 +19,7 @@ var forecast_1 = require("../model/forecast");
 var SessionService = (function () {
     function SessionService(http) {
         this.http = http;
+        this.reihenfolgen = [];
         this.dummyObj = {
             results: {
                 game: "",
@@ -297,6 +298,12 @@ var SessionService = (function () {
     SessionService.prototype.getActualPeriod = function () {
         return this.actualPeriod;
     };
+    SessionService.prototype.setReihenfolgen = function (reihenfolgen) {
+        this.reihenfolgen = reihenfolgen;
+    };
+    SessionService.prototype.getReihenfolgen = function () {
+        return this.reihenfolgen;
+    };
     SessionService.prototype.clear = function () {
         this.setResultObject(null);
         this.setParts(null);
@@ -362,6 +369,10 @@ var SessionService = (function () {
         WebStorage_1.SessionStorage(), 
         __metadata('design:type', Number)
     ], SessionService.prototype, "actualPeriod", void 0);
+    __decorate([
+        WebStorage_1.SessionStorage(), 
+        __metadata('design:type', Array)
+    ], SessionService.prototype, "reihenfolgen", void 0);
     SessionService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

@@ -63,6 +63,7 @@ var PrioComponent = (function () {
                     var sequence = new sequence_1.Sequence();
                     sequence.workstation = workstation;
                     sequence.prioTasks = [];
+                    sequence.ruestzeit = 0;
                     _this.reihenfolgen.push(sequence);
                 }
                 ;
@@ -148,6 +149,7 @@ var PrioComponent = (function () {
             var auftrag = _e[_d];
             this.outPutArray.push(auftrag);
         }
+        this.sessionService.setReihenfolgen(this.reihenfolgen);
     };
     PrioComponent.prototype.processWorkflow = function (partNumber, auftraege, nPAuftragIdx) {
         //Alle Bestandteile des Teils
@@ -272,6 +274,9 @@ var PrioComponent = (function () {
                     if (sequence.workstation.nummer === prozessingTime.arbeitsplatz.nummer) {
                         neuerAuftrag._id = sequence.prioTasks.length + 1;
                         sequence.prioTasks.push(neuerAuftrag);
+                        if (!gleichesTeil) {
+                            sequence.ruestzeit += prozessingTime.ruestZeit;
+                        }
                     }
                 }
                 //find next prozessingTime

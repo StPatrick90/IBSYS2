@@ -82,6 +82,7 @@ export class PrioComponent {
                                 var sequence = new Sequence();
                                 sequence.workstation = workstation;
                                 sequence.prioTasks = [];
+                                sequence.ruestzeit = 0;
                                 this.reihenfolgen.push(sequence);
                             };
                         });
@@ -171,6 +172,8 @@ export class PrioComponent {
         for(var auftrag of this.nPAuftraege){
             this.outPutArray.push(auftrag);
         }
+
+        this.sessionService.setReihenfolgen(this.reihenfolgen);
     }
 
     processWorkflow(partNumber: number, auftraege: number, nPAuftragIdx: string){
@@ -308,6 +311,9 @@ export class PrioComponent {
                         neuerAuftrag._id = sequence.prioTasks.length+1;
                         sequence.prioTasks.push(neuerAuftrag);
 
+                        if(!gleichesTeil){
+                            sequence.ruestzeit += prozessingTime.ruestZeit;
+                        }
                     }
                 }
 

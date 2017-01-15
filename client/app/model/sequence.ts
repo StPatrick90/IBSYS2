@@ -8,4 +8,5 @@ import {PrioTask} from "./prioTask";
 export class Sequence{
     workstation: Workstation;
     prioTasks : Array<PrioTask>;
+    ruestzeit : number;
 }

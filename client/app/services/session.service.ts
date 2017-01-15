@@ -11,6 +11,7 @@ import {ProcessingTime} from '../model/processingTime';
 import {rowtype} from "../model/rowtype";
 import {matPlanRow} from "../model/matPlanRow";
 import {Forecast} from "../model/forecast";
+import {Sequence} from "../model/sequence";
 
 
 @Injectable()
@@ -29,6 +30,8 @@ export class SessionService {
     @SessionStorage() private periodRow: number[];
     @SessionStorage() private forecast: Forecast;
     @SessionStorage() private actualPeriod: number;
+    @SessionStorage() private reihenfolgen: Array<Sequence> = [];
+
 
 
     constructor(private http: Http) {
@@ -345,7 +348,14 @@ export class SessionService {
 
     getActualPeriod() {
         return this.actualPeriod;
+    }
 
+    setReihenfolgen(reihenfolgen) {
+        this.reihenfolgen = reihenfolgen;
+    }
+
+    getReihenfolgen() {
+        return this.reihenfolgen;
     }
 
     clear() {
