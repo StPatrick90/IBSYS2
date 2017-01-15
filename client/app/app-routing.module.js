@@ -28,6 +28,7 @@ var materialPlanningEP_component_1 = require('./components/materialPlanningEP/ma
 var warehousestock_component_1 = require('./components/overview/warehousestock/warehousestock.component');
 var kPartAllocation_component_1 = require('./components/overview/kPartAllocation/kPartAllocation.component');
 var forecast_component_1 = require('./components/forecast/forecast.component');
+var xmlExport_component_1 = require('./components/xmlExport/xmlExport.component');
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
     }
@@ -49,7 +50,8 @@ var AppRoutingModule = (function () {
                     { path: 'materialPlanningEP', component: materialPlanningEP_component_1.MaterialPlanningEPComponent },
                     { path: 'warehousestock', component: warehousestock_component_1.WarehousestockComponent },
                     { path: 'kpartAllocation', component: kPartAllocation_component_1.KPartAllocationComponent },
-                    { path: 'forecast', component: forecast_component_1.ForecastComponent }
+                    { path: 'forecast', component: forecast_component_1.ForecastComponent },
+                    { path: 'xmlExport', component: xmlExport_component_1.XmlExportComponent }
                 ])
             ],
             exports: [

@@ -18,6 +18,8 @@ import {MaterialPlanningEPComponent} from './components/materialPlanningEP/mater
 import { WarehousestockComponent } from './components/overview/warehousestock/warehousestock.component';
 import { KPartAllocationComponent } from './components/overview/kPartAllocation/kPartAllocation.component';
 import { ForecastComponent } from './components/forecast/forecast.component';
+import { XmlExportComponent } from './components/xmlExport/xmlExport.component';
+
 
 @NgModule({
     imports: [
@@ -36,7 +38,8 @@ import { ForecastComponent } from './components/forecast/forecast.component';
             { path: 'materialPlanningEP', component: MaterialPlanningEPComponent},
             { path: 'warehousestock', component: WarehousestockComponent},
             { path: 'kpartAllocation', component: KPartAllocationComponent},
-            { path: 'forecast', component: ForecastComponent}
+            { path: 'forecast', component: ForecastComponent},
+            { path: 'xmlExport', component: XmlExportComponent}
         ])
     ],
     exports: [

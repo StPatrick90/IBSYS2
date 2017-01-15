@@ -41,6 +41,7 @@ var warehousestock_component_1 = require('./components/overview/warehousestock/w
 var ng2_charts_1 = require('ng2-charts/ng2-charts');
 var kPartAllocation_component_1 = require('./components/overview/kPartAllocation/kPartAllocation.component');
 var forecast_component_1 = require('./components/forecast/forecast.component');
+var xmlExport_component_1 = require('./components/xmlExport/xmlExport.component');
 var WINDOW_PROVIDER = {
     provide: Window,
     useValue: window
@@ -56,7 +57,7 @@ var AppModule = (function () {
                 home_component_1.HomeComponent, translate_pipe_1.TranslatePipe, xmlImport_component_1.XmlImportComponent, materialPlanning_component_1.MaterialPlanningComponent,
                 prediction_component_1.PredictionComponent, workstations_component_1.WorkstationsComponent, parts_component_1.PartsComponent, dashboard_component_1.DashboardComponent,
                 partsLists_component_1.PartsListsComponent, prio_component_1.PrioComponent, parts_pipe_1.PartPipe, materialPlanningEP_component_1.MaterialPlanningEPComponent,
-                warehousestock_component_1.WarehousestockComponent, kPartAllocation_component_1.KPartAllocationComponent, forecast_component_1.ForecastComponent],
+                warehousestock_component_1.WarehousestockComponent, kPartAllocation_component_1.KPartAllocationComponent, forecast_component_1.ForecastComponent, xmlExport_component_1.XmlExportComponent],
             bootstrap: [app_component_1.AppComponent],
             providers: [index_1.TRANSLATION_PROVIDERS, translate_service_1.TranslateService, LocalStorageEmitter_1.LocalStorageService, WINDOW_PROVIDER, translate_pipe_1.TranslatePipe]
         }), 

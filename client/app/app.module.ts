@@ -31,6 +31,7 @@ import { WarehousestockComponent } from './components/overview/warehousestock/wa
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { KPartAllocationComponent } from './components/overview/kPartAllocation/kPartAllocation.component';
 import { ForecastComponent } from './components/forecast/forecast.component';
+import { XmlExportComponent } from './components/xmlExport/xmlExport.component';
 
 
 const WINDOW_PROVIDER: ValueProvider = {
@@ -46,7 +47,7 @@ const WINDOW_PROVIDER: ValueProvider = {
         HomeComponent, TranslatePipe, XmlImportComponent, MaterialPlanningComponent,
         PredictionComponent, WorkstationsComponent, PartsComponent, DashboardComponent,
         PartsListsComponent, PrioComponent, PartPipe, MaterialPlanningEPComponent,
-        WarehousestockComponent, KPartAllocationComponent, ForecastComponent],
+        WarehousestockComponent, KPartAllocationComponent, ForecastComponent, XmlExportComponent],
 
     bootstrap: [AppComponent],
     providers: [TRANSLATION_PROVIDERS, TranslateService, LocalStorageService, WINDOW_PROVIDER, TranslatePipe]
