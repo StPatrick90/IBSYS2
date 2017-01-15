@@ -65,7 +65,6 @@ var ForecastComponent = (function () {
                 }
             }
         }
-        this.saveForecast();
     };
     ForecastComponent.prototype.updateArrays = function (part, period) {
         if (period !== this.period + 3) {

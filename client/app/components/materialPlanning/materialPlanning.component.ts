@@ -26,7 +26,11 @@ export class MaterialPlanningComponent {
     bestellarten: string[];
     vorigeBestellungen: vorigeBestellung[];
     changed: boolean;
+    doonce: number;
+    urmenge: number;
+    urbestand: number[]
     differenz: number;
+    indexsave: number;
 
     constructor(private sessionService: SessionService, private  materialPlanningService: MaterialPlanningService, private http: Http) {
         this.resultObj = this.sessionService.getResultObject();
@@ -39,6 +43,9 @@ export class MaterialPlanningComponent {
         this.bestellarten = new Array<string>("E.", "N.", "---");
         this.vorigeBestellungen = new Array<vorigeBestellung>();
         this.changed = false;
+        this.doonce = 0;
+        this.urmenge = 0;
+        // this.urbestand = new Array<number>();
         this.differenz = 0;
     }
 
@@ -278,21 +285,31 @@ export class MaterialPlanningComponent {
     }
 
     bestellmengechange(matPlan: matPlanRow, index: number, bestellmenge: number, bestandnWe: number[], event) {
-        // console.log(event);
-        console.log(bestandnWe);
-        if (!this.changed) {
-            for (var x = 0; x < this.matPlan[index].bestandnWe.length; x++) {
-                this.matPlan[index].bestandnWe[x] = this.matPlan[index].bestandnWe[x] + this.differenz;
-                this.changed = true;
-            }
-        }
-        else {
-            for (var x = 0; x < this.matPlan[index].bestandnWe.length; x++) {
-                this.matPlan[index].bestandnWe[x] = this.matPlan[index].bestandnWe[x] + this.differenz; // - menge;
-                this.changed = true;
-            }
+        this.doonce++;
+
+        if (!this.changed || this.urmenge == null || index != this.indexsave) {
+            console.log("ausgelöst");
+            this.urmenge = this.matPlan[index].bestellmenge - 1;
+            // this.urbestand = bestandnWe; // gibt das ne referenz ?
+            this.urbestand = this.matPlan[index].bestandnWe;
+            console.log("ersterub", this.urbestand);
         }
 
+        if (this.doonce % 2 != 0) { // damit das scheiss event nicht 2 mal feuert, was weiss ich warum
+
+            this.differenz = bestellmenge - this.urmenge;
+            // console.log("urmenge: ", this.urmenge);
+            // console.log("diff: ", this.differenz);
+            // console.log("ub: ", this.urbestand);
+            // console.log("mp: ", this.matPlan[index].bestandnWe);
+
+            for (var x = 0; x < this.matPlan[index].bestandnWe.length; x++) {
+                this.matPlan[index].bestandnWe[x] = this.urbestand[x] + this.differenz;
+            }
+
+            this.changed = true;
+            this.indexsave = index;
+        }
     }
 
     getBruttoBedarfandPeriods() {
