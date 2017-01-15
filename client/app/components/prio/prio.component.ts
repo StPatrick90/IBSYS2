@@ -134,16 +134,13 @@ export class PrioComponent {
 
     processOptimizaition() {
         this.lager = JSON.parse(JSON.stringify(this.resultObj.results.warehousestock.article));
-        console.log("----------lager");
-        for(var ob of this.lager){
-            //console.log("ID: "+ ob.id + "  Amount: " +ob.amount);
-        }
-        console.log("----------ende");
+
         this.updateStorage();
         for (var partNumber of this.defaultAblauf) {
             var auftragsMenge = 0;
             for(var partOrder in this.partOrders){
-                if(partOrder.includes(partNumber.toString())){
+                var split = partOrder.split("_");
+                if(Number.parseInt(split[1]) === partNumber){
                     auftragsMenge += Number.parseInt(this.partOrders[partOrder]);
                 }
             }
@@ -154,10 +151,10 @@ export class PrioComponent {
                 //Schau ob jetzt etwas im Lager ist.
                 if((this.nPAuftraege[idx].Teil.lagerBestand / this.nPAuftraege[idx].anzahl) > 0){
                     this.nPAuftraege.splice(parseInt(idx), 1);
-                    this.processWorkflow(this.nPAuftraege[idx].Teil, this.nPAuftraege[idx].Anzahl);
+                    this.processWorkflow(this.nPAuftraege[idx].Teil, this.nPAuftraege[idx].Anzahl, idx);
                 }
             }
-            this.processWorkflow(partNumber, auftragsMenge);
+            this.processWorkflow(partNumber, auftragsMenge, null);
         }
 
         console.log("reihenfolge:");
@@ -176,7 +173,7 @@ export class PrioComponent {
         }
     }
 
-    processWorkflow(partNumber: number, auftraege: number){
+    processWorkflow(partNumber: number, auftraege: number, nPAuftragIdx: string){
 
         //Alle Bestandteile des Teils
         var bestandteilArray =  this.getPartComponents(partNumber);
@@ -225,11 +222,17 @@ export class PrioComponent {
                 var processTime = this.setPartToWorkplace(part, anzahl, bestandteilArray);
 
                 this.produzierbareAuftraege.push({"Teil": part, "Anzahl": anzahl});
-                this.nPAuftraege.push({"Teil": part, "Anzahl": auftraege - anzahl});
+                if(nPAuftragIdx != null){
+                    this.nPAuftraege[nPAuftragIdx].Anzahl = auftraege - anzahl;
+                }
+                else{
+                    this.nPAuftraege.push({"Teil": part, "Anzahl": auftraege - anzahl});
+                }
             }
         }
         else{
-            this.nPAuftraege.push({"Teil": part, "Anzahl": auftraege});
+            if(nPAuftragIdx == null)
+                this.nPAuftraege.push({"Teil": part, "Anzahl": auftraege});
         }
     }
 

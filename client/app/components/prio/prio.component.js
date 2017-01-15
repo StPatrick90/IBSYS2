@@ -113,17 +113,13 @@ var PrioComponent = (function () {
     };
     PrioComponent.prototype.processOptimizaition = function () {
         this.lager = JSON.parse(JSON.stringify(this.resultObj.results.warehousestock.article));
-        console.log("----------lager");
-        for (var _i = 0, _a = this.lager; _i < _a.length; _i++) {
-            var ob = _a[_i];
-        }
-        console.log("----------ende");
         this.updateStorage();
-        for (var _b = 0, _c = this.defaultAblauf; _b < _c.length; _b++) {
-            var partNumber = _c[_b];
+        for (var _i = 0, _a = this.defaultAblauf; _i < _a.length; _i++) {
+            var partNumber = _a[_i];
             var auftragsMenge = 0;
             for (var partOrder in this.partOrders) {
-                if (partOrder.includes(partNumber.toString())) {
+                var split = partOrder.split("_");
+                if (Number.parseInt(split[1]) === partNumber) {
                     auftragsMenge += Number.parseInt(this.partOrders[partOrder]);
                 }
             }
@@ -132,10 +128,10 @@ var PrioComponent = (function () {
                 //Schau ob jetzt etwas im Lager ist.
                 if ((this.nPAuftraege[idx].Teil.lagerBestand / this.nPAuftraege[idx].anzahl) > 0) {
                     this.nPAuftraege.splice(parseInt(idx), 1);
-                    this.processWorkflow(this.nPAuftraege[idx].Teil, this.nPAuftraege[idx].Anzahl);
+                    this.processWorkflow(this.nPAuftraege[idx].Teil, this.nPAuftraege[idx].Anzahl, idx);
                 }
             }
-            this.processWorkflow(partNumber, auftragsMenge);
+            this.processWorkflow(partNumber, auftragsMenge, null);
         }
         console.log("reihenfolge:");
         console.log(this.reihenfolgen);
@@ -144,16 +140,16 @@ var PrioComponent = (function () {
         console.log("npAufträge:");
         console.log(this.nPAuftraege);
         this.outPutArray.length = 0;
-        for (var _d = 0, _e = this.produzierbareAuftraege; _d < _e.length; _d++) {
+        for (var _b = 0, _c = this.produzierbareAuftraege; _b < _c.length; _b++) {
+            var auftrag = _c[_b];
+            this.outPutArray.push(auftrag);
+        }
+        for (var _d = 0, _e = this.nPAuftraege; _d < _e.length; _d++) {
             var auftrag = _e[_d];
             this.outPutArray.push(auftrag);
         }
-        for (var _f = 0, _g = this.nPAuftraege; _f < _g.length; _f++) {
-            var auftrag = _g[_f];
-            this.outPutArray.push(auftrag);
-        }
     };
-    PrioComponent.prototype.processWorkflow = function (partNumber, auftraege) {
+    PrioComponent.prototype.processWorkflow = function (partNumber, auftraege, nPAuftragIdx) {
         //Alle Bestandteile des Teils
         var bestandteilArray = this.getPartComponents(partNumber);
         var part = this.getEPPart(partNumber);
@@ -196,11 +192,17 @@ var PrioComponent = (function () {
                 //Teilweise
                 var processTime = this.setPartToWorkplace(part, anzahl, bestandteilArray);
                 this.produzierbareAuftraege.push({ "Teil": part, "Anzahl": anzahl });
-                this.nPAuftraege.push({ "Teil": part, "Anzahl": auftraege - anzahl });
+                if (nPAuftragIdx != null) {
+                    this.nPAuftraege[nPAuftragIdx].Anzahl = auftraege - anzahl;
+                }
+                else {
+                    this.nPAuftraege.push({ "Teil": part, "Anzahl": auftraege - anzahl });
+                }
             }
         }
         else {
-            this.nPAuftraege.push({ "Teil": part, "Anzahl": auftraege });
+            if (nPAuftragIdx == null)
+                this.nPAuftraege.push({ "Teil": part, "Anzahl": auftraege });
         }
     };
     PrioComponent.prototype.setPartToWorkplace = function (teil, auftraege, bestandteilArray) {
