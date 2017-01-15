@@ -174,6 +174,7 @@ export class PrioComponent {
         }
 
         this.sessionService.setReihenfolgen(this.reihenfolgen);
+        this.sessionService.setPrioOutput(this.outPutArray);
     }
 
     processWorkflow(partNumber: number, auftraege: number, nPAuftragIdx: string){

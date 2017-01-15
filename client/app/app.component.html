@@ -8,11 +8,7 @@
                 </a>
             </li>
             <li class="sidebar-title"><span>{{'sidebar_taskPlanning' | translate}}</span></li>
-            <li class="sidebar-list">
 
-                <a routerLink="/dashboard" routerLinkActive="active">{{'sidebar_dashboard' | translate}}<span class="menu-icon fa fa-tachometer"></span></a>
-
-            </li>
             <li class="sidebar-list">
 
                 <a routerLink="/xmlImport" routerLinkActive="active">{{'sidebar_readXML' | translate}}<span class="menu-icon fa fa-file-code-o"></span></a>
@@ -20,9 +16,6 @@
             </li>
             <li class="sidebar-list">
                 <a routerLink="/forecast" routerLinkActive="active">{{'sidebar_forecast' | translate}}<span class="menu-icon fa fa-line-chart"></span></a>
-            </li>
-            <li class="sidebar-list">
-                <a routerLink="/tasks" routerLinkActive="active">{{'sidebar_task' | translate}}<span class="menu-icon fa fa-check-square-o"></span></a>
             </li>
             <li class="sidebar-list">
                 <a routerLink="/materialPlanningEP" routerLinkActive="active">{{'sideBar_MaterialPlanningEP' | translate}}<span class="menu-icon fa fa-truck"></span></a>
@@ -37,6 +30,11 @@
                 <a routerLink="/prioritization" routerLinkActive="active">{{'sidebar_prio' | translate}}<span class="menu-icon fa fa-sort "></span></a>
             </li>
             <li class="sidebar-title"><span>{{'sidebar_overview' | translate}}</span></li>
+            <li class="sidebar-list">
+
+                <a routerLink="/dashboard" routerLinkActive="active">{{'sidebar_dashboard' | translate}}<span class="menu-icon fa fa-tachometer"></span></a>
+
+            </li>
             <li class="sidebar-list">
                 <a routerLink="/partsLists" routerLinkActive="active">{{'sidebar_partsLists' | translate}}<span class="menu-icon fa fa-sitemap"></span></a>
             </li>
@@ -53,7 +51,7 @@
                 <a routerLink="/warehousestock" routerLinkActive="active">{{'sidebar_warehouseStock' | translate}}<span class="menu-icon fa fa-bar-chart"></span></a>
             </li>
             <li class="sidebar-list">
-                <a>{{'sidebar_history' | translate}}<span class="menu-icon fa fa-history"></span></a>
+                <a routerLink="/tasks" routerLinkActive="active">{{'task_todoList' | translate}}<span class="menu-icon fa fa-check-square-o"></span></a>
             </li>
             <li class="sidebar-title"><span>{{'sidebar_settings' | translate}}</span></li>
             <li class="sidebar-list">

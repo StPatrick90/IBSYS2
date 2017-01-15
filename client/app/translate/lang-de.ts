@@ -23,7 +23,7 @@ export const LANG_DE_TRANS = {
     'sidebar_workstations': 'Arbeitsplätze',
     'sidebar_partsLists': 'Stücklisten',
     'sidebar_parts': 'Teile',
-    'sidebar_dashboard': 'Übersicht',
+    'sidebar_dashboard': 'Dashboard',
     'sideBar_MaterialPlanningEP': 'Dispo Eigenfert.',
     'sideBar_PartUsage': 'Teileverwendung',
 
@@ -172,5 +172,8 @@ export const LANG_DE_TRANS = {
     'forecast_directSales': 'Direktverkauf',
     'forecast_quantity': 'Menge',
     'forecast_price': 'Preis',
-    'forecast_conPenalty': 'Konventionalstrafe'
+    'forecast_conPenalty': 'Konventionalstrafe',
+
+//Task
+    'task_todoList': 'Todo Liste'
 };

@@ -157,6 +157,8 @@ exports.LANG_EN_TRANS = {
     'forecast_directSales': 'Direct sales',
     'forecast_quantity': 'Quantity',
     'forecast_price': 'Price',
-    'forecast_conPenalty': 'Contract penalty'
+    'forecast_conPenalty': 'Contract penalty',
+    //Task
+    'task_todoList': 'Todolist'
 };
 //# sourceMappingURL=lang-en.js.map

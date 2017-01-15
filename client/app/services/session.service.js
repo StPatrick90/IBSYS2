@@ -20,6 +20,7 @@ var SessionService = (function () {
     function SessionService(http) {
         this.http = http;
         this.reihenfolgen = [];
+        this.prioOutput = []; // Teil und Anzahl
         this.dummyObj = {
             results: {
                 game: "",
@@ -304,6 +305,12 @@ var SessionService = (function () {
     SessionService.prototype.getReihenfolgen = function () {
         return this.reihenfolgen;
     };
+    SessionService.prototype.setPrioOutput = function (prioOutput) {
+        this.prioOutput = prioOutput;
+    };
+    SessionService.prototype.getPrioOutput = function () {
+        return this.prioOutput;
+    };
     SessionService.prototype.clear = function () {
         this.setResultObject(null);
         this.setParts(null);
@@ -373,6 +380,10 @@ var SessionService = (function () {
         WebStorage_1.SessionStorage(), 
         __metadata('design:type', Array)
     ], SessionService.prototype, "reihenfolgen", void 0);
+    __decorate([
+        WebStorage_1.SessionStorage(), 
+        __metadata('design:type', Array)
+    ], SessionService.prototype, "prioOutput", void 0);
     SessionService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

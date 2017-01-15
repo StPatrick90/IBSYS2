@@ -150,6 +150,7 @@ var PrioComponent = (function () {
             this.outPutArray.push(auftrag);
         }
         this.sessionService.setReihenfolgen(this.reihenfolgen);
+        this.sessionService.setPrioOutput(this.outPutArray);
     };
     PrioComponent.prototype.processWorkflow = function (partNumber, auftraege, nPAuftragIdx) {
         //Alle Bestandteile des Teils

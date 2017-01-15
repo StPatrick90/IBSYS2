@@ -31,6 +31,7 @@ export class SessionService {
     @SessionStorage() private forecast: Forecast;
     @SessionStorage() private actualPeriod: number;
     @SessionStorage() private reihenfolgen: Array<Sequence> = [];
+    @SessionStorage() private prioOutput: Array<any> = []; // Teil und Anzahl
 
 
 
@@ -358,6 +359,13 @@ export class SessionService {
         return this.reihenfolgen;
     }
 
+    setPrioOutput(prioOutput) {
+        this.prioOutput = prioOutput;
+    }
+
+    getPrioOutput() {
+        return this.prioOutput;
+    }
     clear() {
         this.setResultObject(null);
         this.setParts(null);
