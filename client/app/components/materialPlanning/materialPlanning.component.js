@@ -28,6 +28,9 @@ var MaterialPlanningComponent = (function () {
         this.bestellarten = new Array("E.", "N.", "---");
         this.vorigeBestellungen = new Array();
         this.changed = false;
+        this.doonce = 0;
+        this.urmenge = 0;
+        // this.urbestand = new Array<number>();
         this.differenz = 0;
     }
     MaterialPlanningComponent.prototype.getKParts = function () {
@@ -244,19 +247,25 @@ var MaterialPlanningComponent = (function () {
         return zahl;
     };
     MaterialPlanningComponent.prototype.bestellmengechange = function (matPlan, index, bestellmenge, bestandnWe, event) {
-        // console.log(event);
-        console.log(bestandnWe);
-        if (!this.changed) {
-            for (var x = 0; x < this.matPlan[index].bestandnWe.length; x++) {
-                this.matPlan[index].bestandnWe[x] = this.matPlan[index].bestandnWe[x] + this.differenz;
-                this.changed = true;
-            }
+        this.doonce++;
+        if (!this.changed || this.urmenge == null || index != this.indexsave) {
+            console.log("ausgelöst");
+            this.urmenge = this.matPlan[index].bestellmenge - 1;
+            // this.urbestand = bestandnWe; // gibt das ne referenz ?
+            this.urbestand = this.matPlan[index].bestandnWe;
+            console.log("ersterub", this.urbestand);
         }
-        else {
+        if (this.doonce % 2 != 0) {
+            this.differenz = bestellmenge - this.urmenge;
+            // console.log("urmenge: ", this.urmenge);
+            // console.log("diff: ", this.differenz);
+            // console.log("ub: ", this.urbestand);
+            // console.log("mp: ", this.matPlan[index].bestandnWe);
             for (var x = 0; x < this.matPlan[index].bestandnWe.length; x++) {
-                this.matPlan[index].bestandnWe[x] = this.matPlan[index].bestandnWe[x] + this.differenz; // - menge;
-                this.changed = true;
+                this.matPlan[index].bestandnWe[x] = this.urbestand[x] + this.differenz;
             }
+            this.changed = true;
+            this.indexsave = index;
         }
     };
     MaterialPlanningComponent.prototype.getBruttoBedarfandPeriods = function () {
