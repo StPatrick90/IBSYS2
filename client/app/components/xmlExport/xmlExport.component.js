@@ -12,16 +12,55 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var xmlImport_service_1 = require('../../services/xmlImport.service');
 var session_service_1 = require('../../services/session.service');
 var XmlExportComponent = (function () {
-    function XmlExportComponent(sessionService) {
+    function XmlExportComponent(sessionService, xmlImportService) {
         this.sessionService = sessionService;
-        this.prioOutput = [];
-        this.jsonString = "";
+        this.xmlImportService = xmlImportService;
+        this.xmlString = "";
+        this.displayString = "";
     }
     XmlExportComponent.prototype.ngOnInit = function () {
-        this.prioOutput = this.sessionService.getPrioOutput();
-        this.jsonString = JSON.stringify(this.prioOutput);
+        var _this = this;
+        this.mergedObjects = {
+            "input": {
+                qualitycontrol: '',
+                "sellwish": [],
+                "selldirect": [],
+                "orderlist": [],
+                "productionlist": [],
+                "workingtimelist": []
+            }
+        };
+        this.xmlString = "";
+        this.convertReihenfolgen(this.sessionService.getReihenfolgen());
+        this.convertPrioOutput(this.sessionService.getPrioOutput());
+        this.xmlImportService.convertToXml(this.mergedObjects)
+            .subscribe(function (xmlObj) {
+            _this.xmlString = xmlObj.name;
+            _this.displayString = _this.convertDisplayString(_this.xmlString);
+        });
+    };
+    XmlExportComponent.prototype.convertPrioOutput = function (prioOutput) {
+        for (var _i = 0, prioOutput_1 = prioOutput; _i < prioOutput_1.length; _i++) {
+            var auftrag = prioOutput_1[_i];
+            this.mergedObjects.input.productionlist.push({ production: '', attr: { article: auftrag.Teil.nummer, quantity: auftrag.Anzahl } });
+        }
+    };
+    XmlExportComponent.prototype.convertReihenfolgen = function (reihenfolgen) {
+        for (var _i = 0, reihenfolgen_1 = reihenfolgen; _i < reihenfolgen_1.length; _i++) {
+            var sequence = reihenfolgen_1[_i];
+            this.mergedObjects.input.workingtimelist.push({ workingtime: '', attr: { station: sequence.workstation.nummer, shift: 'Todo', overtime: 'Todo' } });
+        }
+    };
+    XmlExportComponent.prototype.convertDisplayString = function (xml) {
+        for (var charIdx = 0; charIdx < xml.length; charIdx++) {
+            if (xml.charAt(charIdx) === '>') {
+                xml = [xml.slice(0, charIdx + 1), '\n', xml.slice(charIdx + 1)].join('');
+            }
+        }
+        return xml;
     };
     XmlExportComponent = __decorate([
         core_1.Component({
@@ -29,7 +68,7 @@ var XmlExportComponent = (function () {
             selector: 'xmlExport',
             templateUrl: 'xmlExport.component.html'
         }), 
-        __metadata('design:paramtypes', [session_service_1.SessionService])
+        __metadata('design:paramtypes', [session_service_1.SessionService, xmlImport_service_1.XmlImportService])
     ], XmlExportComponent);
     return XmlExportComponent;
 }());
