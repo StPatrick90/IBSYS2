@@ -10,5 +10,9 @@
         <a class="active" routerLink="/xmlExport"><div>{{'xmlExport' | translate}}</div></a>
     </div>
 </div>
-<button class="btn btn-success" (click)="downloadFIle()"></button>
-<textarea class="fullScreenTextArea" [(ngModel)]="displayString"></textarea>
+<div class="container">
+    Name: <input type="text" [(ngModel)]="name" style="margin-right: 10px"><button class="btn btn-success" (click)="downloadFIle()">Download!</button>
+
+    <textarea class="fullScreenTextArea" [(ngModel)]="displayString"></textarea>
+</div>
+

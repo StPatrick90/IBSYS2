@@ -19,6 +19,7 @@ var XmlExportComponent = (function () {
     function XmlExportComponent(sessionService, xmlImportService) {
         this.sessionService = sessionService;
         this.xmlImportService = xmlImportService;
+        this.name = "resultXML";
         this.xmlString = "";
         this.displayString = "";
     }
@@ -26,7 +27,6 @@ var XmlExportComponent = (function () {
         var _this = this;
         this.mergedObjects = {
             "input": {
-                qualitycontrol: '',
                 "sellwish": [],
                 "selldirect": [],
                 "orderlist": [],
@@ -35,25 +35,49 @@ var XmlExportComponent = (function () {
             }
         };
         this.xmlString = "";
-        this.convertReihenfolgen(this.sessionService.getReihenfolgen());
+        this.convertReihenfolgen(this.sessionService.getCapacities());
         this.convertPrioOutput(this.sessionService.getPrioOutput());
+        this.convertForcast(this.sessionService.getForecast());
         this.xmlImportService.convertToXml(this.mergedObjects)
             .subscribe(function (xmlObj) {
             _this.xmlString = xmlObj.name;
             _this.displayString = _this.convertDisplayString(_this.xmlString);
+            _this.displayString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<qualitycontrol type=\"no\" losequantity=\"0\" delay=\"0\"/> \n" + _this.displayString;
         });
     };
     XmlExportComponent.prototype.convertPrioOutput = function (prioOutput) {
-        for (var _i = 0, prioOutput_1 = prioOutput; _i < prioOutput_1.length; _i++) {
-            var auftrag = prioOutput_1[_i];
-            this.mergedObjects.input.productionlist.push({ production: '', attr: { article: auftrag.Teil.nummer, quantity: auftrag.Anzahl } });
+        if (prioOutput != null)
+            for (var _i = 0, prioOutput_1 = prioOutput; _i < prioOutput_1.length; _i++) {
+                var auftrag = prioOutput_1[_i];
+                this.mergedObjects.input.productionlist.push({ production: '', attr: { article: auftrag.Teil.nummer, quantity: auftrag.Anzahl } });
+            }
+    };
+    XmlExportComponent.prototype.convertReihenfolgen = function (capa) {
+        if (capa === null)
+            return;
+        capa = capa.sort(function (item) { return item.workstationNumber; });
+        for (var _i = 0, capa_1 = capa; _i < capa_1.length; _i++) {
+            var c = capa_1[_i];
+            this.mergedObjects.input.workingtimelist.push({ workingtime: '', attr: { station: c.workstationNumber, shift: c.schichten, overtime: c.ueberstunden } });
         }
     };
-    XmlExportComponent.prototype.convertReihenfolgen = function (reihenfolgen) {
-        for (var _i = 0, reihenfolgen_1 = reihenfolgen; _i < reihenfolgen_1.length; _i++) {
-            var sequence = reihenfolgen_1[_i];
-            this.mergedObjects.input.workingtimelist.push({ workingtime: '', attr: { station: sequence.workstation.nummer, shift: 'Todo', overtime: 'Todo' } });
-        }
+    XmlExportComponent.prototype.convertForcast = function (forecast) {
+        if (forecast != null)
+            for (var _i = 0, _a = forecast.article; _i < _a.length; _i++) {
+                var article = _a[_i];
+                if (article.partNr === 1) {
+                    this.mergedObjects.input.sellwish.push({ item: '', attr: { article: article.partNr, quantity: article.verbdindlicheAuftraege[0].anzahl } });
+                    this.mergedObjects.input.selldirect.push({ item: '', attr: { article: article.partNr, quantity: article.direktVerkauf.menge, price: article.direktVerkauf.preis, penalty: article.direktVerkauf.strafe } });
+                }
+                if (article.partNr === 2) {
+                    this.mergedObjects.input.sellwish.push({ item: '', attr: { article: article.partNr, quantity: article.verbdindlicheAuftraege[0].anzahl } });
+                    this.mergedObjects.input.selldirect.push({ item: '', attr: { article: article.partNr, quantity: article.direktVerkauf.menge, price: article.direktVerkauf.preis, penalty: article.direktVerkauf.strafe } });
+                }
+                if (article.partNr === 3) {
+                    this.mergedObjects.input.sellwish.push({ item: '', attr: { article: article.partNr, quantity: article.verbdindlicheAuftraege[0].anzahl } });
+                    this.mergedObjects.input.selldirect.push({ item: '', attr: { article: article.partNr, quantity: article.direktVerkauf.menge, price: article.direktVerkauf.preis, penalty: article.direktVerkauf.strafe } });
+                }
+            }
     };
     XmlExportComponent.prototype.convertDisplayString = function (xml) {
         for (var charIdx = 0; charIdx < xml.length; charIdx++) {
@@ -65,7 +89,7 @@ var XmlExportComponent = (function () {
     };
     XmlExportComponent.prototype.downloadFIle = function () {
         var file = new Blob([this.displayString], { type: 'text/xml;charset=utf-8' });
-        saveAs(file, 'test.xml');
+        saveAs(file, this.name + '.xml');
     };
     XmlExportComponent = __decorate([
         core_1.Component({

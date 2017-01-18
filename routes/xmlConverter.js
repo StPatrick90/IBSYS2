@@ -30,8 +30,6 @@ router.post('/jsonConverter', function (req, res, next) {
             "error": "Bad Data"
         })
     } else{
-        console.log(json);
-
         var xmlObj = json2xml(json, {attributes_key: 'attr'});
         res.json({name: xmlObj});
     }
