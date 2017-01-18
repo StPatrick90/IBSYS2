@@ -12,6 +12,7 @@ import {rowtype} from "../model/rowtype";
 import {matPlanRow} from "../model/matPlanRow";
 import {Forecast} from "../model/forecast";
 import {Sequence} from "../model/sequence";
+import {Capacity} from "../model/capacity";
 
 
 @Injectable()
@@ -32,6 +33,7 @@ export class SessionService {
     @SessionStorage() private actualPeriod: number;
     @SessionStorage() private reihenfolgen: Array<Sequence> = [];
     @SessionStorage() private prioOutput: Array<any> = []; // Teil und Anzahl
+    @SessionStorage() private capacities: Array<Capacity> = [];
 
 
 
@@ -366,6 +368,15 @@ export class SessionService {
     getPrioOutput() {
         return this.prioOutput;
     }
+
+    setCapacities(capacities) {
+        this.capacities = capacities;
+    }
+
+    getCapacities() {
+        return this.capacities;
+    }
+
     clear() {
         this.setResultObject(null);
         this.setParts(null);
@@ -378,6 +389,7 @@ export class SessionService {
         this.setMatPlan(null);
         this.setActualPeriod(null);
         this.setForecast(null);
+        this.setCapacities(null);
     }
 
 }

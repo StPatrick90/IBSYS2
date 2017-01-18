@@ -144,6 +144,7 @@ var CapacityPlanningComponent = (function () {
             cap_3.gesamt = cap_3.capacity + cap_3.leerzeit + cap_3.ruestzeit + cap_3.capacityWait + cap_3.ruestWait;
             this.calcShifts(cap_3);
         }
+        this.sessionService.setCapacities(this.capacities);
     };
     CapacityPlanningComponent.prototype.setWaitingCapacity = function (arbeitsplatz, wait, isWaitinglist) {
         for (var _i = 0, _a = this.processingTimes; _i < _a.length; _i++) {
@@ -229,6 +230,7 @@ var CapacityPlanningComponent = (function () {
             if (cap.workstationNumber === workstationNumber) {
                 cap.gesamt = cap.capacity + cap.leerzeit + cap.ruestzeit + cap.capacityWait + cap.ruestWait + this.puffer[workstationNumber];
                 this.calcShifts(cap);
+                this.sessionService.setCapacities(this.capacities);
                 break;
             }
         }

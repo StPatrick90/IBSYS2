@@ -157,7 +157,7 @@ export class CapacityPlanningComponent {
             cap.gesamt = cap.capacity + cap.leerzeit + cap.ruestzeit + cap.capacityWait + cap.ruestWait;
             this.calcShifts(cap);
         }
-
+        this.sessionService.setCapacities(this.capacities);
 
     }
 
@@ -243,6 +243,7 @@ export class CapacityPlanningComponent {
             if(cap.workstationNumber === workstationNumber){
                 cap.gesamt = cap.capacity + cap.leerzeit + cap.ruestzeit + cap.capacityWait + cap.ruestWait + this.puffer[workstationNumber];
                 this.calcShifts(cap);
+                this.sessionService.setCapacities(this.capacities);
                 break;
             }
         }
