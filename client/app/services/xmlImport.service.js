@@ -27,6 +27,13 @@ var XmlImportService = (function () {
         return this.http.post('/api/xmlConverter', JSON.stringify(xmlneu), { headers: headers })
             .map(function (res) { return res.json(); });
     };
+    XmlImportService.prototype.convertToXml = function (json) {
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        //console.log(xml);
+        return this.http.post('/api/jsonConverter', JSON.stringify(json), { headers: headers })
+            .map(function (res) { return res.json(); });
+    };
     XmlImportService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])
