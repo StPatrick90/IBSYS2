@@ -148,6 +148,7 @@ var ForecastComponent = (function () {
             });
         }
         this.sessionService.setForecast(forecast);
+        console.log(forecast);
     };
     ForecastComponent = __decorate([
         core_1.Component({

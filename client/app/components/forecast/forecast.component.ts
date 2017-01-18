@@ -154,6 +154,7 @@ export class ForecastComponent {
             });
         }
         this.sessionService.setForecast(forecast);
+        console.log(forecast);
     }
 }
 
