@@ -14,6 +14,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var xmlImport_service_1 = require('../../services/xmlImport.service');
 var session_service_1 = require('../../services/session.service');
+var saveAs = require('file-saver');
 var XmlExportComponent = (function () {
     function XmlExportComponent(sessionService, xmlImportService) {
         this.sessionService = sessionService;
@@ -61,6 +62,10 @@ var XmlExportComponent = (function () {
             }
         }
         return xml;
+    };
+    XmlExportComponent.prototype.downloadFIle = function () {
+        var file = new Blob([this.displayString], { type: 'text/xml;charset=utf-8' });
+        saveAs(file, 'test.xml');
     };
     XmlExportComponent = __decorate([
         core_1.Component({

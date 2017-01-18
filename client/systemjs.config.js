@@ -29,7 +29,8 @@
             'angular2-localstorage': 'npm:angular2-localstorage',
             'ng2-dnd': 'npm:ng2-dnd',
             'ng2-charts': 'npm:ng2-charts',
-            "ng2-dropdown": "node_modules/ng2-dropdown"
+            "ng2-dropdown": "node_modules/ng2-dropdown",
+            "file-saver": "npm:file-saver"
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
@@ -65,6 +66,11 @@
             "ng2-dropdown": {
                 main: "index.js",
                 defaultExtension: "js"
+            },
+            "file-saver":{
+                main: "FileSaver.js",
+                defaultExtension: "js"
+
             }
         }
     });

@@ -5,8 +5,8 @@
 import { Component} from '@angular/core';
 import { XmlImportService } from '../../services/xmlImport.service';
 import { SessionService } from '../../services/session.service';
-import {Sequence} from "../../model/sequence";
 
+var saveAs = require('file-saver');
 
 @Component({
     moduleId: module.id,
@@ -64,6 +64,10 @@ export class XmlExportComponent {
             }
         }
         return xml;
+    }
+    downloadFIle(){
+        let file = new Blob([this.displayString], { type: 'text/xml;charset=utf-8' });
+        saveAs(file, 'test.xml');
     }
 
 
