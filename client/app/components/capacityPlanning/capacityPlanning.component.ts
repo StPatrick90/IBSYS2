@@ -184,6 +184,7 @@ export class CapacityPlanningComponent {
                                 }
                                 else{
                                     cap.capacityWait += procTime.fertigungsZeit * Number.parseInt(wait.amount);
+                                    cap.ruestWait += procTime.ruestZeit;
                                 }
                             }
                             break;
