@@ -61,14 +61,22 @@ export class XmlImportComponent {
         var myReader: FileReader = new FileReader();
 
         myReader.onloadend = function(e){
+
+            var xmlString = myReader.result[2]+myReader.result[3]+myReader.result[4];
+            if(xmlString !== "xml"){
+                self.errorMessage = null;
+                self.success = false;
+                return;
+            }
+
             self.xml = myReader.result;
             self.xmlService.convertToJson(self.xml)
                 .subscribe(jsonObj => {
                     var result = JSON.parse(jsonObj);
-                    //self.xml = JSON.stringify(self.resultObj);
+
                     for(var i = 0; i <= self.periods.length; i++){
                         if(result.results.period === self.periods[i]){
-                            self.errorMessage = "Periode " + self.periods[i] + " ist schon vorhanden."
+                            self.errorMessage = self.periods[i];
                             self.success = false;
                             return;
                         }

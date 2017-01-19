@@ -118,10 +118,18 @@ export const LANG_EN_TRANS = {
 
 //xmlImport
     'xmlImport': 'XML Import',
+    'xmlImport_periodenAuswahl': 'Select an existing period',
+    'xmlImport_success': 'Success!',
+    'xmlImport_inbound': 'successfully integrated!!',
+    'xmlImport_proceed': 'Continue',
+    'xmlImport_wrong': 'Error!',
+    'xmlImport_periodRight': 'The period was not included correctly!',
+    'xmlImport_periodwrong': 'Please try again or choose the period from the drop down menu.',
+    'xmlImport_periodai': 'is already integrated!',
 
 //prediction
     'binding_orders': 'Binding Orders',
-    'period': 'Periode',
+    'period': 'Period',
     'product': 'Product',
     'planned': 'Planned',
     'remaining_stock': 'Remaining Stock',
