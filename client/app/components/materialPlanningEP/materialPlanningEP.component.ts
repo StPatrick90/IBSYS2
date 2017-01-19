@@ -163,6 +163,11 @@ export class MaterialPlanningEPComponent {
                 if (!this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + la.id]) {
                     this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + la.id] = la.menge;
                 }
+                for (let pl of this.tmp_partsList) {
+                       if(pl.teil.child.nummer !== la.id && !this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer]){
+                           this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer] = la.menge;
+                       }
+                }
             }
         }
 
