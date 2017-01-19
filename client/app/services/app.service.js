@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 21.10.2016.
  */
-var core_1 = require('@angular/core');
-var http_1 = require('@angular/http');
-require('rxjs/add/operator/map');
+var core_1 = require("@angular/core");
+var http_1 = require("@angular/http");
+require("rxjs/add/operator/map");
 var AppService = (function () {
     function AppService(http) {
         this.http = http;
@@ -22,11 +22,11 @@ var AppService = (function () {
     AppService.prototype.toggleSidebar = function (toggle) {
         localStorage.setItem('toggle', toggle.toString());
     };
-    AppService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
-    ], AppService);
     return AppService;
 }());
+AppService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.Http])
+], AppService);
 exports.AppService = AppService;
 //# sourceMappingURL=app.service.js.map

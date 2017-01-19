@@ -8,10 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var session_service_1 = require('../../services/session.service');
-var prediction_service_1 = require('../../services/prediction.service');
-var db_service_1 = require('../../services/db.service');
+var core_1 = require("@angular/core");
+var session_service_1 = require("../../services/session.service");
+var prediction_service_1 = require("../../services/prediction.service");
+var db_service_1 = require("../../services/db.service");
 var PredictionComponent = (function () {
     function PredictionComponent(sessionService, predictionService, dbService) {
         this.predictionService = predictionService;
@@ -126,15 +126,15 @@ var PredictionComponent = (function () {
         this.periods.push(this.period + 3);
         return this.periods[index];
     };
-    PredictionComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'prediction',
-            templateUrl: 'prediction.component.html'
-        }), 
-        __metadata('design:paramtypes', [session_service_1.SessionService, prediction_service_1.PredictionService, db_service_1.DBService])
-    ], PredictionComponent);
     return PredictionComponent;
 }());
+PredictionComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'prediction',
+        templateUrl: 'prediction.component.html'
+    }),
+    __metadata("design:paramtypes", [session_service_1.SessionService, prediction_service_1.PredictionService, db_service_1.DBService])
+], PredictionComponent);
 exports.PredictionComponent = PredictionComponent;
 //# sourceMappingURL=prediction.component.js.map

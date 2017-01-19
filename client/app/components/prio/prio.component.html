@@ -12,32 +12,32 @@
 </div>
 
 <div class="container">
-    <h4>Welche Priorisierung möchten Sie vornehmen?</h4>
+    <h4>{{'prio_whichPrio' | translate}}</h4>
 
     <div class="col-sm-3 jumbotron jumptronhover" (click)="onClickJumptron('automatic')" style="margin-left: 10px">
-        <h5>Voll Automatisch</h5>
+        <h5>{{'prio_automatisch' | translate}}</h5>
     </div>
     <div class="col-sm-3 jumbotron jumptronhover" (click)="onClickJumptron('endProduct')" style="margin-left: 10px">
-        <h5>Nach Endprodukten</h5>
+        <h5>{{'prio_endprodukten' | translate}}</h5>
     </div>
     <div class="col-sm-3 jumbotron jumptronhover" (click)="onClickJumptron('manual')" style="margin-left: 10px">
-        <h5>Alles Manuell</h5>
+        <h5>{{'prio_manuel' | translate}}</h5>
     </div>
 </div>
 <div class="container" *ngIf="(selector != '')">
-    <label style="margin-right: 10px">Refresh after drag?</label>
-    No:<input type="radio" [checked]="isSelected('No')" (click)="clickRadio('No')" style="margin-right: 10px">
-    Yes: <input type="radio" [checked]="isSelected('Yes')" (click)="clickRadio('Yes')">
+    <label style="margin-right: 10px">{{'prio_refresh' | translate}}</label>
+    {{'no' | translate}}:<input type="radio" [checked]="isSelected('No')" (click)="clickRadio('No')" style="margin-right: 10px">
+    {{'yes' | translate}}: <input type="radio" [checked]="isSelected('Yes')" (click)="clickRadio('Yes')">
 
 </div>
 <div *ngIf="(selector == 'automatic')" class="container">
-    <h4>Voll Automatisch:</h4>
+    <h4>{{'prio_automatisch' | translate}}:</h4>
 
     <div class="row">
         <div class="col-sm-3">
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    Endprodukte:
+                    {{'prio_eProduct' | translate}}:
                 </div>
                 <div class="panel-body">
                     <ul class="list-group" dnd-sortable-container [sortableData]="produzierbareAuftraege">
@@ -52,7 +52,7 @@
         <div class="col-sm-3">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    My priorization:<br/>
+                    {{'prio_priorization' | translate}}:<br/>
                     <span *ngFor="let item of produzierbareAuftraege; let i = index">{{i + 1}}) {{item.Teil.typ}} {{item.Teil.nummer}} ({{item.Teil.bezeichnung}})<br/></span>
                 </div>
             </div>
@@ -60,7 +60,7 @@
         <div class="col-sm-3" *ngIf="nPAuftraege.length !== 0">
             <div class="panel panel-danger">
                 <div class="panel-heading">
-                    Nicht Produzierbar:
+                    {{'prio_notProduced' | translate}}:
                 </div>
                 <div class="panel-body">
                     <ul class="list-group">
@@ -75,17 +75,17 @@
     </div>
 </div>
 <div *ngIf="(selector == 'endProduct')" class="container">
-    <h4>Nach Endprodukten:</h4>
+    <h4>{{'prio_endprodukten' | translate}}:</h4>
     <div class="row">
         <div class="col-sm-3">
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    Endprodukte:
+                    {{'prio_eProduct' | translate}}:
                 </div>
                 <div class="panel-body">
                     <ul class="list-group" dnd-sortable-container [sortableData]="pParts" (dragend)="reloadProcess()">
                         <li *ngFor="let item of pParts; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{i + 1}}. {{item.typ}} {{item.nummer}}</li>
-                        <li class="list-group-item"><button class="btn btn-success" style="width: 100%" (click)="onClickJumptron('endProduct')">Proceed</button></li>
+                        <li class="list-group-item"><button class="btn btn-success" style="width: 100%" (click)="onClickJumptron('endProduct')">{{'prio_p' | translate}}</button></li>
                     </ul>
                 </div>
             </div>
@@ -105,7 +105,7 @@
         <div class="col-sm-3">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    My priorization:<br/>
+                    {{'prio_priorization' | translate}}:<br/>
                     <span *ngFor="let item of produzierbareAuftraege; let i = index">{{i + 1}}) {{item.Teil.typ}} {{item.Teil.nummer}} ({{item.Teil.bezeichnung}})<br/></span>
                 </div>
             </div>
@@ -113,7 +113,7 @@
         <div class="col-sm-3" *ngIf="nPAuftraege.length !== 0">
             <div class="panel panel-danger">
                 <div class="panel-heading">
-                    Nicht Produzierbar:
+                    {{'prio_notProduced' | translate}}:
                 </div>
                 <div class="panel-body">
                     <ul class="list-group">
@@ -133,7 +133,7 @@
         <div class="col-sm-3">
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    Endprodukte:
+                    {{'prio_eProduct' | translate}}:
                 </div>
                 <div class="panel-body">
                     <ul class="list-group" dnd-sortable-container [sortableData]="epParts">
@@ -157,7 +157,7 @@
         <div class="col-sm-3">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    My priorization:<br/>
+                    {{'prio_priorization' | translate}}:<br/>
                     <span *ngFor="let item of epParts; let i = index">{{i + 1}}) {{item.typ}} {{item.nummer}} ({{item.bezeichnung}})<br/></span>
                 </div>
             </div>
@@ -165,7 +165,7 @@
         <div class="col-sm-3" *ngIf="nPAuftraege.length !== 0">
             <div class="panel panel-danger">
                 <div class="panel-heading">
-                    Nicht Produzierbar:
+                    {{'prio_notProduced' | translate}}:
                 </div>
                 <div class="panel-body">
                     <ul class="list-group">
@@ -185,10 +185,10 @@
     </modal-header>
     <modal-body>
         <div class="well">
-            <label>Teil ID: {{splittingPart.nummer}} - Anzahl: {{round(splittingAnzahl2 - splittingAnzahl)}}</label>
+            <label>{{'setParts_part' | translate}} ID: {{splittingPart.nummer}} -  {{'setParts_amount' | translate}}: {{round(splittingAnzahl2 - splittingAnzahl)}}</label>
 
             <div class="form-group">
-                <label>Anzahl des neuen Auftrags:</label>
+                <label>{{'prio_amountnew' | translate}}:</label>
                 <input type="text" [(ngModel)]="splittingAnzahl" name="anzahl" class="form-control" placeholder="0">
             </div>
         </div>

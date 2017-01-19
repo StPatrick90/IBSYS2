@@ -221,6 +221,19 @@ exports.LANG_DE_TRANS = {
     'Naben-Montage': 'Naben-Montage',
     'Blech-Biegemaschine': 'Blech-Biegemaschine',
     'Blechschere': 'Blechschere',
-    'Lenker-Montage': 'Lenker-Montage'
+    'Lenker-Montage': 'Lenker-Montage',
+    //Prio
+    'prio_whichPrio': 'Welche Priorisierung möchten Sie vornehmen?',
+    'prio_automatisch': 'Voll Automatisch',
+    'prio_endprodukten': 'Nach Endprodukten',
+    'prio_manuel': 'Alles Manuell',
+    'prio_refresh': 'Nach dem Verschieben neu laden?',
+    'no': 'Nein',
+    'yes': 'Ja',
+    'prio_eProduct': 'Teile der Eigenfertigung ',
+    'prio_priorization': 'Priorisierung',
+    'prio_notProduced': 'Nicht Produzierbar',
+    'prio_amountnew': 'Anzahl des neuen Auftrags',
+    'prio_p': 'Aktualisieren'
 };
 //# sourceMappingURL=lang-de.js.map

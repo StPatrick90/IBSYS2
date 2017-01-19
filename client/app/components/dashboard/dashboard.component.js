@@ -11,11 +11,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var session_service_1 = require('../../services/session.service');
-var db_service_1 = require('../../services/db.service');
-var dashTask_1 = require('../../model/dashTask');
-var ng2_bs3_modal_1 = require('ng2-bs3-modal/ng2-bs3-modal');
+var core_1 = require("@angular/core");
+var session_service_1 = require("../../services/session.service");
+var db_service_1 = require("../../services/db.service");
+var dashTask_1 = require("../../model/dashTask");
+var ng2_bs3_modal_1 = require("ng2-bs3-modal/ng2-bs3-modal");
 var translate_service_1 = require("../../translate/translate.service");
 var DashboardComponent = (function () {
     function DashboardComponent(sessionService, dbService, translation) {
@@ -169,19 +169,19 @@ var DashboardComponent = (function () {
             }
         }
     };
-    __decorate([
-        core_1.ViewChild('configuration'), 
-        __metadata('design:type', ng2_bs3_modal_1.ModalComponent)
-    ], DashboardComponent.prototype, "modalConfig", void 0);
-    DashboardComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'xmlImport',
-            templateUrl: 'dashboard.component.html'
-        }), 
-        __metadata('design:paramtypes', [session_service_1.SessionService, db_service_1.DBService, translate_service_1.TranslateService])
-    ], DashboardComponent);
     return DashboardComponent;
 }());
+__decorate([
+    core_1.ViewChild('configuration'),
+    __metadata("design:type", ng2_bs3_modal_1.ModalComponent)
+], DashboardComponent.prototype, "modalConfig", void 0);
+DashboardComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'xmlImport',
+        templateUrl: 'dashboard.component.html'
+    }),
+    __metadata("design:paramtypes", [session_service_1.SessionService, db_service_1.DBService, translate_service_1.TranslateService])
+], DashboardComponent);
 exports.DashboardComponent = DashboardComponent;
 //# sourceMappingURL=dashboard.component.js.map

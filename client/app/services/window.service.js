@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by philipp.koepfer on 04.11.16.
  */
-var core_1 = require('@angular/core');
+var core_1 = require("@angular/core");
 function _window() {
     // return the global native browser window object
     return window;
@@ -26,11 +26,11 @@ var WindowRef = (function () {
         enumerable: true,
         configurable: true
     });
-    WindowRef = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
-    ], WindowRef);
     return WindowRef;
 }());
+WindowRef = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [])
+], WindowRef);
 exports.WindowRef = WindowRef;
 //# sourceMappingURL=window.service.js.map

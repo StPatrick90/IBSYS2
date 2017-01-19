@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var session_service_1 = require('../../services/session.service');
-var materialPlanning_service_1 = require('../../services/materialPlanning.service');
+var core_1 = require("@angular/core");
+var session_service_1 = require("../../services/session.service");
+var materialPlanning_service_1 = require("../../services/materialPlanning.service");
 var http_1 = require("@angular/http");
 var rowtype_1 = require("../../model/rowtype");
 var MaterialPlanningComponent = (function () {
@@ -321,15 +321,15 @@ var MaterialPlanningComponent = (function () {
     MaterialPlanningComponent.prototype.clearSession = function () {
         this.sessionService.clear();
     };
-    MaterialPlanningComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'materialPlanning',
-            templateUrl: 'materialPlanning.component.html'
-        }), 
-        __metadata('design:paramtypes', [session_service_1.SessionService, materialPlanning_service_1.MaterialPlanningService, http_1.Http])
-    ], MaterialPlanningComponent);
     return MaterialPlanningComponent;
 }());
+MaterialPlanningComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'materialPlanning',
+        templateUrl: 'materialPlanning.component.html'
+    }),
+    __metadata("design:paramtypes", [session_service_1.SessionService, materialPlanning_service_1.MaterialPlanningService, http_1.Http])
+], MaterialPlanningComponent);
 exports.MaterialPlanningComponent = MaterialPlanningComponent;
 //# sourceMappingURL=materialPlanning.component.js.map
