@@ -8,10 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var forecast_service_1 = require('../../services/forecast.service');
-var session_service_1 = require('../../services/session.service');
-var forecast_1 = require('../../model/forecast');
+var core_1 = require("@angular/core");
+var forecast_service_1 = require("../../services/forecast.service");
+var session_service_1 = require("../../services/session.service");
+var forecast_1 = require("../../model/forecast");
 var ForecastComponent = (function () {
     function ForecastComponent(forecastService, sessionService) {
         var _this = this;
@@ -150,15 +150,15 @@ var ForecastComponent = (function () {
         this.sessionService.setForecast(forecast);
         console.log("patrickfc", forecast);
     };
-    ForecastComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'forecast',
-            templateUrl: 'forecast.component.html'
-        }), 
-        __metadata('design:paramtypes', [forecast_service_1.ForecastService, session_service_1.SessionService])
-    ], ForecastComponent);
     return ForecastComponent;
 }());
+ForecastComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'forecast',
+        templateUrl: 'forecast.component.html'
+    }),
+    __metadata("design:paramtypes", [forecast_service_1.ForecastService, session_service_1.SessionService])
+], ForecastComponent);
 exports.ForecastComponent = ForecastComponent;
 //# sourceMappingURL=forecast.component.js.map

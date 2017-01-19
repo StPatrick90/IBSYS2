@@ -69,7 +69,7 @@ export class MaterialPlanningEPComponent {
                 for (let article of this.forecast.article) {
                     for (let vA of article.verbdindlicheAuftraege) {
                         if (vA.periode === this.period) {
-                            this.forecastVerbindlicheAuftraege.push({id: article.partNr, menge: vA.anzahl});
+                            this.forecastVerbindlicheAuftraege.push({id: article.partNr, menge: vA.anzahl + article.direktVerkauf.menge});
                         }
                     }
                     for (let vB of article.voraussichtlicherBestand) {
@@ -77,6 +77,7 @@ export class MaterialPlanningEPComponent {
                             this.forecastGeplLager.push({id: article.partNr, menge: vB.anzahl});
                         }
                     }
+
                 }
             }
 
@@ -327,12 +328,12 @@ export class MaterialPlanningEPComponent {
     }
 
     sumProdAuftraege(part) {
-        return this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + part.nummer] +
+        return Math.ceil(this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + part.nummer] +
             this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + part.nummer] +
             this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + part.nummer] -
             this.lagerbestandVorperiode[this.part.typ + this.part.nummer + "_" + part.nummer] -
             this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + part.nummer] -
-            this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + part.nummer];
+            this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + part.nummer]);
     }
 
     isGleichTeil(nummer) {

@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 18.12.2016.
  */
-var core_1 = require('@angular/core');
-var part_service_1 = require('../../services/part.service');
-var session_service_1 = require('../../services/session.service');
+var core_1 = require("@angular/core");
+var part_service_1 = require("../../services/part.service");
+var session_service_1 = require("../../services/session.service");
 var MaterialPlanningEPComponent = (function () {
     function MaterialPlanningEPComponent(partService, sessionService) {
         this.partService = partService;
@@ -56,7 +56,7 @@ var MaterialPlanningEPComponent = (function () {
                     for (var _b = 0, _c = article.verbdindlicheAuftraege; _b < _c.length; _b++) {
                         var vA = _c[_b];
                         if (vA.periode === this.period) {
-                            this.forecastVerbindlicheAuftraege.push({ id: article.partNr, menge: vA.anzahl });
+                            this.forecastVerbindlicheAuftraege.push({ id: article.partNr, menge: vA.anzahl + article.direktVerkauf.menge });
                         }
                     }
                     for (var _d = 0, _e = article.voraussichtlicherBestand; _d < _e.length; _d++) {
@@ -300,12 +300,12 @@ var MaterialPlanningEPComponent = (function () {
         this.sessionService.setPlannedWarehouseStock(this.geplLagerbestand);
     };
     MaterialPlanningEPComponent.prototype.sumProdAuftraege = function (part) {
-        return this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + part.nummer] +
+        return Math.ceil(this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + part.nummer] +
             this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + part.nummer] +
             this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + part.nummer] -
             this.lagerbestandVorperiode[this.part.typ + this.part.nummer + "_" + part.nummer] -
             this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + part.nummer] -
-            this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + part.nummer];
+            this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + part.nummer]);
     };
     MaterialPlanningEPComponent.prototype.isGleichTeil = function (nummer) {
         var num = Number.parseInt(nummer);
@@ -321,15 +321,15 @@ var MaterialPlanningEPComponent = (function () {
         }
         this.partsListSingle = this.partsList.filter(function (item) { return item.produkt == _this.part.nummer; });
     };
-    MaterialPlanningEPComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'materialPlanningEP',
-            templateUrl: 'materialPlanningEP.component.html'
-        }), 
-        __metadata('design:paramtypes', [part_service_1.PartService, session_service_1.SessionService])
-    ], MaterialPlanningEPComponent);
     return MaterialPlanningEPComponent;
 }());
+MaterialPlanningEPComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'materialPlanningEP',
+        templateUrl: 'materialPlanningEP.component.html'
+    }),
+    __metadata("design:paramtypes", [part_service_1.PartService, session_service_1.SessionService])
+], MaterialPlanningEPComponent);
 exports.MaterialPlanningEPComponent = MaterialPlanningEPComponent;
 //# sourceMappingURL=materialPlanningEP.component.js.map
