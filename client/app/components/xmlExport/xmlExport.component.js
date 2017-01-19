@@ -11,9 +11,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var xmlImport_service_1 = require('../../services/xmlImport.service');
-var session_service_1 = require('../../services/session.service');
+var core_1 = require("@angular/core");
+var xmlImport_service_1 = require("../../services/xmlImport.service");
+var session_service_1 = require("../../services/session.service");
 var saveAs = require('file-saver');
 var XmlExportComponent = (function () {
     function XmlExportComponent(sessionService, xmlImportService) {
@@ -56,7 +56,17 @@ var XmlExportComponent = (function () {
     XmlExportComponent.prototype.convertReihenfolgen = function (capa) {
         if (capa === null)
             return;
-        capa = capa.sort(function (item) { return item.workstationNumber; });
+        var capa = capa.sort(function (a, b) {
+            var numA = a.workstationNumber;
+            var numB = b.workstationNumber;
+            if (numA > numB) {
+                return 1;
+            }
+            if (numA < numB) {
+                return -1;
+            }
+            return 0;
+        });
         for (var _i = 0, capa_1 = capa; _i < capa_1.length; _i++) {
             var c = capa_1[_i];
             this.mergedObjects.input.workingtimelist.push({ workingtime: '', attr: { station: c.workstationNumber, shift: c.schichten, overtime: c.ueberstunden } });
@@ -92,15 +102,15 @@ var XmlExportComponent = (function () {
         var file = new Blob([this.displayString], { type: 'text/xml;charset=utf-8' });
         saveAs(file, this.name + '.xml');
     };
-    XmlExportComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'xmlExport',
-            templateUrl: 'xmlExport.component.html'
-        }), 
-        __metadata('design:paramtypes', [session_service_1.SessionService, xmlImport_service_1.XmlImportService])
-    ], XmlExportComponent);
     return XmlExportComponent;
 }());
+XmlExportComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'xmlExport',
+        templateUrl: 'xmlExport.component.html'
+    }),
+    __metadata("design:paramtypes", [session_service_1.SessionService, xmlImport_service_1.XmlImportService])
+], XmlExportComponent);
 exports.XmlExportComponent = XmlExportComponent;
 //# sourceMappingURL=xmlExport.component.js.map

@@ -57,7 +57,18 @@ export class XmlExportComponent {
     convertReihenfolgen(capa){
         if(capa === null)
             return;
-        capa = capa.sort(item => item.workstationNumber);
+        var capa = capa.sort(function (a, b) {
+            var numA = a.workstationNumber;
+            var numB = b.workstationNumber;
+            if (numA > numB) {
+                return 1;
+            }
+            if (numA < numB) {
+                return -1;
+            }
+            return 0;
+        });
+
         for(var c of capa){
             this.mergedObjects.input.workingtimelist.push({workingtime: '', attr:{station: c.workstationNumber, shift: c.schichten, overtime: c.ueberstunden}});
         }
