@@ -31,6 +31,7 @@ export class MaterialPlanningComponent {
     urbestand: number[]
     differenz: number;
     indexsave: number;
+    noperiod: boolean;
 
     constructor(private sessionService: SessionService, private  materialPlanningService: MaterialPlanningService, private http: Http) {
         this.resultObj = this.sessionService.getResultObject();
@@ -43,10 +44,12 @@ export class MaterialPlanningComponent {
         this.bestellarten = new Array<string>("E.", "N.", "---");
         this.vorigeBestellungen = new Array<vorigeBestellung>();
         this.changed = false;
-        this.doonce = 0;
+        this.doonce = 1;
         this.urmenge = 0;
-        // this.urbestand = new Array<number>();
+        this.urbestand = new Array<number>();
         this.differenz = 0;
+        this.noperiod = false;
+        this.indexsave = 0;
     }
 
     getKParts() {
@@ -98,6 +101,7 @@ export class MaterialPlanningComponent {
 
     setParameters() {
         // if (this.sessionService.getMatPlan() == null || this.sessionService.getActualPeriod() != Number(this.resultObj.results.period)) {
+        this.matPlan = new Array<matPlanRow>();
         var aktuellePeriode = this.resultObj.results.period;
         this.getBruttoBedarfandPeriods();
         this.setvorigeBestellungen();
@@ -200,17 +204,14 @@ export class MaterialPlanningComponent {
             }
 
             // set Bestellmenge (Bestand n gepl.WE zeigt Bestand am ENDE einer Periode, desw auch max_relperiod -1)
-            // TODO: max_relperiod_ind un warteperioden klären wann das jetzt tatsächlich ankommt bzw obs so richtig ist ausgehend kommmentar Zeile 194
             matPlanRow.bestellmenge = 0;
             matPlanRow.bestellung = "---";
             var bereitseilbestellt: boolean = false;
             var max_relperiod_ind: number;
             var vorigemengen: number = 0;
 
-            max_relperiod_ind = this.roundAt0point6(matPlanRow.summe) - 1; // schliesst alle perioden aus, die man in der nächsten Periode noch normal bestellen kann
+            max_relperiod_ind = this.roundAt0point6(matPlanRow.summe); // schliesst alle perioden aus, die man in der nächsten Periode noch normal bestellen kann
             // --> gibt also den index der spätesten relevanten perioe
-
-            var warteperioden = this.roundAt0point6(matPlanRow.summe) - 1;// nur zum Verständnis, eig unnötig siehe max_relperiod_ind
 
             for (var i = 0; i <= max_relperiod_ind; i++) {
                 vorigemengen += matPlanRow.bestandnWe[i];
@@ -219,7 +220,7 @@ export class MaterialPlanningComponent {
             for (var i = 0; i <= max_relperiod_ind; i++) {
                 if ((matPlanRow.bestandnWe[i] + matPlanRow.mengemitbest + vorigemengen) < 0) {
 
-                    if (i < warteperioden) { // Eilbestellung wenn Bestellung erst ankommen würde wenn Bestand schon leer ist
+                    if (i < max_relperiod_ind) { // Eilbestellung wenn Bestellung erst ankommen würde wenn Bestand schon leer ist oder hier +1 ?
                         matPlanRow.bestellmenge = matPlanRow.bestandnWe[i] * -1 + matPlanRow.mengemitbest * -1;
                         matPlanRow.bestellung = "E.";
 
@@ -246,6 +247,14 @@ export class MaterialPlanningComponent {
                 }
             }
 
+            // // Bestand + Bestellmenge
+            max_relperiod_ind = this.roundAt0point6(matPlanRow.summe);
+            for (var x = 0; x < matPlanRow.bestandnWe.length; x++) {
+                if (x >= max_relperiod_ind && matPlanRow.bestellmenge != 0) {
+                    matPlanRow.bestandnWe[x] = matPlanRow.bestandnWe[x] + Number(matPlanRow.bestellmenge);
+                }
+            }
+
             // get Verwendungsarten
             for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {
                 if (!this.verwendungRow.includes(matPlanRow.verwendung[l].Produkt)) {
@@ -256,23 +265,31 @@ export class MaterialPlanningComponent {
             // store values finally
             this.matPlan.push(matPlanRow);
         }
-        console.log("matplan", this.matPlan);
 
-        this.sessionService.setVerwendungRow(this.verwendungRow);
-        this.sessionService.setPeriodRow(this.periodrow);
-        this.sessionService.setMatPlan(this.matPlan);
-        this.sessionService.setActualPeriod(Number(this.resultObj.results.period));
-        this.setLayout();
+        if (!this.noperiod) {
+            this.sessionService.setVerwendungRow(this.verwendungRow);
+            this.sessionService.setPeriodRow(this.periodrow);
+            this.sessionService.setMatPlan(this.matPlan);
+            this.sessionService.setActualPeriod(Number(this.resultObj.results.period));
+            this.setLayout();
+        }
+        else {
+            this.sessionService.setMatPlan(null);
+            this.sessionService.setPeriodRow(null);
+            this.sessionService.setVerwendungRow(null);
+        }
+
+
+        // }
+
+        // else {
+        //     console.log("Kaufteildispo bereits in Session eingebunden. - nach Änderungen auf der Datenbank bitte neue Session starten");
+        //     this.periodrow = this.sessionService.getPeriodRow();
+        //     this.verwendungRow = this.sessionService.getVerwendungRow();
+        //     this.matPlan = this.sessionService.getMatPlan();
+        //     this.setLayout();
+        // }
     }
-
-// else {
-//     console.log("Kaufteildispo bereits in Session eingebunden. - nach Änderungen auf der Datenbank bitte neue Session starten");
-//     this.periodrow = this.sessionService.getPeriodRow();
-//     this.verwendungRow = this.sessionService.getVerwendungRow();
-//     this.matPlan = this.sessionService.getMatPlan();
-//     this.setLayout();
-// }
-
 
     roundAt0point6(zahl: number) {
         if (zahl % 1 >= 0.6) {
@@ -284,37 +301,45 @@ export class MaterialPlanningComponent {
         return zahl;
     }
 
-    bestellmengechange(matPlan: matPlanRow, index: number, bestellmenge: number, bestandnWe: number[], event) {
+    bestellmengechange(event, index) {
         this.doonce++;
+        if (this.doonce % 2 == 0) {
+            var max_relperiod_ind = this.roundAt0point6(this.matPlan[index].summe);
 
-        if (!this.changed || this.urmenge == null || index != this.indexsave) {
-            console.log("ausgelöst");
-            this.urmenge = this.matPlan[index].bestellmenge - 1;
-            // this.urbestand = bestandnWe; // gibt das ne referenz ?
-            this.urbestand = this.matPlan[index].bestandnWe;
-            console.log("ersterub", this.urbestand);
-        }
 
-        if (this.doonce % 2 != 0) { // damit das scheiss event nicht 2 mal feuert, was weiss ich warum
-
-            this.differenz = bestellmenge - this.urmenge;
-            // console.log("urmenge: ", this.urmenge);
-            // console.log("diff: ", this.differenz);
-            // console.log("ub: ", this.urbestand);
-            // console.log("mp: ", this.matPlan[index].bestandnWe);
-
-            for (var x = 0; x < this.matPlan[index].bestandnWe.length; x++) {
-                this.matPlan[index].bestandnWe[x] = this.urbestand[x] + this.differenz;
+            if (!this.changed || this.indexsave != index) {
+                console.log("ausgelöst");
+                this.urbestand = this.matPlan[index].bestandnWe; // urbestand ändert sich, obwohl nichts ausgelöst wurde, --> referenz ?
+                this.urmenge = this.matPlan[index].bestellmenge;
             }
 
-            this.changed = true;
-            this.indexsave = index;
+            for (var x = 0; x < this.matPlan[index].bestandnWe.length; x++) {
+                if (x >= max_relperiod_ind) {
+
+                    this.differenz = event - this.urmenge;
+
+
+                    console.log("ub: ", this.urbestand[x]);
+                    console.log("dif: ", this.differenz);
+                    console.log("balt: ", this.matPlan[index].bestandnWe[x]);
+                    this.matPlan[index].bestandnWe[x] = this.urbestand[x] + Number(this.differenz);
+                    console.log("bneu: ", this.matPlan[index].bestandnWe[x]);
+                    console.log("---");
+
+                    this.changed = true;
+                    this.indexsave = index;
+                }
+            }
         }
     }
 
     getBruttoBedarfandPeriods() {
         if (this.sessionService.getForecast() === null) {
             alert("Bitte erst die Prognose durchführen.");
+            this.sessionService.setMatPlan(null);
+            this.sessionService.setPeriodRow(null);
+            this.sessionService.setVerwendungRow(null);
+            this.noperiod = true;
         }
         else {
             var forecast = new Array<any>();
@@ -328,8 +353,6 @@ export class MaterialPlanningComponent {
                 }
                 this.plannings.push(planning);
             }
-            console.log("forecast", forecast);
-            console.log("plannings", this.plannings);
         }
     }
 
