@@ -56,7 +56,7 @@ var XmlExportComponent = (function () {
     XmlExportComponent.prototype.convertReihenfolgen = function (capa) {
         if (capa === null)
             return;
-        var capa = capa.sort(function (a, b) {
+        capa = capa.sort(function (a, b) {
             var numA = a.workstationNumber;
             var numB = b.workstationNumber;
             if (numA > numB) {
