@@ -42,7 +42,8 @@ var XmlExportComponent = (function () {
             .subscribe(function (xmlObj) {
             _this.xmlString = xmlObj.name;
             _this.displayString = _this.convertDisplayString(_this.xmlString);
-            _this.displayString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<qualitycontrol type=\"no\" losequantity=\"0\" delay=\"0\"/> \n" + _this.displayString;
+            var substring = _this.displayString.substring(8, _this.displayString.length);
+            _this.displayString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<input>\n<qualitycontrol type=\"no\" losequantity=\"0\" delay=\"0\"/>\n" + substring;
         });
     };
     XmlExportComponent.prototype.convertPrioOutput = function (prioOutput) {

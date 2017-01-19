@@ -44,7 +44,8 @@ export class XmlExportComponent {
             .subscribe(xmlObj => {
                 this.xmlString = xmlObj.name;
                 this.displayString = this.convertDisplayString(this.xmlString);
-                this.displayString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<qualitycontrol type=\"no\" losequantity=\"0\" delay=\"0\"/> \n" + this.displayString;
+                var substring = this.displayString.substring(8, this.displayString.length);
+                this.displayString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<input>\n<qualitycontrol type=\"no\" losequantity=\"0\" delay=\"0\"/>\n" + substring;
             });
     }
     convertPrioOutput(prioOutput){
