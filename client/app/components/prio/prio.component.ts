@@ -146,16 +146,23 @@ export class PrioComponent {
                 }
             }
 
+            this.processWorkflow(partNumber, auftragsMenge, null);
+
             //Kann was von np abgearbeitet werden?
             for(var idx in this.nPAuftraege){
-
                 //Schau ob jetzt etwas im Lager ist.
-                if((this.nPAuftraege[idx].Teil.lagerBestand / this.nPAuftraege[idx].anzahl) > 0){
-                    this.nPAuftraege.splice(parseInt(idx), 1);
-                    this.processWorkflow(this.nPAuftraege[idx].Teil, this.nPAuftraege[idx].Anzahl, idx);
+                this.processWorkflow(this.nPAuftraege[idx].Teil.nummer, this.nPAuftraege[idx].Anzahl, idx);
+            }
+            for(var auftrag of this.nPAuftraege){
+                if(auftrag.Anzahl === 0){
+                    for(var a2 in this.nPAuftraege){
+                        if(this.nPAuftraege[a2].Teil.nummer === auftrag.Teil.nummer){
+                            this.nPAuftraege.splice(Number.parseInt(a2),1);
+                        }
+                    }
                 }
             }
-            this.processWorkflow(partNumber, auftragsMenge, null);
+
         }
 
         console.log("reihenfolge:");
@@ -220,6 +227,9 @@ export class PrioComponent {
                 var processTime = this.setPartToWorkplace(part, auftraege, bestandteilArray);
 
                 this.produzierbareAuftraege.push({"Teil": part, "Anzahl": auftraege});
+                if(nPAuftragIdx != null){
+                    this.nPAuftraege[nPAuftragIdx].Anzahl = auftraege - anzahl;
+                }
             }
             else{
                 //Teilweise

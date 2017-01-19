@@ -125,15 +125,22 @@ var PrioComponent = (function () {
                     auftragsMenge += Number.parseInt(this.partOrders[partOrder]);
                 }
             }
+            this.processWorkflow(partNumber, auftragsMenge, null);
             //Kann was von np abgearbeitet werden?
             for (var idx in this.nPAuftraege) {
                 //Schau ob jetzt etwas im Lager ist.
-                if ((this.nPAuftraege[idx].Teil.lagerBestand / this.nPAuftraege[idx].anzahl) > 0) {
-                    this.nPAuftraege.splice(parseInt(idx), 1);
-                    this.processWorkflow(this.nPAuftraege[idx].Teil, this.nPAuftraege[idx].Anzahl, idx);
+                this.processWorkflow(this.nPAuftraege[idx].Teil.nummer, this.nPAuftraege[idx].Anzahl, idx);
+            }
+            for (var _b = 0, _c = this.nPAuftraege; _b < _c.length; _b++) {
+                var auftrag = _c[_b];
+                if (auftrag.Anzahl === 0) {
+                    for (var a2 in this.nPAuftraege) {
+                        if (this.nPAuftraege[a2].Teil.nummer === auftrag.Teil.nummer) {
+                            this.nPAuftraege.splice(Number.parseInt(a2), 1);
+                        }
+                    }
                 }
             }
-            this.processWorkflow(partNumber, auftragsMenge, null);
         }
         console.log("reihenfolge:");
         console.log(this.reihenfolgen);
@@ -142,12 +149,12 @@ var PrioComponent = (function () {
         console.log("npAufträge:");
         console.log(this.nPAuftraege);
         this.outPutArray.length = 0;
-        for (var _b = 0, _c = this.produzierbareAuftraege; _b < _c.length; _b++) {
-            var auftrag = _c[_b];
+        for (var _d = 0, _e = this.produzierbareAuftraege; _d < _e.length; _d++) {
+            var auftrag = _e[_d];
             this.outPutArray.push(auftrag);
         }
-        for (var _d = 0, _e = this.nPAuftraege; _d < _e.length; _d++) {
-            var auftrag = _e[_d];
+        for (var _f = 0, _g = this.nPAuftraege; _f < _g.length; _f++) {
+            var auftrag = _g[_f];
             this.outPutArray.push(auftrag);
         }
         this.sessionService.setReihenfolgen(this.reihenfolgen);
@@ -191,6 +198,9 @@ var PrioComponent = (function () {
             if (anzahl === auftraege) {
                 var processTime = this.setPartToWorkplace(part, auftraege, bestandteilArray);
                 this.produzierbareAuftraege.push({ "Teil": part, "Anzahl": auftraege });
+                if (nPAuftragIdx != null) {
+                    this.nPAuftraege[nPAuftragIdx].Anzahl = auftraege - anzahl;
+                }
             }
             else {
                 //Teilweise
