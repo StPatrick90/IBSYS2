@@ -27,8 +27,8 @@
                 <div class="panel-heading">
                     <span class="pull-right clickable" data-effect="fadeOut" (click)="deleteClicked(crit)"><i class="fa fa-times"></i></span>
                     {{'dashboard_danger' | translate}}!
-                    <p *ngIf="crit.from === 'warehousestock'">{{'dashboard_warehouse_crit' | translate}}{{crit.displayValue}}</p>
-                    <p *ngIf="crit.from === 'deliveryreliability'">{{'dashboard_deliveryreliabiliy_bad' | translate}}: {{crit.displayValue}}</p>
+                    <p *ngIf="crit.from === 'warehousestock'">{{'dashboard_warehouse_crit' | translate}}{{crit.displayValue | percent}}</p>
+                    <p *ngIf="crit.from === 'deliveryreliability'">{{'dashboard_deliveryreliabiliy_bad' | translate}}: {{crit.displayValue | percent}}</p>
                 </div>
                 <div class="panel-body">
                     <p *ngIf="crit.article" >{{'dashboard_article' | translate}}: {{crit.article}}</p>
@@ -55,8 +55,8 @@
                     <span class="pull-right clickable" data-effect="fadeOut" (click)="deleteClicked(warn)"><i class="fa fa-times"></i></span>
                     {{'dashboard_warning' | translate}}!
                     <br>
-                    <p *ngIf="warn.from === 'warehousestock'">{{'dashboard_warehouse_warn' | translate}}{{warn.displayValue}}</p>
-                    <p *ngIf="warn.from === 'deliveryreliability'">{{'dashboard_deliveryreliabiliy_bad' | translate}}: {{warn.displayValue}}</p>
+                    <p *ngIf="warn.from === 'warehousestock'">{{'dashboard_warehouse_warn' | translate}}{{warn.displayValue | percent}}</p>
+                    <p *ngIf="warn.from === 'deliveryreliability'">{{'dashboard_deliveryreliabiliy_bad' | translate}}: {{warn.displayValue | percent}}%</p>
                 </div>
                 <div class="panel-body">
                     <p *ngIf="warn.article" >{{'dashboard_article' | translate}}: {{warn.article}}</p>

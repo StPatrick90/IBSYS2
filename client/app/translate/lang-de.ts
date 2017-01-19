@@ -187,5 +187,20 @@ export const LANG_DE_TRANS = {
 
 //Home
     'home_welcome': 'Willkommen zu deinem genialen PPS Tool. Spring in dein Workflow:',
-    'hoem_or': 'oder springe in dein Dashboard:'
+    'hoem_or': 'oder springe in dein Dashboard:',
+
+//Prio
+    'prio_whichPrio': 'Welche Priorisierung möchten Sie vornehmen?',
+    'prio_automatisch': 'Voll Automatisch',
+    'prio_endprodukten': 'Nach Endprodukten',
+    'prio_manuel': 'Alles Manuell',
+    'prio_refresh': 'Nach dem Verschieben neu laden?',
+    'no': 'Nein',
+    'yes': 'Ja',
+    'prio_eProduct': 'Teile der Eigenfertigung ',
+    'prio_priorization': 'Priorisierung',
+    'prio_notProduced': 'Nicht Produzierbar',
+    'prio_amountnew': 'Anzahl des neuen Auftrags',
+    'prio_p': 'Aktualisieren'
+
 };

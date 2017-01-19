@@ -188,5 +188,20 @@ export const LANG_EN_TRANS = {
 
 //Home
     'home_welcome': 'Welcome to your awesome PPS Tool. Let´s get started! Jump to your workflow:',
-    'hoem_or': 'or jump to your Dashboard:'
+    'hoem_or': 'or jump to your Dashboard:',
+
+//Prio
+    'prio_whichPrio': 'Which prioritization would you like to do?',
+    'prio_automatisch': 'Full automatic',
+    'prio_endprodukten': 'After Endproducts',
+    'prio_manuel': 'Everything manuel',
+    'prio_refresh': 'Refresh after drag?',
+    'no': 'No',
+    'yes': 'Yes',
+    'prio_eProduct': 'Parts from the own production',
+    'prio_priorization': 'Prioritization',
+    'prio_notProduced': 'Not producible',
+    'prio_amountnew': 'Number of the new order',
+    'prio_p': 'Refresh'
+
 };
