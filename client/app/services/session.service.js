@@ -293,6 +293,7 @@ var SessionService = (function () {
     };
     SessionService.prototype.setForecast = function (forecast) {
         this.forecast = forecast;
+        this.matPlan = null;
     };
     SessionService.prototype.setActualPeriod = function (period) {
         this.actualPeriod = period;

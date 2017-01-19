@@ -36,7 +36,6 @@ export class SessionService {
     @SessionStorage() private capacities: Array<Capacity> = [];
 
 
-
     constructor(private http: Http) {
         console.log('Session Service Initialized...');
         this.clear();
@@ -343,6 +342,7 @@ export class SessionService {
 
     setForecast(forecast) {
         this.forecast = forecast;
+        this.matPlan = null;
     }
 
     setActualPeriod(period) {

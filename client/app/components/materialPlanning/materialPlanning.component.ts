@@ -13,7 +13,6 @@ import {vorigeBestellung} from "../../model/vorigeBestellung";
     selector: 'materialPlanning',
     templateUrl: 'materialPlanning.component.html'
 })
-// TODO : Jonas: 1)ab 0,6 aufrunden -- erledigt 2)Modus berücksichtigen -- erledigt 3)um autom. Eilbestellung erweitern Zeile 213--erledigt 4)Bestellmenge Zeile 204 --erledigt 5)update event / NgModel nach input bestellmenge 6)evtl Lernen 10% vom durchschnittlichen Bedarf wenns normalerweise noch langen würde aber trotzdem Eil
 export class MaterialPlanningComponent {
 
     resultObj: any;
@@ -100,195 +99,194 @@ export class MaterialPlanningComponent {
     }
 
     setParameters() {
-        // if (this.sessionService.getMatPlan() == null || this.sessionService.getActualPeriod() != Number(this.resultObj.results.period)) {
-        this.matPlan = new Array<matPlanRow>();
-        var aktuellePeriode = this.resultObj.results.period;
-        this.getBruttoBedarfandPeriods();
-        this.setvorigeBestellungen();
+        if (this.sessionService.getMatPlan() == null || this.sessionService.getActualPeriod() != Number(this.resultObj.results.period)) {
+            this.matPlan = new Array<matPlanRow>();
+            var aktuellePeriode = this.resultObj.results.period;
+            this.getBruttoBedarfandPeriods();
+            this.setvorigeBestellungen();
 
-        var index = 0;
-        for (let purchPart of this.purchaseParts) {
-            var matPlanRow = {
-                kpartnr: null,
-                lieferfrist: null,
-                abweichung: null,
-                summe: null,
-                verwendung: [],
-                diskontmenge: null,
-                anfangsbestand: null,
-                bruttobedarfnP: [],
-                mengeohbest: null,
-                bestellmenge: null,
-                mengemitbest: null,
-                bestellung: null,
-                bestandnWe: [],
-                isneg: null,
-                isneg2: null
-            }
-
-            // collect values
-            matPlanRow.kpartnr = purchPart.nummer;
-            index = matPlanRow.kpartnr as number - 1;
-            matPlanRow.anfangsbestand = this.resultObj.results.warehousestock.article[index].amount;
-            matPlanRow.abweichung = purchPart.abweichung;
-            matPlanRow.lieferfrist = purchPart.lieferfrist;
-            matPlanRow.diskontmenge = purchPart.diskontmenge;
-            matPlanRow.summe = Number((matPlanRow.lieferfrist + matPlanRow.abweichung).toFixed(2));
-
-            // get Verwendungen
-            for (let vw of purchPart.verwendung) {
-                matPlanRow.verwendung.push(vw);
-            }
-
-            // get Bruttobedarf --- hier auch einfach new Array(länge) machen ?
-            matPlanRow.bruttobedarfnP.push(0);
-            for (let p of this.plannings) {
-                while (matPlanRow.bruttobedarfnP.length < p.produktmengen.length) {
-                    matPlanRow.bruttobedarfnP.push(0);
+            var index = 0;
+            for (let purchPart of this.purchaseParts) {
+                var matPlanRow = {
+                    kpartnr: null,
+                    lieferfrist: null,
+                    abweichung: null,
+                    summe: null,
+                    verwendung: [],
+                    diskontmenge: null,
+                    anfangsbestand: null,
+                    bruttobedarfnP: [],
+                    mengeohbest: null,
+                    bestellmenge: null,
+                    mengemitbest: null,
+                    bestellung: null,
+                    bestandnWe: [],
+                    isneg: null,
+                    isneg2: null
                 }
-            }
-            // matPlanRow.bruttobedarfnP = new Array<number>(4);
-            for (let vw of purchPart.verwendung) {
+
+                // collect values
+                matPlanRow.kpartnr = purchPart.nummer;
+                index = matPlanRow.kpartnr as number - 1;
+                matPlanRow.anfangsbestand = this.resultObj.results.warehousestock.article[index].amount;
+                matPlanRow.abweichung = purchPart.abweichung;
+                matPlanRow.lieferfrist = purchPart.lieferfrist;
+                matPlanRow.diskontmenge = purchPart.diskontmenge;
+                matPlanRow.summe = Number((matPlanRow.lieferfrist + matPlanRow.abweichung).toFixed(2));
+
+                // get Verwendungen
+                for (let vw of purchPart.verwendung) {
+                    matPlanRow.verwendung.push(vw);
+                }
+
+                // get Bruttobedarf --- hier auch einfach new Array(länge) machen ?
+                matPlanRow.bruttobedarfnP.push(0);
                 for (let p of this.plannings) {
-                    if (vw.Produkt === p.produktkennung) {
-                        for (var i = 0; i < matPlanRow.bruttobedarfnP.length; i++) {
-                            matPlanRow.bruttobedarfnP[i] += vw.Menge * p.produktmengen[i];
+                    while (matPlanRow.bruttobedarfnP.length < p.produktmengen.length) {
+                        matPlanRow.bruttobedarfnP.push(0);
+                    }
+                }
+                // matPlanRow.bruttobedarfnP = new Array<number>(4);
+                for (let vw of purchPart.verwendung) {
+                    for (let p of this.plannings) {
+                        if (vw.Produkt === p.produktkennung) {
+                            for (var i = 0; i < matPlanRow.bruttobedarfnP.length; i++) {
+                                matPlanRow.bruttobedarfnP[i] += vw.Menge * p.produktmengen[i];
+                            }
                         }
                     }
                 }
-            }
-            // get Menge ohne Bestellung
-            matPlanRow.mengeohbest = matPlanRow.anfangsbestand;
-            for (var i = 0; i < matPlanRow.bruttobedarfnP.length; i++) {
-                matPlanRow.mengeohbest = matPlanRow.mengeohbest - matPlanRow.bruttobedarfnP[i];
-                matPlanRow.mengemitbest = matPlanRow.mengeohbest;
-            }
-            if (matPlanRow.mengeohbest < 0) {
-                matPlanRow.isneg = true;
-            }
-            else {
-                matPlanRow.isneg = false;
-            }
-
-            // get Menge mit Bestellung aus Vorperiode
-            for (let vb of this.vorigeBestellungen) {
-                if (matPlanRow.kpartnr == vb.teil) {
-                    if (vb.ankunftperiode <= aktuellePeriode) {
-                        matPlanRow.mengemitbest = Number(vb.menge) + matPlanRow.mengeohbest;
-                    }
+                // get Menge ohne Bestellung
+                matPlanRow.mengeohbest = matPlanRow.anfangsbestand;
+                for (var i = 0; i < matPlanRow.bruttobedarfnP.length; i++) {
+                    matPlanRow.mengeohbest = matPlanRow.mengeohbest - matPlanRow.bruttobedarfnP[i];
+                    matPlanRow.mengemitbest = matPlanRow.mengeohbest;
                 }
-            }
-            if (matPlanRow.mengemitbest < 0) {
-                matPlanRow.isneg2 = true;
-            }
-            else {
-                matPlanRow.isneg2 = false;
-            }
-
-            // set Bestand n. Wareneingang
-            matPlanRow.bestandnWe = new Array<number>(4);
-            for (var i = 0; i < matPlanRow.bestandnWe.length; i++) {
-                if (i === 0) {
-                    matPlanRow.bestandnWe[i] = matPlanRow.anfangsbestand - matPlanRow.bruttobedarfnP[i];
+                if (matPlanRow.mengeohbest < 0) {
+                    matPlanRow.isneg = true;
                 }
                 else {
-                    matPlanRow.bestandnWe[i] = matPlanRow.bestandnWe[i - 1] - matPlanRow.bruttobedarfnP[i];
+                    matPlanRow.isneg = false;
                 }
-            }
-            for (let vb of this.vorigeBestellungen) {
-                for (var i2 = 0; i2 < matPlanRow.bestandnWe.length; i2++) {
-                    if (matPlanRow.kpartnr == vb.teil && vb.ankunftperiode == Number(this.resultObj.results.period) + i2) {
-                        matPlanRow.bestandnWe[i2] += Number(vb.menge);
-                    }
-                }
-            }
 
-            // set Bestellmenge (Bestand n gepl.WE zeigt Bestand am ENDE einer Periode, desw auch max_relperiod -1)
-            matPlanRow.bestellmenge = 0;
-            matPlanRow.bestellung = "---";
-            var bereitseilbestellt: boolean = false;
-            var max_relperiod_ind: number;
-            var vorigemengen: number = 0;
-
-            max_relperiod_ind = this.roundAt0point6(matPlanRow.summe); // schliesst alle perioden aus, die man in der nächsten Periode noch normal bestellen kann
-            // --> gibt also den index der spätesten relevanten perioe
-
-            for (var i = 0; i <= max_relperiod_ind; i++) {
-                vorigemengen += matPlanRow.bestandnWe[i];
-            }
-
-            for (var i = 0; i <= max_relperiod_ind; i++) {
-                if ((matPlanRow.bestandnWe[i] + matPlanRow.mengemitbest + vorigemengen) < 0) {
-
-                    if (i < max_relperiod_ind) { // Eilbestellung wenn Bestellung erst ankommen würde wenn Bestand schon leer ist oder hier +1 ?
-                        matPlanRow.bestellmenge = matPlanRow.bestandnWe[i] * -1 + matPlanRow.mengemitbest * -1;
-                        matPlanRow.bestellung = "E.";
-
-                        // diskont aufrechnen, wenn nur 20% fehlen würden
-                        if (matPlanRow.bestellmenge > 0.8 * matPlanRow.diskontmenge && matPlanRow.bestellmenge <= matPlanRow.diskontmenge) {
-                            matPlanRow.bestellmenge = matPlanRow.diskontmenge;
-                        }
-
-                        bereitseilbestellt = true;
-                    }
-                    else if (bereitseilbestellt) {
-                        matPlanRow.bestellmenge += matPlanRow.bestandnWe[i] * -1;
-                        matPlanRow.bestellung = "E.";
-                    }
-                    else { // Normalbestellung, aber so spät wie möglich
-                        matPlanRow.bestellmenge = matPlanRow.bestandnWe[i] * -1 + matPlanRow.mengemitbest * -1;
-                        matPlanRow.bestellung = "N.";
-
-                        // diskont aufrechnen,  wenn nur 20% fehlen würden
-                        if (matPlanRow.bestellmenge > 0.8 * matPlanRow.diskontmenge && matPlanRow.bestellmenge <= matPlanRow.diskontmenge) {
-                            matPlanRow.bestellmenge = matPlanRow.diskontmenge;
+                // get Menge mit Bestellung aus Vorperiode
+                for (let vb of this.vorigeBestellungen) {
+                    if (matPlanRow.kpartnr == vb.teil) {
+                        if (vb.ankunftperiode <= aktuellePeriode) {
+                            matPlanRow.mengemitbest = Number(vb.menge) + matPlanRow.mengeohbest;
                         }
                     }
                 }
-            }
-
-            // // Bestand + Bestellmenge
-            max_relperiod_ind = this.roundAt0point6(matPlanRow.summe);
-            for (var x = 0; x < matPlanRow.bestandnWe.length; x++) {
-                if (x >= max_relperiod_ind && matPlanRow.bestellmenge != 0) {
-                    matPlanRow.bestandnWe[x] = matPlanRow.bestandnWe[x] + Number(matPlanRow.bestellmenge);
+                if (matPlanRow.mengemitbest < 0) {
+                    matPlanRow.isneg2 = true;
                 }
-            }
-
-            // get Verwendungsarten
-            for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {
-                if (!this.verwendungRow.includes(matPlanRow.verwendung[l].Produkt)) {
-                    this.verwendungRow.push(matPlanRow.verwendung[l].Produkt);
+                else {
+                    matPlanRow.isneg2 = false;
                 }
+
+                // set Bestand n. Wareneingang
+                matPlanRow.bestandnWe = new Array<number>(4);
+                for (var i = 0; i < matPlanRow.bestandnWe.length; i++) {
+                    if (i === 0) {
+                        matPlanRow.bestandnWe[i] = matPlanRow.anfangsbestand - matPlanRow.bruttobedarfnP[i];
+                    }
+                    else {
+                        matPlanRow.bestandnWe[i] = matPlanRow.bestandnWe[i - 1] - matPlanRow.bruttobedarfnP[i];
+                    }
+                }
+                for (let vb of this.vorigeBestellungen) {
+                    for (var i2 = 0; i2 < matPlanRow.bestandnWe.length; i2++) {
+                        if (matPlanRow.kpartnr == vb.teil && vb.ankunftperiode == Number(this.resultObj.results.period) + i2) {
+                            matPlanRow.bestandnWe[i2] += Number(vb.menge);
+                        }
+                    }
+                }
+
+                // set Bestellmenge (Bestand n gepl.WE zeigt Bestand am ENDE einer Periode)
+                matPlanRow.bestellmenge = 0;
+                matPlanRow.bestellung = "---";
+                var bereitseilbestellt: boolean = false;
+                var max_relperiod_ind: number;
+                var vorigemengen: number = 0;
+
+                max_relperiod_ind = this.roundAt0point6(matPlanRow.summe);
+
+                for (var i = 0; i <= max_relperiod_ind; i++) {
+                    vorigemengen += matPlanRow.bestandnWe[i];
+                }
+
+                for (var i = 0; i <= max_relperiod_ind; i++) {
+                    if ((matPlanRow.bestandnWe[i] + matPlanRow.mengemitbest + vorigemengen) < 0) {
+
+                        if (i < max_relperiod_ind) { // Eilbestellung wenn Bestellung erst ankommen würde wenn Bestand schon leer ist oder hier +1 ?
+                            matPlanRow.bestellmenge = matPlanRow.bestandnWe[i] * -1 + matPlanRow.mengemitbest * -1;
+                            matPlanRow.bestellung = "E.";
+
+                            // diskont aufrechnen, wenn nur 20% fehlen würden
+                            if (matPlanRow.bestellmenge > 0.8 * matPlanRow.diskontmenge && matPlanRow.bestellmenge <= matPlanRow.diskontmenge) {
+                                matPlanRow.bestellmenge = matPlanRow.diskontmenge;
+                            }
+
+                            bereitseilbestellt = true;
+                        }
+                        else if (bereitseilbestellt) {
+                            matPlanRow.bestellmenge += matPlanRow.bestandnWe[i] * -1;
+                            matPlanRow.bestellung = "E.";
+                        }
+                        else { // Normalbestellung, aber so spät wie möglich
+                            matPlanRow.bestellmenge = matPlanRow.bestandnWe[i] * -1 + matPlanRow.mengemitbest * -1;
+                            matPlanRow.bestellung = "N.";
+
+                            // diskont aufrechnen,  wenn nur 20% fehlen würden
+                            if (matPlanRow.bestellmenge > 0.8 * matPlanRow.diskontmenge && matPlanRow.bestellmenge <= matPlanRow.diskontmenge) {
+                                matPlanRow.bestellmenge = matPlanRow.diskontmenge;
+                            }
+                        }
+                    }
+                }
+
+                // // Bestand + Bestellmenge
+                max_relperiod_ind = this.roundAt0point6(matPlanRow.summe);
+                for (var x = 0; x < matPlanRow.bestandnWe.length; x++) {
+                    if (x >= max_relperiod_ind && matPlanRow.bestellmenge != 0) {
+                        matPlanRow.bestandnWe[x] = matPlanRow.bestandnWe[x] + Number(matPlanRow.bestellmenge);
+                    }
+                }
+
+                // get Verwendungsarten
+                for (var l = 0; l <= matPlanRow.verwendung.length - 1; l++) {
+                    if (!this.verwendungRow.includes(matPlanRow.verwendung[l].Produkt)) {
+                        this.verwendungRow.push(matPlanRow.verwendung[l].Produkt);
+                    }
+                }
+
+                // store values finally
+                this.matPlan.push(matPlanRow);
             }
 
-            // store values finally
-            this.matPlan.push(matPlanRow);
+            if (!this.noperiod) {
+                this.sessionService.setVerwendungRow(this.verwendungRow);
+                this.sessionService.setPeriodRow(this.periodrow);
+                this.sessionService.setMatPlan(this.matPlan);
+                this.sessionService.setActualPeriod(Number(this.resultObj.results.period));
+                this.setLayout();
+            }
+            else {
+                this.sessionService.setMatPlan(null);
+                this.sessionService.setPeriodRow(null);
+                this.sessionService.setVerwendungRow(null);
+            }
+
+
         }
 
-        if (!this.noperiod) {
-            this.sessionService.setVerwendungRow(this.verwendungRow);
-            this.sessionService.setPeriodRow(this.periodrow);
-            this.sessionService.setMatPlan(this.matPlan);
-            this.sessionService.setActualPeriod(Number(this.resultObj.results.period));
+        else {
+            console.log("Kaufteildispo bereits in Session eingebunden. - nach Änderungen auf der Datenbank bitte neue Session starten");
+            this.periodrow = this.sessionService.getPeriodRow();
+            this.verwendungRow = this.sessionService.getVerwendungRow();
+            this.matPlan = this.sessionService.getMatPlan();
             this.setLayout();
         }
-        else {
-            this.sessionService.setMatPlan(null);
-            this.sessionService.setPeriodRow(null);
-            this.sessionService.setVerwendungRow(null);
-        }
-
-
-        // }
-
-        // else {
-        //     console.log("Kaufteildispo bereits in Session eingebunden. - nach Änderungen auf der Datenbank bitte neue Session starten");
-        //     this.periodrow = this.sessionService.getPeriodRow();
-        //     this.verwendungRow = this.sessionService.getVerwendungRow();
-        //     this.matPlan = this.sessionService.getMatPlan();
-        //     this.setLayout();
-        // }
     }
 
     roundAt0point6(zahl: number) {
@@ -334,13 +332,11 @@ export class MaterialPlanningComponent {
         else {
             var forecast = new Array<any>();
             forecast.push(this.sessionService.getForecast());
-            console.log(forecast[0]);
             for (var i = 0; i < forecast[0].article.length; i++) {
                 var planning = new rowtype();
                 planning.produktkennung = forecast[0].article[i].produktkennung;
                 for (var i2 = 0; i2 < forecast[0].article[i].geplanteProduktion.length; i2++) {
                     if (forecast[0].article[i].direktVerkauf.menge != 0 && forecast[0].article[i].geplanteProduktion[i2].periode == this.resultObj.results.period) {
-
                         planning.produktmengen.push(forecast[0].article[i].geplanteProduktion[i2].anzahl + forecast[0].article[i].direktVerkauf.menge);
                     }
                     else {
