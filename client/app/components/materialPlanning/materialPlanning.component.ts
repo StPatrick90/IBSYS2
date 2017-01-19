@@ -305,11 +305,9 @@ export class MaterialPlanningComponent {
         this.doonce++;
         if (this.doonce % 2 == 0) {
             var max_relperiod_ind = this.roundAt0point6(this.matPlan[index].summe);
-
-
             if (!this.changed || this.indexsave != index) {
-                console.log("ausgelöst");
-                this.urbestand = this.matPlan[index].bestandnWe; // urbestand ändert sich, obwohl nichts ausgelöst wurde, --> referenz ?
+
+                this.urbestand = this.matPlan[index].bestandnWe.slice();
                 this.urmenge = this.matPlan[index].bestellmenge;
             }
 
@@ -317,15 +315,7 @@ export class MaterialPlanningComponent {
                 if (x >= max_relperiod_ind) {
 
                     this.differenz = event - this.urmenge;
-
-
-                    console.log("ub: ", this.urbestand[x]);
-                    console.log("dif: ", this.differenz);
-                    console.log("balt: ", this.matPlan[index].bestandnWe[x]);
                     this.matPlan[index].bestandnWe[x] = this.urbestand[x] + Number(this.differenz);
-                    console.log("bneu: ", this.matPlan[index].bestandnWe[x]);
-                    console.log("---");
-
                     this.changed = true;
                     this.indexsave = index;
                 }
@@ -344,16 +334,24 @@ export class MaterialPlanningComponent {
         else {
             var forecast = new Array<any>();
             forecast.push(this.sessionService.getForecast());
-
+            console.log(forecast[0]);
             for (var i = 0; i < forecast[0].article.length; i++) {
                 var planning = new rowtype();
                 planning.produktkennung = forecast[0].article[i].produktkennung;
                 for (var i2 = 0; i2 < forecast[0].article[i].geplanteProduktion.length; i2++) {
-                    planning.produktmengen.push(forecast[0].article[i].geplanteProduktion[i2].anzahl);
+                    if (forecast[0].article[i].direktVerkauf.menge != 0 && forecast[0].article[i].geplanteProduktion[i2].periode == this.resultObj.results.period) {
+
+                        planning.produktmengen.push(forecast[0].article[i].geplanteProduktion[i2].anzahl + forecast[0].article[i].direktVerkauf.menge);
+                    }
+                    else {
+                        planning.produktmengen.push(forecast[0].article[i].geplanteProduktion[i2].anzahl);
+                    }
                 }
                 this.plannings.push(planning);
             }
         }
+        console.log("plannings", this.plannings);
+
     }
 
     bestellartSelected(bestellart: string, i: number) {
