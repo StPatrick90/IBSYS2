@@ -108,6 +108,14 @@ exports.LANG_DE_TRANS = {
     'setParts_searchEmptyText': 'Nummer oder Bezeichnung',
     //xmlImport
     'xmlImport': 'XML Import',
+    'xmlImport_periodenAuswahl': 'Vorhandene Periode auswählen',
+    'xmlImport_success': 'Erfolgreich!',
+    'xmlImport_inbound': 'erfolgreich eingebunden!!',
+    'xmlImport_proceed': 'Fortfahren',
+    'xmlImport_wrong': 'Fehler!',
+    'xmlImport_periodRight': 'Die Periode wurde nicht richtig eingebunden!',
+    'xmlImport_periodwrong': 'Bitte versuche es erneut oder wähle die Periode über das DropDown Menu.',
+    'xmlImport_periodai': 'ist schon eingebunden!',
     //prediction
     'binding_orders': 'Verbindliche Aufträge',
     'period': 'Periode',
