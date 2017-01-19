@@ -175,5 +175,9 @@ export const LANG_DE_TRANS = {
     'forecast_conPenalty': 'Konventionalstrafe',
 
 //Task
-    'task_todoList': 'Todo Liste'
+    'task_todoList': 'Todo Liste',
+
+//Home
+    'home_welcome': 'Willkommen zu deinem genialen PPS Tool. Spring in dein Workflow:',
+    'hoem_or': 'oder springe in dein Dashboard:'
 };

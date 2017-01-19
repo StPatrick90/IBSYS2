@@ -159,6 +159,9 @@ exports.LANG_DE_TRANS = {
     'forecast_price': 'Preis',
     'forecast_conPenalty': 'Konventionalstrafe',
     //Task
-    'task_todoList': 'Todo Liste'
+    'task_todoList': 'Todo Liste',
+    //Home
+    'home_welcome': 'Willkommen zu deinem genialen PPS Tool. Spring in dein Workflow:',
+    'hoem_or': 'oder springe in dein Dashboard:'
 };
 //# sourceMappingURL=lang-de.js.map

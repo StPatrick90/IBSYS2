@@ -176,5 +176,9 @@ export const LANG_EN_TRANS = {
     'forecast_conPenalty': 'Contract penalty',
 
 //Task
-    'task_todoList': 'Todolist'
+    'task_todoList': 'Todolist',
+
+//Home
+    'home_welcome': 'Welcome to your awesome PPS Tool. Let´s get started! Jump to your workflow:',
+    'hoem_or': 'or jump to your Dashboard:'
 };
