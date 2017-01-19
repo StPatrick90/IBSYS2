@@ -14,10 +14,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var part_service_1 = require("../../services/part.service");
 var session_service_1 = require("../../services/session.service");
+var translate_pipe_1 = require("../../translate/translate.pipe");
 var MaterialPlanningEPComponent = (function () {
-    function MaterialPlanningEPComponent(partService, sessionService) {
+    function MaterialPlanningEPComponent(partService, sessionService, translatePipe) {
         this.partService = partService;
         this.sessionService = sessionService;
+        this.translatePipe = translatePipe;
         this.columns = 14;
         this.partsList = Array();
         this.tmp_partsList = Array();
@@ -93,7 +95,7 @@ var MaterialPlanningEPComponent = (function () {
     MaterialPlanningEPComponent.prototype.initMultiSelects = function () {
         for (var _i = 0, _a = this.pParts; _i < _a.length; _i++) {
             var pt = _a[_i];
-            this.productOptions.push({ id: pt.nummer, name: pt.bezeichnung.toString() });
+            this.productOptions.push({ id: pt.nummer, name: this.translatePipe.transform(pt.bezeichnung.toString(), null) });
         }
         this.productSettings = {
             pullRight: false,
@@ -335,7 +337,7 @@ MaterialPlanningEPComponent = __decorate([
         selector: 'materialPlanningEP',
         templateUrl: 'materialPlanningEP.component.html'
     }),
-    __metadata("design:paramtypes", [part_service_1.PartService, session_service_1.SessionService])
+    __metadata("design:paramtypes", [part_service_1.PartService, session_service_1.SessionService, translate_pipe_1.TranslatePipe])
 ], MaterialPlanningEPComponent);
 exports.MaterialPlanningEPComponent = MaterialPlanningEPComponent;
 //# sourceMappingURL=materialPlanningEP.component.js.map

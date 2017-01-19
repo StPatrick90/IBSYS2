@@ -23,7 +23,7 @@ import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import {MultiselectDropdownModule} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
 import {LocalStorageService} from "angular2-localstorage/LocalStorageEmitter";
 import {DndModule} from 'ng2-dnd';
-import { PartsListsComponent} from './components/settings/partsLists/partsLists.component';
+import { PartsListsComponent} from './components/overview/partsLists/partsLists.component';
 import { PrioComponent } from './components/prio/prio.component';
 import {PartPipe} from './pipes/parts.pipe';
 import { MaterialPlanningEPComponent } from './components/materialPlanningEP/materialPlanningEP.component';

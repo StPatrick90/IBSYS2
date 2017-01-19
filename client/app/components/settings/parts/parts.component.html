@@ -79,7 +79,7 @@
                 {{pt.nummer}}
             </td>
             <td width="25%">
-                {{pt.bezeichnung}}
+                {{pt.bezeichnung | translate}}
             </td>
             <td width="10%">
                 {{pt.typ}}
@@ -124,11 +124,11 @@
                     <input type="checkbox" [checked]="checkedParts[pts.nummer]" (click)="updateCheckedStatus(2,pts)">
                 </div>
                 <div class="col-md-6" align="left">
-                    {{pts.nummer + " - " + pts.bezeichnung}}
+                    {{pts.nummer + " - "}}{{pts.bezeichnung | translate}}
                 </div>
                 <div class="col-md-4">
                     <input type="number" min="1" [(ngModel)]="anzahl[pts.nummer]" name="anzahl"
-                           class="form-control" placeholder="Anzahl">
+                           class="form-control" placeholder="{{'setParts_amount' | translate}}">
                 </div>
                 <br><br>
             </div>
@@ -166,15 +166,15 @@
                     <input type="checkbox" [checked]="checkedAP[ws.nummer]" (click)="updateCheckedStatus(1,ws)">
                 </div>
                 <div class="col-md-4" align="left">
-                    {{ws.nummer + " - " + ws.name}}
+                    {{ws.nummer + " - "}}{{ws.name | translate}}
                 </div>
                 <div class="col-md-2">
                     <input type="number" min="1" [(ngModel)]="ruestZeit[ws.nummer]" name="ruestZeit"
-                           class="form-control" placeholder="Rüstzeit">
+                           class="form-control" placeholder="{{'setParts_setUp' | translate}}">
                 </div>
                 <div class="col-md-2">
                     <input type="number" min="1" [(ngModel)]="fertigungsZeit[ws.nummer]" name="fertigungsZeit"
-                           class="form-control" placeholder="Fertigungszeit">
+                           class="form-control" placeholder=" {{'setParts_procTime' | translate}}">
                 </div>
                 <div class="col-md-3">
                     <ss-multiselect-dropdown [options]="nextWsOptions" [(ngModel)]="nextArbeitsplaetze[ws.nummer]"

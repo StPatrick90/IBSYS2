@@ -11,26 +11,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 17.12.2016.
  */
-var core_1 = require('@angular/core');
+var core_1 = require("@angular/core");
+var translate_pipe_1 = require("../translate/translate.pipe");
 // Tell Angular2 we're creating a Pipe with TypeScript decorators
 var PartPipe = (function () {
-    function PartPipe() {
+    function PartPipe(translatePipe) {
+        this.translatePipe = translatePipe;
     }
     PartPipe.prototype.transform = function (value, args) {
+        var _this = this;
         if (args === undefined || args === null || args === "") {
             return value;
         }
         return value.filter(function (part) {
-            return part.bezeichnung.toUpperCase().includes(args.toUpperCase()) || part.nummer === Number.parseInt(args.toUpperCase());
+            return part.bezeichnung.toUpperCase().includes(args.toUpperCase()) || part.nummer === Number.parseInt(args.toUpperCase()) || _this.translatePipe.transform(part.bezeichnung.toString(), null).toUpperCase().includes(args.toUpperCase());
         });
     };
-    PartPipe = __decorate([
-        core_1.Pipe({
-            name: 'partPipe'
-        }), 
-        __metadata('design:paramtypes', [])
-    ], PartPipe);
     return PartPipe;
 }());
+PartPipe = __decorate([
+    core_1.Pipe({
+        name: 'partPipe'
+    }),
+    __metadata("design:paramtypes", [translate_pipe_1.TranslatePipe])
+], PartPipe);
 exports.PartPipe = PartPipe;
 //# sourceMappingURL=parts.pipe.js.map

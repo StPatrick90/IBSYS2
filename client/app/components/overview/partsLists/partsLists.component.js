@@ -15,11 +15,13 @@ var core_1 = require("@angular/core");
 var session_service_1 = require("../../../services/session.service");
 var part_1 = require("../../../model/part");
 var part_service_1 = require("../../../services/part.service");
+var translate_pipe_1 = require("../../../translate/translate.pipe");
 var PartsListsComponent = (function () {
-    function PartsListsComponent(partservice, sessionService) {
+    function PartsListsComponent(partservice, sessionService, translatePipe) {
         var _this = this;
         this.partservice = partservice;
         this.sessionService = sessionService;
+        this.translatePipe = translatePipe;
         this.part = new part_1.Part();
         this.partsList = Object();
         this.columns = 0;
@@ -51,7 +53,7 @@ var PartsListsComponent = (function () {
     PartsListsComponent.prototype.initMultiSelects = function () {
         for (var _i = 0, _a = this.pparts; _i < _a.length; _i++) {
             var pt = _a[_i];
-            this.productOptions.push({ id: pt.nummer, name: pt.bezeichnung.toString() });
+            this.productOptions.push({ id: pt.nummer, name: this.translatePipe.transform(pt.bezeichnung.toString(), null) });
         }
         this.productSettings = {
             pullRight: false,
@@ -257,7 +259,7 @@ PartsListsComponent = __decorate([
         selector: 'partsLists',
         templateUrl: 'partsLists.component.html'
     }),
-    __metadata("design:paramtypes", [part_service_1.PartService, session_service_1.SessionService])
+    __metadata("design:paramtypes", [part_service_1.PartService, session_service_1.SessionService, translate_pipe_1.TranslatePipe])
 ], PartsListsComponent);
 exports.PartsListsComponent = PartsListsComponent;
 //# sourceMappingURL=partsLists.component.js.map

@@ -10,6 +10,7 @@ import {
     IMultiSelectSettings,
     IMultiSelectTexts
 } from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
+import {TranslatePipe}   from '../../../translate/translate.pipe';
 
 @Component({
     moduleId: module.id,
@@ -34,7 +35,7 @@ export class PartsListsComponent {
     private productSettings: IMultiSelectSettings;
     private multiSelectTexts: IMultiSelectTexts;
 
-    constructor(private partservice: PartService, private sessionService: SessionService) {
+    constructor(private partservice: PartService, private sessionService: SessionService, private translatePipe:TranslatePipe) {
         if (this.sessionService.getParts() != null || this.sessionService.getParts() != undefined) {
             this.parts = this.sessionService.getParts();
             this.pparts = this.sessionService.getParts().filter(item => item.typ == "P");
@@ -53,7 +54,7 @@ export class PartsListsComponent {
 
     initMultiSelects() {
         for (let pt of this.pparts) {
-            this.productOptions.push({id: pt.nummer, name: pt.bezeichnung.toString()});
+            this.productOptions.push({id: pt.nummer, name: this.translatePipe.transform(pt.bezeichnung.toString(),null)});
         }
 
         this.productSettings = {

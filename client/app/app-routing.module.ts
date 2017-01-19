@@ -12,7 +12,7 @@ import {PredictionComponent} from './components/prediction/prediction.component'
 import {WorkstationsComponent} from './components/settings/workstations/workstations.component';
 import {PartsComponent} from './components/settings/parts/parts.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
-import {PartsListsComponent} from './components/settings/partsLists/partsLists.component';
+import {PartsListsComponent} from './components/overview/partsLists/partsLists.component';
 import { PrioComponent } from './components/prio/prio.component';
 import {MaterialPlanningEPComponent} from './components/materialPlanningEP/materialPlanningEP.component';
 import { WarehousestockComponent } from './components/overview/warehousestock/warehousestock.component';

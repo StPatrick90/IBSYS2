@@ -89,7 +89,7 @@
 <div class="container-fluid well" [hidden]="!(auswahl != undefined && auswahl.length == 1)">
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <p>{{ "1x " + part.typ + part.nummer + " - " + part.bezeichnung}}</p>
+            <p>{{part.typ + part.nummer + " - "}}{{part.bezeichnung | translate}}</p>
         </div>
         <div class="panel-body">
             <table width="100%" align="top">

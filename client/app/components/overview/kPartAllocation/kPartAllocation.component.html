@@ -6,14 +6,14 @@
     <div class="row" *ngFor="let kpart of kparts  | partPipe: searchText">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                {{kpart.nummer + " - " + kpart.bezeichnung}}
+                {{kpart.nummer + " - "}}{{kpart.bezeichnung | translate}}
             </div>
             <div class="panel-body">
                {{'overKPart_allocation' | translate}}
                <span *ngFor="let part of partAllocation[kpart.nummer]">
                    <div class="panel panel-info">
                        <div class="panel-heading">
-                            {{part.nummer + " - " + part.bezeichnung }}
+                            {{part.nummer + " - "}}{{part.bezeichnung | translate}}
                        </div>
                    </div>
                 </span>

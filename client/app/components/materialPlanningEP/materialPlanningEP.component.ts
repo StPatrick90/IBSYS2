@@ -11,6 +11,7 @@ import {
     IMultiSelectTexts
 } from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
 import {Forecast} from '../../model/forecast';
+import {TranslatePipe}   from '../../translate/translate.pipe';
 
 @Component({
     moduleId: module.id,
@@ -55,7 +56,7 @@ export class MaterialPlanningEPComponent {
     forecastVerbindlicheAuftraege: Array<any> = new Array<any>();
     forecastGeplLager: Array<any> = new Array<any>();
 
-    constructor(private partService: PartService, private sessionService: SessionService) {
+    constructor(private partService: PartService, private sessionService: SessionService, private translatePipe:TranslatePipe) {
     }
 
     ngOnInit() {
@@ -111,7 +112,7 @@ export class MaterialPlanningEPComponent {
 
     initMultiSelects() {
         for (let pt of this.pParts) {
-            this.productOptions.push({id: pt.nummer, name: pt.bezeichnung.toString()});
+            this.productOptions.push({id: pt.nummer, name: this.translatePipe.transform(pt.bezeichnung.toString(),null)});
         }
 
         this.productSettings = {
