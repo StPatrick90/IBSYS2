@@ -22,6 +22,7 @@ var ForecastComponent = (function () {
         this.verbdindlAuftr = new Array();
         this.geplProd = new Array();
         this.vorausBestand = new Array();
+        this.forecasts = new Array();
         this.menge = new Array();
         this.preis = new Array();
         this.strafe = new Array();
@@ -40,6 +41,12 @@ var ForecastComponent = (function () {
         }, function (err) { return console.error(err); }, function () { return _this.initAll(); });
     }
     ForecastComponent.prototype.initAll = function () {
+        if (this.sessionService.getForecast()) {
+            while (this.forecasts && this.forecasts.length > 0) {
+                this.forecasts.pop();
+            }
+            this.forecasts.push(this.sessionService.getForecast());
+        }
         if (this.forecasts) {
             for (var _i = 0, _a = this.forecasts; _i < _a.length; _i++) {
                 var fc = _a[_i];

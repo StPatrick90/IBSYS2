@@ -18,7 +18,7 @@ export class ForecastComponent {
     verbdindlAuftr: Array<number> = new Array<number>();
     geplProd: Array<number> = new Array<number>();
     vorausBestand: Array<number> = new Array<number>();
-    forecasts: Array<Forecast>;
+    forecasts: Array<Forecast> = new Array<Forecast>();
 
     menge: Array<number> = new Array<number>();
     preis: Array<number> = new Array<number>();
@@ -41,9 +41,16 @@ export class ForecastComponent {
                 },
                 err => console.error(err),
                 () => this.initAll());
+
     }
 
     initAll() {
+        if(this.sessionService.getForecast()){
+            while (this.forecasts && this.forecasts.length > 0) {
+                this.forecasts.pop();
+            }
+            this.forecasts.push(this.sessionService.getForecast());
+        }
         if (this.forecasts) {
             for (let fc of this.forecasts) {
                 if (fc.period === this.period) {
