@@ -85,6 +85,7 @@
                 <div class="panel-body">
                     <ul class="list-group" dnd-sortable-container [sortableData]="pParts" (dragend)="reloadProcess()">
                         <li *ngFor="let item of pParts; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{i + 1}}. {{item.typ}} {{item.nummer}}</li>
+                        <li class="list-group-item"><button class="btn btn-success" style="width: 100%" (click)="onClickJumptron('endProduct')">Proceed</button></li>
                     </ul>
                 </div>
             </div>

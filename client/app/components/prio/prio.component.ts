@@ -52,7 +52,6 @@ export class PrioComponent {
     splittingAnzahl: number;
     splittingAnzahl2: number;
 
-
     constructor(private sessionService: SessionService, private  partService: PartService, private capacityPlanningService: CapacityPlanningService ) {
     }
 
@@ -94,6 +93,7 @@ export class PrioComponent {
         this.produzierbareAuftraege.length = 0;
         this.nPAuftraege.length = 0;
         this.outPutArray.length = 0;
+        this.clearReihenfolge();
 
         if(area === 'automatic') {
             this.defaultAblauf.length = 0;
@@ -422,6 +422,7 @@ export class PrioComponent {
                 this.onClickJumptron('endProduct');
                 return;
             }
+            this.clearReihenfolge();
             this.nPAuftraege.length = 0;
             this.outPutArray.length = 0;
             this.defaultAblauf.length = 0;
@@ -455,6 +456,7 @@ export class PrioComponent {
         this.modalSplitting.close();
     }
     saveModalView(){
+        this.splittingAnzahl = Number((this.splittingAnzahl));
         if(typeof this.splittingAnzahl !== 'number')
             return;
 
@@ -488,6 +490,14 @@ export class PrioComponent {
             return true;
         }
         return false;
+    }
+
+    clearReihenfolge(){
+        console.log(this.reihenfolgen);
+        for(var sequence of this.reihenfolgen){
+            sequence.prioTasks.length = 0;
+            sequence.ruestzeit = 0;
+        }
     }
 }
 

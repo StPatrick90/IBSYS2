@@ -74,6 +74,7 @@ var PrioComponent = (function () {
         this.produzierbareAuftraege.length = 0;
         this.nPAuftraege.length = 0;
         this.outPutArray.length = 0;
+        this.clearReihenfolge();
         if (area === 'automatic') {
             this.defaultAblauf.length = 0;
             this.defaultAblauf.push(18, 13, 7, 19, 14, 8, 20, 15, 9, 49, 10, 4, 54, 11, 5, 29, 12, 6, 50, 17, 16, 55, 30, 51, 26, 56, 31, 1, 2, 3);
@@ -382,6 +383,7 @@ var PrioComponent = (function () {
                 this.onClickJumptron('endProduct');
                 return;
             }
+            this.clearReihenfolge();
             this.nPAuftraege.length = 0;
             this.outPutArray.length = 0;
             this.defaultAblauf.length = 0;
@@ -413,6 +415,7 @@ var PrioComponent = (function () {
         this.modalSplitting.close();
     };
     PrioComponent.prototype.saveModalView = function () {
+        this.splittingAnzahl = Number((this.splittingAnzahl));
         if (typeof this.splittingAnzahl !== 'number')
             return;
         if (this.splittingAnzahl > 0) {
@@ -440,6 +443,14 @@ var PrioComponent = (function () {
             return true;
         }
         return false;
+    };
+    PrioComponent.prototype.clearReihenfolge = function () {
+        console.log(this.reihenfolgen);
+        for (var _i = 0, _a = this.reihenfolgen; _i < _a.length; _i++) {
+            var sequence = _a[_i];
+            sequence.prioTasks.length = 0;
+            sequence.ruestzeit = 0;
+        }
     };
     __decorate([
         core_1.ViewChild('splitting'), 
