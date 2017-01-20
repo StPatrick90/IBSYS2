@@ -34,7 +34,7 @@ export class SessionService {
     @SessionStorage() private reihenfolgen: Array<Sequence> = [];
     @SessionStorage() private prioOutput: Array<any> = []; // Teil und Anzahl
     @SessionStorage() private capacities: Array<Capacity> = [];
-
+    @SessionStorage() private _fromothercomp: boolean;
 
     constructor(private http: Http) {
         console.log('Session Service Initialized...');
@@ -377,6 +377,14 @@ export class SessionService {
         return this.capacities;
     }
 
+    getfromothercomp(): boolean {
+        return this._fromothercomp;
+    }
+
+    setfromothercomp(value: boolean) {
+        this._fromothercomp = value;
+    }
+
     clear() {
         this.setResultObject(null);
         this.setParts(null);
@@ -390,6 +398,7 @@ export class SessionService {
         this.setActualPeriod(null);
         this.setForecast(null);
         this.setCapacities(null);
+        this.setfromothercomp(null);
     }
 
 }

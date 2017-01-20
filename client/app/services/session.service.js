@@ -319,6 +319,12 @@ var SessionService = (function () {
     SessionService.prototype.getCapacities = function () {
         return this.capacities;
     };
+    SessionService.prototype.getfromothercomp = function () {
+        return this._fromothercomp;
+    };
+    SessionService.prototype.setfromothercomp = function (value) {
+        this._fromothercomp = value;
+    };
     SessionService.prototype.clear = function () {
         this.setResultObject(null);
         this.setParts(null);
@@ -332,6 +338,7 @@ var SessionService = (function () {
         this.setActualPeriod(null);
         this.setForecast(null);
         this.setCapacities(null);
+        this.setfromothercomp(null);
     };
     __decorate([
         WebStorage_1.SessionStorage(), 
@@ -398,6 +405,10 @@ var SessionService = (function () {
         WebStorage_1.SessionStorage(), 
         __metadata('design:type', Array)
     ], SessionService.prototype, "capacities", void 0);
+    __decorate([
+        WebStorage_1.SessionStorage(), 
+        __metadata('design:type', Boolean)
+    ], SessionService.prototype, "_fromothercomp", void 0);
     SessionService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

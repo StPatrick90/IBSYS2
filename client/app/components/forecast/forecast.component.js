@@ -107,55 +107,65 @@ var ForecastComponent = (function () {
         return this.verbdindlAuftr["P_" + part + "_" + period] ? this.verbdindlAuftr["P_" + part + "_" + period] : 0;
     };
     ForecastComponent.prototype.saveForecast = function () {
-        var forecast = new forecast_1.Forecast();
-        forecast.article = new Array();
-        var direktVerkauf;
-        for (var _i = 0, _a = this.pParts; _i < _a.length; _i++) {
-            var pPart = _a[_i];
-            var verbdindlAuftr = new Array();
-            var geplProd = new Array();
-            var vorausBestand = new Array();
-            for (var i = this.period; i <= this.period + 3; i++) {
-                if (this.verbdindlAuftr["P_" + pPart.nummer + "_" + i]) {
-                    verbdindlAuftr.push({
-                        periode: i,
-                        anzahl: this.verbdindlAuftr["P_" + pPart.nummer + "_" + i] ? this.verbdindlAuftr["P_" + pPart.nummer + "_" + i] : 0
-                    });
+        if (this.sessionService.getMatPlan() === null || !this.sessionService.getfromothercomp()) {
+            var forecast = new forecast_1.Forecast();
+            forecast.article = new Array();
+            var direktVerkauf = void 0;
+            for (var _i = 0, _a = this.pParts; _i < _a.length; _i++) {
+                var pPart = _a[_i];
+                var verbdindlAuftr = new Array();
+                var geplProd = new Array();
+                var vorausBestand = new Array();
+                for (var i = this.period; i <= this.period + 3; i++) {
+                    if (this.verbdindlAuftr["P_" + pPart.nummer + "_" + i]) {
+                        verbdindlAuftr.push({
+                            periode: i,
+                            anzahl: this.verbdindlAuftr["P_" + pPart.nummer + "_" + i] ? this.verbdindlAuftr["P_" + pPart.nummer + "_" + i] : 0
+                        });
+                    }
                 }
-            }
-            for (var i = this.period; i <= this.period + 3; i++) {
-                if (this.geplProd["P_" + pPart.nummer + "_" + i]) {
-                    geplProd.push({
-                        periode: i,
-                        anzahl: this.geplProd["P_" + pPart.nummer + "_" + i] ? this.geplProd["P_" + pPart.nummer + "_" + i] : 0
-                    });
+                for (var i = this.period; i <= this.period + 3; i++) {
+                    if (this.geplProd["P_" + pPart.nummer + "_" + i]) {
+                        geplProd.push({
+                            periode: i,
+                            anzahl: this.geplProd["P_" + pPart.nummer + "_" + i] ? this.geplProd["P_" + pPart.nummer + "_" + i] : 0
+                        });
+                    }
                 }
-            }
-            for (var i = this.period; i <= this.period + 3; i++) {
-                if (this.vorausBestand["P_" + pPart.nummer + "_" + i]) {
-                    vorausBestand.push({
-                        periode: i,
-                        anzahl: this.vorausBestand["P_" + pPart.nummer + "_" + i] ? this.vorausBestand["P_" + pPart.nummer + "_" + i] : 0
-                    });
+                for (var i = this.period; i <= this.period + 3; i++) {
+                    if (this.vorausBestand["P_" + pPart.nummer + "_" + i]) {
+                        vorausBestand.push({
+                            periode: i,
+                            anzahl: this.vorausBestand["P_" + pPart.nummer + "_" + i] ? this.vorausBestand["P_" + pPart.nummer + "_" + i] : 0
+                        });
+                    }
                 }
+                direktVerkauf = {
+                    menge: this.menge["P_" + pPart.nummer] ? this.menge["P_" + pPart.nummer] : 0,
+                    preis: this.preis["P_" + pPart.nummer] ? this.preis["P_" + pPart.nummer] : 0,
+                    strafe: this.strafe["P_" + pPart.nummer] ? this.strafe["P_" + pPart.nummer] : 0
+                };
+                forecast.period = this.period;
+                forecast.article.push({
+                    partNr: pPart.nummer,
+                    verbdindlicheAuftraege: verbdindlAuftr,
+                    geplanteProduktion: geplProd,
+                    voraussichtlicherBestand: vorausBestand,
+                    direktVerkauf: direktVerkauf,
+                    produktkennung: pPart.bezeichnung.charAt(0)
+                });
             }
-            direktVerkauf = {
-                menge: this.menge["P_" + pPart.nummer] ? this.menge["P_" + pPart.nummer] : 0,
-                preis: this.preis["P_" + pPart.nummer] ? this.preis["P_" + pPart.nummer] : 0,
-                strafe: this.strafe["P_" + pPart.nummer] ? this.strafe["P_" + pPart.nummer] : 0
-            };
-            forecast.period = this.period;
-            forecast.article.push({
-                partNr: pPart.nummer,
-                verbdindlicheAuftraege: verbdindlAuftr,
-                geplanteProduktion: geplProd,
-                voraussichtlicherBestand: vorausBestand,
-                direktVerkauf: direktVerkauf,
-                produktkennung: pPart.bezeichnung.charAt(0)
-            });
+            this.sessionService.setForecast(forecast);
+            this.sessionService.setMatPlan(null);
+            this.sessionService.setPartOrders(null);
+            this.sessionService.setPlannedWarehouseStock(null);
+            console.log("null gesetzt");
+            console.log("patrickfc", forecast);
         }
-        this.sessionService.setForecast(forecast);
-        console.log("patrickfc", forecast);
+        else {
+            alert("Achtung: Verändern von Parametern löscht Einträge aus folgenden Komponenten !");
+            this.sessionService.setfromothercomp(false);
+        }
     };
     ForecastComponent = __decorate([
         core_1.Component({

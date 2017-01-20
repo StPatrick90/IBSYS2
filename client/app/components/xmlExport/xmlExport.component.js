@@ -56,17 +56,7 @@ var XmlExportComponent = (function () {
     XmlExportComponent.prototype.convertReihenfolgen = function (capa) {
         if (capa === null)
             return;
-        capa = capa.sort(function (a, b) {
-            var numA = a.workstationNumber;
-            var numB = b.workstationNumber;
-            if (numA > numB) {
-                return 1;
-            }
-            if (numA < numB) {
-                return -1;
-            }
-            return 0;
-        });
+        capa = capa.sort(function (item) { return item.workstationNumber; });
         for (var _i = 0, capa_1 = capa; _i < capa_1.length; _i++) {
             var c = capa_1[_i];
             this.mergedObjects.input.workingtimelist.push({ workingtime: '', attr: { station: c.workstationNumber, shift: c.schichten, overtime: c.ueberstunden } });

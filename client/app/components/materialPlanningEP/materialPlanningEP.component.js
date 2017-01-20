@@ -47,6 +47,7 @@ var MaterialPlanningEPComponent = (function () {
     }
     MaterialPlanningEPComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.sessionService.setfromothercomp(true);
         if (this.sessionService.getResultObject()) {
             this.period = Number.parseInt(this.sessionService.getResultObject().results.period);
         }

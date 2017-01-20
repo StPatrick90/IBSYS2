@@ -77,6 +77,7 @@ var MaterialPlanningComponent = (function () {
     };
     MaterialPlanningComponent.prototype.setParameters = function () {
         if (this.sessionService.getMatPlan() == null || this.sessionService.getActualPeriod() != Number(this.resultObj.results.period)) {
+            this.sessionService.setfromothercomp(true);
             this.matPlan = new Array();
             var aktuellePeriode = this.resultObj.results.period;
             this.getBruttoBedarfandPeriods();
@@ -272,8 +273,10 @@ var MaterialPlanningComponent = (function () {
                 if (x >= max_relperiod_ind) {
                     this.differenz = event - this.urmenge;
                     this.matPlan[index].bestandnWe[x] = this.urbestand[x] + Number(this.differenz);
+                    this.matPlan[index].bestellmenge = event;
                     this.changed = true;
                     this.indexsave = index;
+                    this.sessionService.setMatPlan(this.matPlan);
                 }
             }
         }

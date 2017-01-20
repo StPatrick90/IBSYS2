@@ -100,6 +100,7 @@ export class MaterialPlanningComponent {
 
     setParameters() {
         if (this.sessionService.getMatPlan() == null || this.sessionService.getActualPeriod() != Number(this.resultObj.results.period)) {
+            this.sessionService.setfromothercomp(true);
             this.matPlan = new Array<matPlanRow>();
             var aktuellePeriode = this.resultObj.results.period;
             this.getBruttoBedarfandPeriods();
@@ -276,8 +277,6 @@ export class MaterialPlanningComponent {
                 this.sessionService.setPeriodRow(null);
                 this.sessionService.setVerwendungRow(null);
             }
-
-
         }
 
         else {
@@ -314,8 +313,10 @@ export class MaterialPlanningComponent {
 
                     this.differenz = event - this.urmenge;
                     this.matPlan[index].bestandnWe[x] = this.urbestand[x] + Number(this.differenz);
+                    this.matPlan[index].bestellmenge = event;
                     this.changed = true;
                     this.indexsave = index;
+                    this.sessionService.setMatPlan(this.matPlan);
                 }
             }
         }
