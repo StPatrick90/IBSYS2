@@ -98,6 +98,11 @@ var AppComponent = (function () {
             }
         }
     };
+    AppComponent.prototype.logout = function () {
+        this.hideSidebar = true;
+        this.loginSuccess = false;
+        this.password = "";
+    };
     AppComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

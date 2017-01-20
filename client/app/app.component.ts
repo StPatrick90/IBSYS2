@@ -96,7 +96,11 @@ export class AppComponent {
                 this.loginSuccess = true;
             }
         }
-
+    }
+    logout(){
+        this.hideSidebar = true;
+        this.loginSuccess = false;
+        this.password = "";
     }
 
 }
