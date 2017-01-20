@@ -11,10 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 18.12.2016.
  */
-var core_1 = require("@angular/core");
-var part_service_1 = require("../../services/part.service");
-var session_service_1 = require("../../services/session.service");
-var translate_pipe_1 = require("../../translate/translate.pipe");
+var core_1 = require('@angular/core');
+var part_service_1 = require('../../services/part.service');
+var session_service_1 = require('../../services/session.service');
+var translate_pipe_1 = require('../../translate/translate.pipe');
 var MaterialPlanningEPComponent = (function () {
     function MaterialPlanningEPComponent(partService, sessionService, translatePipe) {
         this.partService = partService;
@@ -329,15 +329,15 @@ var MaterialPlanningEPComponent = (function () {
         }
         this.partsListSingle = this.partsList.filter(function (item) { return item.produkt == _this.part.nummer; });
     };
+    MaterialPlanningEPComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'materialPlanningEP',
+            templateUrl: 'materialPlanningEP.component.html'
+        }), 
+        __metadata('design:paramtypes', [part_service_1.PartService, session_service_1.SessionService, translate_pipe_1.TranslatePipe])
+    ], MaterialPlanningEPComponent);
     return MaterialPlanningEPComponent;
 }());
-MaterialPlanningEPComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'materialPlanningEP',
-        templateUrl: 'materialPlanningEP.component.html'
-    }),
-    __metadata("design:paramtypes", [part_service_1.PartService, session_service_1.SessionService, translate_pipe_1.TranslatePipe])
-], MaterialPlanningEPComponent);
 exports.MaterialPlanningEPComponent = MaterialPlanningEPComponent;
 //# sourceMappingURL=materialPlanningEP.component.js.map

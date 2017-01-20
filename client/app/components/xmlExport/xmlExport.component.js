@@ -11,9 +11,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var xmlImport_service_1 = require("../../services/xmlImport.service");
-var session_service_1 = require("../../services/session.service");
+var core_1 = require('@angular/core');
+var xmlImport_service_1 = require('../../services/xmlImport.service');
+var session_service_1 = require('../../services/session.service');
 var saveAs = require('file-saver');
 var XmlExportComponent = (function () {
     function XmlExportComponent(sessionService, xmlImportService) {
@@ -102,15 +102,15 @@ var XmlExportComponent = (function () {
         var file = new Blob([this.displayString], { type: 'text/xml;charset=utf-8' });
         saveAs(file, this.name + '.xml');
     };
+    XmlExportComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'xmlExport',
+            templateUrl: 'xmlExport.component.html'
+        }), 
+        __metadata('design:paramtypes', [session_service_1.SessionService, xmlImport_service_1.XmlImportService])
+    ], XmlExportComponent);
     return XmlExportComponent;
 }());
-XmlExportComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'xmlExport',
-        templateUrl: 'xmlExport.component.html'
-    }),
-    __metadata("design:paramtypes", [session_service_1.SessionService, xmlImport_service_1.XmlImportService])
-], XmlExportComponent);
 exports.XmlExportComponent = XmlExportComponent;
 //# sourceMappingURL=xmlExport.component.js.map

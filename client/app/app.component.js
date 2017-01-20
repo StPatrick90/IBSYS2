@@ -8,20 +8,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var task_service_1 = require("./services/task.service");
-var capacityPlanning_service_1 = require("./services/capacityPlanning.service");
-var app_service_1 = require("./services/app.service");
-var translate_service_1 = require("./translate/translate.service");
-var xmlImport_service_1 = require("./services/xmlImport.service");
-var window_service_1 = require("./services/window.service");
-var workstation_service_1 = require("./services/workstation.service");
-var part_service_1 = require("./services/part.service");
-var session_service_1 = require("./services/session.service");
-var db_service_1 = require("./services/db.service");
-var materialPlanning_service_1 = require("./services/materialPlanning.service");
-var prediction_service_1 = require("./services/prediction.service");
-var forecast_service_1 = require("./services/forecast.service");
+var core_1 = require('@angular/core');
+var task_service_1 = require('./services/task.service');
+var capacityPlanning_service_1 = require('./services/capacityPlanning.service');
+var app_service_1 = require('./services/app.service');
+var translate_service_1 = require('./translate/translate.service');
+var xmlImport_service_1 = require('./services/xmlImport.service');
+var window_service_1 = require('./services/window.service');
+var workstation_service_1 = require('./services/workstation.service');
+var part_service_1 = require('./services/part.service');
+var session_service_1 = require('./services/session.service');
+var db_service_1 = require('./services/db.service');
+var materialPlanning_service_1 = require('./services/materialPlanning.service');
+var prediction_service_1 = require('./services/prediction.service');
+var forecast_service_1 = require('./services/forecast.service');
 var AppComponent = (function () {
     function AppComponent(appService, _translate, materialPlanningService, sessionService, partService, workstationService, dbService) {
         var _this = this;
@@ -35,6 +35,7 @@ var AppComponent = (function () {
         this.mobileView = 992;
         this.toggle = false;
         this.language = "de";
+        this.hideSidebar = true;
         this.attachEvents();
         this.language = (navigator.language || navigator.userLanguage).substring(0, 2);
         this._translate.use(this.language);
@@ -84,19 +85,21 @@ var AppComponent = (function () {
     AppComponent.prototype.setLang = function (lang) {
         this._translate.use(lang || this.language);
     };
+    AppComponent.prototype.click = function () {
+        this.hideSidebar = false;
+    };
+    AppComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'my-app',
+            templateUrl: 'app.component.html',
+            providers: [task_service_1.TaskService, capacityPlanning_service_1.CapacityPlanningService, app_service_1.AppService, translate_service_1.TranslateService,
+                xmlImport_service_1.XmlImportService, window_service_1.WindowRef, workstation_service_1.WorkstationService, part_service_1.PartService, session_service_1.SessionService, db_service_1.DBService, materialPlanning_service_1.MaterialPlanningService,
+                prediction_service_1.PredictionService, forecast_service_1.ForecastService]
+        }), 
+        __metadata('design:paramtypes', [app_service_1.AppService, translate_service_1.TranslateService, materialPlanning_service_1.MaterialPlanningService, session_service_1.SessionService, part_service_1.PartService, workstation_service_1.WorkstationService, db_service_1.DBService])
+    ], AppComponent);
     return AppComponent;
 }());
-AppComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'my-app',
-        templateUrl: 'app.component.html',
-        providers: [task_service_1.TaskService, capacityPlanning_service_1.CapacityPlanningService, app_service_1.AppService, translate_service_1.TranslateService,
-            xmlImport_service_1.XmlImportService, window_service_1.WindowRef, workstation_service_1.WorkstationService, part_service_1.PartService, session_service_1.SessionService, db_service_1.DBService, materialPlanning_service_1.MaterialPlanningService,
-            prediction_service_1.PredictionService, forecast_service_1.ForecastService]
-    }),
-    __metadata("design:paramtypes", [app_service_1.AppService, translate_service_1.TranslateService, materialPlanning_service_1.MaterialPlanningService, session_service_1.SessionService,
-        part_service_1.PartService, workstation_service_1.WorkstationService, db_service_1.DBService])
-], AppComponent);
 exports.AppComponent = AppComponent;
 //# sourceMappingURL=app.component.js.map

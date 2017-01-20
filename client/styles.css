@@ -204,3 +204,17 @@ footer {
         max-width: 175px;
     }
 }
+.show{
+    -webkit-transition:opacity 5s;
+    -moz-transition:opacity 5s;
+    -o-transition:opacity 5s;
+    transition:opacity 5s;
+    opacity: 1 !important;
+}
+.step{
+    -webkit-transition:opacity 5s;
+    -moz-transition:opacity 5s;
+    -o-transition:opacity 5s;
+    transition:opacity 5s;
+    opacity: 0;
+}

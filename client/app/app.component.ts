@@ -29,6 +29,7 @@ export class AppComponent {
     toggle: boolean = false;
     language: string = "de";
     lastPeriod: string;
+    hideSidebar: boolean = true;
 
     constructor(private appService:AppService, private _translate: TranslateService,private materialPlanningService:MaterialPlanningService, private sessionService:SessionService,
                 private partService:PartService, private  workstationService:WorkstationService, private dbService: DBService){
@@ -80,5 +81,9 @@ export class AppComponent {
     setLang(lang){
         this._translate.use(lang || this.language);
     }
+    click(){
+        this.hideSidebar = false;
+    }
+
 }
 

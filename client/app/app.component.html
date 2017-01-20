@@ -1,4 +1,43 @@
-<div id="page-wrapper" [ngClass]="{'open': toggle}">
+<div *ngIf="hideSidebar" [class.show]="hideSidebar" class="container jumbotron step" style="background: #30426a">
+    <div class="item dropdown pull-right" style="margin-right: 100px;">
+        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-language fa-5x"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right">
+            <li class="dropdown-header">
+                {{'headbar_languages' | translate}}
+            </li>
+            <li class="divider"></li>
+            <li (click)="setLang('de')">
+                <a>{{'headbar_german' | translate}}</a>
+            </li>
+            <li (click)="setLang('en')">
+                <a>{{'headbar_english' | translate}}</a>
+            </li>
+        </ul>
+    </div>
+    <div style="padding-top: 150px;" >
+        <div align="center" style="color: #e0e0e0 ">
+            <h1 style="margin-bottom: 50px;">Ibsys 2 PPS Tool</h1>
+            <h3 style="margin-bottom: 20px;">{{'home_welcome' | translate}}</h3>
+            <label class="text-center"></label>
+            <div id="bc1" class="myBreadcrumb" style="margin-bottom: 40px;" (click)="click()">
+                <a class="" routerLink="/xmlImport"><div>{{'xmlImport' | translate}}</div></a>
+                <a class="" routerLink="/forecast"><div>{{'prediction_planning' | translate}}</div></a>
+                <a class="" routerLink="/materialPlanning"><div>{{'material_Planning' | translate}}</div></a>
+                <a class="" routerLink="//materialPlanningEP"><div>{{'mpEP_MaterialPlanningEP' | translate}}</div></a>
+                <a class="" routerLink="/prioritization"><div>{{'sidebar_prio' | translate}}</div></a>
+                <a class="" routerLink="/capacityPlanning"><div>{{'capacity_planning' | translate}}</div></a>
+                <a class="" routerLink="/xmlExport"><div>{{'xmlExport' | translate}}</div></a>
+            </div>
+            <h3 style="margin-bottom: 20px;">{{'hoem_or' | translate}}</h3>
+            <div id="bc2" class="myBreadcrumb">
+                <a class="" routerLink="/dashboard" (click)="click()"><div>{{'sidebar_dashboard' | translate}}</div></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="page-wrapper" [class.show]="!hideSidebar" class="step" [ngClass]="{'open': toggle}">
     <div id="sidebar-wrapper">
         <ul class="sidebar">
             <li class="sidebar-main">
@@ -90,12 +129,9 @@
                     </div>
                 </div>
             </div>
-
             <router-outlet></router-outlet>
-
         </div>
-
-
     </div>
 </div>
+
 

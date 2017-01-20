@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by Paddy on 03.11.2016.
  */
-var core_1 = require("@angular/core");
-var capacityPlanning_service_1 = require("../../services/capacityPlanning.service");
-var session_service_1 = require("../../services/session.service");
+var core_1 = require('@angular/core');
+var capacityPlanning_service_1 = require('../../services/capacityPlanning.service');
+var session_service_1 = require('../../services/session.service');
 var CapacityPlanningComponent = (function () {
     function CapacityPlanningComponent(capacityPlanningService, sessionService) {
         this.capacityPlanningService = capacityPlanningService;
@@ -235,15 +235,15 @@ var CapacityPlanningComponent = (function () {
             }
         }
     };
+    CapacityPlanningComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'capacityPlanning',
+            templateUrl: 'capacityPlanning.component.html'
+        }), 
+        __metadata('design:paramtypes', [capacityPlanning_service_1.CapacityPlanningService, session_service_1.SessionService])
+    ], CapacityPlanningComponent);
     return CapacityPlanningComponent;
 }());
-CapacityPlanningComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'capacityPlanning',
-        templateUrl: 'capacityPlanning.component.html'
-    }),
-    __metadata("design:paramtypes", [capacityPlanning_service_1.CapacityPlanningService, session_service_1.SessionService])
-], CapacityPlanningComponent);
 exports.CapacityPlanningComponent = CapacityPlanningComponent;
 //# sourceMappingURL=capacityPlanning.component.js.map
