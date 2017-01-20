@@ -20,10 +20,10 @@
         <div align="center" style="color: #e0e0e0; height: 349px;">
             <h1 style="margin-bottom: 50px;">Ibsys 2 PPS Tool</h1>
             <div [hidden]="loginSuccess">
-                <label >Username</label>
-                <input type="text" style="color: #30426a;" placeholder="username" [(ngModel)]="username">
-                <label>Password</label>
-                <input type="password" style="color: #30426a;" placeholder="password" [(ngModel)]="password">
+                <label >{{'username' | translate}}: </label>
+                <input type="text" style="color: #30426a;" placeholder="{{'username' | translate}}" [(ngModel)]="username">
+                <label>{{'password' | translate}}: </label>
+                <input type="password" style="color: #30426a;" placeholder="{{'password' | translate}}" [(ngModel)]="password">
                 <button class="btn btn-primary" (click)="trylogin()">Login</button>
             </div>
             <div [hidden]="!loginSuccess">

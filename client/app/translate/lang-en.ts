@@ -255,6 +255,8 @@ export const LANG_EN_TRANS = {
     'prio_priorization': 'Prioritization',
     'prio_notProduced': 'Not producible',
     'prio_amountnew': 'Number of the new order',
-    'prio_p': 'Refresh'
+    'prio_p': 'Refresh',
 
+    'username': 'Username',
+    'password': 'Password'
 };

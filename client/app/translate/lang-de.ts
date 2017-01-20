@@ -254,6 +254,10 @@ export const LANG_DE_TRANS = {
     'prio_priorization': 'Priorisierung',
     'prio_notProduced': 'Nicht Produzierbar',
     'prio_amountnew': 'Anzahl des neuen Auftrags',
-    'prio_p': 'Aktualisieren'
+    'prio_p': 'Aktualisieren',
+
+    'username': 'Benutzername',
+    'password': 'Passwort'
+
 
 };
