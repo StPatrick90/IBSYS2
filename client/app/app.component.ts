@@ -15,6 +15,7 @@ import { PredictionService } from './services/prediction.service';
 import {element} from "@angular/upgrade/src/angular_js";
 import { ForecastService } from './services/forecast.service';
 
+
 @Component({
     moduleId: module.id,
     selector: 'my-app',
@@ -30,6 +31,7 @@ export class AppComponent {
     language: string = "de";
     lastPeriod: string;
     hideSidebar: boolean = true;
+    loginSuccess: boolean = false;
 
     constructor(private appService:AppService, private _translate: TranslateService,private materialPlanningService:MaterialPlanningService, private sessionService:SessionService,
                 private partService:PartService, private  workstationService:WorkstationService, private dbService: DBService){
@@ -83,6 +85,18 @@ export class AppComponent {
     }
     click(){
         this.hideSidebar = false;
+    }
+
+    username:string = "";
+    password:string = "";
+
+    trylogin(){
+        if(this.username==="Testuser"){
+            if(this.password==="test"){
+                this.loginSuccess = true;
+            }
+        }
+
     }
 
 }

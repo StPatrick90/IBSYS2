@@ -16,23 +16,32 @@
             </li>
         </ul>
     </div>
-    <div style="padding-top: 150px;" >
-        <div align="center" style="color: #e0e0e0 ">
+    <div style="padding-top: 100px;" >
+        <div align="center" style="color: #e0e0e0; height: 349px;">
             <h1 style="margin-bottom: 50px;">Ibsys 2 PPS Tool</h1>
-            <h3 style="margin-bottom: 20px;">{{'home_welcome' | translate}}</h3>
-            <label class="text-center"></label>
-            <div id="bc1" class="myBreadcrumb" style="margin-bottom: 40px;" (click)="click()">
-                <a class="" routerLink="/xmlImport"><div>{{'xmlImport' | translate}}</div></a>
-                <a class="" routerLink="/forecast"><div>{{'prediction_planning' | translate}}</div></a>
-                <a class="" routerLink="/materialPlanning"><div>{{'material_Planning' | translate}}</div></a>
-                <a class="" routerLink="//materialPlanningEP"><div>{{'mpEP_MaterialPlanningEP' | translate}}</div></a>
-                <a class="" routerLink="/prioritization"><div>{{'sidebar_prio' | translate}}</div></a>
-                <a class="" routerLink="/capacityPlanning"><div>{{'capacity_planning' | translate}}</div></a>
-                <a class="" routerLink="/xmlExport"><div>{{'xmlExport' | translate}}</div></a>
+            <div [hidden]="loginSuccess">
+                <label >Username</label>
+                <input type="text" placeholder="username" [(ngModel)]="username">
+                <label>Password</label>
+                <input type="password" placeholder="password"[(ngModel)]="password">
+                <button class="btn btn-primary" (click)="trylogin()">Login</button>
             </div>
-            <h3 style="margin-bottom: 20px;">{{'hoem_or' | translate}}</h3>
-            <div id="bc2" class="myBreadcrumb">
-                <a class="" routerLink="/dashboard" (click)="click()"><div>{{'sidebar_dashboard' | translate}}</div></a>
+            <div [hidden]="!loginSuccess">
+                <h3 style="margin-bottom: 20px;">{{'home_welcome' | translate}}</h3>
+                <label class="text-center"></label>
+                <div id="bc1" class="myBreadcrumb" style="margin-bottom: 40px;" (click)="click()">
+                    <a class="" routerLink="/xmlImport"><div>{{'xmlImport' | translate}}</div></a>
+                    <a class="" routerLink="/forecast"><div>{{'prediction_planning' | translate}}</div></a>
+                    <a class="" routerLink="/materialPlanning"><div>{{'material_Planning' | translate}}</div></a>
+                    <a class="" routerLink="//materialPlanningEP"><div>{{'mpEP_MaterialPlanningEP' | translate}}</div></a>
+                    <a class="" routerLink="/prioritization"><div>{{'sidebar_prio' | translate}}</div></a>
+                    <a class="" routerLink="/capacityPlanning"><div>{{'capacity_planning' | translate}}</div></a>
+                    <a class="" routerLink="/xmlExport"><div>{{'xmlExport' | translate}}</div></a>
+                </div>
+                <h3 style="margin-bottom: 20px;">{{'hoem_or' | translate}}</h3>
+                <div id="bc2" class="myBreadcrumb">
+                    <a class="" routerLink="/dashboard" (click)="click()"><div>{{'sidebar_dashboard' | translate}}</div></a>
+                </div>
             </div>
         </div>
     </div>

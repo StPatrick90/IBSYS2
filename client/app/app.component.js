@@ -35,6 +35,10 @@ var AppComponent = (function () {
         this.mobileView = 992;
         this.toggle = false;
         this.language = "de";
+        this.hideSidebar = true;
+        this.loginSuccess = false;
+        this.username = "";
+        this.password = "";
         this.attachEvents();
         this.language = (navigator.language || navigator.userLanguage).substring(0, 2);
         this._translate.use(this.language);
@@ -83,6 +87,16 @@ var AppComponent = (function () {
     };
     AppComponent.prototype.setLang = function (lang) {
         this._translate.use(lang || this.language);
+    };
+    AppComponent.prototype.click = function () {
+        this.hideSidebar = false;
+    };
+    AppComponent.prototype.trylogin = function () {
+        if (this.username === "Testuser") {
+            if (this.password === "test") {
+                this.loginSuccess = true;
+            }
+        }
     };
     AppComponent = __decorate([
         core_1.Component({
