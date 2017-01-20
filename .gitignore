@@ -4,3 +4,5 @@
 .idea/*
 /client/typings/**/*
 /client/npm-debug.log*
+*.js
+*.map
