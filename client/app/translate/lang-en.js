@@ -241,6 +241,13 @@ exports.LANG_EN_TRANS = {
     'username': 'Username',
     'password': 'Password',
     //Tasks
-    'tasks_addTask': 'Add task'
+    'tasks_addTask': 'Add task',
+    //Comboboxes
+    'combo_checkAll': 'Check all',
+    'combo_uncheckAll': 'Uncheck all',
+    'combo_checked': 'checked',
+    'combo_checkedPlural': 'checked',
+    'combo_searchPlaceholder': 'Search...',
+    'combo_defaultTitle': 'Select'
 };
 //# sourceMappingURL=lang-en.js.map

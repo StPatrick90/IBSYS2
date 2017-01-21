@@ -68,12 +68,12 @@ var PartsListsComponent = (function () {
             maxHeight: '100px',
         };
         this.multiSelectTexts = {
-            checkAll: 'Check all',
-            uncheckAll: 'Uncheck all',
-            checked: 'checked',
-            checkedPlural: 'checked',
-            searchPlaceholder: 'Search...',
-            defaultTitle: 'Select',
+            checkAll: this.translatePipe.transform('combo_checkAll', null),
+            uncheckAll: this.translatePipe.transform('combo_uncheckAll', null),
+            checked: this.translatePipe.transform('combo_checked', null),
+            checkedPlural: this.translatePipe.transform('combo_checkedPlural', null),
+            searchPlaceholder: this.translatePipe.transform('combo_searchPlaceholder', null),
+            defaultTitle: this.translatePipe.transform('combo_defaultTitle', null),
         };
     };
     PartsListsComponent.prototype.generatePartsList = function () {

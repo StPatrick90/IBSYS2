@@ -241,6 +241,13 @@ exports.LANG_DE_TRANS = {
     'username': 'Benutzername',
     'password': 'Passwort',
     //Tasks
-    'tasks_addTask': 'Aufgabe hinzufügen'
+    'tasks_addTask': 'Aufgabe hinzufügen',
+    //Comboboxes
+    'combo_checkAll': 'Alle auswählen',
+    'combo_uncheckAll': 'Alle abwählen',
+    'combo_checked': 'Ausgewählt',
+    'combo_checkedPlural': 'Ausgewählt',
+    'combo_searchPlaceholder': 'Suchen...',
+    'combo_defaultTitle': 'Auswählen'
 };
 //# sourceMappingURL=lang-de.js.map
