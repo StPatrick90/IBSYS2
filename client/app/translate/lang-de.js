@@ -45,6 +45,8 @@ exports.LANG_DE_TRANS = {
     'dashboard_warehouse_good': 'Lagerbestand ist über ',
     'dashboard_deliveryreliabiliy_bad': 'Deine Liefertreue ist unter 100%.',
     'dashboard_deliveryreliabiliy_good': 'Gute Liefertreue!',
+    'dashboard_warehouse': 'Lager',
+    'dashboard_deliver': 'Liefertreue',
     //CapacityPlanning
     'capacity_workstations': 'Arbeitsplätze',
     'capacity_parts': 'Teile',

@@ -45,6 +45,8 @@ exports.LANG_EN_TRANS = {
     'dashboard_warehouse_good': 'Warehousstock is full filled! Over ',
     'dashboard_deliveryreliabiliy_bad': 'Your delivery reliability is under ',
     'dashboard_deliveryreliabiliy_good': 'Delivery reliability is',
+    'dashboard_warehouse': 'Warehouse',
+    'dashboard_deliver': 'Delivery Reliability',
     //CapacityPlanning
     'capacity_workstations': 'Workstations',
     'capacity_parts': 'Parts',

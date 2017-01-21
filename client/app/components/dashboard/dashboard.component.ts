@@ -29,8 +29,8 @@ export class DashboardComponent {
     @ViewChild('configuration')
     modalConfig: ModalComponent;
 
-    dashTaskTypes= ["Warehouse", "Delivery Reliability"];
-    selectedType= ["Warehouse", "Delivery Reliability"];
+    dashTaskTypes= [];
+    selectedType= [];
 
     constructor(sessionService: SessionService, dbService: DBService, private translation: TranslateService){
 
@@ -45,6 +45,10 @@ export class DashboardComponent {
                 err => console.log(err),
                 () => console.log("Periods loaded!"));
 
+        this.dashTaskTypes.push(this.translation.instant('dashboard_warehouse'));
+        this.dashTaskTypes.push(this.translation.instant('dashboard_deliver'));
+        this.selectedType.push(this.translation.instant('dashboard_warehouse'));
+        this.selectedType.push(this.translation.instant('dashboard_deliver'));
         this.bootstrapDashTasks();
     }
 
@@ -64,10 +68,10 @@ export class DashboardComponent {
         this.criticals.length = 0;
 
         for(var i = 0; i < this.selectedType.length; i++){
-            if(this.selectedType[i] === "Warehouse"){
+            if(this.selectedType[i] === "Warehouse" || this.selectedType[i] === "Lager"){
                 this.getStorageValues();
             }
-            if(this.selectedType[i] === "Delivery Reliability"){
+            if(this.selectedType[i] === "Delivery Reliability" || this.selectedType[i] === "Liefertreue"){
                 this.getDeliveryreliability();
             }
         }
@@ -151,10 +155,8 @@ export class DashboardComponent {
 
 
     getStorageValues(){
-
         var storage = [];
         storage = this.resultObj.results.warehousestock.article;
-        console.log(this.resultObj);
 
         var critValue = 0.05;
         var warnValue = 0.2;

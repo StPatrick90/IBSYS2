@@ -22,8 +22,8 @@ var DashboardComponent = (function () {
         var _this = this;
         this.translation = translation;
         this.allResults = [];
-        this.dashTaskTypes = ["Warehouse", "Delivery Reliability"];
-        this.selectedType = ["Warehouse", "Delivery Reliability"];
+        this.dashTaskTypes = [];
+        this.selectedType = [];
         this.resultObj = sessionService.getResultObject();
         this.warnings = [];
         this.normals = [];
@@ -31,6 +31,10 @@ var DashboardComponent = (function () {
         this.criticals = [];
         dbService.getResults()
             .subscribe(function (results) { _this.allResults = results; }, function (err) { return console.log(err); }, function () { return console.log("Periods loaded!"); });
+        this.dashTaskTypes.push(this.translation.instant('dashboard_warehouse'));
+        this.dashTaskTypes.push(this.translation.instant('dashboard_deliver'));
+        this.selectedType.push(this.translation.instant('dashboard_warehouse'));
+        this.selectedType.push(this.translation.instant('dashboard_deliver'));
         this.bootstrapDashTasks();
     }
     DashboardComponent.prototype.setConfig = function () {
@@ -46,10 +50,10 @@ var DashboardComponent = (function () {
         this.goods.length = 0;
         this.criticals.length = 0;
         for (var i = 0; i < this.selectedType.length; i++) {
-            if (this.selectedType[i] === "Warehouse") {
+            if (this.selectedType[i] === "Warehouse" || this.selectedType[i] === "Lager") {
                 this.getStorageValues();
             }
-            if (this.selectedType[i] === "Delivery Reliability") {
+            if (this.selectedType[i] === "Delivery Reliability" || this.selectedType[i] === "Liefertreue") {
                 this.getDeliveryreliability();
             }
         }
@@ -124,7 +128,6 @@ var DashboardComponent = (function () {
     DashboardComponent.prototype.getStorageValues = function () {
         var storage = [];
         storage = this.resultObj.results.warehousestock.article;
-        console.log(this.resultObj);
         var critValue = 0.05;
         var warnValue = 0.2;
         //goodValue = startamount

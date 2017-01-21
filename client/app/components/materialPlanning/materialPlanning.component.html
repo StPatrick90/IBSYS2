@@ -26,10 +26,9 @@
 </div>
 
 
-<body ng-app="myApp">
+<div class="container-fluid">
 
 <table width="100%" class="table-responsive table-bordered table-striped" onload="setLayout()">
-    <caption width="100%" class="text-center">{{'material_Planning' | translate}}</caption>
     <thead>
     <tr>
         <th colspan="1" class="text-center">{{'num_purchase_part' | translate}}</th>
@@ -46,7 +45,6 @@
         <th colspan="1" class="text-center">{{'ordertype' | translate}}</th>
         <th id="Bestand" colspan="1" class="text-center">{{'stock_after_receipt' | translate}}</th>
     </tr>
-
     <tr>
         <th></th>
         <th></th>
@@ -61,13 +59,8 @@
         <th></th>
         <th></th>
         <th *ngFor="let p of periodrow" scope="col" class="text-center">{{p}}</th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
     </tr>
     </thead>
-
     <tbody>
     <tr *ngFor="let m of matPlan; let i = index">
         <td class="text-center">{{m.kpartnr}}</td>
@@ -101,5 +94,5 @@
     </tr>
     </tbody>
 </table>
-<!--<button type="button" class="btn-lg btn-primary" (click)="clearSession()">Reset Session</button>-->
-</body>
+    <br>
+</div>
