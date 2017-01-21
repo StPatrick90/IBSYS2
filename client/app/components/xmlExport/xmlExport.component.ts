@@ -39,6 +39,7 @@ export class XmlExportComponent {
         this.convertReihenfolgen(this.sessionService.getCapacities());
         this.convertPrioOutput(this.sessionService.getPrioOutput());
         this.convertForcast(this.sessionService.getForecast());
+        this.convertOrder(this.sessionService.getMatPlan());
 
         this.xmlImportService.convertToXml(this.mergedObjects)
             .subscribe(xmlObj => {
@@ -88,6 +89,16 @@ export class XmlExportComponent {
             if(article.partNr === 3){
                 this.mergedObjects.input.sellwish.push({item: '', attr:{article: article.partNr, quantity: article.verbdindlicheAuftraege[0].anzahl}});
                 this.mergedObjects.input.selldirect.push({item: '', attr:{article: article.partNr, quantity: article.direktVerkauf.menge, price: article.direktVerkauf.preis, penalty: article.direktVerkauf.strafe}});
+            }
+        }
+    }
+
+    convertOrder(matplan){
+        if(matplan !== null)
+        for(var order of matplan){
+            if(order.bestellmenge !== 0 && order.bestellung !== "---"){
+                var modus = (order.bestellung === "E.")? '5': '4';
+                this.mergedObjects.input.orderlist.push({order: '', attr:{article: order.kpartnr, quantity: order.bestellmenge, modus: modus}});
             }
         }
     }
