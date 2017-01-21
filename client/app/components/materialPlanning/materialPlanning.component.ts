@@ -207,7 +207,7 @@ export class MaterialPlanningComponent {
                 matPlanRow.bestellmenge = 0;
                 matPlanRow.bestellung = "---";
                 var bereitseilbestellt: boolean = false;
-                var max_relperiod_ind: number;
+                var max_relperiod_ind: number = 0;
                 var vorigemengen: number = 0;
 
                 max_relperiod_ind = this.roundAt0point6(matPlanRow.summe);
@@ -246,8 +246,14 @@ export class MaterialPlanningComponent {
                     }
                 }
 
-                // // Bestand + Bestellmenge
-                max_relperiod_ind = this.roundAt0point6(matPlanRow.summe);
+                // Bestand + Bestellmenge
+                if (matPlanRow.bestellung === "E.") {
+                    max_relperiod_ind = this.roundAt0point6((matPlanRow.lieferfrist / 2));
+                }
+                else {
+                    max_relperiod_ind = this.roundAt0point6(matPlanRow.summe);
+                }
+
                 for (var x = 0; x < matPlanRow.bestandnWe.length; x++) {
                     if (x >= max_relperiod_ind && matPlanRow.bestellmenge != 0) {
                         matPlanRow.bestandnWe[x] = matPlanRow.bestandnWe[x] + Number(matPlanRow.bestellmenge);
@@ -301,7 +307,18 @@ export class MaterialPlanningComponent {
     bestellmengechange(event, index) {
         this.doonce++;
         if (this.doonce % 2 == 0) {
-            var max_relperiod_ind = this.roundAt0point6(this.matPlan[index].summe);
+
+            if (this.matPlan[index].bestellung === "E.") {
+                var max_relperiod_ind = this.roundAt0point6((this.matPlan[index].lieferfrist / 2));
+            }
+            else {
+                var max_relperiod_ind = this.roundAt0point6(this.matPlan[index].summe);
+
+                if (this.matPlan[index].bestellung === "---") {
+                    this.matPlan[index].bestellung = "N.";
+                }
+            }
+
             if (!this.changed || this.indexsave != index) {
 
                 this.urbestand = this.matPlan[index].bestandnWe.slice();
@@ -353,6 +370,10 @@ export class MaterialPlanningComponent {
 
     bestellartSelected(bestellart: string, i: number) {
         this.matPlan[i].bestellung = bestellart;
+
+        if (this.matPlan[i].bestellung === "---") {
+            this.matPlan[i].bestellmenge = 0;
+        }
         this.sessionService.setMatPlan(this.matPlan);
     }
 
