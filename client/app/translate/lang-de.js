@@ -174,7 +174,7 @@ exports.LANG_DE_TRANS = {
     //Parts
     'Damenfahrrad': 'Damenfahrrad',
     'Herrenfahrrad': 'Herrenfahrrad',
-    'Kinderfahrrad': 'Kindefahrrad',
+    'Kinderfahrrad': 'Kinderfahrrad',
     'Hinterradgruppe': 'Hinterradgruppe',
     'Vorderradgruppe': 'Vorderradgruppe',
     'Schutzblech hinten': 'Schutzblech hinten',
@@ -236,6 +236,8 @@ exports.LANG_DE_TRANS = {
     'prio_amountnew': 'Anzahl des neuen Auftrags',
     'prio_p': 'Aktualisieren',
     'username': 'Benutzername',
-    'password': 'Passwort'
+    'password': 'Passwort',
+    //Tasks
+    'tasks_addTask': 'Aufgabe hinzufügen'
 };
 //# sourceMappingURL=lang-de.js.map

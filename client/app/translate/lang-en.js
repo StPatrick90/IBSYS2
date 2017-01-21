@@ -236,6 +236,8 @@ exports.LANG_EN_TRANS = {
     'prio_amountnew': 'Number of the new order',
     'prio_p': 'Refresh',
     'username': 'Username',
-    'password': 'Password'
+    'password': 'Password',
+    //Tasks
+    'tasks_addTask': 'Add task'
 };
 //# sourceMappingURL=lang-en.js.map

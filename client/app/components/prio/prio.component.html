@@ -31,6 +31,7 @@
 
 </div>
 <div *ngIf="(selector == 'automatic')" class="container">
+    <div class="well">
     <h4>{{'prio_automatisch' | translate}}:</h4>
 
     <div class="row">
@@ -74,7 +75,10 @@
         </div>
     </div>
 </div>
+</div>
+
 <div *ngIf="(selector == 'endProduct')" class="container">
+    <div class="well">
     <h4>{{'prio_endprodukten' | translate}}:</h4>
     <div class="row">
         <div class="col-sm-3">
@@ -127,7 +131,10 @@
         </div>
     </div>
 </div>
+</div>
+
 <div *ngIf="(selector == 'manual')" class="container">
+    <div class="well">
     <h4>Alles Manuell:</h4>
     <div class="row">
         <div class="col-sm-3">
@@ -178,6 +185,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 <modal #splitting>
     <modal-header [show-close]="true">

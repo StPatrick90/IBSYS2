@@ -1,10 +1,22 @@
+<div class="well">
+    <div class="">
+        <div class="row">
+            <span>
+                <h2 align="center">{{'task_todoList' | translate}}
+                </h2>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
 <form class="well" (submit)="addTask($event)">
-    <h1>{{'task_todoList' | translate}}</h1>
     <div class="form-group">
-        <input type="text" [(ngModel)]="title" name="title" class="form-control" placeholder="Add Task">
+        <input type="text" [(ngModel)]="title" name="title" class="form-control" placeholder="{{'tasks_addTask' | translate}}">
     </div>
 </form>
 
+    <div class="well">
 <div class="task-list">
 <div *ngFor="let task of tasks">
         <div class="col-md-1">
@@ -14,8 +26,10 @@
             {{task.title}}
         </div>
         <div class="col-md-4">
-            <input type="button" (click)="deleteTask(task._id)" value="Delete" class="btn btn-danger">
+            <input type="button" (click)="deleteTask(task._id)" value="{{'setParts_delete' | translate}}" class="btn btn-danger">
         </div>
         <br><br>
     </div>
+</div>
+</div>
 </div>

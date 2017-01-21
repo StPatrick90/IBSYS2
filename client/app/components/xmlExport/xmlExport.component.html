@@ -11,8 +11,20 @@
     </div>
 </div>
 <div class="container">
-    Name: <input type="text" [(ngModel)]="name" style="margin-right: 10px"><button class="btn btn-success" (click)="downloadFIle()">Download!</button>
-
-    <textarea class="fullScreenTextArea" [(ngModel)]="displayString"></textarea>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">XML Export</div>
+                <div class="panel-body" style="min-height: 52px">
+                    Name: <input type="text" [(ngModel)]="name" style="margin-right: 10px"><button class="btn btn-success" (click)="downloadFIle()">Download!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10">
+        <textarea class="fullScreenTextArea" [(ngModel)]="displayString"></textarea>
+        </div>
+    </div>
 </div>
 

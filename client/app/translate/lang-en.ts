@@ -258,5 +258,8 @@ export const LANG_EN_TRANS = {
     'prio_p': 'Refresh',
 
     'username': 'Username',
-    'password': 'Password'
+    'password': 'Password',
+
+//Tasks
+    'tasks_addTask': 'Add task'
 };

@@ -192,7 +192,7 @@ export const LANG_DE_TRANS = {
 //Parts
     'Damenfahrrad': 'Damenfahrrad',
     'Herrenfahrrad': 'Herrenfahrrad',
-    'Kinderfahrrad': 'Kindefahrrad',
+    'Kinderfahrrad': 'Kinderfahrrad',
     'Hinterradgruppe': 'Hinterradgruppe',
     'Vorderradgruppe': 'Vorderradgruppe',
     'Schutzblech hinten': 'Schutzblech hinten',
@@ -257,7 +257,8 @@ export const LANG_DE_TRANS = {
     'prio_p': 'Aktualisieren',
 
     'username': 'Benutzername',
-    'password': 'Passwort'
+    'password': 'Passwort',
 
-
+//Tasks
+    'tasks_addTask': 'Aufgabe hinzufügen'
 };

@@ -51,8 +51,7 @@ export class WarehousestockComponent {
 
     public lineChartOptions:any = {
         animation: false,
-        responsive: true,
-        title: {display: true, text:this.translatePipe.transform('overWH_warehousestock',null), fontSize:30}
+        responsive: true
     };
     public lineChartColors:Array<any> = [
         {

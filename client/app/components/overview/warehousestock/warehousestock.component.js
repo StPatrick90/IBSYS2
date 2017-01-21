@@ -24,8 +24,7 @@ var WarehousestockComponent = (function () {
         this.lineChartData = [{ data: [], label: 'Warehousestock' }];
         this.lineChartOptions = {
             animation: false,
-            responsive: true,
-            title: { display: true, text: this.translatePipe.transform('overWH_warehousestock', null), fontSize: 30 }
+            responsive: true
         };
         this.lineChartColors = [
             {

@@ -1,8 +1,23 @@
 <div class="well">
-    <div class="row" style="padding-bottom: 20px">
-        <label for="part_search">{{'overKPart_search' | translate}}</label>
-        <input [(ngModel)]="searchText" class="form-control" placeholder="{{'overKPart_searchEmptyText' | translate}}" id="part_search">
+    <div class="">
+        <div class="row">
+            <span>
+                <h2 align="center">{{'sideBar_PartUsage' | translate}}
+                </h2>
+            </span>
+        </div>
     </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="well">
+            <label for="part_search">{{'overKPart_search' | translate}}</label>
+            <input [(ngModel)]="searchText" class="form-control" placeholder="{{'overKPart_searchEmptyText' | translate}}" id="part_search">
+        </div>
+    </div>
+    <div class="row">
+    <div class="well">
     <div class="row" *ngFor="let kpart of kparts  | partPipe: searchText">
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -19,6 +34,7 @@
                 </span>
             </div>
         </div>
-
+    </div>
+    </div>
     </div>
 </div>

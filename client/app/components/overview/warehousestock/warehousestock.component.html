@@ -1,31 +1,48 @@
-<style> .chart {display: block; width: 100%;} </style>
 <div class="well">
-    <div class="row">
-        <div class="col-md-10">
-            <div style="display: block;">
-                <canvas baseChart
-                        [datasets]="lineChartData"
-                        [labels]="lineChartLabels"
-                        [options]="lineChartOptions"
-                        [colors]="lineChartColors"
-                        [legend]="lineChartLegend"
-                        [chartType]="lineChartType"></canvas>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-md-10">
-            <table class="table table-responsive table-condensed">
-                <tr>
-                    <th *ngFor="let label of lineChartLabels">{{label}}</th>
-                </tr>
-                <tr *ngFor="let d of lineChartData; let jd=index">
-                    <td *ngFor="let label of lineChartLabels; let j=index">
-                        <span *ngIf="jd == 0">{{d.data[j]}}</span>
-                    </td>
-                </tr>
-            </table>
+    <div class="">
+        <div class="row">
+            <span>
+                <h2 align="center">{{'sidebar_warehouseStock' | translate}}
+                </h2>
+            </span>
         </div>
     </div>
 </div>
+
+<style> .chart {
+    display: block;
+    width: 100%;
+} </style>
+<div class="container-fluid">
+    <div class="well">
+        <div class="row">
+            <div class="col-md-10">
+                <div style="display: block;">
+                    <canvas baseChart
+                            [datasets]="lineChartData"
+                            [labels]="lineChartLabels"
+                            [options]="lineChartOptions"
+                            [colors]="lineChartColors"
+                            [legend]="lineChartLegend"
+                            [chartType]="lineChartType"></canvas>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-10">
+                <table class="table table-responsive table-condensed">
+                    <tr>
+                        <th *ngFor="let label of lineChartLabels">{{label}}</th>
+                    </tr>
+                    <tr *ngFor="let d of lineChartData; let jd=index">
+                        <td *ngFor="let label of lineChartLabels; let j=index">
+                            <span *ngIf="jd == 0">{{d.data[j]}}</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
