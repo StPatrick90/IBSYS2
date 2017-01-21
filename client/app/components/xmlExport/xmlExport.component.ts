@@ -51,9 +51,9 @@ export class XmlExportComponent {
     }
     convertPrioOutput(prioOutput){
         if(prioOutput != null)
-        for(var auftrag of prioOutput){
-            this.mergedObjects.input.productionlist.push({production: '', attr: {article: auftrag.Teil.nummer, quantity: auftrag.Anzahl}});
-        }
+            for(var auftrag of prioOutput){
+                this.mergedObjects.input.productionlist.push({production: '', attr: {article: auftrag.Teil.nummer, quantity: auftrag.Anzahl}});
+            }
     }
     convertReihenfolgen(capa){
         if(capa === null)
@@ -77,30 +77,30 @@ export class XmlExportComponent {
 
     convertForcast(forecast){
         if(forecast != null)
-        for(var article of forecast.article){
-            if(article.partNr === 1){
-                this.mergedObjects.input.sellwish.push({item: '', attr:{article: article.partNr, quantity: article.verbdindlicheAuftraege[0].anzahl}});
-                this.mergedObjects.input.selldirect.push({item: '', attr:{article: article.partNr, quantity: article.direktVerkauf.menge, price: article.direktVerkauf.preis, penalty: article.direktVerkauf.strafe}});
+            for(var article of forecast.article){
+                if(article.partNr === 1){
+                    this.mergedObjects.input.sellwish.push({item: '', attr:{article: article.partNr, quantity: article.verbdindlicheAuftraege[0].anzahl}});
+                    this.mergedObjects.input.selldirect.push({item: '', attr:{article: article.partNr, quantity: article.direktVerkauf.menge, price: article.direktVerkauf.preis, penalty: article.direktVerkauf.strafe}});
+                }
+                if(article.partNr === 2){
+                    this.mergedObjects.input.sellwish.push({item: '', attr:{article: article.partNr, quantity: article.verbdindlicheAuftraege[0].anzahl}});
+                    this.mergedObjects.input.selldirect.push({item: '', attr:{article: article.partNr, quantity: article.direktVerkauf.menge, price: article.direktVerkauf.preis, penalty: article.direktVerkauf.strafe}});
+                }
+                if(article.partNr === 3){
+                    this.mergedObjects.input.sellwish.push({item: '', attr:{article: article.partNr, quantity: article.verbdindlicheAuftraege[0].anzahl}});
+                    this.mergedObjects.input.selldirect.push({item: '', attr:{article: article.partNr, quantity: article.direktVerkauf.menge, price: article.direktVerkauf.preis, penalty: article.direktVerkauf.strafe}});
+                }
             }
-            if(article.partNr === 2){
-                this.mergedObjects.input.sellwish.push({item: '', attr:{article: article.partNr, quantity: article.verbdindlicheAuftraege[0].anzahl}});
-                this.mergedObjects.input.selldirect.push({item: '', attr:{article: article.partNr, quantity: article.direktVerkauf.menge, price: article.direktVerkauf.preis, penalty: article.direktVerkauf.strafe}});
-            }
-            if(article.partNr === 3){
-                this.mergedObjects.input.sellwish.push({item: '', attr:{article: article.partNr, quantity: article.verbdindlicheAuftraege[0].anzahl}});
-                this.mergedObjects.input.selldirect.push({item: '', attr:{article: article.partNr, quantity: article.direktVerkauf.menge, price: article.direktVerkauf.preis, penalty: article.direktVerkauf.strafe}});
-            }
-        }
     }
 
     convertOrder(matplan){
         if(matplan !== null)
-        for(var order of matplan){
-            if(order.bestellmenge !== 0 && order.bestellung !== "---"){
-                var modus = (order.bestellung === "E.")? '5': '4';
-                this.mergedObjects.input.orderlist.push({order: '', attr:{article: order.kpartnr, quantity: order.bestellmenge, modus: modus}});
+            for(var order of matplan){
+                if(order.bestellmenge !== 0 && order.bestellung !== "---"){
+                    var modus = (order.bestellung === "E.")? '5': '4';
+                    this.mergedObjects.input.orderlist.push({order: '', attr:{article: order.kpartnr, quantity: order.bestellmenge, modus: modus}});
+                }
             }
-        }
     }
 
     convertDisplayString(xml: string){
