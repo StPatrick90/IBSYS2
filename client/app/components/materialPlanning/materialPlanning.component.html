@@ -91,8 +91,8 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li *ngFor="let bestellart of bestellarten" class="text-center">
-                        <a (click)="bestellartChanged(bestellart, i)">{{bestellart}}</a>
+                    <li *ngFor="let ba of m.bestellarten" class="text-center">
+                        <a (click)="bestellartChanged(ba, i)">{{ba}}</a>
                     </li>
                 </ul>
             </div>
@@ -101,5 +101,5 @@
     </tr>
     </tbody>
 </table>
-<button type="button" class="btn-lg btn-primary" (click)="clearSession()">Reset Session</button>
+<!--<button type="button" class="btn-lg btn-primary" (click)="clearSession()">Reset Session</button>-->
 </body>

@@ -18,6 +18,7 @@ export class matPlanRow {
     mengemitbest: number;
     bestellung: string;
     bestandnWe: number[];
+    bestellarten: string[];
 
     constructor() {
         this.verwendung = [];

@@ -25,7 +25,7 @@ var MaterialPlanningComponent = (function () {
         this.plannings = new Array();
         this.planning = new rowtype_1.rowtype();
         this.getKParts();
-        this.bestellarten = new Array("E.", "N.", "---");
+        // this.bestellarten = new Array<string>("E.", "N.", "---");
         this.vorigeBestellungen = new Array();
         this.changed = false;
         this.doonce = 1;
@@ -100,7 +100,8 @@ var MaterialPlanningComponent = (function () {
                     bestellung: null,
                     bestandnWe: [],
                     isneg: null,
-                    isneg2: null
+                    isneg2: null,
+                    bestellarten: []
                 };
                 // collect values
                 matPlanRow.kpartnr = purchPart.nummer;
@@ -110,12 +111,13 @@ var MaterialPlanningComponent = (function () {
                 matPlanRow.lieferfrist = purchPart.lieferfrist;
                 matPlanRow.diskontmenge = purchPart.diskontmenge;
                 matPlanRow.summe = Number((matPlanRow.lieferfrist + matPlanRow.abweichung).toFixed(2));
+                matPlanRow.bestellarten = new Array("E.", "N.", "---");
                 // get Verwendungen
                 for (var _b = 0, _c = purchPart.verwendung; _b < _c.length; _b++) {
                     var vw = _c[_b];
                     matPlanRow.verwendung.push(vw);
                 }
-                // get Bruttobedarf --- hier auch einfach new Array(länge) machen ?
+                // get Bruttobedarf
                 matPlanRow.bruttobedarfnP.push(0);
                 for (var _d = 0, _e = this.plannings; _d < _e.length; _d++) {
                     var p = _e[_d];
@@ -215,6 +217,13 @@ var MaterialPlanningComponent = (function () {
                         }
                     }
                 }
+                // // TODO: dsdsdsd
+                // if (matPlanRow.bestellung === "E.") {
+                //     matPlanRow.bestellarten.splice(this.matPlan[index].bestellarten.indexOf("N."), 1);
+                // }
+                // else if (matPlanRow.bestellung === "N.") {
+                //     matPlanRow.bestellarten.splice(this.matPlan[index].bestellarten.indexOf("E."), 1);
+                // }
                 // Bestand + Bestellmenge
                 if (matPlanRow.bestellung === "E.") {
                     max_relperiod_ind = this.roundAt0point6((matPlanRow.lieferfrist / 2));
@@ -296,9 +305,9 @@ var MaterialPlanningComponent = (function () {
     MaterialPlanningComponent.prototype.bestellartChanged = function (bestellart, i) {
         var bestellartprev = this.matPlan[i].bestellung;
         this.matPlan[i].bestellung = bestellart;
-        if (bestellartprev === "E." || "N.") {
-            this.matPlan[i].bestellung = "---";
-        }
+        // if (bestellartprev === "E." || "N.") {
+        //     this.matPlan[i].bestellung = "---";
+        // }
         if (bestellartprev === "E.") {
             var max_relperiod_ind2 = this.roundAt0point6((this.matPlan[i].lieferfrist / 2));
         }
@@ -306,7 +315,6 @@ var MaterialPlanningComponent = (function () {
             var max_relperiod_ind2 = this.roundAt0point6(this.matPlan[i].summe);
         }
         if (this.matPlan[i].bestellung === "---") {
-            //+ generell bei wechsel von e n und --- auf ein anderes immer resetten
             this.urbestand = this.matPlan[i].bestandnWe.slice();
             for (var x = 0; x < this.matPlan[i].bestandnWe.length; x++) {
                 if (x >= max_relperiod_ind2) {
@@ -320,21 +328,21 @@ var MaterialPlanningComponent = (function () {
         else {
             this.sessionService.setMatPlan(this.matPlan);
         }
-        // // Disable N if E an E if N
-        // if (bestellart === "N.") {
-        //     this.bestellarten.splice(this.bestellarten.indexOf("E."), 1);
-        // }
-        // else if (bestellart === "E.") {
-        //     this.bestellarten.splice(this.bestellarten.indexOf("N."), 1);
-        // }
-        // else if (bestellart === "---") {
-        //     if (this.bestellarten.indexOf("E.") == null) {
-        //         this.bestellarten.push("E.");
-        //     }
-        //     if (this.bestellarten.indexOf("N.") == null) {
-        //         this.bestellarten.push("N.");
-        //     }
-        // }
+        // Disable N if E an E if N
+        if (bestellart === "N.") {
+            this.matPlan[i].bestellarten.splice(this.matPlan[i].bestellarten.indexOf("E."), 1);
+        }
+        else if (bestellart === "E.") {
+            this.matPlan[i].bestellarten.splice(this.matPlan[i].bestellarten.indexOf("N."), 1);
+        }
+        else if (bestellart === "---") {
+            if (!this.matPlan[i].bestellarten.includes("E.")) {
+                this.matPlan[i].bestellarten.push("E.");
+            }
+            if (!this.matPlan[i].bestellarten.includes("N.")) {
+                this.matPlan[i].bestellarten.push("N.");
+            }
+        }
     };
     MaterialPlanningComponent.prototype.bestellmengechange = function (event, index) {
         this.doonce++;
@@ -346,6 +354,7 @@ var MaterialPlanningComponent = (function () {
                 var max_relperiod_ind = this.roundAt0point6(this.matPlan[index].summe);
                 if (this.matPlan[index].bestellung === "---") {
                     this.matPlan[index].bestellung = "N.";
+                    this.matPlan[index].bestellarten.splice(this.matPlan[index].bestellarten.indexOf("E."), 1);
                 }
             }
             if (!this.changed || this.indexsave != index) {
@@ -364,6 +373,12 @@ var MaterialPlanningComponent = (function () {
             }
             if (this.matPlan[index].bestellmenge === 0) {
                 this.matPlan[index].bestellung = "---";
+                if (!this.matPlan[index].bestellarten.includes("E.")) {
+                    this.matPlan[index].bestellarten.push("E.");
+                }
+                if (!this.matPlan[index].bestellarten.includes("N.")) {
+                    this.matPlan[index].bestellarten.push("N.");
+                }
             }
         }
     };
