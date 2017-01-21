@@ -92,7 +92,7 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li *ngFor="let bestellart of bestellarten" class="text-center">
-                        <a (click)="bestellartSelected(bestellart, i)">{{bestellart}}</a>
+                        <a (click)="bestellartChanged(bestellart, i)">{{bestellart}}</a>
                     </li>
                 </ul>
             </div>
