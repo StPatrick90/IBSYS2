@@ -26,6 +26,7 @@ export class XmlImportComponent {
     selectedPeriod: any;
     success;
     errorMessage ="";
+    fileName = "";
 
     constructor(private xmlImportService: XmlImportService, sessionService: SessionService, dbService: DBService, private appService:AppService){
         this.xmlService = xmlImportService;
@@ -52,13 +53,13 @@ export class XmlImportComponent {
     }
 
     changeListener($event) : void {
-        console.log($event.target);
         this.readThis($event.target);
     }
 
     readThis(inputValue: any) {
         var self = this;
         var file: File = inputValue.files[0];
+        this.fileName = file.name ? file.name : "";
         var myReader: FileReader = new FileReader();
 
         myReader.onloadend = function(e){

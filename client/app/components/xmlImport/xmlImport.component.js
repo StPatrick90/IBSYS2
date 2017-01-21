@@ -24,6 +24,7 @@ var XmlImportComponent = (function () {
         this.xml = "";
         this.periods = [];
         this.errorMessage = "";
+        this.fileName = "";
         this.xmlService = xmlImportService;
         this.sessionService = sessionService;
         this.dbService = dbService;
@@ -44,12 +45,12 @@ var XmlImportComponent = (function () {
         //this.xml = JSON.stringify(this.resultObj);
     }
     XmlImportComponent.prototype.changeListener = function ($event) {
-        console.log($event.target);
         this.readThis($event.target);
     };
     XmlImportComponent.prototype.readThis = function (inputValue) {
         var self = this;
         var file = inputValue.files[0];
+        this.fileName = file.name ? file.name : "";
         var myReader = new FileReader();
         myReader.onloadend = function (e) {
             var xmlString = myReader.result[2] + myReader.result[3] + myReader.result[4];

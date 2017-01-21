@@ -128,6 +128,7 @@ export const LANG_EN_TRANS = {
     'xmlImport_periodRight': 'The period was not included correctly!',
     'xmlImport_periodwrong': 'Please try again or choose the period from the drop down menu.',
     'xmlImport_periodai': 'is already integrated!',
+    'xmlImport_chooseFile': 'Choose file',
 
 //prediction
     'binding_orders': 'Binding Orders',

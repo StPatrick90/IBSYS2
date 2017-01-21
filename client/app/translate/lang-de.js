@@ -118,6 +118,7 @@ exports.LANG_DE_TRANS = {
     'xmlImport_periodRight': 'Die Periode wurde nicht richtig eingebunden!',
     'xmlImport_periodwrong': 'Bitte versuche es erneut oder wähle die Periode über das DropDown Menu.',
     'xmlImport_periodai': 'ist schon eingebunden!',
+    'xmlImport_chooseFile': 'Datei auswählen',
     //prediction
     'binding_orders': 'Verbindliche Aufträge',
     'period': 'Periode',
