@@ -54,7 +54,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     {{'prio_priorization' | translate}}:<br/>
-                    <span *ngFor="let item of produzierbareAuftraege; let i = index">{{i + 1}}) {{item.Teil.typ}} {{item.Teil.nummer}} ({{item.Teil.bezeichnung}})<br/></span>
+                    <span *ngFor="let item of produzierbareAuftraege; let i = index">{{i + 1}}) {{item.Teil.typ}} {{item.Teil.nummer}} ({{item.Teil.bezeichnung | translate}})<br/></span>
                 </div>
             </div>
         </div>
@@ -110,7 +110,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     {{'prio_priorization' | translate}}:<br/>
-                    <span *ngFor="let item of produzierbareAuftraege; let i = index">{{i + 1}}) {{item.Teil.typ}} {{item.Teil.nummer}} ({{item.Teil.bezeichnung}})<br/></span>
+                    <span *ngFor="let item of produzierbareAuftraege; let i = index">{{i + 1}}) {{item.Teil.typ}} {{item.Teil.nummer}} ({{item.Teil.bezeichnung | translate}})<br/></span>
                 </div>
             </div>
         </div>
@@ -135,7 +135,7 @@
 
 <div *ngIf="(selector == 'manual')" class="container">
     <div class="well">
-    <h4>Alles Manuell:</h4>
+        <h4>{{'prio_manuel' | translate}}:</h4>
     <div class="row">
         <div class="col-sm-3">
             <div class="panel panel-success">
@@ -165,7 +165,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     {{'prio_priorization' | translate}}:<br/>
-                    <span *ngFor="let item of epParts; let i = index">{{i + 1}}) {{item.typ}} {{item.nummer}} ({{item.bezeichnung}})<br/></span>
+                    <span *ngFor="let item of epParts; let i = index">{{i + 1}}) {{item.typ}} {{item.nummer}} ({{item.bezeichnung | translate}})<br/></span>
                 </div>
             </div>
         </div>
