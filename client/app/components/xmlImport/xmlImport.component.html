@@ -17,7 +17,14 @@
             <div class="panel panel-default">
                 <div class="panel-heading">XML Import</div>
                 <div class="panel-body" style="min-height: 52px">
-                    <input type="file" (change)="changeListener($event)">
+                    <div style="position: relative">
+                        <input type="file" (change)="changeListener($event)" style="position: relative; z-index: 2; opacity: 0; filter: alpha(opacity:0)">
+                        <div style="position: absolute; top: 0px; left: 0px; z-index: 1">
+                            <button type="button" class="btn btn-default btn-xs">Test</button>
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
         </div>

@@ -44,6 +44,7 @@ var XmlImportComponent = (function () {
         //this.xml = JSON.stringify(this.resultObj);
     }
     XmlImportComponent.prototype.changeListener = function ($event) {
+        console.log($event.target);
         this.readThis($event.target);
     };
     XmlImportComponent.prototype.readThis = function (inputValue) {

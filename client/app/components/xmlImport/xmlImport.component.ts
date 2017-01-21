@@ -52,6 +52,7 @@ export class XmlImportComponent {
     }
 
     changeListener($event) : void {
+        console.log($event.target);
         this.readThis($event.target);
     }
 

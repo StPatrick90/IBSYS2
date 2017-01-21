@@ -109,7 +109,7 @@ export const LANG_DE_TRANS = {
     'setParts_chooseWs': 'Arbeitsplätze auswählen',
     'setParts_setUp': 'Rüstzeit',
     'setParts_procTime': 'Fertigungszeit',
-    'setParts_nextWs': 'Nächste Arbeitsplatz',
+    'setParts_nextWs': 'Nächster Arbeitsplatz',
     'setParts_exists': 'Teil bereits vorhanden!',
     'setParts_exists_body': ' bereits vorhanden.\n\nBitte wählen Sie eine neue Nummer.',
     'setParts_empty': 'Teil nicht vollständig!',
