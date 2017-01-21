@@ -184,7 +184,7 @@ var MaterialPlanningComponent = (function () {
                 matPlanRow.bestellmenge = 0;
                 matPlanRow.bestellung = "---";
                 var bereitseilbestellt = false;
-                var max_relperiod_ind;
+                var max_relperiod_ind = 0;
                 var vorigemengen = 0;
                 max_relperiod_ind = this.roundAt0point6(matPlanRow.summe);
                 for (var i = 0; i <= max_relperiod_ind; i++) {
@@ -215,8 +215,13 @@ var MaterialPlanningComponent = (function () {
                         }
                     }
                 }
-                // // Bestand + Bestellmenge
-                max_relperiod_ind = this.roundAt0point6(matPlanRow.summe);
+                // Bestand + Bestellmenge
+                if (matPlanRow.bestellung === "E.") {
+                    max_relperiod_ind = this.roundAt0point6((matPlanRow.lieferfrist / 2));
+                }
+                else {
+                    max_relperiod_ind = this.roundAt0point6(matPlanRow.summe);
+                }
                 for (var x = 0; x < matPlanRow.bestandnWe.length; x++) {
                     if (x >= max_relperiod_ind && matPlanRow.bestellmenge != 0) {
                         matPlanRow.bestandnWe[x] = matPlanRow.bestandnWe[x] + Number(matPlanRow.bestellmenge);
@@ -264,7 +269,15 @@ var MaterialPlanningComponent = (function () {
     MaterialPlanningComponent.prototype.bestellmengechange = function (event, index) {
         this.doonce++;
         if (this.doonce % 2 == 0) {
-            var max_relperiod_ind = this.roundAt0point6(this.matPlan[index].summe);
+            if (this.matPlan[index].bestellung === "E.") {
+                var max_relperiod_ind = this.roundAt0point6((this.matPlan[index].lieferfrist / 2));
+            }
+            else {
+                var max_relperiod_ind = this.roundAt0point6(this.matPlan[index].summe);
+                if (this.matPlan[index].bestellung === "---") {
+                    this.matPlan[index].bestellung = "N.";
+                }
+            }
             if (!this.changed || this.indexsave != index) {
                 this.urbestand = this.matPlan[index].bestandnWe.slice();
                 this.urmenge = this.matPlan[index].bestellmenge;
@@ -310,6 +323,9 @@ var MaterialPlanningComponent = (function () {
     };
     MaterialPlanningComponent.prototype.bestellartSelected = function (bestellart, i) {
         this.matPlan[i].bestellung = bestellart;
+        if (this.matPlan[i].bestellung === "---") {
+            this.matPlan[i].bestellmenge = 0;
+        }
         this.sessionService.setMatPlan(this.matPlan);
     };
     MaterialPlanningComponent.prototype.setLayout = function () {
