@@ -159,6 +159,7 @@ exports.LANG_DE_TRANS = {
     'mpEP_OrderWaitingQueue': 'Aufträge in der Warteschlange',
     'mpEP_WorkInProgress': 'Aufträge in Bearbeitung',
     'mpEP_ProdOrders': 'Produktionsaufträge für die kommende Periode',
+    'alert': '"Bitte erst die Prognose durchführen.',
     //Forecast
     'forecast_sales': 'Verbindliche Aufträge',
     'forecast_product': 'Produkt',
@@ -169,6 +170,7 @@ exports.LANG_DE_TRANS = {
     'forecast_quantity': 'Menge',
     'forecast_price': 'Preis',
     'forecast_conPenalty': 'Konventionalstrafe',
+    'alert_del': 'Achtung: Verändern von Parametern löscht Einträge aus folgenden Komponenten !',
     //Task
     'task_todoList': 'Todo Liste',
     //Home

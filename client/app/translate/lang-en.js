@@ -141,6 +141,7 @@ exports.LANG_EN_TRANS = {
     'volume_ordered': 'Volume ordered',
     'ordertype': 'Order Type',
     'stock_after_receipt': 'Stock after receipt',
+    'alert': 'Please load Period before',
     //Overview
     'overKPart_search': 'Search',
     'overKPart_searchEmptyText': 'Number or title',
@@ -169,6 +170,7 @@ exports.LANG_EN_TRANS = {
     'forecast_quantity': 'Quantity',
     'forecast_price': 'Price',
     'forecast_conPenalty': 'Contract penalty',
+    'alert_del': 'Attention: Changing parameters will delete entries of following components!',
     //Task
     'task_todoList': 'Todolist',
     //Home

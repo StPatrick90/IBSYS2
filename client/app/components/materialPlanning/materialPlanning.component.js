@@ -13,11 +13,13 @@ var session_service_1 = require('../../services/session.service');
 var materialPlanning_service_1 = require('../../services/materialPlanning.service');
 var http_1 = require("@angular/http");
 var rowtype_1 = require("../../model/rowtype");
+var translate_service_1 = require("../../translate/translate.service");
 var MaterialPlanningComponent = (function () {
-    function MaterialPlanningComponent(sessionService, materialPlanningService, http) {
+    function MaterialPlanningComponent(sessionService, materialPlanningService, http, translationService) {
         this.sessionService = sessionService;
         this.materialPlanningService = materialPlanningService;
         this.http = http;
+        this.translationService = translationService;
         this.resultObj = this.sessionService.getResultObject();
         this.matPlan = new Array();
         this.verwendungRow = new Array();
@@ -277,7 +279,7 @@ var MaterialPlanningComponent = (function () {
     };
     MaterialPlanningComponent.prototype.getBruttoBedarfandPeriods = function () {
         if (this.sessionService.getForecast() === null) {
-            alert("Bitte erst die Prognose durchführen.");
+            alert(this.translationService.instant("alert"));
             this.sessionService.setMatPlan(null);
             this.sessionService.setPeriodRow(null);
             this.sessionService.setVerwendungRow(null);
@@ -400,7 +402,7 @@ var MaterialPlanningComponent = (function () {
             selector: 'materialPlanning',
             templateUrl: 'materialPlanning.component.html'
         }), 
-        __metadata('design:paramtypes', [session_service_1.SessionService, materialPlanning_service_1.MaterialPlanningService, http_1.Http])
+        __metadata('design:paramtypes', [session_service_1.SessionService, materialPlanning_service_1.MaterialPlanningService, http_1.Http, translate_service_1.TranslateService])
     ], MaterialPlanningComponent);
     return MaterialPlanningComponent;
 }());

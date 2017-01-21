@@ -7,6 +7,7 @@ import sort = require("core-js/fn/array/sort");
 import {Http} from "@angular/http";
 import {rowtype} from "../../model/rowtype";
 import {vorigeBestellung} from "../../model/vorigeBestellung";
+import {TranslateService} from "../../translate/translate.service";
 
 @Component({
     moduleId: module.id,
@@ -32,7 +33,7 @@ export class MaterialPlanningComponent {
     indexsave: number;
     noperiod: boolean;
 
-    constructor(private sessionService: SessionService, private  materialPlanningService: MaterialPlanningService, private http: Http) {
+    constructor(private sessionService: SessionService, private  materialPlanningService: MaterialPlanningService, private http: Http, private  translationService: TranslateService) {
         this.resultObj = this.sessionService.getResultObject();
         this.matPlan = new Array<matPlanRow>();
         this.verwendungRow = new Array<string>();
@@ -315,7 +316,7 @@ export class MaterialPlanningComponent {
 
     getBruttoBedarfandPeriods() {
         if (this.sessionService.getForecast() === null) {
-            alert("Bitte erst die Prognose durchführen.");
+            alert(this.translationService.instant("alert"));
             this.sessionService.setMatPlan(null);
             this.sessionService.setPeriodRow(null);
             this.sessionService.setVerwendungRow(null);

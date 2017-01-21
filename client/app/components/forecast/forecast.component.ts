@@ -3,6 +3,8 @@ import {ForecastService} from '../../services/forecast.service'
 import {SessionService} from '../../services/session.service'
 import {Part} from '../../model/part';
 import {Forecast} from '../../model/forecast';
+import {TranslateService} from "../../translate/translate.service";
+
 
 @Component({
     moduleId: module.id,
@@ -24,7 +26,7 @@ export class ForecastComponent {
     preis: Array<number> = new Array<number>();
     strafe: Array<number> = new Array<number>();
 
-    constructor(private forecastService: ForecastService, private sessionService: SessionService) {
+    constructor(private forecastService: ForecastService, private sessionService: SessionService, private translateService: TranslateService) {
         if (this.sessionService.getResultObject()) {
             this.result = this.sessionService.getResultObject();
             this.period = Number.parseInt(this.result.results.period);
@@ -45,7 +47,7 @@ export class ForecastComponent {
     }
 
     initAll() {
-        if(this.sessionService.getForecast()){
+        if (this.sessionService.getForecast()) {
             while (this.forecasts && this.forecasts.length > 0) {
                 this.forecasts.pop();
             }
@@ -170,7 +172,7 @@ export class ForecastComponent {
             console.log("patrickfc", forecast);
         }
         else {
-            alert("Achtung: Verändern von Parametern löscht Einträge aus folgenden Komponenten !");
+            alert(this.translateService.instant("alert_del"));
             this.sessionService.setfromothercomp(false);
 
         }

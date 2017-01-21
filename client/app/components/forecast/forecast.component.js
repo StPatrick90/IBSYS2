@@ -12,11 +12,13 @@ var core_1 = require('@angular/core');
 var forecast_service_1 = require('../../services/forecast.service');
 var session_service_1 = require('../../services/session.service');
 var forecast_1 = require('../../model/forecast');
+var translate_service_1 = require("../../translate/translate.service");
 var ForecastComponent = (function () {
-    function ForecastComponent(forecastService, sessionService) {
+    function ForecastComponent(forecastService, sessionService, translateService) {
         var _this = this;
         this.forecastService = forecastService;
         this.sessionService = sessionService;
+        this.translateService = translateService;
         this.periods = new Array();
         this.period = 0;
         this.verbdindlAuftr = new Array();
@@ -163,7 +165,7 @@ var ForecastComponent = (function () {
             console.log("patrickfc", forecast);
         }
         else {
-            alert("Achtung: Verändern von Parametern löscht Einträge aus folgenden Komponenten !");
+            alert(this.translateService.instant("alert_del"));
             this.sessionService.setfromothercomp(false);
         }
     };
@@ -173,7 +175,7 @@ var ForecastComponent = (function () {
             selector: 'forecast',
             templateUrl: 'forecast.component.html'
         }), 
-        __metadata('design:paramtypes', [forecast_service_1.ForecastService, session_service_1.SessionService])
+        __metadata('design:paramtypes', [forecast_service_1.ForecastService, session_service_1.SessionService, translate_service_1.TranslateService])
     ], ForecastComponent);
     return ForecastComponent;
 }());
