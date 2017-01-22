@@ -105,7 +105,7 @@ export class MaterialPlanningComponent {
     }
 
     setParameters() {
-        if (this.sessionService.getPartOrders() && (this.sessionService.getMatPlan() == null || this.sessionService.getActualPeriod() != Number(this.resultObj.results.period))) {
+        if (this.sessionService.getPartOrders() && this.sessionService.getForecast() && !this.sessionService.getMatPlan()) {
             this.sessionService.setfromothercomp(true);
             this.matPlan = new Array<matPlanRow>();
             var aktuellePeriode = this.resultObj.results.period;
@@ -294,11 +294,15 @@ export class MaterialPlanningComponent {
         }
 
         else {
-            console.log("Kaufteildispo bereits in Session eingebunden. - nach Änderungen auf der Datenbank bitte neue Session starten");
-            this.periodrow = this.sessionService.getPeriodRow();
-            this.verwendungRow = this.sessionService.getVerwendungRow();
-            this.matPlan = this.sessionService.getMatPlan();
-            this.setLayout();
+            if(!this.sessionService.getPartOrders()){
+                alert(this.translationService.instant("alert_del"));
+            }
+            else{
+                this.periodrow = this.sessionService.getPeriodRow();
+                this.verwendungRow = this.sessionService.getVerwendungRow();
+                this.matPlan = this.sessionService.getMatPlan();
+                this.setLayout();
+            }
         }
     }
 
@@ -313,23 +317,15 @@ export class MaterialPlanningComponent {
     }
 
     getProdOrders() {
-        if (!this.sessionService.getPartOrders() || !this.sessionService.getForecast()) {
-            this.sessionService.setMatPlan(null);
-            this.sessionService.setfromothercomp(false);
-            alert("Erst prognose und dispoep durchführen !");
-        }
-        else {
-            console.log("fc: ", this.sessionService.getForecast());
-            console.log("pO:", this.sessionService.getPartOrders());
             if (this.sessionService.getPartOrders()) {
                 var partOrders = new Array<any>();
                 partOrders = this.sessionService.getPartOrders();
-                console.log("partOrders: ", partOrders);
+
 
                 if (this.sessionService.getForecast()) {
                     var forecast = new Array<any>();
                     forecast.push(this.sessionService.getForecast());
-                    console.log("Hier", forecast);
+
                     for (let p in partOrders) {
                         var planning = new rowtype();
                         var split = p.split("_");
@@ -370,7 +366,7 @@ export class MaterialPlanningComponent {
                     this.noperiod = true;
                 }
             }
-        }
+
     }
 
 
@@ -472,12 +468,16 @@ export class MaterialPlanningComponent {
 
     setLayout() {
         var period = Number(this.resultObj.results.period);
-        for (var i = 0; i < 4; i++) {
-            this.periodrow[i] = period + i;
+        if(this.periodrow){
+            for (var i = 0; i < 4; i++) {
+                this.periodrow[i] = period + i;
+            }
+            document.getElementById("Bruttobedarf").setAttribute("colspan", String(this.periodrow.length));
+            document.getElementById("Bestand").setAttribute("colspan", String(this.periodrow.length));
         }
-        document.getElementById("Verwendung").setAttribute("colspan", String(this.verwendungRow.length));
-        document.getElementById("Bruttobedarf").setAttribute("colspan", String(this.periodrow.length));
-        document.getElementById("Bestand").setAttribute("colspan", String(this.periodrow.length));
+        if(this.verwendungRow){
+            document.getElementById("Verwendung").setAttribute("colspan", String(this.verwendungRow.length));
+        }
     }
 
     clearSession() {

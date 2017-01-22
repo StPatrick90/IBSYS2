@@ -29,7 +29,7 @@ export class ForecastComponent {
     constructor(private forecastService: ForecastService, private sessionService: SessionService, private translateService: TranslateService) {
         if (this.sessionService.getResultObject()) {
             this.result = this.sessionService.getResultObject();
-            this.period = Number.parseInt(this.result.results.period);
+            this.period = Number.parseInt(this.result.results.period+1);
             this.lager = this.result.results.warehousestock.article;
 
             for (let i = this.period; i <= this.period + 3; i++) {
@@ -76,7 +76,11 @@ export class ForecastComponent {
         this.saveForecast();
     }
 
-    updateArrays(part, period) {
+    updateArrays(part, period, clearMatAndDispo) {
+        if(clearMatAndDispo){
+            this.sessionService.setMatPlan(null);
+            this.sessionService.setPartOrders(null);
+        }
         if (period !== this.period + 3) {
             for (let i = period; i <= this.period + 3; i++) {
                 this.vorausBestand["P_" + part + "_" + i] = this.getLagermenge(part, i) + this.getGeplProd(part, i) - this.getVerbindlAuftr(part, i);
@@ -114,8 +118,6 @@ export class ForecastComponent {
     }
 
     saveForecast() {
-        if ((this.sessionService.getMatPlan() === null && this.sessionService.getPartOrders() === null ) || !this.sessionService.getfromothercomp()) {
-
             let forecast: Forecast = new Forecast();
             forecast.article = new Array<any>();
             let direktVerkauf: any;
@@ -164,16 +166,7 @@ export class ForecastComponent {
                     produktkennung: pPart.bezeichnung.charAt(0)
                 });
             }
-            this.sessionService.setForecast(forecast);
-            this.sessionService.setMatPlan(null);
-            this.sessionService.setPartOrders(null);
-            this.sessionService.setPlannedWarehouseStock(null);
-        }
-        else {
-            alert(this.translateService.instant("alert_del"));
-
-            this.sessionService.setfromothercomp(false);
-        }
+        this.sessionService.setForecast(forecast);
     }
 }
 

@@ -40,6 +40,7 @@ var AppComponent = (function () {
         this.username = "";
         this.password = "";
         this.attachEvents();
+        this.sessionService.clear();
         this.language = (navigator.language || navigator.userLanguage).substring(0, 2);
         this._translate.use(this.language);
         this.partService.getParts().subscribe(function (parts) {

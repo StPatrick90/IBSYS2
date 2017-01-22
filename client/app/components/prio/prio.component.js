@@ -364,24 +364,32 @@ var PrioComponent = (function () {
                 if (this.wartelisteMaterial.missingpart.length > 0) {
                     for (var _i = 0, _a = this.wartelisteMaterial.missingpart; _i < _a.length; _i++) {
                         var material = _a[_i];
-                        if (material.waitinglist.item == this.lager[idx].id) {
-                            if (material.waitinglist.period == this.resultObj.results.period) {
-                                var lagerMenge = Number.parseInt(this.lager[idx].amount);
-                                var bestellMenge = Number.parseInt(material.waitinglist.amount);
-                                this.lager[idx].amount = (lagerMenge + bestellMenge).toString();
+                        if (material.waitinglist) {
+                            if (material.waitinglist.item) {
+                                if (material.waitinglist.item == this.lager[idx].id) {
+                                    if (material.waitinglist.period == this.resultObj.results.period) {
+                                        var lagerMenge = Number.parseInt(this.lager[idx].amount);
+                                        var bestellMenge = Number.parseInt(material.waitinglist.amount);
+                                        this.lager[idx].amount = (lagerMenge + bestellMenge).toString();
+                                    }
+                                }
                             }
                         }
                     }
                 }
                 else {
-                    if (this.wartelisteMaterial.missingpart.waitinglist.item == this.lager[idx].id) {
-                        if (this.wartelisteMaterial.missingpart.waitinglist.period == this.resultObj.results.period) {
-                            var lagerMenge = Number.parseInt(this.lager[idx].amount);
-                            var bestellMenge = Number.parseInt(this.wartelisteMaterial.missingpart.waitinglist.amount);
-                            this.lager[idx].amount = (lagerMenge + bestellMenge).toString();
-                            break;
+                    if (this.wartelisteMaterial.missingpart.waitinglist) {
+                        if (this.wartelisteMaterial.missingpart.waitinglist.item) {
+                            if (this.wartelisteMaterial.missingpart.waitinglist.item == this.lager[idx].id) {
+                                if (this.wartelisteMaterial.missingpart.waitinglist.period == this.resultObj.results.period) {
+                                    var lagerMenge = Number.parseInt(this.lager[idx].amount);
+                                    var bestellMenge = Number.parseInt(this.wartelisteMaterial.missingpart.waitinglist.amount);
+                                    this.lager[idx].amount = (lagerMenge + bestellMenge).toString();
+                                    break;
+                                }
+                                break;
+                            }
                         }
-                        break;
                     }
                 }
             }

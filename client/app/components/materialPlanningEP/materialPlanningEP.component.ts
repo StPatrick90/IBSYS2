@@ -62,7 +62,7 @@ export class MaterialPlanningEPComponent {
     ngOnInit() {
 
         if (this.sessionService.getResultObject()) {
-            this.period = Number.parseInt(this.sessionService.getResultObject().results.period);
+            this.period = Number.parseInt(this.sessionService.getResultObject().results.period+1);
         }
         if (this.sessionService.getForecast()) {
             this.forecast = this.sessionService.getForecast();
@@ -255,7 +255,7 @@ export class MaterialPlanningEPComponent {
                 this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer] = this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pl.teil.parent.nummer];
                 this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer] = this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pl.teil.parent.nummer];
             }
-            this.updateArrays(true);
+            this.updateArrays(true, false);
         }
     }
 
@@ -317,9 +317,11 @@ export class MaterialPlanningEPComponent {
 
     }
 
-    updateArrays(isInitial) {
-        this.sessionService.setfromothercomp(true);
-        this.sessionService.setMatPlan(null);
+    updateArrays(isInitial, clearMatPlan) {
+        if(clearMatPlan){
+            this.sessionService.setMatPlan(null);
+        }
+
         var parts = [];
         var ende = 4;
         if (isInitial) {
@@ -340,7 +342,6 @@ export class MaterialPlanningEPComponent {
         }
         this.sessionService.setPartOrders(this.prodAuftraege);
         this.sessionService.setPlannedWarehouseStock(this.geplLagerbestand);
-        this.sessionService.setMatPlan(null);
     }
 
     sumProdAuftraege(part) {

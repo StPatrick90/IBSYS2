@@ -30,7 +30,7 @@
             <tr *ngFor="let part of pParts">
                 <td width="10%" style="padding-right: 5px; padding-bottom: 5px">{{part.typ + part.nummer}}</td>
                 <td *ngFor="let period of periods" width="22.5%" style="padding-right: 5px; padding-bottom: 5px">
-                    <input type="number" min="0" class="form-control" [(ngModel)]="verbdindlAuftr['P_' + part.nummer + '_' + period]" (ngModelChange)="updateArrays(part.nummer,period)">
+                    <input type="number" min="0" class="form-control" [(ngModel)]="verbdindlAuftr['P_' + part.nummer + '_' + period]" (ngModelChange)="updateArrays(part.nummer,period,true)">
                 </td>
             </tr>
             </tbody>
@@ -55,7 +55,7 @@
             <tr *ngFor="let part of pParts">
                 <td width="10%" style="padding-right: 5px; padding-bottom: 5px">{{part.typ + part.nummer}}</td>
                 <td *ngFor="let period of periods" width="22.5%" style="padding-right: 5px; padding-bottom: 5px">
-                    <input type="number" min="0" class="form-control" [(ngModel)]="geplProd['P_' + part.nummer + '_' + period]" (ngModelChange)="updateArrays(part.nummer,period)">
+                    <input type="number" min="0" class="form-control" [(ngModel)]="geplProd['P_' + part.nummer + '_' + period]" (ngModelChange)="updateArrays(part.nummer,period,true)">
                 </td>
             </tr>
             </tbody>

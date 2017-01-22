@@ -235,7 +235,7 @@ export class CapacityPlanningComponent {
         else{
             cap.schichten = 3;
             cap.ueberstunden = 0;
-        }
+        }2
     }
 
     updateShifts(workstationNumber){

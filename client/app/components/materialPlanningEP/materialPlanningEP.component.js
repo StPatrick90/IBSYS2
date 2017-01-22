@@ -48,7 +48,7 @@ var MaterialPlanningEPComponent = (function () {
     MaterialPlanningEPComponent.prototype.ngOnInit = function () {
         var _this = this;
         if (this.sessionService.getResultObject()) {
-            this.period = Number.parseInt(this.sessionService.getResultObject().results.period);
+            this.period = Number.parseInt(this.sessionService.getResultObject().results.period + 1);
         }
         if (this.sessionService.getForecast()) {
             this.forecast = this.sessionService.getForecast();
@@ -239,7 +239,7 @@ var MaterialPlanningEPComponent = (function () {
                 this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer] = this.prodAuftraege[this.part.typ + this.part.nummer + "_" + pl.teil.parent.nummer];
                 this.auftraegeWarteschlAddiert[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer] = this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + pl.teil.parent.nummer];
             }
-            this.updateArrays(true);
+            this.updateArrays(true, false);
         }
     };
     MaterialPlanningEPComponent.prototype.initVariables = function () {
@@ -290,9 +290,10 @@ var MaterialPlanningEPComponent = (function () {
             }
         }
     };
-    MaterialPlanningEPComponent.prototype.updateArrays = function (isInitial) {
-        this.sessionService.setfromothercomp(true);
-        this.sessionService.setMatPlan(null);
+    MaterialPlanningEPComponent.prototype.updateArrays = function (isInitial, clearMatPlan) {
+        if (clearMatPlan) {
+            this.sessionService.setMatPlan(null);
+        }
         var parts = [];
         var ende = 4;
         if (isInitial) {
@@ -314,7 +315,6 @@ var MaterialPlanningEPComponent = (function () {
         }
         this.sessionService.setPartOrders(this.prodAuftraege);
         this.sessionService.setPlannedWarehouseStock(this.geplLagerbestand);
-        this.sessionService.setMatPlan(null);
     };
     MaterialPlanningEPComponent.prototype.sumProdAuftraege = function (part) {
         return Math.ceil(this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + part.nummer] +

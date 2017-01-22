@@ -82,7 +82,7 @@ var MaterialPlanningComponent = (function () {
         }
     };
     MaterialPlanningComponent.prototype.setParameters = function () {
-        if (this.sessionService.getPartOrders() && (this.sessionService.getMatPlan() == null || this.sessionService.getActualPeriod() != Number(this.resultObj.results.period))) {
+        if (this.sessionService.getPartOrders() && this.sessionService.getForecast() && !this.sessionService.getMatPlan()) {
             this.sessionService.setfromothercomp(true);
             this.matPlan = new Array();
             var aktuellePeriode = this.resultObj.results.period;
@@ -258,11 +258,15 @@ var MaterialPlanningComponent = (function () {
             }
         }
         else {
-            console.log("Kaufteildispo bereits in Session eingebunden. - nach Änderungen auf der Datenbank bitte neue Session starten");
-            this.periodrow = this.sessionService.getPeriodRow();
-            this.verwendungRow = this.sessionService.getVerwendungRow();
-            this.matPlan = this.sessionService.getMatPlan();
-            this.setLayout();
+            if (!this.sessionService.getPartOrders()) {
+                alert(this.translationService.instant("alert_del"));
+            }
+            else {
+                this.periodrow = this.sessionService.getPeriodRow();
+                this.verwendungRow = this.sessionService.getVerwendungRow();
+                this.matPlan = this.sessionService.getMatPlan();
+                this.setLayout();
+            }
         }
     };
     MaterialPlanningComponent.prototype.roundAt0point6 = function (zahl) {
@@ -275,62 +279,51 @@ var MaterialPlanningComponent = (function () {
         return zahl;
     };
     MaterialPlanningComponent.prototype.getProdOrders = function () {
-        if (!this.sessionService.getPartOrders() || !this.sessionService.getForecast()) {
-            this.sessionService.setMatPlan(null);
-            this.sessionService.setfromothercomp(false);
-            alert("Erst prognose und dispoep durchführen !");
-        }
-        else {
-            console.log("fc: ", this.sessionService.getForecast());
-            console.log("pO:", this.sessionService.getPartOrders());
-            if (this.sessionService.getPartOrders()) {
-                var partOrders = new Array();
-                partOrders = this.sessionService.getPartOrders();
-                console.log("partOrders: ", partOrders);
-                if (this.sessionService.getForecast()) {
-                    var forecast = new Array();
-                    forecast.push(this.sessionService.getForecast());
-                    console.log("Hier", forecast);
-                    for (var p in partOrders) {
-                        var planning = new rowtype_1.rowtype();
-                        var split = p.split("_");
-                        if (split && split.length >= 2) {
-                            for (var _i = 0, _a = this.pParts; _i < _a.length; _i++) {
-                                var part = _a[_i];
-                                if (Number.parseInt(split[0].substring(1)) === Number.parseInt(split[1]) && part.nummer === Number.parseInt(split[1])) {
-                                    console.log(part.bezeichnung.substring(0, 1));
-                                    console.log(partOrders[p]);
-                                    planning.produktkennung = part.bezeichnung.substring(0, 1);
-                                    planning.produktmengen.push(partOrders[p]);
-                                    for (var _b = 0, _c = forecast[0].article[0]; _b < _c.length; _b++) {
-                                        var a = _c[_b];
-                                        if (a.partNr === part.nummer) {
-                                            if (a.direktVerkauf) {
-                                                planning.produktmengen[planning.produktmengen.length - 1] += a.direktVerkauf.menge;
-                                            }
+        if (this.sessionService.getPartOrders()) {
+            var partOrders = new Array();
+            partOrders = this.sessionService.getPartOrders();
+            if (this.sessionService.getForecast()) {
+                var forecast = new Array();
+                forecast.push(this.sessionService.getForecast());
+                for (var p in partOrders) {
+                    var planning = new rowtype_1.rowtype();
+                    var split = p.split("_");
+                    if (split && split.length >= 2) {
+                        for (var _i = 0, _a = this.pParts; _i < _a.length; _i++) {
+                            var part = _a[_i];
+                            if (Number.parseInt(split[0].substring(1)) === Number.parseInt(split[1]) && part.nummer === Number.parseInt(split[1])) {
+                                console.log(part.bezeichnung.substring(0, 1));
+                                console.log(partOrders[p]);
+                                planning.produktkennung = part.bezeichnung.substring(0, 1);
+                                planning.produktmengen.push(partOrders[p]);
+                                for (var _b = 0, _c = forecast[0].article[0]; _b < _c.length; _b++) {
+                                    var a = _c[_b];
+                                    if (a.partNr === part.nummer) {
+                                        if (a.direktVerkauf) {
+                                            planning.produktmengen[planning.produktmengen.length - 1] += a.direktVerkauf.menge;
                                         }
                                     }
-                                    for (var i = 0; i < forecast[0].article.length; i++) {
-                                        if (part.nummer === forecast[0].article[i].partNr) {
-                                            for (var i2 = 1; i2 < forecast[0].article[i].geplanteProduktion.length; i2++) {
-                                                planning.produktmengen.push(forecast[0].article[i].geplanteProduktion[i2].anzahl);
-                                            }
-                                            break;
-                                        }
-                                    }
-                                    this.plannings.push(planning);
                                 }
+                                for (var i = 0; i < forecast[0].article.length; i++) {
+                                    if (part.nummer === forecast[0].article[i].partNr) {
+                                        for (var i2 = 1; i2 < forecast[0].article[i].geplanteProduktion.length; i2++) {
+                                            planning.produktmengen.push(forecast[0].article[i].geplanteProduktion[i2].anzahl);
+                                        }
+                                        break;
+                                    }
+                                }
+                                this.plannings.push(planning);
                             }
                         }
                     }
                 }
-                else {
-                    alert(this.translationService.instant("alert"));
-                    this.sessionService.setMatPlan(null);
-                    this.sessionService.setPeriodRow(null);
-                    this.sessionService.setVerwendungRow(null);
-                    this.noperiod = true;
-                }
+            }
+            else {
+                alert(this.translationService.instant("alert"));
+                this.sessionService.setMatPlan(null);
+                this.sessionService.setPeriodRow(null);
+                this.sessionService.setVerwendungRow(null);
+                this.noperiod = true;
             }
         }
     };
@@ -416,12 +409,16 @@ var MaterialPlanningComponent = (function () {
     };
     MaterialPlanningComponent.prototype.setLayout = function () {
         var period = Number(this.resultObj.results.period);
-        for (var i = 0; i < 4; i++) {
-            this.periodrow[i] = period + i;
+        if (this.periodrow) {
+            for (var i = 0; i < 4; i++) {
+                this.periodrow[i] = period + i;
+            }
+            document.getElementById("Bruttobedarf").setAttribute("colspan", String(this.periodrow.length));
+            document.getElementById("Bestand").setAttribute("colspan", String(this.periodrow.length));
         }
-        document.getElementById("Verwendung").setAttribute("colspan", String(this.verwendungRow.length));
-        document.getElementById("Bruttobedarf").setAttribute("colspan", String(this.periodrow.length));
-        document.getElementById("Bestand").setAttribute("colspan", String(this.periodrow.length));
+        if (this.verwendungRow) {
+            document.getElementById("Verwendung").setAttribute("colspan", String(this.verwendungRow.length));
+        }
     };
     MaterialPlanningComponent.prototype.clearSession = function () {
         this.sessionService.clear();

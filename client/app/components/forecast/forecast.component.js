@@ -30,7 +30,7 @@ var ForecastComponent = (function () {
         this.strafe = new Array();
         if (this.sessionService.getResultObject()) {
             this.result = this.sessionService.getResultObject();
-            this.period = Number.parseInt(this.result.results.period);
+            this.period = Number.parseInt(this.result.results.period + 1);
             this.lager = this.result.results.warehousestock.article;
             for (var i = this.period; i <= this.period + 3; i++) {
                 this.periods.push(i);
@@ -76,7 +76,11 @@ var ForecastComponent = (function () {
         }
         this.saveForecast();
     };
-    ForecastComponent.prototype.updateArrays = function (part, period) {
+    ForecastComponent.prototype.updateArrays = function (part, period, clearMatAndDispo) {
+        if (clearMatAndDispo) {
+            this.sessionService.setMatPlan(null);
+            this.sessionService.setPartOrders(null);
+        }
         if (period !== this.period + 3) {
             for (var i = period; i <= this.period + 3; i++) {
                 this.vorausBestand["P_" + part + "_" + i] = this.getLagermenge(part, i) + this.getGeplProd(part, i) - this.getVerbindlAuftr(part, i);
@@ -109,63 +113,54 @@ var ForecastComponent = (function () {
         return this.verbdindlAuftr["P_" + part + "_" + period] ? this.verbdindlAuftr["P_" + part + "_" + period] : 0;
     };
     ForecastComponent.prototype.saveForecast = function () {
-        if ((this.sessionService.getMatPlan() === null && this.sessionService.getPartOrders() === null) || !this.sessionService.getfromothercomp()) {
-            var forecast = new forecast_1.Forecast();
-            forecast.article = new Array();
-            var direktVerkauf = void 0;
-            for (var _i = 0, _a = this.pParts; _i < _a.length; _i++) {
-                var pPart = _a[_i];
-                var verbdindlAuftr = new Array();
-                var geplProd = new Array();
-                var vorausBestand = new Array();
-                for (var i = this.period; i <= this.period + 3; i++) {
-                    if (this.verbdindlAuftr["P_" + pPart.nummer + "_" + i]) {
-                        verbdindlAuftr.push({
-                            periode: i,
-                            anzahl: this.verbdindlAuftr["P_" + pPart.nummer + "_" + i] ? this.verbdindlAuftr["P_" + pPart.nummer + "_" + i] : 0
-                        });
-                    }
+        var forecast = new forecast_1.Forecast();
+        forecast.article = new Array();
+        var direktVerkauf;
+        for (var _i = 0, _a = this.pParts; _i < _a.length; _i++) {
+            var pPart = _a[_i];
+            var verbdindlAuftr = new Array();
+            var geplProd = new Array();
+            var vorausBestand = new Array();
+            for (var i = this.period; i <= this.period + 3; i++) {
+                if (this.verbdindlAuftr["P_" + pPart.nummer + "_" + i]) {
+                    verbdindlAuftr.push({
+                        periode: i,
+                        anzahl: this.verbdindlAuftr["P_" + pPart.nummer + "_" + i] ? this.verbdindlAuftr["P_" + pPart.nummer + "_" + i] : 0
+                    });
                 }
-                for (var i = this.period; i <= this.period + 3; i++) {
-                    if (this.geplProd["P_" + pPart.nummer + "_" + i]) {
-                        geplProd.push({
-                            periode: i,
-                            anzahl: this.geplProd["P_" + pPart.nummer + "_" + i] ? this.geplProd["P_" + pPart.nummer + "_" + i] : 0
-                        });
-                    }
-                }
-                for (var i = this.period; i <= this.period + 3; i++) {
-                    if (this.vorausBestand["P_" + pPart.nummer + "_" + i]) {
-                        vorausBestand.push({
-                            periode: i,
-                            anzahl: this.vorausBestand["P_" + pPart.nummer + "_" + i] ? this.vorausBestand["P_" + pPart.nummer + "_" + i] : 0
-                        });
-                    }
-                }
-                direktVerkauf = {
-                    menge: this.menge["P_" + pPart.nummer] ? this.menge["P_" + pPart.nummer] : 0,
-                    preis: this.preis["P_" + pPart.nummer] ? this.preis["P_" + pPart.nummer] : 0,
-                    strafe: this.strafe["P_" + pPart.nummer] ? this.strafe["P_" + pPart.nummer] : 0
-                };
-                forecast.period = this.period;
-                forecast.article.push({
-                    partNr: pPart.nummer,
-                    verbdindlicheAuftraege: verbdindlAuftr,
-                    geplanteProduktion: geplProd,
-                    voraussichtlicherBestand: vorausBestand,
-                    direktVerkauf: direktVerkauf,
-                    produktkennung: pPart.bezeichnung.charAt(0)
-                });
             }
-            this.sessionService.setForecast(forecast);
-            this.sessionService.setMatPlan(null);
-            this.sessionService.setPartOrders(null);
-            this.sessionService.setPlannedWarehouseStock(null);
+            for (var i = this.period; i <= this.period + 3; i++) {
+                if (this.geplProd["P_" + pPart.nummer + "_" + i]) {
+                    geplProd.push({
+                        periode: i,
+                        anzahl: this.geplProd["P_" + pPart.nummer + "_" + i] ? this.geplProd["P_" + pPart.nummer + "_" + i] : 0
+                    });
+                }
+            }
+            for (var i = this.period; i <= this.period + 3; i++) {
+                if (this.vorausBestand["P_" + pPart.nummer + "_" + i]) {
+                    vorausBestand.push({
+                        periode: i,
+                        anzahl: this.vorausBestand["P_" + pPart.nummer + "_" + i] ? this.vorausBestand["P_" + pPart.nummer + "_" + i] : 0
+                    });
+                }
+            }
+            direktVerkauf = {
+                menge: this.menge["P_" + pPart.nummer] ? this.menge["P_" + pPart.nummer] : 0,
+                preis: this.preis["P_" + pPart.nummer] ? this.preis["P_" + pPart.nummer] : 0,
+                strafe: this.strafe["P_" + pPart.nummer] ? this.strafe["P_" + pPart.nummer] : 0
+            };
+            forecast.period = this.period;
+            forecast.article.push({
+                partNr: pPart.nummer,
+                verbdindlicheAuftraege: verbdindlAuftr,
+                geplanteProduktion: geplProd,
+                voraussichtlicherBestand: vorausBestand,
+                direktVerkauf: direktVerkauf,
+                produktkennung: pPart.bezeichnung.charAt(0)
+            });
         }
-        else {
-            alert(this.translateService.instant("alert_del"));
-            this.sessionService.setfromothercomp(false);
-        }
+        this.sessionService.setForecast(forecast);
     };
     ForecastComponent = __decorate([
         core_1.Component({

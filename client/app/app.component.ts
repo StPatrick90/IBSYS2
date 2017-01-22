@@ -36,6 +36,7 @@ export class AppComponent {
     constructor(private appService:AppService, private _translate: TranslateService,private materialPlanningService:MaterialPlanningService, private sessionService:SessionService,
                 private partService:PartService, private  workstationService:WorkstationService, private dbService: DBService){
         this.attachEvents();
+        this.sessionService.clear();
         this.language = (navigator.language || navigator.userLanguage).substring(0,2);
         this._translate.use(this.language);
         this.partService.getParts().subscribe(parts => {

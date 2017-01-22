@@ -223,6 +223,7 @@ var CapacityPlanningComponent = (function () {
             cap.schichten = 3;
             cap.ueberstunden = 0;
         }
+        2;
     };
     CapacityPlanningComponent.prototype.updateShifts = function (workstationNumber) {
         for (var _i = 0, _a = this.capacities; _i < _a.length; _i++) {
