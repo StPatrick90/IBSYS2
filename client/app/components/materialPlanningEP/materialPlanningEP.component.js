@@ -169,11 +169,21 @@ var MaterialPlanningEPComponent = (function () {
                             for (var _k = 0, _l = this.tmp_partsList; _k < _l.length; _k++) {
                                 var pl = _l[_k];
                                 if (pl.teil.child.nummer === Number.parseInt(wl.item)) {
-                                    if (this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)]) {
-                                        this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)] += Number.parseInt(wl.amount);
+                                    if (this.isGleichTeil(pl.teil.child.nummer)) {
+                                        if (this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)]) {
+                                            this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)] += (Number.parseInt(wl.amount) / 3).toFixed(2);
+                                        }
+                                        else {
+                                            this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)] = (Number.parseInt(wl.amount) / 3).toFixed(2);
+                                        }
                                     }
                                     else {
-                                        this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)] = Number.parseInt(wl.amount);
+                                        if (this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)]) {
+                                            this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)] += Number.parseInt(wl.amount);
+                                        }
+                                        else {
+                                            this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)] = Number.parseInt(wl.amount);
+                                        }
                                     }
                                 }
                             }
@@ -183,11 +193,21 @@ var MaterialPlanningEPComponent = (function () {
                         for (var _m = 0, _o = this.tmp_partsList; _m < _o.length; _m++) {
                             var pl = _o[_m];
                             if (pl.teil.child.nummer === Number.parseInt(workplace.waitinglist.item)) {
-                                if (this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)]) {
-                                    this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)] += Number.parseInt(workplace.waitinglist.amount);
+                                if (this.isGleichTeil(pl.teil.child.nummer)) {
+                                    if (this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)]) {
+                                        this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)] += (Number.parseInt(workplace.waitinglist.amount) / 3).toFixed(2);
+                                    }
+                                    else {
+                                        this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)] = (Number.parseInt(workplace.waitinglist.amount) / 3).toFixed(2);
+                                    }
                                 }
                                 else {
-                                    this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)] = Number.parseInt(workplace.waitinglist.amount);
+                                    if (this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)]) {
+                                        this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)] += Number.parseInt(workplace.waitinglist.amount);
+                                    }
+                                    else {
+                                        this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)] = Number.parseInt(workplace.waitinglist.amount);
+                                    }
                                 }
                             }
                         }
