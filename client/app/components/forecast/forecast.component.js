@@ -109,7 +109,7 @@ var ForecastComponent = (function () {
         return this.verbdindlAuftr["P_" + part + "_" + period] ? this.verbdindlAuftr["P_" + part + "_" + period] : 0;
     };
     ForecastComponent.prototype.saveForecast = function () {
-        if (this.sessionService.getMatPlan() === null || !this.sessionService.getfromothercomp()) {
+        if ((this.sessionService.getMatPlan() === null && this.sessionService.getPartOrders() === null) || !this.sessionService.getfromothercomp()) {
             var forecast = new forecast_1.Forecast();
             forecast.article = new Array();
             var direktVerkauf = void 0;
@@ -161,8 +161,6 @@ var ForecastComponent = (function () {
             this.sessionService.setMatPlan(null);
             this.sessionService.setPartOrders(null);
             this.sessionService.setPlannedWarehouseStock(null);
-            console.log("null gesetzt");
-            console.log("patrickfc", forecast);
         }
         else {
             alert(this.translateService.instant("alert_del"));

@@ -141,7 +141,7 @@ exports.LANG_EN_TRANS = {
     'volume_ordered': 'Volume ordered',
     'ordertype': 'Order Type',
     'stock_after_receipt': 'Stock after receipt',
-    'alert': 'Please load Period before',
+    'alert': 'Please load Period and (finished) Material Planning before',
     //Overview
     'overKPart_search': 'Search',
     'overKPart_searchEmptyText': 'Number or title',

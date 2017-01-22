@@ -114,7 +114,7 @@ export class ForecastComponent {
     }
 
     saveForecast() {
-        if (this.sessionService.getMatPlan() === null || !this.sessionService.getfromothercomp()) {
+        if ((this.sessionService.getMatPlan() === null && this.sessionService.getPartOrders() === null ) || !this.sessionService.getfromothercomp()) {
 
             let forecast: Forecast = new Forecast();
             forecast.article = new Array<any>();
@@ -168,13 +168,11 @@ export class ForecastComponent {
             this.sessionService.setMatPlan(null);
             this.sessionService.setPartOrders(null);
             this.sessionService.setPlannedWarehouseStock(null);
-            console.log("null gesetzt");
-            console.log("patrickfc", forecast);
         }
         else {
             alert(this.translateService.instant("alert_del"));
-            this.sessionService.setfromothercomp(false);
 
+            this.sessionService.setfromothercomp(false);
         }
     }
 }

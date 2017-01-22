@@ -56,11 +56,10 @@ export class MaterialPlanningEPComponent {
     forecastVerbindlicheAuftraege: Array<any> = new Array<any>();
     forecastGeplLager: Array<any> = new Array<any>();
 
-    constructor(private partService: PartService, private sessionService: SessionService, private translatePipe:TranslatePipe) {
+    constructor(private partService: PartService, private sessionService: SessionService, private translatePipe: TranslatePipe) {
     }
 
     ngOnInit() {
-        this.sessionService.setfromothercomp(true);
 
         if (this.sessionService.getResultObject()) {
             this.period = Number.parseInt(this.sessionService.getResultObject().results.period);
@@ -72,7 +71,10 @@ export class MaterialPlanningEPComponent {
                 for (let article of this.forecast.article) {
                     for (let vA of article.verbdindlicheAuftraege) {
                         if (vA.periode === this.period) {
-                            this.forecastVerbindlicheAuftraege.push({id: article.partNr, menge: vA.anzahl + article.direktVerkauf.menge});
+                            this.forecastVerbindlicheAuftraege.push({
+                                id: article.partNr,
+                                menge: vA.anzahl + article.direktVerkauf.menge
+                            });
                         }
                     }
                     for (let vB of article.voraussichtlicherBestand) {
@@ -114,7 +116,10 @@ export class MaterialPlanningEPComponent {
 
     initMultiSelects() {
         for (let pt of this.pParts) {
-            this.productOptions.push({id: pt.nummer, name: this.translatePipe.transform(pt.bezeichnung.toString(),null)});
+            this.productOptions.push({
+                id: pt.nummer,
+                name: this.translatePipe.transform(pt.bezeichnung.toString(), null)
+            });
         }
 
         this.productSettings = {
@@ -131,12 +136,12 @@ export class MaterialPlanningEPComponent {
         };
 
         this.multiSelectTexts = {
-            checkAll: this.translatePipe.transform('combo_checkAll',null),
-            uncheckAll: this.translatePipe.transform('combo_uncheckAll',null),
-            checked: this.translatePipe.transform('combo_checked',null),
-            checkedPlural: this.translatePipe.transform('combo_checkedPlural',null),
-            searchPlaceholder: this.translatePipe.transform('combo_searchPlaceholder',null),
-            defaultTitle: this.translatePipe.transform('combo_defaultTitle',null),
+            checkAll: this.translatePipe.transform('combo_checkAll', null),
+            uncheckAll: this.translatePipe.transform('combo_uncheckAll', null),
+            checked: this.translatePipe.transform('combo_checked', null),
+            checkedPlural: this.translatePipe.transform('combo_checkedPlural', null),
+            searchPlaceholder: this.translatePipe.transform('combo_searchPlaceholder', null),
+            defaultTitle: this.translatePipe.transform('combo_defaultTitle', null),
         };
     }
 
@@ -167,9 +172,9 @@ export class MaterialPlanningEPComponent {
                     this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + la.id] = la.menge;
                 }
                 for (let pl of this.tmp_partsList) {
-                       if(pl.teil.child.nummer !== la.id && !this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer]){
-                           this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer] = la.menge;
-                       }
+                    if (pl.teil.child.nummer !== la.id && !this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer]) {
+                        this.geplLagerbestand[this.part.typ + this.part.nummer + "_" + pl.teil.child.nummer] = la.menge;
+                    }
                 }
             }
         }
@@ -313,6 +318,8 @@ export class MaterialPlanningEPComponent {
     }
 
     updateArrays(isInitial) {
+        this.sessionService.setfromothercomp(true);
+        this.sessionService.setMatPlan(null);
         var parts = [];
         var ende = 4;
         if (isInitial) {
@@ -333,6 +340,7 @@ export class MaterialPlanningEPComponent {
         }
         this.sessionService.setPartOrders(this.prodAuftraege);
         this.sessionService.setPlannedWarehouseStock(this.geplLagerbestand);
+        this.sessionService.setMatPlan(null);
     }
 
     sumProdAuftraege(part) {

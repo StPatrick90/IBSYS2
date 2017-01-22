@@ -7,11 +7,11 @@
         <a class="completed" routerLink="/forecast">
             <div>{{'prediction_planning' | translate}}</div>
         </a>
+        <a class="completed" routerLink="//materialPlanningEP">
+            <div>{{'mpEP_MaterialPlanningEP' | translate}}</div>
+        </a>
         <a class="active" routerLink="/materialPlanning">
             <div>{{'material_Planning' | translate}}</div>
-        </a>
-        <a class="" routerLink="//materialPlanningEP">
-            <div>{{'mpEP_MaterialPlanningEP' | translate}}</div>
         </a>
         <a class="" routerLink="/prioritization">
             <div>{{'sidebar_prio' | translate}}</div>
@@ -28,71 +28,72 @@
 
 <div class="container-fluid">
 
-<table width="100%" class="table-responsive table-bordered table-striped" onload="setLayout()">
-    <thead>
-    <tr>
-        <th colspan="1" class="text-center">{{'num_purchase_part' | translate}}</th>
-        <th colspan="1" class="text-center">{{'delivery_time' | translate}}</th>
-        <th colspan="1" class="text-center">{{'deviation' | translate}}</th>
-        <th colspan="1" class="text-center">{{'sum' | translate}}</th>
-        <th id="Verwendung" class="text-center">{{'use' | translate}}</th>
-        <th colspan="1" class="text-center">{{'discount_sum' | translate}}</th>
-        <th colspan="1" class="text-center">{{'opening_stock' | translate}}</th>
-        <th id="Bruttobedarf" class="text-center">{{'gross_requirements_period' | translate}}</th>
-        <th colspan="1" class="text-center">{{'sum_without_order' | translate}}</th>
-        <th colspan="1" class="text-center">{{'sum_with_order' | translate}}</th>
-        <th colspan="1" class="text-center">{{'volume_ordered' | translate}}</th>
-        <th colspan="1" class="text-center">{{'ordertype' | translate}}</th>
-        <th id="Bestand" colspan="1" class="text-center">{{'stock_after_receipt' | translate}}</th>
-    </tr>
-    <tr>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th *ngFor="let m of verwendungRow" scope="col" class="text-center">{{m}}</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-        <th *ngFor="let p of periodrow" scope="col" class="text-center">{{p}}</th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th *ngFor="let p of periodrow" scope="col" class="text-center">{{p}}</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let m of matPlan; let i = index">
-        <td class="text-center">{{m.kpartnr}}</td>
-        <td class="text-center">{{m.lieferfrist}}</td>
-        <td class="text-center">{{m.abweichung}}</td>
-        <td class="text-center">{{m.summe}}</td>
-        <td class="text-center" *ngFor="let v of m.verwendung">{{v.Menge}}</td>
-        <td class="text-center">{{m.diskontmenge}}</td>
-        <td class="text-center">{{m.anfangsbestand}}</td>
-        <td class="text-center" *ngFor="let b of m.bruttobedarfnP">{{b}}</td>
-        <td class="text-center" [ngClass]="{redlining: m.isneg}">{{m.mengeohbest}}</td>
-        <td class="text-center" [ngClass]="{redlining: m.isneg2}">{{m.mengemitbest}}</td>
-        <td><input type="number" min="0" class="form-control" [ngModel]="m.bestellmenge"
-                   (ngModelChange)="bestellmengechange($event, i)"></td>
+    <table width="100%" class="table-responsive table-bordered table-striped" onload="setLayout()">
+        <thead>
+        <tr>
+            <th colspan="1" class="text-center">{{'num_purchase_part' | translate}}</th>
+            <th colspan="1" class="text-center">{{'delivery_time' | translate}}</th>
+            <th colspan="1" class="text-center">{{'deviation' | translate}}</th>
+            <th colspan="1" class="text-center">{{'sum' | translate}}</th>
+            <th id="Verwendung" class="text-center">{{'use' | translate}}</th>
+            <th colspan="1" class="text-center">{{'discount_sum' | translate}}</th>
+            <th colspan="1" class="text-center">{{'opening_stock' | translate}}</th>
+            <th id="Bruttobedarf" class="text-center">{{'gross_requirements_period' | translate}}</th>
+            <th colspan="1" class="text-center">{{'sum_without_order' | translate}}</th>
+            <th colspan="1" class="text-center">{{'sum_with_order' | translate}}</th>
+            <th colspan="1" class="text-center">{{'volume_ordered' | translate}}</th>
+            <th colspan="1" class="text-center">{{'ordertype' | translate}}</th>
+            <th id="Bestand" colspan="1" class="text-center">{{'stock_after_receipt' | translate}}</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th *ngFor="let m of verwendungRow" scope="col" class="text-center">{{m}}</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th *ngFor="let p of periodrow" scope="col" class="text-center">{{p}}</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th *ngFor="let p of periodrow" scope="col" class="text-center">{{p}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let m of matPlan; let i = index">
+            <td class="text-center">{{m.kpartnr}}</td>
+            <td class="text-center">{{m.lieferfrist}}</td>
+            <td class="text-center">{{m.abweichung}}</td>
+            <td class="text-center">{{m.summe}}</td>
+            <td class="text-center" *ngFor="let v of m.verwendung">{{v.Menge}}</td>
+            <td class="text-center">{{m.diskontmenge}}</td>
+            <td class="text-center">{{m.anfangsbestand}}</td>
+            <td class="text-center" *ngFor="let b of m.bruttobedarfnP">{{b}}</td>
+            <td class="text-center" [ngClass]="{redlining: m.isneg}">{{m.mengeohbest}}</td>
+            <td class="text-center" [ngClass]="{redlining: m.isneg2}">{{m.mengemitbest}}</td>
+            <td><input type="number" min="0" class="form-control" [ngModel]="m.bestellmenge"
+                       (ngModelChange)="bestellmengechange($event, i)"></td>
 
-        <td>
-            <div width="100%" class="btn-group">
-                <button type="button" class="btn btn-block btn-primary dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                    {{m.bestellung}}
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li *ngFor="let ba of m.bestellarten" class="text-center">
-                        <a (click)="bestellartChanged(ba, i)">{{ba}}</a>
-                    </li>
-                </ul>
-            </div>
-        </td>
-        <td class="text-center" *ngFor="let b of m.bestandnWe">{{b}}</td>
-    </tr>
-    </tbody>
-</table>
+            <td>
+                <div width="100%" class="btn-group">
+                    <button type="button" class="btn btn-block btn-primary dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        {{m.bestellung}}
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li *ngFor="let ba of m.bestellarten" class="text-center">
+                            <a (click)="bestellartChanged(ba, i)">{{ba}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+            <td class="text-center" *ngFor="let b of m.bestandnWe">{{b}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <button (click)="clearSession()">reset</button>
     <br>
 </div>

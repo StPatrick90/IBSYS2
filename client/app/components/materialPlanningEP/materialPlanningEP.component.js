@@ -47,7 +47,6 @@ var MaterialPlanningEPComponent = (function () {
     }
     MaterialPlanningEPComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.sessionService.setfromothercomp(true);
         if (this.sessionService.getResultObject()) {
             this.period = Number.parseInt(this.sessionService.getResultObject().results.period);
         }
@@ -59,7 +58,10 @@ var MaterialPlanningEPComponent = (function () {
                     for (var _b = 0, _c = article.verbdindlicheAuftraege; _b < _c.length; _b++) {
                         var vA = _c[_b];
                         if (vA.periode === this.period) {
-                            this.forecastVerbindlicheAuftraege.push({ id: article.partNr, menge: vA.anzahl + article.direktVerkauf.menge });
+                            this.forecastVerbindlicheAuftraege.push({
+                                id: article.partNr,
+                                menge: vA.anzahl + article.direktVerkauf.menge
+                            });
                         }
                     }
                     for (var _d = 0, _e = article.voraussichtlicherBestand; _d < _e.length; _d++) {
@@ -96,7 +98,10 @@ var MaterialPlanningEPComponent = (function () {
     MaterialPlanningEPComponent.prototype.initMultiSelects = function () {
         for (var _i = 0, _a = this.pParts; _i < _a.length; _i++) {
             var pt = _a[_i];
-            this.productOptions.push({ id: pt.nummer, name: this.translatePipe.transform(pt.bezeichnung.toString(), null) });
+            this.productOptions.push({
+                id: pt.nummer,
+                name: this.translatePipe.transform(pt.bezeichnung.toString(), null)
+            });
         }
         this.productSettings = {
             pullRight: false,
@@ -286,6 +291,8 @@ var MaterialPlanningEPComponent = (function () {
         }
     };
     MaterialPlanningEPComponent.prototype.updateArrays = function (isInitial) {
+        this.sessionService.setfromothercomp(true);
+        this.sessionService.setMatPlan(null);
         var parts = [];
         var ende = 4;
         if (isInitial) {
@@ -307,6 +314,7 @@ var MaterialPlanningEPComponent = (function () {
         }
         this.sessionService.setPartOrders(this.prodAuftraege);
         this.sessionService.setPlannedWarehouseStock(this.geplLagerbestand);
+        this.sessionService.setMatPlan(null);
     };
     MaterialPlanningEPComponent.prototype.sumProdAuftraege = function (part) {
         return Math.ceil(this.auftraegeVerbindl[this.part.typ + this.part.nummer + "_" + part.nummer] +

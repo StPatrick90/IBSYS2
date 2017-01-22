@@ -173,7 +173,7 @@ export const LANG_DE_TRANS = {
     'mpEP_OrderWaitingQueue': 'Aufträge in der Warteschlange',
     'mpEP_WorkInProgress': 'Aufträge in Bearbeitung',
     'mpEP_ProdOrders': 'Produktionsaufträge für die kommende Periode',
-    'alert': '"Bitte erst die Prognose durchführen.',
+    'alert': '"Bitte erst die Prognose und Disposition Eigenfertigung durchführen.',
 
 //Forecast
     'forecast_sales': 'Verbindliche Aufträge',

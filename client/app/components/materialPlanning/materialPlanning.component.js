@@ -14,9 +14,11 @@ var materialPlanning_service_1 = require('../../services/materialPlanning.servic
 var http_1 = require("@angular/http");
 var rowtype_1 = require("../../model/rowtype");
 var translate_service_1 = require("../../translate/translate.service");
+var part_service_1 = require("../../services/part.service");
 var MaterialPlanningComponent = (function () {
-    function MaterialPlanningComponent(sessionService, materialPlanningService, http, translationService) {
+    function MaterialPlanningComponent(sessionService, partService, materialPlanningService, http, translationService) {
         this.sessionService = sessionService;
+        this.partService = partService;
         this.materialPlanningService = materialPlanningService;
         this.http = http;
         this.translationService = translationService;
@@ -26,7 +28,7 @@ var MaterialPlanningComponent = (function () {
         this.periodrow = new Array();
         this.plannings = new Array();
         this.planning = new rowtype_1.rowtype();
-        this.getKParts();
+        this.getParts();
         // this.bestellarten = new Array<string>("E.", "N.", "---");
         this.vorigeBestellungen = new Array();
         this.changed = false;
@@ -37,11 +39,13 @@ var MaterialPlanningComponent = (function () {
         this.noperiod = false;
         this.indexsave = 0;
     }
-    MaterialPlanningComponent.prototype.getKParts = function () {
+    MaterialPlanningComponent.prototype.getParts = function () {
         var _this = this;
-        this.materialPlanningService.getKParts()
+        this.partService.getParts()
             .subscribe(function (data) {
-            _this.purchaseParts = data;
+            _this.parts = data;
+            _this.purchaseParts = data.filter(function (item) { return item.typ === "K"; });
+            _this.pParts = data.filter(function (item) { return item.typ === "P"; });
         }, function (err) { return console.error(err); }, function () { return _this.setParameters(); });
     };
     ;
@@ -78,11 +82,11 @@ var MaterialPlanningComponent = (function () {
         }
     };
     MaterialPlanningComponent.prototype.setParameters = function () {
-        if (this.sessionService.getMatPlan() == null || this.sessionService.getActualPeriod() != Number(this.resultObj.results.period)) {
+        if (this.sessionService.getPartOrders() && (this.sessionService.getMatPlan() == null || this.sessionService.getActualPeriod() != Number(this.resultObj.results.period))) {
             this.sessionService.setfromothercomp(true);
             this.matPlan = new Array();
             var aktuellePeriode = this.resultObj.results.period;
-            this.getBruttoBedarfandPeriods();
+            this.getProdOrders();
             this.setvorigeBestellungen();
             var index = 0;
             for (var _i = 0, _a = this.purchaseParts; _i < _a.length; _i++) {
@@ -219,13 +223,6 @@ var MaterialPlanningComponent = (function () {
                         }
                     }
                 }
-                // // TODO: dsdsdsd
-                // if (matPlanRow.bestellung === "E.") {
-                //     matPlanRow.bestellarten.splice(this.matPlan[index].bestellarten.indexOf("N."), 1);
-                // }
-                // else if (matPlanRow.bestellung === "N.") {
-                //     matPlanRow.bestellarten.splice(this.matPlan[index].bestellarten.indexOf("E."), 1);
-                // }
                 // Bestand + Bestellmenge
                 if (matPlanRow.bestellung === "E.") {
                     max_relperiod_ind = this.roundAt0point6((matPlanRow.lieferfrist / 2));
@@ -277,32 +274,65 @@ var MaterialPlanningComponent = (function () {
         }
         return zahl;
     };
-    MaterialPlanningComponent.prototype.getBruttoBedarfandPeriods = function () {
-        if (this.sessionService.getForecast() === null) {
-            alert(this.translationService.instant("alert"));
+    MaterialPlanningComponent.prototype.getProdOrders = function () {
+        if (!this.sessionService.getPartOrders() || !this.sessionService.getForecast()) {
             this.sessionService.setMatPlan(null);
-            this.sessionService.setPeriodRow(null);
-            this.sessionService.setVerwendungRow(null);
-            this.noperiod = true;
+            this.sessionService.setfromothercomp(false);
+            alert("Erst prognose und dispoep durchführen !");
         }
         else {
-            var forecast = new Array();
-            forecast.push(this.sessionService.getForecast());
-            for (var i = 0; i < forecast[0].article.length; i++) {
-                var planning = new rowtype_1.rowtype();
-                planning.produktkennung = forecast[0].article[i].produktkennung;
-                for (var i2 = 0; i2 < forecast[0].article[i].geplanteProduktion.length; i2++) {
-                    if (forecast[0].article[i].direktVerkauf.menge != 0 && forecast[0].article[i].geplanteProduktion[i2].periode == this.resultObj.results.period) {
-                        planning.produktmengen.push(forecast[0].article[i].geplanteProduktion[i2].anzahl + forecast[0].article[i].direktVerkauf.menge);
-                    }
-                    else {
-                        planning.produktmengen.push(forecast[0].article[i].geplanteProduktion[i2].anzahl);
+            console.log("fc: ", this.sessionService.getForecast());
+            console.log("pO:", this.sessionService.getPartOrders());
+            if (this.sessionService.getPartOrders()) {
+                var partOrders = new Array();
+                partOrders = this.sessionService.getPartOrders();
+                console.log("partOrders: ", partOrders);
+                if (this.sessionService.getForecast()) {
+                    var forecast = new Array();
+                    forecast.push(this.sessionService.getForecast());
+                    console.log("Hier", forecast);
+                    for (var p in partOrders) {
+                        var planning = new rowtype_1.rowtype();
+                        var split = p.split("_");
+                        if (split && split.length >= 2) {
+                            for (var _i = 0, _a = this.pParts; _i < _a.length; _i++) {
+                                var part = _a[_i];
+                                if (Number.parseInt(split[0].substring(1)) === Number.parseInt(split[1]) && part.nummer === Number.parseInt(split[1])) {
+                                    console.log(part.bezeichnung.substring(0, 1));
+                                    console.log(partOrders[p]);
+                                    planning.produktkennung = part.bezeichnung.substring(0, 1);
+                                    planning.produktmengen.push(partOrders[p]);
+                                    for (var _b = 0, _c = forecast[0].article[0]; _b < _c.length; _b++) {
+                                        var a = _c[_b];
+                                        if (a.partNr === part.nummer) {
+                                            if (a.direktVerkauf) {
+                                                planning.produktmengen[planning.produktmengen.length - 1] += a.direktVerkauf.menge;
+                                            }
+                                        }
+                                    }
+                                    for (var i = 0; i < forecast[0].article.length; i++) {
+                                        if (part.nummer === forecast[0].article[i].partNr) {
+                                            for (var i2 = 1; i2 < forecast[0].article[i].geplanteProduktion.length; i2++) {
+                                                planning.produktmengen.push(forecast[0].article[i].geplanteProduktion[i2].anzahl);
+                                            }
+                                            break;
+                                        }
+                                    }
+                                    this.plannings.push(planning);
+                                }
+                            }
+                        }
                     }
                 }
-                this.plannings.push(planning);
+                else {
+                    alert(this.translationService.instant("alert"));
+                    this.sessionService.setMatPlan(null);
+                    this.sessionService.setPeriodRow(null);
+                    this.sessionService.setVerwendungRow(null);
+                    this.noperiod = true;
+                }
             }
         }
-        console.log("plannings", this.plannings);
     };
     MaterialPlanningComponent.prototype.bestellartChanged = function (bestellart, i) {
         var bestellartprev = this.matPlan[i].bestellung;
@@ -402,7 +432,7 @@ var MaterialPlanningComponent = (function () {
             selector: 'materialPlanning',
             templateUrl: 'materialPlanning.component.html'
         }), 
-        __metadata('design:paramtypes', [session_service_1.SessionService, materialPlanning_service_1.MaterialPlanningService, http_1.Http, translate_service_1.TranslateService])
+        __metadata('design:paramtypes', [session_service_1.SessionService, part_service_1.PartService, materialPlanning_service_1.MaterialPlanningService, http_1.Http, translate_service_1.TranslateService])
     ], MaterialPlanningComponent);
     return MaterialPlanningComponent;
 }());
