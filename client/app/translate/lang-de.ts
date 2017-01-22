@@ -64,6 +64,7 @@ export const LANG_DE_TRANS = {
     'capacity_totalCapacity': 'Gesamt Kapazitätsbedarf',
     'capacity_shifts': 'Schichten',
     'capacity_overtime': 'Überstunden',
+    'capacity_freeTime': 'Leerzeiten',
 
 //Settings-Workstations
     'setWorkstations_workstations': 'Arbeitsplätze',

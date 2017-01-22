@@ -305,7 +305,6 @@ var PrioComponent = (function () {
                 if (prozessingTime == processingTimeOld) {
                     prozessingTime = null;
                 }
-                break;
             }
             var bearbeiteteAuftrage = (auftraege % 10 === 0) ? 10 : (auftraege % 10);
             //Lager anpassen

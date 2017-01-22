@@ -50,33 +50,69 @@ var MaterialPlanningComponent = (function () {
     };
     ;
     MaterialPlanningComponent.prototype.setvorigeBestellungen = function () {
-        for (var i = 0; i < this.resultObj.results.inwardstockmovement.order.length; i++) {
-            var vorigeBestellung = {
-                teil: null,
-                menge: null,
-                orderperiode: null,
-                ankunftperiode: null,
-                mode: null
-            };
-            vorigeBestellung.menge = this.resultObj.results.inwardstockmovement.order[i].amount;
-            vorigeBestellung.orderperiode = this.resultObj.results.inwardstockmovement.order[i].orderperiod;
-            vorigeBestellung.teil = this.resultObj.results.inwardstockmovement.order[i].article;
-            vorigeBestellung.mode = this.resultObj.results.inwardstockmovement.order[i].mode;
-            for (var _i = 0, _a = this.purchaseParts; _i < _a.length; _i++) {
-                var p = _a[_i];
-                var ankunftperiode;
-                if (p.nummer == vorigeBestellung.teil) {
-                    // Eil oder Normalbestellung
-                    if (vorigeBestellung.mode == 4) {
-                        ankunftperiode = p.lieferfrist + Number(vorigeBestellung.orderperiode);
+        if (this.resultObj.results.inwardstockmovement) {
+            if (this.resultObj.results.inwardstockmovement.order && this.resultObj.results.inwardstockmovement.order.length > 0) {
+                for (var i = 0; i < this.resultObj.results.inwardstockmovement.order.length; i++) {
+                    var vorigeBestellung = {
+                        teil: null,
+                        menge: null,
+                        orderperiode: null,
+                        ankunftperiode: null,
+                        mode: null
+                    };
+                    vorigeBestellung.menge = this.resultObj.results.inwardstockmovement.order[i].amount;
+                    vorigeBestellung.orderperiode = this.resultObj.results.inwardstockmovement.order[i].orderperiod;
+                    vorigeBestellung.teil = this.resultObj.results.inwardstockmovement.order[i].article;
+                    vorigeBestellung.mode = this.resultObj.results.inwardstockmovement.order[i].mode;
+                    for (var _i = 0, _a = this.purchaseParts; _i < _a.length; _i++) {
+                        var p = _a[_i];
+                        var ankunftperiode;
+                        if (p.nummer == vorigeBestellung.teil) {
+                            // Eil oder Normalbestellung
+                            if (vorigeBestellung.mode == 4) {
+                                ankunftperiode = p.lieferfrist + Number(vorigeBestellung.orderperiode);
+                            }
+                            else {
+                                ankunftperiode = p.lieferfrist + p.abweichung + Number(vorigeBestellung.orderperiode);
+                            }
+                            // bei größer 0,6 runde auf, sonst runde ab
+                            ankunftperiode = this.roundAt0point6(ankunftperiode);
+                            vorigeBestellung.ankunftperiode = ankunftperiode;
+                            this.vorigeBestellungen.push(vorigeBestellung);
+                        }
                     }
-                    else {
-                        ankunftperiode = p.lieferfrist + p.abweichung + Number(vorigeBestellung.orderperiode);
+                }
+            }
+            else {
+                if (this.resultObj.results.inwardstockmovement.order) {
+                    var vorigeBestellung = {
+                        teil: null,
+                        menge: null,
+                        orderperiode: null,
+                        ankunftperiode: null,
+                        mode: null
+                    };
+                    vorigeBestellung.menge = this.resultObj.results.inwardstockmovement.order.amount;
+                    vorigeBestellung.orderperiode = this.resultObj.results.inwardstockmovement.order.orderperiod;
+                    vorigeBestellung.teil = this.resultObj.results.inwardstockmovement.order.article;
+                    vorigeBestellung.mode = this.resultObj.results.inwardstockmovement.order.mode;
+                    for (var _b = 0, _c = this.purchaseParts; _b < _c.length; _b++) {
+                        var p = _c[_b];
+                        var ankunftperiode;
+                        if (p.nummer == vorigeBestellung.teil) {
+                            // Eil oder Normalbestellung
+                            if (vorigeBestellung.mode == 4) {
+                                ankunftperiode = p.lieferfrist + Number(vorigeBestellung.orderperiode);
+                            }
+                            else {
+                                ankunftperiode = p.lieferfrist + p.abweichung + Number(vorigeBestellung.orderperiode);
+                            }
+                            // bei größer 0,6 runde auf, sonst runde ab
+                            ankunftperiode = this.roundAt0point6(ankunftperiode);
+                            vorigeBestellung.ankunftperiode = ankunftperiode;
+                            this.vorigeBestellungen.push(vorigeBestellung);
+                        }
                     }
-                    // bei größer 0,6 runde auf, sonst runde ab
-                    ankunftperiode = this.roundAt0point6(ankunftperiode);
-                    vorigeBestellung.ankunftperiode = ankunftperiode;
-                    this.vorigeBestellungen.push(vorigeBestellung);
                 }
             }
         }
@@ -411,7 +447,7 @@ var MaterialPlanningComponent = (function () {
         var period = Number(this.resultObj.results.period);
         if (this.periodrow) {
             for (var i = 0; i < 4; i++) {
-                this.periodrow[i] = period + i;
+                this.periodrow[i] = period + i + 1;
             }
             document.getElementById("Bruttobedarf").setAttribute("colspan", String(this.periodrow.length));
             document.getElementById("Bestand").setAttribute("colspan", String(this.periodrow.length));

@@ -64,10 +64,20 @@ var WarehousestockComponent = (function () {
             var p = _a[_i];
             this.lineChartLabels.push(this.translatePipe.transform('overWH_period', null) + " " + p);
         }
+        var normal = true;
         for (var _b = 0, _c = this.allResults; _b < _c.length; _b++) {
             var r = _c[_b];
-            data[r.results.period - 1] = Number.parseInt(r.results.warehousestock.totalstockvalue);
-            dataGrenze[r.results.period - 1] = 250000;
+            if (Number.parseInt(r.results.period) - 1 < 0) {
+                normal = false;
+            }
+            if (normal) {
+                data[Number.parseInt(r.results.period) - 1] = Number.parseInt(r.results.warehousestock.totalstockvalue);
+                dataGrenze[Number.parseInt(r.results.period) - 1] = 250000;
+            }
+            else {
+                data[Number.parseInt(r.results.period)] = Number.parseInt(r.results.warehousestock.totalstockvalue);
+                dataGrenze[Number.parseInt(r.results.period)] = 250000;
+            }
         }
         this.lineChartData = [{ data: data, label: this.translatePipe.transform('overWH_warehousestock', null) },
             { data: dataGrenze, label: this.translatePipe.transform('overWH_limit', null), fill: false }];

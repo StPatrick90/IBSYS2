@@ -59,6 +59,7 @@ exports.LANG_EN_TRANS = {
     'capacity_totalCapacity': 'Total capacity requirements',
     'capacity_shifts': 'Shifts',
     'capacity_overtime': 'Overtimes',
+    'capacity_freeTime': 'Free times',
     //Settings-Workstations
     'setWorkstations_workstations': 'Workstations',
     'setWorkstations_number': 'Number',

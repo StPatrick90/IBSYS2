@@ -51,7 +51,7 @@
             </td>
         </tr>
         <tr>
-            <td width="5%" colspan="2">Leerzeiten</td>
+            <td width="5%" colspan="2">{{'capacity_freeTime' | translate}}</td>
             <td *ngFor="let ws of workstations" align="center">
                 <span *ngFor="let cap of capacities">
                     <span *ngIf="cap.workstationNumber === ws.nummer">{{cap.leerzeit}}</span>

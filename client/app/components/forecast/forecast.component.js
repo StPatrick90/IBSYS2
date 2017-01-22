@@ -30,7 +30,7 @@ var ForecastComponent = (function () {
         this.strafe = new Array();
         if (this.sessionService.getResultObject()) {
             this.result = this.sessionService.getResultObject();
-            this.period = Number.parseInt(this.result.results.period + 1);
+            this.period = Number.parseInt(this.result.results.period) + 1;
             this.lager = this.result.results.warehousestock.article;
             for (var i = this.period; i <= this.period + 3; i++) {
                 this.periods.push(i);

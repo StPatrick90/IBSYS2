@@ -62,7 +62,7 @@ export class MaterialPlanningEPComponent {
     ngOnInit() {
 
         if (this.sessionService.getResultObject()) {
-            this.period = Number.parseInt(this.sessionService.getResultObject().results.period+1);
+            this.period = Number.parseInt(this.sessionService.getResultObject().results.period) +1;
         }
         if (this.sessionService.getForecast()) {
             this.forecast = this.sessionService.getForecast();
@@ -180,30 +180,32 @@ export class MaterialPlanningEPComponent {
         }
 
         //Aufträge in Warteschlange
-        for (let workplace of this.warteschlangen.workplace) {
-            if (workplace.waitinglist) {
-                if (workplace.waitinglist.length !== undefined) {
-                    for (let wl of workplace.waitinglist) {
-                        for (let pl of this.tmp_partsList) {
-                            if (pl.teil.child.nummer === Number.parseInt(wl.item)) {
-                                if (this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)]) {
-                                    this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)] += Number.parseInt(wl.amount);
-                                }
-                                else {
-                                    this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)] = Number.parseInt(wl.amount);
+        if(this.warteschlangen.workplace) {
+            for (let workplace of this.warteschlangen.workplace) {
+                if (workplace.waitinglist) {
+                    if (workplace.waitinglist.length !== undefined) {
+                        for (let wl of workplace.waitinglist) {
+                            for (let pl of this.tmp_partsList) {
+                                if (pl.teil.child.nummer === Number.parseInt(wl.item)) {
+                                    if (this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)]) {
+                                        this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)] += Number.parseInt(wl.amount);
+                                    }
+                                    else {
+                                        this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(wl.item)] = Number.parseInt(wl.amount);
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                else {
-                    for (let pl of this.tmp_partsList) {
-                        if (pl.teil.child.nummer === Number.parseInt(workplace.waitinglist.item)) {
-                            if (this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)]) {
-                                this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)] += Number.parseInt(workplace.waitinglist.amount);
-                            }
-                            else {
-                                this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)] = Number.parseInt(workplace.waitinglist.amount);
+                    else {
+                        for (let pl of this.tmp_partsList) {
+                            if (pl.teil.child.nummer === Number.parseInt(workplace.waitinglist.item)) {
+                                if (this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)]) {
+                                    this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)] += Number.parseInt(workplace.waitinglist.amount);
+                                }
+                                else {
+                                    this.auftraegeWarteschl[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.waitinglist.item)] = Number.parseInt(workplace.waitinglist.amount);
+                                }
                             }
                         }
                     }
@@ -226,14 +228,16 @@ export class MaterialPlanningEPComponent {
         }
 
         //Aufträge in Bearbeitung
-        for (let workplace of this.bearbeitung.workplace) {
-            for (let pl of this.tmp_partsList) {
-                if (pl.teil.child.nummer === Number.parseInt(workplace.item)) {
-                    if (this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.item)]) {
-                        this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.item)] += Number.parseInt(workplace.amount);
-                    }
-                    else {
-                        this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.item)] = Number.parseInt(workplace.amount);
+        if(this.bearbeitung.workplace){
+            for (let workplace of this.bearbeitung.workplace) {
+                for (let pl of this.tmp_partsList) {
+                    if (pl.teil.child.nummer === Number.parseInt(workplace.item)) {
+                        if (this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.item)]) {
+                            this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.item)] += Number.parseInt(workplace.amount);
+                        }
+                        else {
+                            this.auftraegeBearb[this.part.typ + this.part.nummer + "_" + Number.parseInt(workplace.item)] = Number.parseInt(workplace.amount);
+                        }
                     }
                 }
             }

@@ -51,7 +51,12 @@ var XmlExportComponent = (function () {
         if (prioOutput != null)
             for (var _i = 0, prioOutput_1 = prioOutput; _i < prioOutput_1.length; _i++) {
                 var auftrag = prioOutput_1[_i];
-                this.mergedObjects.input.productionlist.push({ production: '', attr: { article: auftrag.Teil.nummer, quantity: auftrag.Anzahl } });
+                if (auftrag.Anzahl !== 0) {
+                    this.mergedObjects.input.productionlist.push({
+                        production: '',
+                        attr: { article: auftrag.Teil.nummer, quantity: auftrag.Anzahl }
+                    });
+                }
             }
     };
     XmlExportComponent.prototype.convertReihenfolgen = function (capa) {
@@ -96,7 +101,7 @@ var XmlExportComponent = (function () {
             for (var _i = 0, matplan_1 = matplan; _i < matplan_1.length; _i++) {
                 var order = matplan_1[_i];
                 if (order.bestellmenge !== 0 && order.bestellung !== "---") {
-                    var modus = (order.bestellung === "E.") ? '5' : '4';
+                    var modus = (order.bestellung === "E.") ? '4' : '5';
                     this.mergedObjects.input.orderlist.push({ order: '', attr: { article: order.kpartnr, quantity: order.bestellmenge, modus: modus } });
                 }
             }

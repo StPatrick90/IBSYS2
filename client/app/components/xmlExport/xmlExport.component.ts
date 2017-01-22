@@ -52,7 +52,12 @@ export class XmlExportComponent {
     convertPrioOutput(prioOutput){
         if(prioOutput != null)
             for(var auftrag of prioOutput){
-                this.mergedObjects.input.productionlist.push({production: '', attr: {article: auftrag.Teil.nummer, quantity: auftrag.Anzahl}});
+                if(auftrag.Anzahl !== 0) {
+                    this.mergedObjects.input.productionlist.push({
+                        production: '',
+                        attr: {article: auftrag.Teil.nummer, quantity: auftrag.Anzahl}
+                    });
+                }
             }
     }
     convertReihenfolgen(capa){
@@ -97,7 +102,7 @@ export class XmlExportComponent {
         if(matplan !== null)
             for(var order of matplan){
                 if(order.bestellmenge !== 0 && order.bestellung !== "---"){
-                    var modus = (order.bestellung === "E.")? '5': '4';
+                    var modus = (order.bestellung === "E.")? '4': '5';
                     this.mergedObjects.input.orderlist.push({order: '', attr:{article: order.kpartnr, quantity: order.bestellmenge, modus: modus}});
                 }
             }
