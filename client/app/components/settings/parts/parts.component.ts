@@ -13,6 +13,7 @@ import {ModalComponent} from 'ng2-bs3-modal/ng2-bs3-modal';
 import {Workstation} from "../../../model/workstastion";
 import {ProcessingTime} from "../../../model/processingTime";
 import {SessionService} from '../../../services/session.service';
+import {TranslatePipe} from '../../../translate/translate.pipe';
 
 @Component({
     moduleId: module.id,
@@ -53,7 +54,7 @@ export class PartsComponent {
 
     searchText: any;
 
-    constructor(private partservice: PartService, private sessionService: SessionService, private window: Window) {
+    constructor(private partservice: PartService, private sessionService: SessionService, private window: Window, private translatePipe:TranslatePipe) {
         if (this.sessionService.getWorkstations() != null || this.sessionService.getWorkstations() != undefined ||
             this.sessionService.getParts() != null || this.sessionService.getParts() != undefined ||
             this.sessionService.getProcessingTimes() != null || this.sessionService.getProcessingTimes() != undefined) {
@@ -132,12 +133,12 @@ export class PartsComponent {
             maxHeight: '300px',
         };
         this.multiSelectTexts = {
-            checkAll: 'Check all',
-            uncheckAll: 'Uncheck all',
-            checked: 'checked',
-            checkedPlural: 'checked',
-            searchPlaceholder: 'Search...',
-            defaultTitle: 'Select',
+            checkAll: this.translatePipe.transform('combo_checkAll', null),
+            uncheckAll: this.translatePipe.transform('combo_uncheckAll', null),
+            checked: this.translatePipe.transform('combo_checked', null),
+            checkedPlural: this.translatePipe.transform('combo_checkedPlural', null),
+            searchPlaceholder: this.translatePipe.transform('combo_searchPlaceholder', null),
+            defaultTitle: this.translatePipe.transform('combo_defaultTitle', null),
         };
     }
 

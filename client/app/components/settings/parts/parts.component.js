@@ -16,12 +16,14 @@ var part_1 = require('../../../model/part');
 var part_service_1 = require('../../../services/part.service');
 var ng2_bs3_modal_1 = require('ng2-bs3-modal/ng2-bs3-modal');
 var session_service_1 = require('../../../services/session.service');
+var translate_pipe_1 = require('../../../translate/translate.pipe');
 var PartsComponent = (function () {
-    function PartsComponent(partservice, sessionService, window) {
+    function PartsComponent(partservice, sessionService, window, translatePipe) {
         var _this = this;
         this.partservice = partservice;
         this.sessionService = sessionService;
         this.window = window;
+        this.translatePipe = translatePipe;
         this.nextWsOptions = Array();
         this.part = new part_1.Part();
         this.ruestZeit = Array();
@@ -104,12 +106,12 @@ var PartsComponent = (function () {
             maxHeight: '300px',
         };
         this.multiSelectTexts = {
-            checkAll: 'Check all',
-            uncheckAll: 'Uncheck all',
-            checked: 'checked',
-            checkedPlural: 'checked',
-            searchPlaceholder: 'Search...',
-            defaultTitle: 'Select',
+            checkAll: this.translatePipe.transform('combo_checkAll', null),
+            uncheckAll: this.translatePipe.transform('combo_uncheckAll', null),
+            checked: this.translatePipe.transform('combo_checked', null),
+            checkedPlural: this.translatePipe.transform('combo_checkedPlural', null),
+            searchPlaceholder: this.translatePipe.transform('combo_searchPlaceholder', null),
+            defaultTitle: this.translatePipe.transform('combo_defaultTitle', null),
         };
     };
     PartsComponent.prototype.initCheckboxes = function () {
@@ -417,7 +419,7 @@ var PartsComponent = (function () {
             selector: 'parts',
             templateUrl: 'parts.component.html'
         }), 
-        __metadata('design:paramtypes', [part_service_1.PartService, session_service_1.SessionService, Window])
+        __metadata('design:paramtypes', [part_service_1.PartService, session_service_1.SessionService, Window, translate_pipe_1.TranslatePipe])
     ], PartsComponent);
     return PartsComponent;
 }());
